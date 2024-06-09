@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_strings.dart';
@@ -73,7 +74,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   if (inticatorIndex.value < 3) {
                     inticatorIndex.value++;
                   } else {
-                    inticatorIndex.value = 1;
+                    Get.toNamed(AppRoutes.roleScreen);
                   }
                 },
                 title: AppString.getStarted,

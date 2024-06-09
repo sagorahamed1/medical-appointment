@@ -8,5 +8,6 @@ class AppImages {
   static const String getStarted1 = '$path/getStarted1.png';
   static const String getStarted2 = '$path/getStarted2.png';
   static const String getStarted3 = '$path/getStarted3.png';
+  static const String logoImageWithBg = '$path/logoImage_withBg.png';
 
 }

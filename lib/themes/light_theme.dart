@@ -4,14 +4,15 @@ import '../utils/app_colors.dart';
 
 
 ThemeData light({Color color = const Color(0xFF039D55)}) => ThemeData(
-  fontFamily: 'Poppins',
-  iconTheme: IconThemeData(color: AppColors.primaryColor),
+  fontFamily: 'OpenSans-Regular',
+  iconTheme: const IconThemeData(color: AppColors.primaryColor),
   primaryColor: color,
-  secondaryHeaderColor: Color(0xFF1ED7AA),
-  disabledColor: Color(0xFFBABFC4),
+  secondaryHeaderColor: const Color(0xFF1ED7AA),
+  disabledColor: const Color(0xFFBABFC4),
   brightness: Brightness.light,
-  hintColor: Color(0xFF9F9F9F),
+  hintColor: const Color(0xFF9F9F9F),
   cardColor: Colors.white,
+  scaffoldBackgroundColor: Colors.white
 
 
   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
