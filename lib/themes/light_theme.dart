@@ -12,7 +12,7 @@ ThemeData light({Color color = const Color(0xFF039D55)}) => ThemeData(
   brightness: Brightness.light,
   hintColor: const Color(0xFF9F9F9F),
   cardColor: Colors.white,
-  scaffoldBackgroundColor: Colors.white
+  scaffoldBackgroundColor: Colors.white,
 
 
   // bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -24,9 +24,9 @@ ThemeData light({Color color = const Color(0xFF039D55)}) => ThemeData(
   // colorScheme: ColorScheme.light(primary: color, secondary: color)
   //     .copyWith(background: const Color(0xFFF3F3F3))
   //     .copyWith(error: Color(0xFFE84D4F)),
-  // appBarTheme:  AppBarTheme(
-  //   backgroundColor:AppColors.backgroundColor,
-  //   centerTitle: true,
-  //   iconTheme: const IconThemeData(color: Colors.black), // Set app bar icons color to black
-  // ),
+  appBarTheme:  const AppBarTheme(
+    backgroundColor: Colors.white,
+    centerTitle: true,
+    iconTheme: IconThemeData(color: Colors.black), // Set app bar icons color to black
+  ),
 );
