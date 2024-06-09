@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
@@ -6,6 +7,7 @@ import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class RoleScreen extends StatelessWidget {
   const RoleScreen({super.key});
@@ -35,13 +37,15 @@ class RoleScreen extends StatelessWidget {
             CustomText(text: AppString.yourHealthIsOurPriority, fontsize: 18.h,fontWeight: FontWeight.w400,color: Colors.black, top: 8.h),
 
 
-            CustomText(text: AppString.JoinAsA,fontWeight: FontWeight.w600,color: Colors.black, top: 96.h,bottom: 16.h),
+            CustomText(text: AppString.JoinAsA,fontWeight: FontWeight.w400,color: Colors.black, top: 96.h,bottom: 16.h),
 
 
             CustomTwoButon(
               width: 200,
               leftBtnOnTap: (){},
-              rightBtnOnTap: (){},
+              rightBtnOnTap: (){
+                Get.toNamed(AppRoutes.signUpScreen);
+              },
               btnNameList: const [AppString.user, AppString.doctor],
 
             )
