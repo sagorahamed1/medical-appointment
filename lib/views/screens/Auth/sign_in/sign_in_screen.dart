@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -95,7 +96,11 @@ class SignInScreen extends StatelessWidget {
             ),
 
 
-            CustomText(text: AppString.forgetPassword,color: AppColors.primaryColor,fontsize: 18.h,fontWeight: FontWeight.w600, top: 16.h),
+            GestureDetector(
+                onTap: (){
+                  Get.toNamed(AppRoutes.forgotPasswordScreen);
+                },
+                child: CustomText(text: AppString.forgetPassword,color: AppColors.primaryColor,fontsize: 18.h,fontWeight: FontWeight.w600, top: 16.h)),
 
 
 
