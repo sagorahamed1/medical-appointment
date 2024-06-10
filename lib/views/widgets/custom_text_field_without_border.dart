@@ -12,6 +12,7 @@ class CustomTextFieldWithoutBorder extends StatelessWidget {
   final String? labelText;
   final String? hintText;
   final bool? readOnly;
+  final int? maxLines;
   final double contenpaddingHorizontal;
   final double contenpaddingVertical;
   final Widget? sufixicons;
@@ -30,6 +31,7 @@ class CustomTextFieldWithoutBorder extends StatelessWidget {
     this.readOnly = false,
     this.sufixicons,
     this.validator,
+    this.maxLines,
     required this.controller,
     this.keyboardType = TextInputType.text,
     this.isObscureText = false,
@@ -45,6 +47,7 @@ class CustomTextFieldWithoutBorder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
       onTap: onTap,
       readOnly: readOnly!,
       onChanged: onChanged,

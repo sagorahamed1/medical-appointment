@@ -30,5 +30,8 @@ class AppString {
   static const String   mobileNumber  = "Mobile Number";
   static const String   address  = "Address";
   static const String   continues  = "Continue";
+  static const String   signInToContinue  = "Sign In to Continue";
+  static const String   forgetPassword  = "Forget Password?";
+  static const String   dontHaveAnAccount = "Don’t have an account?";
 }
 

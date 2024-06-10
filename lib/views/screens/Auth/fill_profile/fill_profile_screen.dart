@@ -1,4 +1,6 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
+import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,17 +15,17 @@ import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
 
 class FillProfileScreen extends StatelessWidget {
-   FillProfileScreen({super.key});
+  FillProfileScreen({super.key});
 
   final AuthController _authController = Get.put(AuthController());
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: CustomText(
-          text: AppString.verifyEmail,
+          text: AppString.fillPourProfile,
           fontsize: 18.h,
           fontWeight: FontWeight.w600,
         ),
@@ -34,23 +36,23 @@ class FillProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                Container(
-                    child: SvgPicture.asset(
-                  AppIcons.profileUpdateIcons,
-                  height: 144.h,
-                  width: 144.w,
-                  fit: BoxFit.cover,
-                )),
-                
-                
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: SvgPicture.asset(AppIcons.galaryIcon),
-                )
-              ],
+            Center(
+              child: Stack(
+                children: [
+                  Container(
+                      child: Image.asset(
+                    AppImages.fillProfile,
+                    height: 144.h,
+                    width: 144.w,
+                    fit: BoxFit.cover,
+                  )),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: SvgPicture.asset(AppIcons.galaryIcon),
+                  )
+                ],
+              ),
             ),
 
             CustomText(
@@ -61,12 +63,12 @@ class FillProfileScreen extends StatelessWidget {
 
             ///=====================Gender ======================>
             CustomTextFieldWithoutBorder(
-                contenpaddingHorizontal: 20.w,
-                contenpaddingVertical: 0.h,
-                controller: _authController.genderCtrl,
+              contenpaddingHorizontal: 20.w,
+              contenpaddingVertical: 0.h,
+              controller: _authController.genderCtrl,
               hintText: AppString.gender,
               sufixicons: Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 12.w),
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
                   child: SvgPicture.asset(
                     AppIcons.dropdown,
                     color: AppColors.gray767676,
@@ -81,13 +83,12 @@ class FillProfileScreen extends StatelessWidget {
               controller: _authController.dateOfBirthCtrl,
               hintText: AppString.dateOfBirth,
               sufixicons: Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 12.w),
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
                   child: SvgPicture.asset(
                     AppIcons.calendar,
                     color: AppColors.gray767676,
                   )),
             ),
-
 
             SizedBox(height: 16.h),
 
@@ -99,22 +100,22 @@ class FillProfileScreen extends StatelessWidget {
               controller: _authController.mobileNumberCtrl,
             ),
 
-
             SizedBox(height: 16.h),
 
             ///=====================Address======================>
             CustomTextFieldWithoutBorder(
+              maxLines: 3,
               contenpaddingHorizontal: 20.w,
               contenpaddingVertical: 0.h,
               hintText: AppString.address,
               controller: _authController.addressCtrl,
             ),
 
-
-
-            SizedBox(height: 100.h),
+            SizedBox(height: 48.h),
             // const Spacer(),
-            CustomButton(onpress: () {}, title: AppString.continues),
+            CustomButton(onpress: () {
+              Get.toNamed(AppRoutes.signInScreen);
+            }, title: AppString.continues),
 
             SizedBox(height: 98.h)
           ],
