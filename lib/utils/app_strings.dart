@@ -18,5 +18,10 @@ class AppString {
   static const String   privacyPolicy  = "Privacy Policy.";
   static const String   alreadyHaveAnAccount  = "Already have an account?";
   static const String   signIn  = " Sign In";
+  static const String   weHaveSentA_verificationCode  = "We have sent a verification code to your email.";
+  static const String   pleaseCheckYourEmail  ="Please check your email and enter the code.";
+  static const String   didntGetTheCode  = "Didn’t get the code?";
+  static const String   resend  = "Resend";
+  static const String   verifyEmail  = "Verify Email";
 }
 
