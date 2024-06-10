@@ -5,5 +5,10 @@ class AppIcons {
   static const String lock = "$path/lock.svg";
   static const String obsecureHide = "$path/obsecureHide.svg";
   static const String obsecure = "$path/obsecure.svg";
+  static const String profileUpdateIcons = "$path/profileUpdateIcons.svg";
+  static const String galaryIcon = "$path/galaryIcon.svg";
+  static const String dropdown = "$path/dropdown.svg";
+  static const String calendar = "$path/calendar.svg";
 
 }
+

@@ -18,4 +18,8 @@ class AuthController extends GetxController{
 
 
   TextEditingController otpCtrl = TextEditingController();
+  TextEditingController genderCtrl = TextEditingController();
+  TextEditingController dateOfBirthCtrl = TextEditingController();
+  TextEditingController mobileNumberCtrl = TextEditingController();
+  TextEditingController addressCtrl = TextEditingController();
 }

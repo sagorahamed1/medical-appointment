@@ -23,5 +23,12 @@ class AppString {
   static const String   didntGetTheCode  = "Didn’t get the code?";
   static const String   resend  = "Resend";
   static const String   verifyEmail  = "Verify Email";
+  static const String   fillPourProfile  = "Fill your Profile";
+  static const String   uploadProfilePicture  = "Upload Profile Picture";
+  static const String   gender  = "Gender";
+  static const String   dateOfBirth  = "Date of Birth";
+  static const String   mobileNumber  = "Mobile Number";
+  static const String   address  = "Address";
+  static const String   continues  = "Continue";
 }
 

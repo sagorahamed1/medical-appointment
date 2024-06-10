@@ -2,6 +2,7 @@
 
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
+import '../views/screens/Auth/fill_profile/fill_profile_screen.dart';
 import '../views/screens/Auth/sign_up/sign_up_screen.dart';
 import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
 import '../views/screens/onboarding/onboarding_screen.dart';
@@ -14,6 +15,7 @@ class AppRoutes {
   static const String roleScreen = "/RoleScreen.dart";
   static const String signUpScreen = "/SignUpScreen.dart";
   static const String veryfyEmailScreen = "/VeryfyEmailScreen.dart";
+  static const String fillProfileScreen = "/FillProfileScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -22,5 +24,6 @@ class AppRoutes {
         GetPage(name: roleScreen, page: () => RoleScreen()),
         GetPage(name: signUpScreen, page: () => SignUpScreen()),
         GetPage(name: veryfyEmailScreen, page: () => VeryfyEmailScreen()),
+        GetPage(name: fillProfileScreen, page: () => FillProfileScreen()),
   ];
 }
