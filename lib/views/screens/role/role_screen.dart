@@ -41,7 +41,7 @@ class RoleScreen extends StatelessWidget {
 
 
             CustomTwoButon(
-              width: 200,
+              width: 169.w,
               leftBtnOnTap: (){},
               rightBtnOnTap: (){
                 Get.toNamed(AppRoutes.signUpScreen);
