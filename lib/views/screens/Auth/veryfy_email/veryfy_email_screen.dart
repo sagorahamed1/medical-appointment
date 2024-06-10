@@ -48,6 +48,7 @@ class VeryfyEmailScreen extends StatelessWidget {
 
             const Spacer(),
             CustomButton(onpress: (){
+              Get.parameters['screenType'] == 'forgotPassword' ? Get.toNamed(AppRoutes.setPasswordScreen) :
               Get.toNamed(AppRoutes.fillProfileScreen);
             }, title: AppString.verifyEmail),
 

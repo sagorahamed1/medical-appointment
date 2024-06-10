@@ -32,6 +32,11 @@ class AppString {
   static const String   continues  = "Continue";
   static const String   signInToContinue  = "Sign In to Continue";
   static const String   forgetPassword  = "Forget Password?";
+  static const String   forgotPasswordNotQuestionMark  = "Forgot Password";
   static const String   dontHaveAnAccount = "Don’t have an account?";
+  static const String   pleaseEnterYourEmailToResetYourpassword = "Please enter your email to reset your password";
+  static const String   sendOTP = "Send OTP";
+  static const String   setNewPassword = "Set New Password";
+  static const String   setYournewpassword = "Set your new password";
 }
 
