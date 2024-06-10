@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
@@ -46,7 +47,9 @@ class VeryfyEmailScreen extends StatelessWidget {
 
 
             const Spacer(),
-            CustomButton(onpress: (){}, title: AppString.verifyEmail),
+            CustomButton(onpress: (){
+              Get.toNamed(AppRoutes.fillProfileScreen);
+            }, title: AppString.verifyEmail),
 
             SizedBox(height: 98.h)
           ],

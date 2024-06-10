@@ -1,0 +1,123 @@
+import 'package:doctor_appointment/utils/app_colors.dart';
+import 'package:doctor_appointment/utils/app_dimentions.dart';
+import 'package:doctor_appointment/utils/app_icons.dart';
+import 'package:doctor_appointment/views/widgets/custom_button.dart';
+import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+
+import '../../../../utils/app_strings.dart';
+import '../../../widgets/custom_text.dart';
+
+class SignInScreen extends StatelessWidget {
+   SignInScreen({super.key});
+
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+
+  RxBool isObscure = true.obs;
+
+   toggleIsObscure(){
+     isObscure.value = !isObscure.value;
+
+   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: CustomText(
+          text: AppString.fillPourProfile,
+          fontsize: 18.h,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+
+      body: Padding(
+        padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w, vertical: 24.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+
+            CustomText(text: AppString.signInToContinue, fontsize: 20.h,color: AppColors.primaryColor, bottom: 24.h),
+
+            CustomTextFieldWithoutBorder(
+                contenpaddingHorizontal: 20.w,
+                contenpaddingVertical: 0,
+                 controller: emailCtrl,
+                prefixIcon: Padding(
+                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                    child: SvgPicture.asset(
+                      AppIcons.email,
+                      color: AppColors.gray767676,
+                    )),
+              hintText: AppString.email,
+            ),
+
+            SizedBox(height: 16.h),
+
+
+            Obx(()=>
+               CustomTextFieldWithoutBorder(
+                maxLines: 1,
+                contenpaddingHorizontal: 20.w,
+                contenpaddingVertical: 0,
+                controller: passwordCtrl,
+                hintText: AppString.password,
+                isObscureText: isObscure.value,
+                prefixIcon: Padding(
+                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                    child: SvgPicture.asset(
+                      AppIcons.lock,
+                      color: AppColors.gray767676,
+                    )),
+
+
+                sufixicons: Obx(()=> Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 12.w),
+                      child: GestureDetector(
+                          onTap: () {
+                            toggleIsObscure();
+                          },
+                          child: SvgPicture.asset(
+                            isObscure.value
+                                ? AppIcons.obsecureHide
+                                : AppIcons.obsecure,
+                            color: passwordCtrl.text.isNotEmpty
+                                ? AppColors.primaryColor
+                                : AppColors.gray767676,
+                          ))),
+                ),
+              ),
+            ),
+
+
+            CustomText(text: AppString.forgetPassword,color: AppColors.primaryColor,fontsize: 18.h,fontWeight: FontWeight.w600, top: 16.h),
+
+
+
+            const Spacer(),
+            CustomButton(onpress: (){}, title: AppString.signIn),
+
+            SizedBox(height: 26.h),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomText(text: AppString.dontHaveAnAccount),
+                CustomText(
+                    text: AppString.signUp, color: AppColors.primaryColor),
+              ],
+            ),
+
+            SizedBox(height: 40.h)
+
+          ],
+        ),
+      ),
+    );
+  }
+}
