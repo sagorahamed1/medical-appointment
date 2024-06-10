@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../views/screens/Auth/fill_profile/fill_profile_screen.dart';
 import '../views/screens/Auth/forgot_password/forgot_password_screen.dart';
+import '../views/screens/Auth/set_password/set_password_screen.dart';
 import '../views/screens/Auth/sign_in/sign_in_screen.dart';
 import '../views/screens/Auth/sign_up/sign_up_screen.dart';
 import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
@@ -20,6 +21,7 @@ class AppRoutes {
   static const String fillProfileScreen = "/FillProfileScreen.dart";
   static const String signInScreen = "/SignInScreen.dart";
   static const String forgotPasswordScreen = "/ForgotPasswordScreen.dart";
+  static const String setPasswordScreen = "/SetPasswordScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -31,5 +33,6 @@ class AppRoutes {
         GetPage(name: fillProfileScreen, page: () => FillProfileScreen()),
         GetPage(name: signInScreen, page: () => SignInScreen()),
         GetPage(name: forgotPasswordScreen, page: () => ForgotPasswordScreen()),
+        GetPage(name: setPasswordScreen, page: () => SetPasswordScreen()),
   ];
 }

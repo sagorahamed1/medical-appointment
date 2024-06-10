@@ -36,5 +36,7 @@ class AppString {
   static const String   dontHaveAnAccount = "Don’t have an account?";
   static const String   pleaseEnterYourEmailToResetYourpassword = "Please enter your email to reset your password";
   static const String   sendOTP = "Send OTP";
+  static const String   setNewPassword = "Set New Password";
+  static const String   setYournewpassword = "Set your new password";
 }
 
