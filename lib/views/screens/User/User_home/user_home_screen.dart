@@ -67,12 +67,16 @@ class UserHomeScreen extends StatelessWidget {
                     itemCount: 1,
                     itemBuilder: (context, index) {
                       return    const AvailableDoctorsCard(
-                        experience: "kk",
+                        experience: "6 years",
                         rating: "4.0",
-                        clinicVisit: "dkdk",
+                        clinicVisit: r"$20",
                         doctorName: "Sagor Ahamed",
-                        specialist: "dkdkdk",
+                        totalConsultaion: "12",
+                        onlineConsultation: r'$50',
+                        specialist: "Therapist",
                         imageHeight: 142,
+                        leftBtnText: AppString.seeDetails,
+                        rightBtnText: AppString.bookAppointment,
                       );
                     },
                   ),
@@ -80,16 +84,18 @@ class UserHomeScreen extends StatelessWidget {
 
 
                 ///=======================Emergency Doctors and See All Text=============================>
-                _SeeAll(AppString.availableDoctors, AppString.seeAll),
+                _SeeAll(AppString.emergencyDoctors, AppString.seeAll),
             
             
                 const AvailableDoctorsCard(
-                  experience: "kk",
                   rating: "4.0",
-                  clinicVisit: "dkdk",
                   doctorName: "Sagor Ahamed",
-                  specialist: "dkdkdk",
+                  specialist: "Cardiologist",
+                  onlineConsultation: r'$20',
+                  totalConsultaion: '12',
                   imageHeight: 100,
+                  leftBtnText: AppString.message,
+                  rightBtnText: AppString.videoCall,
                 ),
             
               ],
