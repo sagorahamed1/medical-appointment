@@ -39,13 +39,12 @@ class FillProfileScreen extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
-                  Container(
-                      child: Image.asset(
-                    AppImages.fillProfile,
-                    height: 144.h,
-                    width: 144.w,
-                    fit: BoxFit.cover,
-                  )),
+                  Image.asset(
+                                      AppImages.fillProfile,
+                                      height: 144.h,
+                                      width: 144.w,
+                                      fit: BoxFit.cover,
+                                    ),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -55,11 +54,14 @@ class FillProfileScreen extends StatelessWidget {
               ),
             ),
 
-            CustomText(
-                text: AppString.uploadProfilePicture,
-                color: AppColors.textColor193664,
-                top: 8.h,
-                bottom: 24.h),
+            Align(
+              alignment: Alignment.center,
+              child: CustomText(
+                  text: AppString.uploadProfilePicture,
+                  color: AppColors.textColor193664,
+                  top: 8.h,
+                  bottom: 24.h),
+            ),
 
             ///=====================Gender ======================>
             CustomTextFieldWithoutBorder(

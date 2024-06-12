@@ -23,12 +23,12 @@ class SetPasswordScreen extends StatelessWidget {
   RxBool isObscureConfirmPassword = true.obs;
 
   toggleIsObscure(){
-    isObscureConfirmPassword.value  =!isObscureConfirmPassword.value;
+    isObscure.value  =!isObscure.value;
   }
 
 
   toggleIsObscureConfirmPassword(){
-    isObscure.value  =!isObscure.value;
+    isObscureConfirmPassword.value  =!isObscureConfirmPassword.value;
   }
   @override
   Widget build(BuildContext context) {
@@ -81,9 +81,7 @@ class SetPasswordScreen extends StatelessWidget {
                           isObscure.value
                               ? AppIcons.obsecureHide
                               : AppIcons.obsecure,
-                          color: passwordCtrl.text.isNotEmpty
-                              ? AppColors.primaryColor
-                              : AppColors.gray767676,
+                          color:  AppColors.gray767676,
                         ))),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -126,9 +124,7 @@ class SetPasswordScreen extends StatelessWidget {
                           isObscureConfirmPassword.value
                               ? AppIcons.obsecureHide
                               : AppIcons.obsecure,
-                          color: confirmPasswordCtrl.text.isNotEmpty
-                              ? AppColors.primaryColor
-                              : AppColors.gray767676,
+                          color: AppColors.gray767676,
                         ))),
 
                 validator: (value) {
@@ -145,8 +141,7 @@ class SetPasswordScreen extends StatelessWidget {
             const Spacer(),
             CustomButton(
                 onpress: () {
-                  Get.toNamed(AppRoutes.veryfyEmailScreen,
-                      parameters: {"screenType": "forgotPassword"});
+                  Get.toNamed(AppRoutes.signInScreen);
                 },
                 title: AppString.setNewPassword),
             SizedBox(height: 72.h)

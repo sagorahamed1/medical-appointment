@@ -114,11 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ///==========================password name ============================>
                 Obx(
                   () => CustomTextField(
-                    onChanged: (value) {
-                      setState(() {
-
-                      });
-                    },
+                    onChanged: (value) {setState(() {});},
                     contenpaddingHorizontal: 20,
                     contenpaddingVertical: 0,
                     isObscureText: _authController.isObscure.value,
@@ -218,8 +214,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomText(text: AppString.alreadyHaveAnAccount),
-                    CustomText(
-                        text: AppString.signUp, color: AppColors.primaryColor),
+                    GestureDetector(
+                      onTap: (){
+                        Get.toNamed(AppRoutes.signInScreen);
+                      },
+                      child: CustomText(
+                          text: AppString.signIn, color: AppColors.primaryColor),
+                    ),
                   ],
                 ),
 
