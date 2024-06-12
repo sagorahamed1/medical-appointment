@@ -30,7 +30,7 @@ class SignInScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-          text: AppString.fillPourProfile,
+          text: AppString.signIn,
           fontsize: 18.h,
           fontWeight: FontWeight.w600,
         ),
@@ -105,7 +105,9 @@ class SignInScreen extends StatelessWidget {
 
 
             const Spacer(),
-            CustomButton(onpress: (){}, title: AppString.signIn),
+            CustomButton(onpress: (){
+              Get.offAllNamed(AppRoutes.userHomeScreen);
+            }, title: AppString.signIn),
 
             SizedBox(height: 26.h),
 
@@ -113,8 +115,13 @@ class SignInScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomText(text: AppString.dontHaveAnAccount),
-                CustomText(
-                    text: AppString.signUp, color: AppColors.primaryColor),
+                GestureDetector(
+                  onTap: (){
+                    Get.toNamed(AppRoutes.signUpScreen);
+                  },
+                  child: CustomText(
+                      text: AppString.signUp, color: AppColors.primaryColor),
+                ),
               ],
             ),
 

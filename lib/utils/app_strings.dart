@@ -38,5 +38,21 @@ class AppString {
   static const String   sendOTP = "Send OTP";
   static const String   setNewPassword = "Set New Password";
   static const String   setYournewpassword = "Set your new password";
+
+
+  ///=============================Home screen=============================>
+  static const String   enhancingTheHealthcareExperience  = "Enhancing the healthcare experience ";
+  static const String   search  = "Search";
+  static const String   categories  = "Categories";
+  static const String   seeAll  = "See all";
+  static const String   availableDoctors  = "Available Doctors";
+  static const String   seeDetails  = "See Details";
+  static const String   bookAppointment  = "Book Appointment";
+  static const String   emergencyDoctors  = "Emergency Doctors";
+  static const String   message  = "Message";
+  static const String   videoCall  = "Video Call";
+
+
+
 }
 

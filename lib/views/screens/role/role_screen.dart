@@ -45,7 +45,7 @@ class RoleScreen extends StatelessWidget {
               width: 169.w,
               leftBtnOnTap: (){},
               rightBtnOnTap: (){
-                Get.toNamed(AppRoutes.signUpScreen);
+                Get.toNamed(AppRoutes.signInScreen);
               },
               btnNameList: const [AppString.user, AppString.doctor],
 
