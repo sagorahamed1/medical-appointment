@@ -8,15 +8,17 @@ class CustomTwoButon extends StatelessWidget {
   final List? btnNameList;
   final VoidCallback? leftBtnOnTap;
   final double? width;
+  final int initialSeclected;
   final VoidCallback? rightBtnOnTap;
 
   const CustomTwoButon(
-      {super.key, this.btnNameList, this.leftBtnOnTap, this.rightBtnOnTap, this.width});
+      {super.key, this.btnNameList, this.leftBtnOnTap, this.rightBtnOnTap, this.width,required this.initialSeclected});
+
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(btnNameList!.length, (index) {
         return GestureDetector(
           onTap: index == 0 ? leftBtnOnTap : rightBtnOnTap,
@@ -25,13 +27,13 @@ class CustomTwoButon extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border.all(color: AppColors.primaryColor),
                 borderRadius: BorderRadius.circular(8.r),
-                color: index == 0+1 ? Colors.white : AppColors.primaryColor),
+                color: index == 0+initialSeclected ? Colors.white : AppColors.primaryColor),
             width: width,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8.h),
               child: CustomText(
                   text: btnNameList![index],
-                  color: index == 0+1 ? AppColors.primaryColor : Colors.white,
+                  color: index == 0+initialSeclected ? AppColors.primaryColor : Colors.white,
                   fontWeight: FontWeight.w600),
             ),
           ),
