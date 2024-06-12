@@ -11,6 +11,8 @@ class AppIcons {
   static const String calendar = "$path/calendar.svg";
   static const String notification = "$path/notification.svg";
   static const String search = "$path/search.svg";
+  static const String categoryGeneral = "$path/category_general.svg";
+  static const String star = "$path/star.svg";
 
 }
 
