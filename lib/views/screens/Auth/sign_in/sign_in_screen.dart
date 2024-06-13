@@ -106,7 +106,7 @@ class SignInScreen extends StatelessWidget {
 
             const Spacer(),
             CustomButton(onpress: (){
-              Get.offAllNamed(AppRoutes.userHomeScreen);
+              Get.offAllNamed(AppRoutes.userBottomNavBar);
             }, title: AppString.signIn),
 
             SizedBox(height: 26.h),

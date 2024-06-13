@@ -63,6 +63,7 @@ class UserHomeScreen extends StatelessWidget {
                   height: 230.h,
                   child: ListView.builder(
                     shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: 1,
                     itemBuilder: (context, index) {

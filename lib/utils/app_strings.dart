@@ -51,6 +51,7 @@ class AppString {
   static const String   emergencyDoctors  = "Emergency Doctors";
   static const String   message  = "Message";
   static const String   videoCall  = "Video Call";
+  static const String   notifications  = "Notifications";
 
 
 
