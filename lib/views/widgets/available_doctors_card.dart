@@ -11,6 +11,7 @@ import 'custom_two_button.dart';
 
 class AvailableDoctorsCard extends StatelessWidget {
   final String? doctorName;
+  final VoidCallback? leftBtnOntap;
   final double? imageHeight;
   final String? doctorImage;
   final String? rating;
@@ -28,6 +29,7 @@ class AvailableDoctorsCard extends StatelessWidget {
         this.doctorImage,
         this.rating,
         this.specialist,
+        this.leftBtnOntap,
         this.experience,
         this.totalConsultaion,
         this.onlineConsultation,
@@ -102,7 +104,7 @@ class AvailableDoctorsCard extends StatelessWidget {
               width: 159.w,
               btnNameList: ["$leftBtnText", "$rightBtnText"],
               rightBtnOnTap: () {},
-              leftBtnOnTap: () {},
+              leftBtnOnTap: leftBtnOntap,
               initialSeclected: 0,
             )
           ],

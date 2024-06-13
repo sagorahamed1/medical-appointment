@@ -47,8 +47,6 @@ class _CategorysectionState extends State<Categorysection> {
 
 
 
-
-
 class CategoryCard extends StatelessWidget {
   final String? categorIcon;
   final String? categorName;
@@ -76,7 +74,7 @@ class CategoryCard extends StatelessWidget {
                 color: Color(0xffE8EBF0)
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 18.5.h, horizontal: 20.w),
+                padding: EdgeInsets.symmetric(vertical: 18.5.h, horizontal: 18.w),
                 child: SvgPicture.asset(
                   categorIcon!,
                   color: AppColors.primaryColor

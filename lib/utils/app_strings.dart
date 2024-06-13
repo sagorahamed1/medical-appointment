@@ -52,6 +52,14 @@ class AppString {
   static const String   message  = "Message";
   static const String   videoCall  = "Video Call";
   static const String   notifications  = "Notifications";
+  static const String   doctorDetails  = "Doctor Details";
+  static const String   yearsExperience  = "Years experience";
+  static const String   rating  = "Rating";
+  static const String   reviews  = "Reviews";
+  static const String   aboutDoctor  = "About Doctor";
+  static const String   workingTime  = "Working Time";
+  static const String   topReviews  = "Top Reviews";
+  static const String   selectPackage  = "Select package";
 
 
 

@@ -61,7 +61,7 @@ class UserHomeScreen extends StatelessWidget {
             
                 ///=======================Categories and See All Text=============================>
                 _SeeAll(AppString.categories, AppString.seeAll, (){
-                  Get.toNamed(AppRoutes.availablleDoctorsScreen);
+                  Get.toNamed(AppRoutes.userCategoryScreen);
                 }),
             
                 const Categorysection(),
@@ -80,7 +80,7 @@ class UserHomeScreen extends StatelessWidget {
                     scrollDirection: Axis.vertical,
                     itemCount: 1,
                     itemBuilder: (context, index) {
-                      return    const AvailableDoctorsCard(
+                      return     AvailableDoctorsCard(
                         experience: "6 years",
                         rating: "4.0",
                         clinicVisit: r"$20",
@@ -91,6 +91,9 @@ class UserHomeScreen extends StatelessWidget {
                         imageHeight: 142,
                         leftBtnText: AppString.seeDetails,
                         rightBtnText: AppString.bookAppointment,
+                        leftBtnOntap: (){
+                          Get.toNamed(AppRoutes.doctorDetailsScreen);
+                        },
                       );
                     },
                   ),

@@ -11,8 +11,11 @@ import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
 import '../views/screens/User/Available_Doctors/availablle_doctors_screen.dart';
 import '../views/screens/User/Emergency_Doctors/availablle_doctors_screen.dart';
 import '../views/screens/User/User_home/user_home_screen.dart';
+import '../views/screens/User/doctor_details/doctor_details_screen.dart';
 import '../views/screens/User/search/user_search_screen.dart';
+import '../views/screens/User/select_package/select_package_screen.dart';
 import '../views/screens/User/user_bottom_nav_bar/user_bottom_nav_bar.dart';
+import '../views/screens/User/user_category/user_category_screen.dart';
 import '../views/screens/notifications/notifications_screen.dart';
 import '../views/screens/onboarding/onboarding_screen.dart';
 import '../views/screens/role/role_screen.dart';
@@ -34,6 +37,9 @@ class AppRoutes {
   static const String userSearchScreen = "/UserSearchScreen.dart";
   static const String availablleDoctorsScreen = "/AvailablleDoctorsScreen.dart";
   static const String emergencyDoctorsScreen = "/EmergencyDoctorsScreen.dart";
+  static const String userCategoryScreen = "/UserCategoryScreen.dart";
+  static const String doctorDetailsScreen = "/DoctorDetailsScreen.dart";
+  static const String selectPackageScreen = "/SelectPackageScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -52,5 +58,8 @@ class AppRoutes {
         GetPage(name: userSearchScreen, page: () => UserSearchScreen()),
         GetPage(name: availablleDoctorsScreen, page: () => AvailablleDoctorsScreen()),
         GetPage(name: emergencyDoctorsScreen, page: () => EmergencyDoctorsScreen()),
+        GetPage(name: userCategoryScreen, page: () => UserCategoryScreen()),
+        GetPage(name: doctorDetailsScreen, page: () => DoctorDetailsScreen()),
+        GetPage(name: selectPackageScreen, page: () => SelectPackageScreen()),
   ];
 }
