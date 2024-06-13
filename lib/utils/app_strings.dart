@@ -59,6 +59,7 @@ class AppString {
   static const String   aboutDoctor  = "About Doctor";
   static const String   workingTime  = "Working Time";
   static const String   topReviews  = "Top Reviews";
+  static const String   selectPackage  = "Select package";
 
 
 

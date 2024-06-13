@@ -1,8 +1,10 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
@@ -21,25 +23,25 @@ class DoctorDetailsScreen extends StatelessWidget {
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
-          text: AppString.emergencyDoctors,
+          text: AppString.doctorDetails,
           fontsize: 18.h,
           fontWeight: FontWeight.w600,
         ),
       ),
 
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: Dimensions.paddingSizeDefault.w,
-            vertical: Dimensions.paddingSizeDefault.h),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeDefault.w,
+              vertical: Dimensions.paddingSizeDefault.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// ======================top Doctor Box Card==========================>
               TopDoctorBoxCard(),
-
+          
               SizedBox(height: 16.h),
-
+          
               ///======================Rating and Experience Card====================>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +52,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                   _ratingExperience('4,942', "Reviews", AppIcons.messageIcon),
                 ],
               ),
-
+          
               ///===============================Custom Two Text==================================>
               _customTwoText(
                 AppString.aboutDoctor,
@@ -60,7 +62,7 @@ class DoctorDetailsScreen extends StatelessWidget {
                 AppString.workingTime,
                 'Monday - Friday, 08.00 AM - 20.00 PM',
               ),
-
+          
               ///======================Top Review Text=========================>
               CustomText(
                   text: AppString.topReviews,
@@ -68,8 +70,8 @@ class DoctorDetailsScreen extends StatelessWidget {
                   fontsize: 18.h,
                   color: Colors.black,
                   top: 16.h,
-                  bottom: 8.h),
-
+                  bottom: 16.h),
+          
               ///=============================Top Review List views=======================>
               SizedBox(
                 height: 490.h,
@@ -80,7 +82,8 @@ class DoctorDetailsScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return const TopReviewsCard(
                       image: AppImages.getStarted2,
-                      description: 'Dr. Jenny is very professional in her work and responsive. I have consulted and my problem is solved. 😍😍',
+                      description:
+                          'Dr. Jenny is very professional in her work and responsive. I have consulted and my problem is solved. 😍😍',
                       rathing: "5",
                       reviewName: "Sagor Ahamed",
                       timeAgo: "2 days ago",
@@ -88,10 +91,12 @@ class DoctorDetailsScreen extends StatelessWidget {
                   },
                 ),
               ),
-
+          
               ///===========================Button=============================>
               SizedBox(height: 20.h),
-              CustomButton(onpress: (){}, title: AppString.bookAppointment)
+              CustomButton(onpress: () {
+                Get.toNamed(AppRoutes.selectPackageScreen);
+              }, title: AppString.bookAppointment)
             ],
           ),
         ),
