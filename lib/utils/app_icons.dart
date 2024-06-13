@@ -13,6 +13,10 @@ class AppIcons {
   static const String search = "$path/search.svg";
   static const String categoryGeneral = "$path/category_general.svg";
   static const String star = "$path/star.svg";
+  static const String homeicon = "$path/homeicon.svg";
+  static const String appointments = "$path/appointments.svg";
+  static const String messageIcon = "$path/messageIcon.svg";
+  static const String profileIcon = "$path/profileIcon.svg";
 
 }
 
