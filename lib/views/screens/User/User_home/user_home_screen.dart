@@ -60,12 +60,16 @@ class UserHomeScreen extends StatelessWidget {
                 ),
             
                 ///=======================Categories and See All Text=============================>
-                _SeeAll(AppString.categories, AppString.seeAll),
+                _SeeAll(AppString.categories, AppString.seeAll, (){
+                  Get.toNamed(AppRoutes.availablleDoctorsScreen);
+                }),
             
                 const Categorysection(),
             
                 ///=======================available Doctors and See All Text=============================>
-                _SeeAll(AppString.availableDoctors, AppString.seeAll),
+                _SeeAll(AppString.availableDoctors, AppString.seeAll, (){
+                  Get.toNamed(AppRoutes.availablleDoctorsScreen);
+                }),
 
 
                 SizedBox(
@@ -94,7 +98,9 @@ class UserHomeScreen extends StatelessWidget {
 
 
                 ///=======================Emergency Doctors and See All Text=============================>
-                _SeeAll(AppString.emergencyDoctors, AppString.seeAll),
+                _SeeAll(AppString.emergencyDoctors, AppString.seeAll, (){
+                  Get.toNamed(AppRoutes.emergencyDoctorsScreen);
+                }),
             
             
                 const AvailableDoctorsCard(
@@ -116,7 +122,7 @@ class UserHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _SeeAll(String leftText, seeAllText) {
+  Widget _SeeAll(String leftText, seeAllText, VoidCallback ontap) {
     return Column(
       children: [
         SizedBox(height: 20.h),
@@ -128,11 +134,14 @@ class UserHomeScreen extends StatelessWidget {
                 fontsize: 18.h,
                 fontWeight: FontWeight.w600,
                 color: AppColors.primaryColor),
-            CustomText(
-                text: seeAllText,
-                fontsize: 16.h,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primaryColor),
+            GestureDetector(
+              onTap: ontap,
+              child: CustomText(
+                  text: seeAllText,
+                  fontsize: 16.h,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryColor),
+            ),
           ],
         ),
         SizedBox(height: 20.h),
