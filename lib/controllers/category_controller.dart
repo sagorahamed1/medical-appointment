@@ -41,11 +41,7 @@ class CategoryController extends GetxController{
     {
       "categoryIcon" :  AppIcons.categoryGeneral,
       "categoryName" : "Neurology"
-    },
-    {
-      "categoryIcon" :  AppIcons.categoryGeneral,
-      "categoryName" : "Pediatric"
-    },
+    }
   ].obs;
 
 

@@ -61,7 +61,7 @@ class UserHomeScreen extends StatelessWidget {
             
                 ///=======================Categories and See All Text=============================>
                 _SeeAll(AppString.categories, AppString.seeAll, (){
-                  Get.toNamed(AppRoutes.availablleDoctorsScreen);
+                  Get.toNamed(AppRoutes.userCategoryScreen);
                 }),
             
                 const Categorysection(),
