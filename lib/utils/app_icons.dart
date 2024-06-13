@@ -18,6 +18,7 @@ class AppIcons {
   static const String messageIcon = "$path/messageIcon.svg";
   static const String profileIcon = "$path/profileIcon.svg";
   static const String notificationbell = "$path/notificationbell.svg";
+  static const String crossIcon = "$path/cross_icon.svg";
 
 }
 

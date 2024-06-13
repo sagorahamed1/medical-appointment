@@ -1,3 +1,5 @@
+import 'package:doctor_appointment/controllers/home_controller.dart';
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/screens/User/User_home/Inner_widgets/categorySection.dart';
 import 'package:doctor_appointment/views/screens/User/User_home/Inner_widgets/top_app_bar.dart';
@@ -5,6 +7,7 @@ import 'package:doctor_appointment/views/widgets/custom_text_field_without_borde
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
@@ -15,7 +18,7 @@ import '../../../widgets/custom_text.dart';
 class UserHomeScreen extends StatelessWidget {
   UserHomeScreen({super.key});
 
-  TextEditingController searchCtrl = TextEditingController();
+  final HomeController _homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,25 +41,35 @@ class UserHomeScreen extends StatelessWidget {
                     fontsize: 16.h,
                     bottom: 16.h,
                     top: 20.h),
-            
+
+                ///========================Search box=============================>
                 CustomTextFieldWithoutBorder(
                   contenpaddingHorizontal: 20.w,
                   contenpaddingVertical: 0,
-                  controller: searchCtrl,
+                  controller: _homeController.searchCtrl,
                   hintText: AppString.search,
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: SvgPicture.asset(AppIcons.search),
+                  prefixIcon: GestureDetector(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.userSearchScreen);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: SvgPicture.asset(AppIcons.search),
+                    ),
                   ),
                 ),
             
                 ///=======================Categories and See All Text=============================>
-                _SeeAll(AppString.categories, AppString.seeAll),
+                _SeeAll(AppString.categories, AppString.seeAll, (){
+                  Get.toNamed(AppRoutes.availablleDoctorsScreen);
+                }),
             
                 const Categorysection(),
             
                 ///=======================available Doctors and See All Text=============================>
-                _SeeAll(AppString.availableDoctors, AppString.seeAll),
+                _SeeAll(AppString.availableDoctors, AppString.seeAll, (){
+                  Get.toNamed(AppRoutes.availablleDoctorsScreen);
+                }),
 
 
                 SizedBox(
@@ -85,7 +98,9 @@ class UserHomeScreen extends StatelessWidget {
 
 
                 ///=======================Emergency Doctors and See All Text=============================>
-                _SeeAll(AppString.emergencyDoctors, AppString.seeAll),
+                _SeeAll(AppString.emergencyDoctors, AppString.seeAll, (){
+                  Get.toNamed(AppRoutes.emergencyDoctorsScreen);
+                }),
             
             
                 const AvailableDoctorsCard(
@@ -107,7 +122,7 @@ class UserHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _SeeAll(String leftText, seeAllText) {
+  Widget _SeeAll(String leftText, seeAllText, VoidCallback ontap) {
     return Column(
       children: [
         SizedBox(height: 20.h),
@@ -119,11 +134,14 @@ class UserHomeScreen extends StatelessWidget {
                 fontsize: 18.h,
                 fontWeight: FontWeight.w600,
                 color: AppColors.primaryColor),
-            CustomText(
-                text: seeAllText,
-                fontsize: 16.h,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primaryColor),
+            GestureDetector(
+              onTap: ontap,
+              child: CustomText(
+                  text: seeAllText,
+                  fontsize: 16.h,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryColor),
+            ),
           ],
         ),
         SizedBox(height: 20.h),
