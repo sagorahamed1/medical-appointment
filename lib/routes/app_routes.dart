@@ -10,6 +10,7 @@ import '../views/screens/Auth/sign_up/sign_up_screen.dart';
 import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
 import '../views/screens/User/User_home/user_home_screen.dart';
 import '../views/screens/User/user_bottom_nav_bar/user_bottom_nav_bar.dart';
+import '../views/screens/notifications/notifications_screen.dart';
 import '../views/screens/onboarding/onboarding_screen.dart';
 import '../views/screens/role/role_screen.dart';
 import '../views/screens/splash/splash_screen.dart';
@@ -26,6 +27,7 @@ class AppRoutes {
   static const String setPasswordScreen = "/SetPasswordScreen.dart";
   static const String userHomeScreen = "/UserHomeScreen.dart";
   static const String userBottomNavBar = "/UserBottomNavBar.dart";
+  static const String notificationScreen = "/NotificationScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -40,5 +42,6 @@ class AppRoutes {
         GetPage(name: setPasswordScreen, page: () => SetPasswordScreen()),
         GetPage(name: userHomeScreen, page: () => UserHomeScreen()),
         GetPage(name: userBottomNavBar, page: () => UserBottomNavBar()),
+        GetPage(name: notificationScreen, page: () => NotificationScreen()),
   ];
 }
