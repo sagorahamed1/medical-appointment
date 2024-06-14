@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_colors.dart';
 
@@ -29,4 +30,10 @@ ThemeData light({Color color = const Color(0xFF039D55)}) => ThemeData(
     centerTitle: true,
     iconTheme: IconThemeData(color: Colors.black), // Set app bar icons color to black
   ),
+
+
+ datePickerTheme: DatePickerThemeData(
+   dayStyle: TextStyle(color: AppColors.primaryColor, fontSize: 14.h),
+   weekdayStyle: TextStyle(fontSize: 14.h, color: Colors.black),
+ )
 );

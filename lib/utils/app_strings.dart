@@ -60,6 +60,22 @@ class AppString {
   static const String   workingTime  = "Working Time";
   static const String   topReviews  = "Top Reviews";
   static const String   selectPackage  = "Select package";
+  static const String   bookSchedule  = "Book Schedule";
+  static const String   selectDate  = "Select Date";
+  static const String   selectTime  = "Select Time";
+  static const String   patientDetails  = "Patient Details";
+  static const String   fullName  = "Full Name";
+  static const String   andrewAinsley  = "Andrew Ainsley";
+  static const String   yourAge  = "Your Age";
+  static const String   writeYourProblem  = "Write Your Problem";
+  static const String   selecteGender  = "Select Gender";
+  static const String   appointments  = "Appointments";
+  static const String   upcoming  = "Upcoming";
+  static const String   completed  = "Completed";
+  static const String   cancelled  = "Cancelled";
+  static const String   youDontHaveAnAppointmentYet  = "You don't have an appointment yet";
+  static const String   youDontHaveaDoctorAppointment = "You don't have a doctor's appointment scheduled at the moment.";
+
 
 
 

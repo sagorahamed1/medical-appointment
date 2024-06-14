@@ -10,7 +10,7 @@ class AppIcons {
   static const String dropdown = "$path/dropdown.svg";
   static const String calendar = "$path/calendar.svg";
   static const String notification = "$path/notification.svg";
-  static const String search = "$path/search.svg";
+  static const String search = "$path/user_search.svg";
   static const String categoryGeneral = "$path/category_general.svg";
   static const String star = "$path/star.svg";
   static const String homeicon = "$path/homeicon.svg";
@@ -22,6 +22,8 @@ class AppIcons {
   static const String experienceIcon = "$path/experience.svg";
   static const String videoCallIcons = "$path/videoCallIcons.svg";
   static const String personGroup = "$path/personGroup.svg";
+  static const String arrowDown = "$path/arrowDown.svg";
+  static const String messageIcon2 = "$path/messageIcon2.svg";
 
 }
 

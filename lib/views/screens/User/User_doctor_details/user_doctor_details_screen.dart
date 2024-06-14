@@ -14,8 +14,8 @@ import '../../../widgets/custom_text.dart';
 import '../../../widgets/top_review_card.dart';
 import 'Inner_widgets/top_doctor_box_card.dart';
 
-class DoctorDetailsScreen extends StatelessWidget {
-  const DoctorDetailsScreen({super.key});
+class UserDoctorDetailsScreen extends StatelessWidget {
+  const UserDoctorDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class DoctorDetailsScreen extends StatelessWidget {
               ///===========================Button=============================>
               SizedBox(height: 20.h),
               CustomButton(onpress: () {
-                Get.toNamed(AppRoutes.selectPackageScreen);
+                Get.toNamed(AppRoutes.userSelectPackageScreen);
               }, title: AppString.bookAppointment)
             ],
           ),

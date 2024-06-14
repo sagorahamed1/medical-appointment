@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -11,15 +12,28 @@ import 'package:get/get_rx/get_rx.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 
-class SelectPackageScreen extends StatefulWidget {
-  SelectPackageScreen({super.key});
+class UserSelectPackageScreen extends StatefulWidget {
+  const UserSelectPackageScreen({super.key});
 
   @override
-  State<SelectPackageScreen> createState() => _SelectPackageScreenState();
+  State<UserSelectPackageScreen> createState() => _UserSelectPackageScreenState();
 }
 
-class _SelectPackageScreenState extends State<SelectPackageScreen> {
+class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
   final RxInt selectedIndex = 0.obs;
+
+  List packageList = [
+    {
+      'icon' : AppIcons.videoCallIcons,
+      'title' : "Online Consultation",
+      "description" : "video call & messages with doctor"
+    },
+    {
+      'icon' : AppIcons.personGroup,
+      'title' : "Clinic Visit",
+      "description" : "Virtual visit in doctors clinic"
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,20 +56,23 @@ class _SelectPackageScreenState extends State<SelectPackageScreen> {
             SizedBox(
               height: 400.h,
               child:  ListView.builder(
-                itemCount: 2,
+                itemCount: packageList.length,
                 itemBuilder: (context, index) {
+                  var package = packageList[index];
                   return Padding(
                     padding: EdgeInsets.only(bottom: 24.h),
                     child: SelectPackageCard(
-                      title: "Online Consultation ",
-                      description: "Video call & messages with doctor",
+                      title: "${package['title']}",
+                      description: "${package['description']}",
                       price: 40,
-                      icon: AppIcons.videoCallIcons,
+                      icon: '${package['icon']}',
                       selectedIndex: selectedIndex.value,
                       allIndex: index,
                       onTap: () {
-                        selectedIndex.value = index;
-                        print('Selected index: $index');
+                        setState(() {
+                          selectedIndex.value = index;
+                        });
+
                       },
                     ),
                   );
@@ -63,7 +80,9 @@ class _SelectPackageScreenState extends State<SelectPackageScreen> {
               ),
             ),
             const Spacer(),
-            CustomButton(onpress: () {}, title: AppString.continues),
+            CustomButton(onpress: () {
+              Get.toNamed(AppRoutes.userBookScheduleScreen);
+            }, title: AppString.continues),
             SizedBox(height: 36.h)
           ],
         ),

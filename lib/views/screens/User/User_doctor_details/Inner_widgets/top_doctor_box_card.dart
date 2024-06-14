@@ -12,7 +12,7 @@ class TopDoctorBoxCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return             Container(
+    return Container(
       decoration: BoxDecoration(
           color: AppColors.fillColorE8EBF0,
           borderRadius: BorderRadius.circular(8.r)),
@@ -24,8 +24,8 @@ class TopDoctorBoxCard extends StatelessWidget {
               children: [
                 Container(
                     clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r)),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
                     child: Image.asset(
                       AppImages.getStarted1,
                       height: 120,
@@ -91,7 +91,6 @@ class TopDoctorBoxCard extends StatelessWidget {
           ],
         ),
       ),
-    )
-    ;
+    );
   }
 }
