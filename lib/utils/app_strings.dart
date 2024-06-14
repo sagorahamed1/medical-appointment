@@ -60,6 +60,9 @@ class AppString {
   static const String   workingTime  = "Working Time";
   static const String   topReviews  = "Top Reviews";
   static const String   selectPackage  = "Select package";
+  static const String   bookSchedule  = "Book Schedule";
+  static const String   selectDate  = "Select Date";
+  static const String   selectTime  = "Select Time";
 
 
 

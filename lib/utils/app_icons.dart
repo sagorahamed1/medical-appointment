@@ -10,7 +10,7 @@ class AppIcons {
   static const String dropdown = "$path/dropdown.svg";
   static const String calendar = "$path/calendar.svg";
   static const String notification = "$path/notification.svg";
-  static const String search = "$path/search.svg";
+  static const String search = "$path/user_search.svg";
   static const String categoryGeneral = "$path/category_general.svg";
   static const String star = "$path/star.svg";
   static const String homeicon = "$path/homeicon.svg";

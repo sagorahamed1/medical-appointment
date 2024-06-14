@@ -11,8 +11,8 @@ import '../../../widgets/custom_text.dart';
 
 
 
-class EmergencyDoctorsScreen extends StatelessWidget {
-  EmergencyDoctorsScreen({super.key});
+class UserEmergencyDoctorsScreen extends StatelessWidget {
+  UserEmergencyDoctorsScreen({super.key});
 
   final HomeController _homeController = Get.put(HomeController());
 

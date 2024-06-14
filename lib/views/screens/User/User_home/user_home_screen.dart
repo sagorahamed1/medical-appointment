@@ -68,7 +68,7 @@ class UserHomeScreen extends StatelessWidget {
             
                 ///=======================available Doctors and See All Text=============================>
                 _SeeAll(AppString.availableDoctors, AppString.seeAll, (){
-                  Get.toNamed(AppRoutes.availablleDoctorsScreen);
+                  Get.toNamed(AppRoutes.useravailablleDoctorsScreen);
                 }),
 
 
@@ -92,7 +92,7 @@ class UserHomeScreen extends StatelessWidget {
                         leftBtnText: AppString.seeDetails,
                         rightBtnText: AppString.bookAppointment,
                         leftBtnOntap: (){
-                          Get.toNamed(AppRoutes.doctorDetailsScreen);
+                          Get.toNamed(AppRoutes.userDoctorDetailsScreen);
                         },
                       );
                     },
@@ -102,7 +102,7 @@ class UserHomeScreen extends StatelessWidget {
 
                 ///=======================Emergency Doctors and See All Text=============================>
                 _SeeAll(AppString.emergencyDoctors, AppString.seeAll, (){
-                  Get.toNamed(AppRoutes.emergencyDoctorsScreen);
+                  Get.toNamed(AppRoutes.useremergencyDoctorsScreen);
                 }),
             
             

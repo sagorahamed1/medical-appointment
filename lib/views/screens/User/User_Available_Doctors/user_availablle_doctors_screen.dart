@@ -11,8 +11,8 @@ import '../../../widgets/custom_text.dart';
 
 
 
-class AvailablleDoctorsScreen extends StatelessWidget {
-  AvailablleDoctorsScreen({super.key});
+class UserAvailablleDoctorsScreen extends StatelessWidget {
+  UserAvailablleDoctorsScreen({super.key});
 
   final HomeController _homeController = Get.put(HomeController());
 
