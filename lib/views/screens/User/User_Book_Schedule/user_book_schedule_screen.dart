@@ -1,9 +1,12 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_strings.dart';
+import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class UserBookScheduleScreen extends StatefulWidget {
   const UserBookScheduleScreen({super.key});
@@ -107,6 +110,17 @@ class _UserBookScheduleScreenState extends State<UserBookScheduleScreen> {
                   );
                 }).toList(),
               ),
+
+
+
+
+              SizedBox(height: 24.h),
+
+              CustomButton(onpress: (){
+                Get.toNamed(AppRoutes.userPatientDetailsScreen);
+              }, title: AppString.continues),
+
+              SizedBox(height: 24.h),
             ],
           ),
         ),

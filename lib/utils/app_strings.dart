@@ -63,6 +63,13 @@ class AppString {
   static const String   bookSchedule  = "Book Schedule";
   static const String   selectDate  = "Select Date";
   static const String   selectTime  = "Select Time";
+  static const String   patientDetails  = "Patient Details";
+  static const String   fullName  = "Full Name";
+  static const String   andrewAinsley  = "Andrew Ainsley";
+  static const String   yourAge  = "Your Age";
+  static const String   writeYourProblem  = "Write Your Problem";
+  static const String   selecteGender  = "Select Gender";
+
 
 
 

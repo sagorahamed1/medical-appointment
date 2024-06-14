@@ -11,6 +11,7 @@ import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
 import '../views/screens/User/User_Available_Doctors/user_availablle_doctors_screen.dart';
 import '../views/screens/User/User_Book_Schedule/user_book_schedule_screen.dart';
 import '../views/screens/User/User_Emergency_Doctors/user_emergency_doctors_screen.dart';
+import '../views/screens/User/User_Patient_Details/user_patient_details.dart';
 import '../views/screens/User/User_doctor_details/user_doctor_details_screen.dart';
 import '../views/screens/User/User_home/user_home_screen.dart';
 import '../views/screens/User/user_bottom_nav_bar/user_bottom_nav_bar.dart';
@@ -42,6 +43,7 @@ class AppRoutes {
   static const String userDoctorDetailsScreen = "/DoctorDetailsScreen.dart";
   static const String userSelectPackageScreen = "/SelectPackageScreen.dart";
   static const String userBookScheduleScreen = "/UserBookScheduleScreen.dart";
+  static const String userPatientDetailsScreen = "/UserPatientDetailsScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -64,5 +66,6 @@ class AppRoutes {
         GetPage(name: userDoctorDetailsScreen, page: () => UserDoctorDetailsScreen()),
         GetPage(name: userSelectPackageScreen, page: () => UserSelectPackageScreen()),
         GetPage(name: userBookScheduleScreen, page: () => UserBookScheduleScreen()),
+        GetPage(name: userPatientDetailsScreen, page: () => UserPatientDetailsScreen()),
   ];
 }
