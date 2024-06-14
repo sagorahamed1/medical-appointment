@@ -23,6 +23,7 @@ class AppIcons {
   static const String videoCallIcons = "$path/videoCallIcons.svg";
   static const String personGroup = "$path/personGroup.svg";
   static const String arrowDown = "$path/arrowDown.svg";
+  static const String messageIcon2 = "$path/messageIcon2.svg";
 
 }
 

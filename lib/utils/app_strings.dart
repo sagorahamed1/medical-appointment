@@ -69,6 +69,12 @@ class AppString {
   static const String   yourAge  = "Your Age";
   static const String   writeYourProblem  = "Write Your Problem";
   static const String   selecteGender  = "Select Gender";
+  static const String   appointments  = "Appointments";
+  static const String   upcoming  = "Upcoming";
+  static const String   completed  = "Completed";
+  static const String   cancelled  = "Cancelled";
+  static const String   youDontHaveAnAppointmentYet  = "You don't have an appointment yet";
+  static const String   youDontHaveaDoctorAppointment = "You don't have a doctor's appointment scheduled at the moment.";
 
 
 
