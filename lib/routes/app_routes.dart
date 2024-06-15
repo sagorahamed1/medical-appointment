@@ -20,6 +20,7 @@ import '../views/screens/User/user_bottom_nav_bar/user_bottom_nav_bar.dart';
 import '../views/screens/User/user_category/user_category_screen.dart';
 import '../views/screens/User/user_search/user_search_screen.dart';
 import '../views/screens/User/user_select_package/user_select_package_screen.dart';
+import '../views/screens/message/chat_screen/chat_screen.dart';
 import '../views/screens/notifications/notifications_screen.dart';
 import '../views/screens/onboarding/onboarding_screen.dart';
 import '../views/screens/role/role_screen.dart';
@@ -48,6 +49,7 @@ class AppRoutes {
   static const String userPatientDetailsScreen = "/UserPatientDetailsScreen.dart";
   static const String userAppointmentsDetailsScreen = "/UserAppointmentsDetailsScreen.dart";
   static const String userGiveReviewScreen = "/UserGiveReviewScreen.dart";
+  static const String chatScreen = "/ChatScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -73,5 +75,6 @@ class AppRoutes {
         GetPage(name: userPatientDetailsScreen, page: () => UserPatientDetailsScreen()),
         GetPage(name: userAppointmentsDetailsScreen, page: () => UserAppointmentsDetailsScreen()),
         GetPage(name: userGiveReviewScreen, page: () => UserGiveReviewScreen()),
+        GetPage(name: chatScreen, page: () => ChatScreen()),
   ];
 }

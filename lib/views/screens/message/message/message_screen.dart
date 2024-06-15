@@ -1,8 +1,10 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
@@ -35,7 +37,11 @@ class MessageScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding:  EdgeInsets.only(bottom: 16.h),
-                    child: _messageCard(AppImages.getStarted1, "Sagor Ahamed", "how are you?", "1m Ago"),
+                    child: GestureDetector(
+                        onTap: (){
+                          Get.toNamed(AppRoutes.chatScreen);
+                        },
+                        child: _messageCard(AppImages.getStarted1, "Sagor Ahamed", "how are you?", "1m Ago")),
                   );
                 },
               ),
