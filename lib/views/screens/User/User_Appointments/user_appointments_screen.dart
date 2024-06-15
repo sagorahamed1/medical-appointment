@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
@@ -55,7 +56,8 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
           unselectedLabelStyle: const TextStyle(color: Colors.red),
           unselectedLabelColor: const Color(0xff767676),
           indicatorColor: AppColors.primaryColor,
-          indicatorWeight: 2.0,
+          indicatorSize: TabBarIndicatorSize.tab,
+          indicatorWeight: 1.0,
           indicatorPadding: const EdgeInsets.symmetric(horizontal: 20.0),
         ),
       ),
@@ -64,9 +66,72 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
         padding: EdgeInsets.symmetric(
             horizontal: Dimensions.paddingSizeDefault.w,
             vertical: Dimensions.paddingSizeDefault.h),
-        child: Column(
+        child: TabBarView(
+          controller: _tabController,
           children: [
-            AppointmentsCard()
+            ///=======================Up Coming Lists====================>
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: AppointmentsCard(
+                      image: AppImages.getStarted1,
+                      name: "Sagor Ahamed",
+                      appointmentsType: "Upcoming",
+                      date: DateTime.now(),
+                      messageIcon: AppIcons.messageIcon2,
+                      time: "14:00 PM",
+                      leftBtnName: 'Cancel Appoinment',
+                      rightBtnName: 'See Details',
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            ///=======================Completed Lists====================>
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: AppointmentsCard(
+                      image: AppImages.getStarted1,
+                      name: "Sagor Ahamed",
+                      leftBtnName: 'See Details',
+                      rightBtnName: 'Give Review',
+                      appointmentsType: 'Completed',
+                      date: DateTime.now(),
+                      time: "14:00 PM",
+                    ),
+                  );
+                },
+              ),
+            ),
+
+
+
+            ///=======================Cancelled Lists====================>
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: AppointmentsCard(
+                      image: AppImages.getStarted1,
+                      name: "Sagor Ahamed",
+                      appointmentsType: 'Cancelled',
+                      date: DateTime.now(),
+                      time: "14:00 PM",
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -74,13 +139,34 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
   }
 }
 
-
 class AppointmentsCard extends StatelessWidget {
-  const AppointmentsCard({super.key});
+  final String? image;
+  final String? name;
+  final String? messageIcon;
+  final String? appointmentsType;
+  final DateTime? date;
+  final String? time;
+  final String? leftBtnName;
+  final String? leftBtnOnTap;
+  final String? rightBtnName;
+  final String? rightBtnOnTap;
+
+  const AppointmentsCard(
+      {super.key,
+      this.image,
+      this.name,
+      this.messageIcon,
+      this.appointmentsType,
+      this.date,
+      this.time,
+      this.leftBtnName,
+      this.leftBtnOnTap,
+      this.rightBtnName,
+      this.rightBtnOnTap});
 
   @override
   Widget build(BuildContext context) {
-    return             Container(
+    return Container(
       decoration: BoxDecoration(
           color: AppColors.fillColorE8EBF0,
           borderRadius: BorderRadius.circular(8.r)),
@@ -93,10 +179,10 @@ class AppointmentsCard extends StatelessWidget {
                 ///=======================Image=========================>
                 Container(
                     clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r)),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
                     child: Image.asset(
-                      AppImages.getStarted1,
+                      "$image",
                       height: 120,
                       width: 110.w,
                       fit: BoxFit.cover,
@@ -111,28 +197,28 @@ class AppointmentsCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ///==========================Doctor Name=========================>
                               Expanded(
                                 child: CustomText(
                                     textAlign: TextAlign.start,
-                                    text: "Sagor Ahamed ",
+                                    text: "$name",
                                     color: AppColors.primaryColor,
                                     fontWeight: FontWeight.w600),
                               ),
 
                               ///=======================Message Icon=========================>
-                              Container(
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xffB8C1CF)),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(6.r),
-                                    child: SvgPicture.asset(
-                                        AppIcons.messageIcon2),
-                                  )),
+                              messageIcon == null
+                                  ? const SizedBox()
+                                  : Container(
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xffB8C1CF)),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(6.r),
+                                        child: SvgPicture.asset("$messageIcon"),
+                                      )),
                             ],
                           ),
                           SizedBox(height: 14.h),
@@ -148,12 +234,13 @@ class AppointmentsCard extends StatelessWidget {
                               Container(
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6.r),
-                                    border: Border.all(color: AppColors.primaryColor)
-                                ),
+                                    border: Border.all(
+                                        color: AppColors.primaryColor)),
                                 child: Padding(
-                                  padding:  EdgeInsets.symmetric(vertical: 6.h,horizontal: 10.w),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 6.h, horizontal: 10.w),
                                   child: CustomText(
-                                    text: "Upcoming",
+                                    text: "$appointmentsType",
                                     fontWeight: FontWeight.w600,
                                     fontsize: 10.h,
                                     color: AppColors.primaryColor,
@@ -163,8 +250,9 @@ class AppointmentsCard extends StatelessWidget {
                             ],
                           ),
                           CustomText(
-                            text: "25 July | 14:00 PM",
-                            color: AppColors.textColor5C5C5C,
+                            text:
+                                "${TimeFormatHelper.formatDate(date!)} | $time",
+                            color: Colors.black,
                             maxline: 2,
                             fontsize: 12.h,
                             top: 14.h,
@@ -178,22 +266,25 @@ class AppointmentsCard extends StatelessWidget {
               ],
             ),
 
+            leftBtnName == null ? const SizedBox() :
 
-            SizedBox(height: 14.h),
-            const Divider(),
-            SizedBox(height: 14.h),
-
-            CustomTwoButon(
-                width: 154.w,
-                btnNameList: const ["See Details", 'Give Review'],
-                rightBtnOnTap: (){},
-                leftBtnOnTap: (){},
-                initialSeclected: 0
+            Column(
+              children: [
+                SizedBox(height: 14.h),
+                const Divider(),
+                SizedBox(height: 14.h),
+                CustomTwoButon(
+                    width: 154.w,
+                    btnNameList: ["$leftBtnName", '$rightBtnName'],
+                    rightBtnOnTap: () {},
+                    leftBtnOnTap: () {},
+                    initialSeclected: 0)
+              ],
             )
+
           ],
         ),
       ),
     );
   }
 }
-
