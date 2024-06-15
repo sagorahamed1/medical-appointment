@@ -75,6 +75,13 @@ class AppString {
   static const String   cancelled  = "Cancelled";
   static const String   youDontHaveAnAppointmentYet  = "You don't have an appointment yet";
   static const String   youDontHaveaDoctorAppointment = "You don't have a doctor's appointment scheduled at the moment.";
+  static const String   scheduledAppointment = "Scheduled Appointment";
+  static const String   patientInformation = "Patient Information";
+  static const String   yourPackage = "Your Package";
+  static const String   completeAppointment = "Complete Appointment";
+  static const String   problem = "Problem";
+  static const String   age = "Age";
+
 
 
 

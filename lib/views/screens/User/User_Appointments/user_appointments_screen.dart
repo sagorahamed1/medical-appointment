@@ -1,10 +1,12 @@
 import 'package:doctor_appointment/helpers/time_format.dart';
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
@@ -105,6 +107,9 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                       rightBtnName: 'Give Review',
                       appointmentsType: 'Completed',
                       date: DateTime.now(),
+                      leftBtnOnTap: (){
+                        Get.toNamed(AppRoutes.userAppointmentsDetailsScreen);
+                      },
                       time: "14:00 PM",
                     ),
                   );
@@ -147,9 +152,9 @@ class AppointmentsCard extends StatelessWidget {
   final DateTime? date;
   final String? time;
   final String? leftBtnName;
-  final String? leftBtnOnTap;
+  final VoidCallback? leftBtnOnTap;
   final String? rightBtnName;
-  final String? rightBtnOnTap;
+  final VoidCallback? rightBtnOnTap;
 
   const AppointmentsCard(
       {super.key,
@@ -276,8 +281,8 @@ class AppointmentsCard extends StatelessWidget {
                 CustomTwoButon(
                     width: 154.w,
                     btnNameList: ["$leftBtnName", '$rightBtnName'],
-                    rightBtnOnTap: () {},
-                    leftBtnOnTap: () {},
+                    rightBtnOnTap: rightBtnOnTap,
+                    leftBtnOnTap: leftBtnOnTap,
                     initialSeclected: 0)
               ],
             )
