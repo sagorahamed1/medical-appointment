@@ -110,6 +110,10 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                       leftBtnOnTap: (){
                         Get.toNamed(AppRoutes.userAppointmentsDetailsScreen);
                       },
+                      rightBtnOnTap: (){
+                        Get.toNamed(AppRoutes.userGiveReviewScreen);
+                      },
+
                       time: "14:00 PM",
                     ),
                   );
