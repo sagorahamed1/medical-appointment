@@ -24,6 +24,11 @@ class AppIcons {
   static const String personGroup = "$path/personGroup.svg";
   static const String arrowDown = "$path/arrowDown.svg";
   static const String messageIcon2 = "$path/messageIcon2.svg";
+  static const String camera = "$path/camera.svg";
+  static const String voice = "$path/voice.svg";
+  static const String attachFile = "$path/attach_file.svg";
+  static const String like = "$path/like.svg";
+  static const String call = "$path/call.svg";
 
 }
 
