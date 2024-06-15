@@ -12,6 +12,7 @@ import '../views/screens/User/User_Appointments_Details/user_appointments_detail
 import '../views/screens/User/User_Available_Doctors/user_availablle_doctors_screen.dart';
 import '../views/screens/User/User_Book_Schedule/user_book_schedule_screen.dart';
 import '../views/screens/User/User_Emergency_Doctors/user_emergency_doctors_screen.dart';
+import '../views/screens/User/User_Give_Review/user_give_review_screen.dart';
 import '../views/screens/User/User_Patient_Details/user_patient_details.dart';
 import '../views/screens/User/User_doctor_details/user_doctor_details_screen.dart';
 import '../views/screens/User/User_home/user_home_screen.dart';
@@ -46,6 +47,7 @@ class AppRoutes {
   static const String userBookScheduleScreen = "/UserBookScheduleScreen.dart";
   static const String userPatientDetailsScreen = "/UserPatientDetailsScreen.dart";
   static const String userAppointmentsDetailsScreen = "/UserAppointmentsDetailsScreen.dart";
+  static const String userGiveReviewScreen = "/UserGiveReviewScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -70,5 +72,6 @@ class AppRoutes {
         GetPage(name: userBookScheduleScreen, page: () => UserBookScheduleScreen()),
         GetPage(name: userPatientDetailsScreen, page: () => UserPatientDetailsScreen()),
         GetPage(name: userAppointmentsDetailsScreen, page: () => UserAppointmentsDetailsScreen()),
+        GetPage(name: userGiveReviewScreen, page: () => UserGiveReviewScreen()),
   ];
 }

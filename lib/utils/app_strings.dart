@@ -81,6 +81,11 @@ class AppString {
   static const String   completeAppointment = "Complete Appointment";
   static const String   problem = "Problem";
   static const String   age = "Age";
+  static const String   appointmentDetails  = "Appointment Details ";
+  static const String   giveReview  = "Give Review";
+  static const String   howWasYourExperienceWithDr  = "How was your experience\n with Dr. Drake Boeson?";
+  static const String   writeYourReview  = "Write Your Review";
+  static const String   submitReview  = "Submit Review";
 
 
 

@@ -20,7 +20,7 @@ class UserAppointmentsDetailsScreen extends StatelessWidget {
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
-          text: AppString.patientDetails,
+          text: AppString.appointmentDetails,
           fontsize: 18.h,
           fontWeight: FontWeight.w600,
         ),
