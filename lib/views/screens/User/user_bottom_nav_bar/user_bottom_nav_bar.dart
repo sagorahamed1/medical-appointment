@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
+import '../../message/message/message_screen.dart';
 import '../User_Appointments/user_appointments_screen.dart';
 import '../User_Home/user_home_screen.dart';
 
@@ -22,7 +23,7 @@ class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
   static final List _widgetOptions = [
     UserHomeScreen(),
     UserAppointmentsScreen(),
-    UserHomeScreen(),
+    MessageScreen(),
     UserHomeScreen(),
   ];
 
