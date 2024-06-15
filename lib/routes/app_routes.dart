@@ -8,6 +8,7 @@ import '../views/screens/Auth/set_password/set_password_screen.dart';
 import '../views/screens/Auth/sign_in/sign_in_screen.dart';
 import '../views/screens/Auth/sign_up/sign_up_screen.dart';
 import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
+import '../views/screens/User/User_Appointments_Details/user_appointments_details_screen.dart';
 import '../views/screens/User/User_Available_Doctors/user_availablle_doctors_screen.dart';
 import '../views/screens/User/User_Book_Schedule/user_book_schedule_screen.dart';
 import '../views/screens/User/User_Emergency_Doctors/user_emergency_doctors_screen.dart';
@@ -44,6 +45,7 @@ class AppRoutes {
   static const String userSelectPackageScreen = "/SelectPackageScreen.dart";
   static const String userBookScheduleScreen = "/UserBookScheduleScreen.dart";
   static const String userPatientDetailsScreen = "/UserPatientDetailsScreen.dart";
+  static const String userAppointmentsDetailsScreen = "/UserAppointmentsDetailsScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -67,5 +69,6 @@ class AppRoutes {
         GetPage(name: userSelectPackageScreen, page: () => UserSelectPackageScreen()),
         GetPage(name: userBookScheduleScreen, page: () => UserBookScheduleScreen()),
         GetPage(name: userPatientDetailsScreen, page: () => UserPatientDetailsScreen()),
+        GetPage(name: userAppointmentsDetailsScreen, page: () => UserAppointmentsDetailsScreen()),
   ];
 }
