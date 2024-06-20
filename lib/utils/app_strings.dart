@@ -91,6 +91,8 @@ class AppString {
   static const String   medicalRecords  = "Medical Records";
   static const String   settings  = "Settings";
   static const String   logout  = "Logout";
+  static const String   editProfile  = "Edit Profile";
+  static const String   chageProfilePicture  = "Chage Profile Picture";
 
 
 

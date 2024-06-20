@@ -1,14 +1,18 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/utils/app_strings.dart';
 import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
+import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+
+import 'inner_widgets/top_profile_card.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -18,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          TopProfileCard(
+          const TopProfileCard(
             appBarText: AppString.profile,
             name: "Sagor Ahamed",
             height: 341,
@@ -51,10 +55,33 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
 
-                    ListTileWidget(AppString.personalInformation, AppIcons.person, AppColors.primaryColor),
-                    ListTileWidget(AppString.medicalRecords, AppIcons.medicalRecord, AppColors.primaryColor),
-                    ListTileWidget(AppString.settings, AppIcons.setting, AppColors.primaryColor),
-                    ListTileWidget(AppString.logout, AppIcons.logout, Colors.red, isDivider: false),
+                    ListTileWidget(AppString.personalInformation, AppIcons.person, AppColors.primaryColor, (){
+                      Get.toNamed(AppRoutes.personalInformationScreen);
+                    }),
+                    ListTileWidget(AppString.medicalRecords, AppIcons.medicalRecord, AppColors.primaryColor, (){}),
+                    ListTileWidget(AppString.settings, AppIcons.setting, AppColors.primaryColor, (){}),
+                    ListTileWidget(AppString.logout, AppIcons.logout, Colors.red,(){
+
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              height: 280.h,
+                              width: double.infinity,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children:  <Widget>[
+                                  CustomText(text: "Logout",fontWeight: FontWeight.w600,fontsize: 20.h,color: Colors.red, top: 35.h, bottom: 48.h),
+                                  CustomText(text: "Are you sure you want to log out?",fontsize: 18.h,color: Colors.black ,bottom: 24.h),
+
+                                  const TwoBottonBottomSheet(),
+                                  SizedBox(height: 48.h)
+                                ],
+                              ),
+                            );
+                          });
+                      
+                    }, isDivider: false),
 
 
                   ],
@@ -67,10 +94,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget ListTileWidget(String name, icon, Color color, {bool isDivider = true}){
+  Widget ListTileWidget(String name, icon, Color color , VoidCallback ontap , {bool isDivider = true}){
     return   Column(
       children: [
         ListTile(
+          onTap: ontap,
           title: CustomText(text: name, fontWeight: FontWeight.w600,fontsize: 16.h, textAlign: TextAlign.start, color: color,),
           leading: SvgPicture.asset(icon, color: color),
         ),
@@ -84,74 +112,58 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-class TopProfileCard extends StatelessWidget {
-  final String? appBarText;
-  final String? image;
-  final String? name;
-  final double? height;
-  final double? backIcon;
 
-  const TopProfileCard(
-      {super.key,
-      this.appBarText,
-      this.image,
-      this.name,
-      this.height,
-      this.backIcon});
+class TwoBottonBottomSheet extends StatelessWidget {
+  const TwoBottonBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: height?.h,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: const Color(0xff193664),
-            borderRadius: BorderRadius.circular(20.r),
-            image: DecorationImage(image: AssetImage(AppImages.bgProfile))),
-        child: Column(
-          children: [
-            SizedBox(height: 60.h),
-
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                children: [
-                  SizedBox(width: 20.w),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
-                  ),
-                  Spacer(),
-                  CustomText(
-                    text: "$appBarText",
-                    fontsize: 18.h,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    right: Get.width / 2.4,
-                  ),
-                ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          GestureDetector(
+            onTap: (){
+              Get.back();
+            },
+            child: Container(
+              width: 166.w,
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.primaryColor),
+                borderRadius: BorderRadius.circular(100)
+              ),
+              child: Center(
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 18.h),
+                  child: CustomText(text: "Cancel", fontsize: 16.h,fontWeight: FontWeight.w600,color: AppColors.primaryColor),
+                ),
               ),
             ),
+          ),
 
-            SizedBox(height: 36.h),
 
-            ///=====================image=====================>
-            Container(
-              clipBehavior: Clip.antiAlias,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(50.r)),
-              child: CustomNetworkImage(
-                  imageUrl: '$image', height: 120.h, width: 120.w),
+
+          GestureDetector(
+            onTap: (){
+              Get.back();
+            },
+            child: Container(
+              width: 166.w,
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(100)
+              ),
+              child: Center(
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 18.h),
+                  child: CustomText(text: "Yes, Logout", fontsize: 16.h,fontWeight: FontWeight.w600,color: Colors.white),
+                ),
+              ),
             ),
-
-            CustomText(
-              text: "$name",
-              fontsize: 20.h,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              top: 16.h,
-            ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
+

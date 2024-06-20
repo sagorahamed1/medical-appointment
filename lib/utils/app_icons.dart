@@ -36,6 +36,9 @@ class AppIcons {
   static const String medicalRecord = "$path/medicalRecord.svg";
   static const String setting = "$path/setting.svg";
   static const String logout = "$path/logout.svg";
+  static const String editProfile = "$path/editProfile.svg";
+  static const String dateOfBirth = "$path/dateOfBirth.svg";
+  static const String location = "$path/location.svg";
 
 }
 
