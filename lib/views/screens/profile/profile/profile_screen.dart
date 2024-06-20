@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
@@ -51,10 +52,12 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
 
-                    ListTileWidget(AppString.personalInformation, AppIcons.person, AppColors.primaryColor),
-                    ListTileWidget(AppString.medicalRecords, AppIcons.medicalRecord, AppColors.primaryColor),
-                    ListTileWidget(AppString.settings, AppIcons.setting, AppColors.primaryColor),
-                    ListTileWidget(AppString.logout, AppIcons.logout, Colors.red, isDivider: false),
+                    ListTileWidget(AppString.personalInformation, AppIcons.person, AppColors.primaryColor, (){
+                      Get.toNamed(AppRoutes.personalInformationScreen);
+                    }),
+                    ListTileWidget(AppString.medicalRecords, AppIcons.medicalRecord, AppColors.primaryColor, (){}),
+                    ListTileWidget(AppString.settings, AppIcons.setting, AppColors.primaryColor, (){}),
+                    ListTileWidget(AppString.logout, AppIcons.logout, Colors.red,(){}, isDivider: false),
 
 
                   ],
@@ -67,10 +70,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget ListTileWidget(String name, icon, Color color, {bool isDivider = true}){
+  Widget ListTileWidget(String name, icon, Color color , VoidCallback ontap , {bool isDivider = true}){
     return   Column(
       children: [
         ListTile(
+          onTap: ontap,
           title: CustomText(text: name, fontWeight: FontWeight.w600,fontsize: 16.h, textAlign: TextAlign.start, color: color,),
           leading: SvgPicture.asset(icon, color: color),
         ),
@@ -107,30 +111,16 @@ class TopProfileCard extends StatelessWidget {
         decoration: BoxDecoration(
             color: const Color(0xff193664),
             borderRadius: BorderRadius.circular(20.r),
-            image: DecorationImage(image: AssetImage(AppImages.bgProfile))),
+            image: const DecorationImage(image: AssetImage(AppImages.bgProfile))),
         child: Column(
           children: [
             SizedBox(height: 60.h),
 
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                children: [
-                  SizedBox(width: 20.w),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(Icons.arrow_back_ios_new, color: Colors.white),
-                  ),
-                  Spacer(),
-                  CustomText(
-                    text: "$appBarText",
-                    fontsize: 18.h,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    right: Get.width / 2.4,
-                  ),
-                ],
-              ),
+            CustomText(
+              text: "$appBarText",
+              fontsize: 18.h,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
 
             SizedBox(height: 36.h),
