@@ -93,6 +93,10 @@ class AppString {
   static const String   logout  = "Logout";
   static const String   editProfile  = "Edit Profile";
   static const String   chageProfilePicture  = "Chage Profile Picture";
+  static const String   changePassword  = "Change Password";
+  static const String   termsOfServices  = "Terms of Services";
+  static const String   privacyPolicys  = "Privacy Policy";
+  static const String   aboutUs  = "About Us";
 
 
 

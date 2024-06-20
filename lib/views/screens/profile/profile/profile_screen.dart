@@ -59,7 +59,9 @@ class ProfileScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.personalInformationScreen);
                     }),
                     ListTileWidget(AppString.medicalRecords, AppIcons.medicalRecord, AppColors.primaryColor, (){}),
-                    ListTileWidget(AppString.settings, AppIcons.setting, AppColors.primaryColor, (){}),
+                    ListTileWidget(AppString.settings, AppIcons.setting, AppColors.primaryColor, (){
+                      Get.toNamed(AppRoutes.settingScreen);
+                    }),
                     ListTileWidget(AppString.logout, AppIcons.logout, Colors.red,(){
 
                       showModalBottomSheet(
