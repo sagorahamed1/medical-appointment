@@ -86,6 +86,11 @@ class AppString {
   static const String   howWasYourExperienceWithDr  = "How was your experience\n with Dr. Drake Boeson?";
   static const String   writeYourReview  = "Write Your Review";
   static const String   submitReview  = "Submit Review";
+  static const String   profile  = "Profile";
+  static const String   personalInformation  = "Personal Information";
+  static const String   medicalRecords  = "Medical Records";
+  static const String   settings  = "Settings";
+  static const String   logout  = "Logout";
 
 
 

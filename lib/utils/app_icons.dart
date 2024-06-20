@@ -33,6 +33,9 @@ class AppIcons {
   static const String videoMute = "$path/video_mute.svg";
   static const String speaker = "$path/speaker.svg";
   static const String remove = "$path/remove.svg";
+  static const String medicalRecord = "$path/medicalRecord.svg";
+  static const String setting = "$path/setting.svg";
+  static const String logout = "$path/logout.svg";
 
 }
 
