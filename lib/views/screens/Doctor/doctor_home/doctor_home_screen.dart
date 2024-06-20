@@ -50,7 +50,7 @@ class DoctorHomeScreen extends StatelessWidget {
                       padding:  EdgeInsets.only(bottom: 16.h),
                       child: AppointmentsCard(
                         rightBtnOnTap: () {
-                          Get.toNamed(AppRoutes.userAppointmentsDetailsScreen);
+                          Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen);
                         },
                         leftBtnOnTap: () {},
                         image: AppImages.getStarted1,
