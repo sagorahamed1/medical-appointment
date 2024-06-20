@@ -1,5 +1,7 @@
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
@@ -105,8 +107,15 @@ class SignInScreen extends StatelessWidget {
 
 
             const Spacer(),
-            CustomButton(onpress: (){
-              Get.offAllNamed(AppRoutes.userBottomNavBar);
+            CustomButton(onpress: ()async{
+              var role = await PrefsHelper.getString(AppConstants.role);
+
+              if(role == AppString.user){
+                Get.offAllNamed(AppRoutes.userBottomNavBar);
+              }else{
+                Get.offAllNamed(AppRoutes.doctorBottomNavBar);
+              }
+
             }, title: AppString.signIn),
 
             SizedBox(height: 26.h),

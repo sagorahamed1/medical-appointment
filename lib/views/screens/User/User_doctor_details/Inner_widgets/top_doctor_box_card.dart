@@ -8,7 +8,11 @@ import '../../../../../utils/app_images.dart';
 import '../../../../widgets/custom_text.dart';
 
 class TopDoctorBoxCard extends StatelessWidget {
-  TopDoctorBoxCard({super.key});
+  final String? doctorName;
+  final String? image;
+  final String? rating;
+  final String? location;
+  TopDoctorBoxCard({super.key, this.doctorName, this.image, this.rating, this.location});
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +51,11 @@ class TopDoctorBoxCard extends StatelessWidget {
                               Expanded(
                                 child: CustomText(
                                     textAlign: TextAlign.start,
-                                    text: "Sagor Ahamed ",
+                                    text: "$doctorName",
                                     color: AppColors.primaryColor,
                                     fontWeight: FontWeight.w600),
                               ),
-                              Row(
+                             rating == null ? SizedBox() : Row(
                                 children: [
                                   SvgPicture.asset(AppIcons.star),
                                   CustomText(
@@ -75,7 +79,7 @@ class TopDoctorBoxCard extends StatelessWidget {
                               top: 14.h,
                               bottom: 14.h),
                           CustomText(
-                            text: "Christ Hospital in London, UK",
+                            text: "$location",
                             color: AppColors.textColor5C5C5C,
                             maxline: 2,
                             fontsize: 12.h,
