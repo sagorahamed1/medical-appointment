@@ -98,6 +98,7 @@ class AppString {
   static const String   privacyPolicys  = "Privacy Policy";
   static const String   aboutUs  = "About Us";
   static const String   updatePassword  = "Update Password";
+  static const String   recentAppointments  = "Recent Appointments";
 
 
 

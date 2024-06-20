@@ -1,5 +1,7 @@
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/utils/app_strings.dart';
@@ -44,9 +46,14 @@ class RoleScreen extends StatelessWidget {
             CustomTwoButon(
               width: 169.w,
               initialSeclected: 1,
-              leftBtnOnTap: (){},
-              rightBtnOnTap: (){
+              leftBtnOnTap: ()async{
                 Get.toNamed(AppRoutes.signInScreen);
+                await PrefsHelper.setString(AppConstants.role, AppString.user);
+
+              },
+              rightBtnOnTap: ()async{
+                Get.toNamed(AppRoutes.signInScreen);
+                await PrefsHelper.setString(AppConstants.role, AppString.doctor);
               },
               btnNameList: const [AppString.user, AppString.doctor],
 
