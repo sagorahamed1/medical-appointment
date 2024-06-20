@@ -1,9 +1,11 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 import 'Inner_widgets/top_profile_card_personal_info.dart';
@@ -17,12 +19,14 @@ class PersonalInformationScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            TopProfileCardPersonInfo(
+             TopProfileCardPersonInfo(
               appBarText: AppString.personalInformation,
               name: "Sagor Ahamed",
               height: 375,
-              image:
-                  "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630",
+              onTap: (){
+                Get.toNamed(AppRoutes.editProfileScreen);
+              },
+              image: "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630",
             ),
             Padding(
               padding: EdgeInsets.all(Dimensions.paddingSizeDefault.r),

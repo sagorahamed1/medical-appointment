@@ -18,6 +18,7 @@ class TopProfileCardPersonInfo extends StatelessWidget {
   final String? name;
   final double? height;
   final double? backIcon;
+  final VoidCallback? onTap;
 
   const TopProfileCardPersonInfo(
       {super.key,
@@ -25,6 +26,7 @@ class TopProfileCardPersonInfo extends StatelessWidget {
         this.image,
         this.name,
         this.height,
+        this.onTap,
         this.backIcon});
 
   @override
@@ -91,25 +93,28 @@ class TopProfileCardPersonInfo extends StatelessWidget {
             SizedBox(height: 16.h),
 
             ///==================edit profile btn=================>
-            Container(
-              width: 134.w,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4.r),
-              ),
-              child: Padding(
-                padding:
-                EdgeInsets.symmetric(horizontal: 8.5.w, vertical: 6.5.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(AppIcons.editProfile),
-                    CustomText(
-                        text: AppString.editProfile,
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                        left: 8.w)
-                  ],
+            GestureDetector(
+              onTap: onTap,
+              child: Container(
+                width: 134.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                child: Padding(
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 8.5.w, vertical: 6.5.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(AppIcons.editProfile),
+                      CustomText(
+                          text: AppString.editProfile,
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w600,
+                          left: 8.w)
+                    ],
+                  ),
                 ),
               ),
             )

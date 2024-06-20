@@ -40,11 +40,11 @@ class FillProfileScreen extends StatelessWidget {
               child: Stack(
                 children: [
                   Image.asset(
-                                      AppImages.fillProfile,
-                                      height: 144.h,
-                                      width: 144.w,
-                                      fit: BoxFit.cover,
-                                    ),
+                    AppImages.fillProfile,
+                    height: 144.h,
+                    width: 144.w,
+                    fit: BoxFit.cover,
+                  ),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -115,9 +115,11 @@ class FillProfileScreen extends StatelessWidget {
 
             SizedBox(height: 48.h),
             // const Spacer(),
-            CustomButton(onpress: () {
-              Get.toNamed(AppRoutes.signInScreen);
-            }, title: AppString.continues),
+            CustomButton(
+                onpress: () {
+                  Get.toNamed(AppRoutes.signInScreen);
+                },
+                title: AppString.continues),
 
             SizedBox(height: 98.h)
           ],

@@ -25,6 +25,7 @@ import '../views/screens/message/chat_screen/chat_screen.dart';
 import '../views/screens/message/video_call/video_call_screen.dart';
 import '../views/screens/notifications/notifications_screen.dart';
 import '../views/screens/onboarding/onboarding_screen.dart';
+import '../views/screens/profile/edit_profile/edit_profile_screen.dart';
 import '../views/screens/profile/personal_information/personal_information_screen.dart';
 import '../views/screens/role/role_screen.dart';
 import '../views/screens/splash/splash_screen.dart';
@@ -56,6 +57,7 @@ class AppRoutes {
   static const String audioCallScreen = "/AudioCallScreen.dart";
   static const String videoCallScreen = "/VideoCallScreen.dart";
   static const String personalInformationScreen = "/PersonalInformationScreen.dart";
+  static const String editProfileScreen = "/EditProfileScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -85,5 +87,6 @@ class AppRoutes {
         GetPage(name: audioCallScreen, page: () => AudioCallScreen()),
         GetPage(name: videoCallScreen, page: () => VideoCallScreen()),
         GetPage(name: personalInformationScreen, page: () => PersonalInformationScreen()),
+        GetPage(name: editProfileScreen, page: () => EditProfileScreen()),
   ];
 }
