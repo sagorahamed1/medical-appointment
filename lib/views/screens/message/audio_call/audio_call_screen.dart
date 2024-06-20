@@ -4,6 +4,7 @@ import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class AudioCallScreen extends StatelessWidget {
   const AudioCallScreen({super.key});
@@ -24,7 +25,21 @@ class AudioCallScreen extends StatelessWidget {
                 ))),
         child: Column(
           children: [
-            SizedBox(height: 242.h),
+            SizedBox(height: 50.h,),
+            ///=====================Back botton=========================>
+            Padding(
+              padding:  EdgeInsets.only(left: 20.w),
+              child: GestureDetector(
+                onTap: (){
+                  Get.back();
+                },
+                child: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(Icons.arrow_back_ios, color: Colors.white,),
+                ),
+              ),
+            ),
+            SizedBox(height: 150.h),
             Container(
               height: 126.h,
               width: 126.w,
@@ -46,7 +61,7 @@ class AudioCallScreen extends StatelessWidget {
                 color: Colors.white),
             CustomText(
                 text: "Incoming call", fontsize: 18.h, color: Colors.white),
-            SizedBox(height: 180.h),
+          const Spacer(),
             Column(
               children: [
                 SvgPicture.asset(AppIcons.messageIcon2,
@@ -57,7 +72,7 @@ class AudioCallScreen extends StatelessWidget {
                 CustomText(text: "Message", fontsize: 16.h, color: Colors.white)
               ],
             ),
-            SizedBox(height: 43.h),
+            SizedBox(height: 35.h),
 
 
             Padding(
@@ -67,7 +82,7 @@ class AudioCallScreen extends StatelessWidget {
                 height: 60.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
-                    color: Color(0xff686868)),
+                    color: const Color(0xff686868)),
                 child: Row(
                   children: [
                     SizedBox(width: 16.w),
@@ -86,7 +101,7 @@ class AudioCallScreen extends StatelessWidget {
                         text: "Slide to answer",
                         fontsize: 18.h,
                         fontWeight: FontWeight.w500,
-                        color: Colors.white)
+                        color: Colors.white),
                   ],
                 ),
               ),
@@ -116,6 +131,8 @@ class AudioCallScreen extends StatelessWidget {
             //     ),
             //   ),
             // )
+
+            SizedBox(height: 62.h),
           ],
         ),
       ),
