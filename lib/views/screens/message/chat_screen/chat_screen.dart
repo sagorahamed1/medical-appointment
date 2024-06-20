@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -89,9 +90,17 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
 
         actions: [
-          SvgPicture.asset(AppIcons.call, height: 20.h,width: 20.w,fit: BoxFit.cover),
+          GestureDetector(
+              onTap: (){
+                Get.toNamed(AppRoutes.audioCallScreen);
+              },
+              child: SvgPicture.asset(AppIcons.call, height: 20.h,width: 20.w,fit: BoxFit.cover)),
           SizedBox(width: 24.w),
-          SvgPicture.asset(AppIcons.videoCallIcons, height: 20.h,width: 20.w,fit: BoxFit.cover),
+          GestureDetector(
+              onTap: (){
+                Get.toNamed(AppRoutes.videoCallScreen);
+              },
+              child: SvgPicture.asset(AppIcons.videoCallIcons, height: 20.h,width: 20.w,fit: BoxFit.cover)),
           SizedBox(width: 20.w),
         ],
       ),

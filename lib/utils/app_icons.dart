@@ -29,6 +29,13 @@ class AppIcons {
   static const String attachFile = "$path/attach_file.svg";
   static const String like = "$path/like.svg";
   static const String call = "$path/call.svg";
+  static const String call2 = "$path/call2.svg";
+  static const String videoMute = "$path/video_mute.svg";
+  static const String speaker = "$path/speaker.svg";
+  static const String remove = "$path/remove.svg";
+  static const String medicalRecord = "$path/medicalRecord.svg";
+  static const String setting = "$path/setting.svg";
+  static const String logout = "$path/logout.svg";
 
 }
 
