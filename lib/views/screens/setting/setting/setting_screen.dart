@@ -23,18 +23,27 @@ class SettingScreen extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
-
-
       body: Padding(
-        padding:  EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault.h, horizontal: Dimensions.paddingSizeDefault.w),
+        padding: EdgeInsets.symmetric(
+            vertical: Dimensions.paddingSizeDefault.h,
+            horizontal: Dimensions.paddingSizeDefault.w),
         child: Column(
           children: [
-            _ListTile(AppString.changePassword, AppIcons.rightArrow, (){
+            _ListTile(AppString.changePassword, AppIcons.rightArrow, () {
               Get.toNamed(AppRoutes.changePasswordScreen);
             }),
-            _ListTile(AppString.termsOfServices, AppIcons.rightArrow, (){}),
-            _ListTile(AppString.privacyPolicys, AppIcons.rightArrow, (){}),
-            _ListTile(AppString.aboutUs, AppIcons.rightArrow, (){}),
+            _ListTile(AppString.termsOfServices, AppIcons.rightArrow, () {
+              Get.toNamed(AppRoutes.allPrivacyPolicyScreen,
+                  parameters: {"screenType": AppString.termsOfServices});
+            }),
+            _ListTile(AppString.privacyPolicys, AppIcons.rightArrow, () {
+              Get.toNamed(AppRoutes.allPrivacyPolicyScreen,
+                  parameters: {"screenType": AppString.privacyPolicys});
+            }),
+            _ListTile(AppString.aboutUs, AppIcons.rightArrow, () {
+              Get.toNamed(AppRoutes.allPrivacyPolicyScreen,
+                  parameters: {"screenType": AppString.aboutUs});
+            }),
           ],
         ),
       ),
@@ -43,7 +52,7 @@ class SettingScreen extends StatelessWidget {
 
   Widget _ListTile(String title, leadingIcon, VoidCallback onTap) {
     return Padding(
-      padding:  EdgeInsets.only(bottom: 16.h),
+      padding: EdgeInsets.only(bottom: 16.h),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
