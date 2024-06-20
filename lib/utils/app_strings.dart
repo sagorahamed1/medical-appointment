@@ -97,6 +97,7 @@ class AppString {
   static const String   termsOfServices  = "Terms of Services";
   static const String   privacyPolicys  = "Privacy Policy";
   static const String   aboutUs  = "About Us";
+  static const String   updatePassword  = "Update Password";
 
 
 
