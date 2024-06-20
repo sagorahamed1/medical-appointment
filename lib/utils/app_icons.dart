@@ -39,6 +39,7 @@ class AppIcons {
   static const String editProfile = "$path/editProfile.svg";
   static const String dateOfBirth = "$path/dateOfBirth.svg";
   static const String location = "$path/location.svg";
+  static const String rightArrow = "$path/right_arrow.svg";
 
 }
 
