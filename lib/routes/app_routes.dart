@@ -28,6 +28,7 @@ import '../views/screens/onboarding/onboarding_screen.dart';
 import '../views/screens/profile/edit_profile/edit_profile_screen.dart';
 import '../views/screens/profile/personal_information/personal_information_screen.dart';
 import '../views/screens/role/role_screen.dart';
+import '../views/screens/setting/All_Privacy_Policy/all_privacy_policy_screen.dart';
 import '../views/screens/setting/change_password/change_password_screen.dart';
 import '../views/screens/setting/setting/setting_screen.dart';
 import '../views/screens/splash/splash_screen.dart';
@@ -62,6 +63,7 @@ class AppRoutes {
   static const String editProfileScreen = "/EditProfileScreen.dart";
   static const String settingScreen = "/SettingScreen.dart";
   static const String changePasswordScreen = "/ChangePasswordScreen.dart";
+  static const String allPrivacyPolicyScreen = "/AllPrivacyPolicyScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -94,5 +96,6 @@ class AppRoutes {
         GetPage(name: editProfileScreen, page: () => EditProfileScreen()),
         GetPage(name: settingScreen, page: () => SettingScreen()),
         GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),
+        GetPage(name: allPrivacyPolicyScreen, page: () => AllPrivacyPolicyScreen()),
   ];
 }
