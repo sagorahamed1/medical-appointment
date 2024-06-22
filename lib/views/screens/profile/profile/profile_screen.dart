@@ -76,7 +76,9 @@ class ProfileScreen extends StatelessWidget {
                       ///=========================Earning=========================>
                       AppConstants.roleMock == "doctor"
                           ? ListTileWidget(AppString.earnings, AppIcons.earning,
-                              AppColors.primaryColor, () {})
+                              AppColors.primaryColor, () {
+                            Get.toNamed(AppRoutes.walletScreen);
+                          })
                           : const SizedBox(),
 
                       ///=========================Review=========================>

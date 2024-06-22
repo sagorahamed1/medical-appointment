@@ -11,6 +11,9 @@ import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
 import '../views/screens/Doctor/doctor_appointment_details/doctor_appointment_details_screen.dart';
 import '../views/screens/Doctor/doctor_bottom_nav_bar/doctor_bottom_nav_bar.dart';
 import '../views/screens/Doctor/doctor_details/doctor_details_screen.dart';
+import '../views/screens/Doctor/doctor_edit_details_prfile/doctor_edit_details_profile_screen.dart';
+import '../views/screens/Doctor/wallet/wallet_screen.dart';
+import '../views/screens/Doctor/wallet/wallet_withraw_screen.dart';
 import '../views/screens/User/User_Appointments_Details/user_appointments_details_screen.dart';
 import '../views/screens/User/User_Available_Doctors/user_availablle_doctors_screen.dart';
 import '../views/screens/User/User_Book_Schedule/user_book_schedule_screen.dart';
@@ -70,6 +73,9 @@ class AppRoutes {
   static const String doctorBottomNavBar = "/DoctorBottomNavBar.dart";
   static const String dcotorAppointmentsDetailsScreen = "/DcotorAppointmentsDetailsScreen.dart";
   static const String doctorDetailsProfileScreen = "/DoctorDetailsProfileScreen.dart";
+  static const String doctorEditDetailsProfileScreen = "/DoctorEditDetailsProfileScreen.dart";
+  static const String walletScreen = "/WalletScreen.dart";
+  static const String walletWithdrawalScreen = "/WalletWithdrawalScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -106,5 +112,8 @@ class AppRoutes {
         GetPage(name: doctorBottomNavBar, page: () => DoctorBottomNavBar()),
         GetPage(name: dcotorAppointmentsDetailsScreen, page: () => DcotorAppointmentsDetailsScreen()),
         GetPage(name: doctorDetailsProfileScreen, page: () => DoctorDetailsProfileScreen()),
+        GetPage(name: doctorEditDetailsProfileScreen, page: () => DoctorEditDetailsProfileScreen()),
+        GetPage(name: walletScreen, page: () => WalletScreen()),
+        GetPage(name: walletWithdrawalScreen, page: () => WalletWithdrawalScreen()),
   ];
 }

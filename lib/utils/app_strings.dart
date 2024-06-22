@@ -111,6 +111,13 @@ class AppString {
   static const String   saturday  = "Saturday";
   static const String   sunday  = "Sunday";
   static const String   editDetails  = "Edit Details";
+  static const String    editDoctorDetails  = "Edit Doctor Details";
+  static const String    updateDetails  = "Update Details";
+  static const String    withdrawEarnings  = "Withdraw Earnings";
+  static const String    lastWithdrawal  = "Last Withdrawal";
+  static const String    bankAccountDetails  = "Bank Account Details";
+  static const String    pleaseProvideTheFollowingInformationForTheWithdrawal  = "Please provide the following information for the withdrawal";
+  static const String    requestWithdrawal  = "Request Withdrawal";
 
 
 

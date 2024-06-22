@@ -1,18 +1,18 @@
-import 'package:doctor_appointment/routes/app_routes.dart';
-import 'package:doctor_appointment/utils/app_dimentions.dart';
-import 'package:doctor_appointment/views/widgets/custom_button.dart';
-import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+
+import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_strings.dart';
+import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_doctor_time_available_card.dart';
 import '../../../widgets/custom_text.dart';
+import '../../../widgets/custom_text_field_without_border.dart';
 
-class DoctorDetailsProfileScreen extends StatelessWidget {
-  DoctorDetailsProfileScreen({super.key});
+class DoctorEditDetailsProfileScreen extends StatelessWidget {
+   DoctorEditDetailsProfileScreen({super.key});
 
   TextEditingController controller = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class DoctorDetailsProfileScreen extends StatelessWidget {
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
-          text: AppString.doctorDetails,
+          text: AppString.editDoctorDetails,
           fontsize: 18.h,
           fontWeight: FontWeight.w600,
         ),
@@ -44,7 +44,6 @@ class DoctorDetailsProfileScreen extends StatelessWidget {
 
               SizedBox(height: 16.h),
               CustomTextFieldWithoutBorder(
-                  readOnly: true,
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 0,
                   hintText: "Cardiologists",
@@ -52,7 +51,6 @@ class DoctorDetailsProfileScreen extends StatelessWidget {
 
               SizedBox(height: 16.h),
               CustomTextFieldWithoutBorder(
-                  readOnly: true,
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 0,
                   hintText: "2 Years Experience",
@@ -60,7 +58,6 @@ class DoctorDetailsProfileScreen extends StatelessWidget {
 
               SizedBox(height: 16.h),
               CustomTextFieldWithoutBorder(
-                  readOnly: true,
                   maxLines: 4,
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 15,
@@ -69,12 +66,11 @@ class DoctorDetailsProfileScreen extends StatelessWidget {
 
               SizedBox(height: 16.h),
               CustomTextFieldWithoutBorder(
-                  readOnly: true,
                   maxLines: 4,
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 15,
                   hintText:
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                   controller: controller),
 
               ///=======================Avoidable Doctors=====================>
@@ -126,9 +122,7 @@ class DoctorDetailsProfileScreen extends StatelessWidget {
 
               SizedBox(height: 20.h),
 
-              CustomButton(onpress: (){
-                Get.toNamed(AppRoutes.doctorEditDetailsProfileScreen);
-              }, title: AppString.editDetails),
+              CustomButton(onpress: (){}, title: AppString.updateDetails),
 
               SizedBox(height: 35.h)
             ],
