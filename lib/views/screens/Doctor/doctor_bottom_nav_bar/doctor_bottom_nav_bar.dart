@@ -1,12 +1,11 @@
+import 'package:doctor_appointment/views/screens/message/message/message_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
-import '../../User/User_Appointments/user_appointments_screen.dart';
-import '../../User/User_Home/user_home_screen.dart';
-import '../../message/message/message_screen.dart';
 import '../../profile/profile/profile_screen.dart';
+import '../doctor_appointments/doctor_appointments_screen.dart';
 import '../doctor_home/doctor_home_screen.dart';
 
 
@@ -25,8 +24,8 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
 
   static final List _widgetOptions = [
     DoctorHomeScreen(),
-    DoctorHomeScreen(),
-    DoctorHomeScreen(),
+    DoctorAppointmentsScreen(),
+    MessageScreen(),
     ProfileScreen(),
   ];
 

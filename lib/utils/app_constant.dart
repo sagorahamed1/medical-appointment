@@ -1,6 +1,7 @@
 class AppConstants{
   ///=======================Prefs Helper data===============================>
  static const String role = "role";
+ static String roleMock = '';
 
   static RegExp emailValidate = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");

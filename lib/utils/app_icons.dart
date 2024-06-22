@@ -40,6 +40,11 @@ class AppIcons {
   static const String dateOfBirth = "$path/dateOfBirth.svg";
   static const String location = "$path/location.svg";
   static const String rightArrow = "$path/right_arrow.svg";
+  static const String earning = "$path/earning.svg";
+  static const String reviewStar = "$path/reviewStar.svg";
+  static const String chock = "$path/chock.svg";
+  static const String walletIcon = "$path/walletIcon.svg";
+  static const String hand = "$path/hand.svg";
 
 }
 

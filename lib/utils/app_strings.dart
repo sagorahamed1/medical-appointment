@@ -99,6 +99,27 @@ class AppString {
   static const String   aboutUs  = "About Us";
   static const String   updatePassword  = "Update Password";
   static const String   recentAppointments  = "Recent Appointments";
+  static const String   appointmentRequests  = "Appointment Requests";
+  static const String   earnings  = "Earnings";
+  static const String   pleaseFillUpTheDetailsToJoinAsDoctor  = "Please fill up the details to join as a doctor.";
+  static const String   avaiableHours  = "Available Hours";
+  static const String   monday  = "Monday";
+  static const String   tuesday  = "Tuesday";
+  static const String   wednesday  = "Wednesday";
+  static const String   thursday  = "Thursday";
+  static const String   friday  = "Friday";
+  static const String   saturday  = "Saturday";
+  static const String   sunday  = "Sunday";
+  static const String   editDetails  = "Edit Details";
+  static const String    editDoctorDetails  = "Edit Doctor Details";
+  static const String    updateDetails  = "Update Details";
+  static const String    withdrawEarnings  = "Withdraw Earnings";
+  static const String    lastWithdrawal  = "Last Withdrawal";
+  static const String    bankAccountDetails  = "Bank Account Details";
+  static const String    pleaseProvideTheFollowingInformationForTheWithdrawal  = "Please provide the following information for the withdrawal";
+  static const String    requestWithdrawal  = "Request Withdrawal";
+
+
 
 
 
