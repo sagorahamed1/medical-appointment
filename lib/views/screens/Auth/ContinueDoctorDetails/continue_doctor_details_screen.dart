@@ -54,7 +54,7 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
-          text: AppString.editDoctorDetails,
+          text: AppString.doctorDetails,
           fontsize: 18.h,
           fontWeight: FontWeight.w600,
         ),

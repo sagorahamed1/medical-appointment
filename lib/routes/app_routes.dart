@@ -10,6 +10,7 @@ import '../views/screens/Auth/sign_in/sign_in_screen.dart';
 import '../views/screens/Auth/sign_up/sign_up_screen.dart';
 import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
 import '../views/screens/Doctor/doctor_appointment_details/doctor_appointment_details_screen.dart';
+import '../views/screens/Doctor/doctor_appointment_request/doctor_appointment_request_screen.dart';
 import '../views/screens/Doctor/doctor_bottom_nav_bar/doctor_bottom_nav_bar.dart';
 import '../views/screens/Doctor/doctor_details/doctor_details_screen.dart';
 import '../views/screens/Doctor/doctor_edit_details_prfile/doctor_edit_details_profile_screen.dart';
@@ -22,6 +23,7 @@ import '../views/screens/User/User_Book_Schedule/user_book_schedule_screen.dart'
 import '../views/screens/User/User_Emergency_Doctors/user_emergency_doctors_screen.dart';
 import '../views/screens/User/User_Give_Review/user_give_review_screen.dart';
 import '../views/screens/User/User_Patient_Details/user_patient_details.dart';
+import '../views/screens/User/User_Records/user_records_screen.dart';
 import '../views/screens/User/User_doctor_details/user_doctor_details_screen.dart';
 import '../views/screens/User/User_home/user_home_screen.dart';
 import '../views/screens/User/user_bottom_nav_bar/user_bottom_nav_bar.dart';
@@ -80,6 +82,8 @@ class AppRoutes {
   static const String walletWithdrawalScreen = "/WalletWithdrawalScreen.dart";
   static const String reviewScreen = "/ReviewScreen.dart";
   static const String continueDoctorDetailsScreen = "/ContinueDoctorDetailsScreen.dart";
+  static const String doctorAppointmentRequestScreen = "/DoctorAppointmentRequestScreen.dart";
+  static const String userRecordsScreen = "/UserRecordsScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -121,5 +125,7 @@ class AppRoutes {
         GetPage(name: walletWithdrawalScreen, page: () => WalletWithdrawalScreen()),
         GetPage(name: reviewScreen, page: () => ReviewScreen()),
         GetPage(name: continueDoctorDetailsScreen, page: () => ContinueDoctorDetailsScreen()),
+        GetPage(name: doctorAppointmentRequestScreen, page: () => DoctorAppointmentRequestScreen()),
+        GetPage(name: userRecordsScreen, page: () => UserRecordsScreen()),
   ];
 }

@@ -44,6 +44,7 @@ class RoleScreen extends StatelessWidget {
 
 
             CustomTwoButon(
+              btnRadius: 8,
               width: 169.w,
               initialSeclected: 1,
               leftBtnOnTap: ()async{

@@ -118,6 +118,10 @@ class AppString {
   static const String    bankAccountDetails  = "Bank Account Details";
   static const String    pleaseProvideTheFollowingInformationForTheWithdrawal  = "Please provide the following information for the withdrawal";
   static const String    requestWithdrawal  = "Request Withdrawal";
+  static const String    priorToConsultWithDoctorPleaseEnsureMedicalHistoryIsUpdatedWithTheMostCurrentInformation  = "Prior to consult with doctor,please ensure medical history is updated with the most current information.";
+  static const String    yourRecords  = "Your Records";
+  static const String    addNew  = "Add New";
+
 
 
 

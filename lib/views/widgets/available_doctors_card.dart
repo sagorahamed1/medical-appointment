@@ -101,6 +101,7 @@ class AvailableDoctorsCard extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             CustomTwoButon(
+              btnRadius: 8,
               width: 159.w,
               btnNameList: ["$leftBtnText", "$rightBtnText"],
               rightBtnOnTap: () {},

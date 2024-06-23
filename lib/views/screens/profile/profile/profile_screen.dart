@@ -70,7 +70,9 @@ class ProfileScreen extends StatelessWidget {
                               AppString.appointmentRequests,
                               AppIcons.medicalRecord,
                               AppColors.primaryColor,
-                              () {})
+                              () {
+                                Get.toNamed(AppRoutes.doctorAppointmentRequestScreen);
+                              })
                           : const SizedBox(),
 
                       ///=========================Earning=========================>
@@ -98,7 +100,9 @@ class ProfileScreen extends StatelessWidget {
                               AppString.medicalRecords,
                               AppIcons.medicalRecord,
                               AppColors.primaryColor,
-                              () {})
+                              () {
+                                Get.toNamed(AppRoutes.userRecordsScreen);
+                              })
                           : const SizedBox(),
 
                       ///=========================Setting=========================>

@@ -8,11 +8,12 @@ class CustomTwoButon extends StatelessWidget {
   final List? btnNameList;
   final VoidCallback? leftBtnOnTap;
   final double? width;
+  final double btnRadius;
   final int initialSeclected;
   final VoidCallback? rightBtnOnTap;
 
   const CustomTwoButon(
-      {super.key, this.btnNameList, this.leftBtnOnTap, this.rightBtnOnTap, this.width,required this.initialSeclected});
+      {super.key, this.btnNameList, this.leftBtnOnTap, this.rightBtnOnTap, this.width,required this.initialSeclected, required this.btnRadius});
 
 
   @override
@@ -26,7 +27,7 @@ class CustomTwoButon extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(8.r),
+                borderRadius:  BorderRadius.circular(btnRadius.r),
                 color: index == 0+initialSeclected ? Colors.white : AppColors.primaryColor),
             width: width,
             child: Padding(

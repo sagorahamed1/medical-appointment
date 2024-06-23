@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../controllers/auth_controller.dart';
+import '../../../../helpers/image_pic_helper.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_strings.dart';
@@ -16,13 +17,18 @@ import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/pop_up_menu.dart';
 
-class FillProfileScreen extends StatelessWidget {
+class FillProfileScreen extends StatefulWidget {
   FillProfileScreen({super.key});
 
+  @override
+  State<FillProfileScreen> createState() => _FillProfileScreenState();
+}
+
+class _FillProfileScreenState extends State<FillProfileScreen> {
   final AuthController _authController = Get.put(AuthController());
 
   List genderList = ['Male', 'Female', "Others"];
-
+  Image? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +50,7 @@ class FillProfileScreen extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
+                  _image != null ? Image(image: _image!.image, height: 144.h,width: 144.w,fit: BoxFit.cover):
                   Image.asset(
                     AppImages.fillProfile,
                     height: 144.h,
@@ -53,7 +60,11 @@ class FillProfileScreen extends StatelessWidget {
                   Positioned(
                     bottom: 0,
                     right: 0,
-                    child: SvgPicture.asset(AppIcons.galaryIcon),
+                    child: GestureDetector(
+                        onTap: (){
+                          showImagePickerOption(context);
+                        },
+                        child: SvgPicture.asset(AppIcons.galaryIcon)),
                   )
                 ],
               ),
@@ -103,6 +114,7 @@ class FillProfileScreen extends StatelessWidget {
 
             ///=====================mobile number ======================>
             CustomTextFieldWithoutBorder(
+              keyboardType: TextInputType.number,
               contenpaddingHorizontal: 20.w,
               contenpaddingVertical: 0.h,
               hintText: AppString.mobileNumber,
@@ -133,60 +145,68 @@ class FillProfileScreen extends StatelessWidget {
       ),
     );
   }
+
+  //==================================> ShowImagePickerOption Function <===============================
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: AppColors.gray767676,
+        context: context,
+        builder: (builder) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 4.2,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        final image =  ImagePickerHelper.pickImageFromGallery();
+                        setState(() {
+                          _image = image as Image?;
+                        });
+
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.image,
+                              size: 50.w,
+                            ),
+                            CustomText(text: 'Gallery')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        final image =    ImagePickerHelper.pickImageFromCamera();
+                        setState(() {
+                          _image = image as Image;
+                        });
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 50.w,
+                            ),
+                            CustomText(text: 'Camera')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 }
-
-
-/*
-Padding(
-padding: EdgeInsets.only(left: 20.w, right: 20.w),
-child: SvgPicture.asset(
-AppIcons.dropdown,
-color: AppColors.gray767676,
-)),
-*/
-
-
-//
-// class DropDown extends StatefulWidget {
-//   const DropDown({super.key});
-//
-//   @override
-//   State<DropDown> createState() => _DropDownState();
-// }
-//
-// class _DropDownState extends State<DropDown> {
-//   String? _selectedSpecialist;
-//
-//   final List<String> _specialists = [
-//     'Dentist',
-//     'Immunologists',
-//     'Cardiologists',
-//     'Neurologist',
-//     'Orthopedics',
-//     'Ophthalmologist',
-//     'Therapist',
-//     'Nutritionist',
-//     'Gynecologic',
-//   ];
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: DropdownButton<String>(
-//         value: _selectedSpecialist,
-//         hint: Text('Select Specialist'),
-//         items: _specialists.map((String specialist) {
-//           return DropdownMenuItem<String>(
-//             value: specialist,
-//             child: Text(specialist),
-//           );
-//         }).toList(),
-//         onChanged: (String? newValue) {
-//           setState(() {
-//             _selectedSpecialist = newValue!;
-//           });
-//         },
-//       ),
-//     );
-//   }
-// }
