@@ -87,7 +87,9 @@ class ProfileScreen extends StatelessWidget {
                               AppString.reviews,
                               AppIcons.reviewStar,
                               AppColors.primaryColor,
-                              () {})
+                              () {
+                                Get.toNamed(AppRoutes.reviewScreen);
+                              })
                           : const SizedBox(),
 
                       ///=========================Medical Records=========================>
