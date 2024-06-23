@@ -123,6 +123,10 @@ class AppString {
   static const String    addNew  = "Add New";
   static const String    prescription  = "Prescription";
   static const String    clickHere  = "Click here";
+  static const String    patientName  = "Patient Name";
+  static const String    addNewRecord  = "Add New Record";
+  static const String    writeMedicalHistory  = "Write Medical History";
+  static const String    addPrescription  = "Add Prescription";
 
 
 
