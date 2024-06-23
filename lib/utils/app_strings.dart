@@ -121,6 +121,8 @@ class AppString {
   static const String    priorToConsultWithDoctorPleaseEnsureMedicalHistoryIsUpdatedWithTheMostCurrentInformation  = "Prior to consult with doctor,please ensure medical history is updated with the most current information.";
   static const String    yourRecords  = "Your Records";
   static const String    addNew  = "Add New";
+  static const String    prescription  = "Prescription";
+  static const String    clickHere  = "Click here";
 
 
 
