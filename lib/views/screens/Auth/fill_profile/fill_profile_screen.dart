@@ -1,4 +1,5 @@
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
@@ -13,11 +14,15 @@ import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
+import '../../../widgets/pop_up_menu.dart';
 
 class FillProfileScreen extends StatelessWidget {
   FillProfileScreen({super.key});
 
   final AuthController _authController = Get.put(AuthController());
+
+  List genderList = ['Male', 'Female', "Others"];
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,17 +69,19 @@ class FillProfileScreen extends StatelessWidget {
             ),
 
             ///=====================Gender ======================>
-            CustomTextFieldWithoutBorder(
-              contenpaddingHorizontal: 20.w,
-              contenpaddingVertical: 0.h,
-              controller: _authController.genderCtrl,
-              hintText: AppString.gender,
-              sufixicons: Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                  child: SvgPicture.asset(
-                    AppIcons.dropdown,
-                    color: AppColors.gray767676,
-                  )),
+               CustomTextFieldWithoutBorder(
+                readOnly: true,
+                contenpaddingHorizontal: 20.w,
+                contenpaddingVertical: 0.h,
+                controller: _authController.genderCtrl,
+                hintText: AppString.gender,
+                sufixicons: PopUpMenu(
+                  items: genderList,
+                  selectedItem: "Male",
+                  onTap: (int index) {
+                  },
+
+                )
             ),
             SizedBox(height: 16.h),
 
@@ -108,7 +115,7 @@ class FillProfileScreen extends StatelessWidget {
             CustomTextFieldWithoutBorder(
               maxLines: 3,
               contenpaddingHorizontal: 20.w,
-              contenpaddingVertical: 0.h,
+              contenpaddingVertical: 15.h,
               hintText: AppString.address,
               controller: _authController.addressCtrl,
             ),
@@ -117,14 +124,69 @@ class FillProfileScreen extends StatelessWidget {
             // const Spacer(),
             CustomButton(
                 onpress: () {
-                  Get.toNamed(AppRoutes.signInScreen);
+                 AppConstants.roleMock == "doctor" ?Get.toNamed(AppRoutes.continueDoctorDetailsScreen) :  Get.toNamed(AppRoutes.signInScreen);
                 },
                 title: AppString.continues),
 
-            SizedBox(height: 98.h)
           ],
         ),
       ),
     );
   }
 }
+
+
+/*
+Padding(
+padding: EdgeInsets.only(left: 20.w, right: 20.w),
+child: SvgPicture.asset(
+AppIcons.dropdown,
+color: AppColors.gray767676,
+)),
+*/
+
+
+//
+// class DropDown extends StatefulWidget {
+//   const DropDown({super.key});
+//
+//   @override
+//   State<DropDown> createState() => _DropDownState();
+// }
+//
+// class _DropDownState extends State<DropDown> {
+//   String? _selectedSpecialist;
+//
+//   final List<String> _specialists = [
+//     'Dentist',
+//     'Immunologists',
+//     'Cardiologists',
+//     'Neurologist',
+//     'Orthopedics',
+//     'Ophthalmologist',
+//     'Therapist',
+//     'Nutritionist',
+//     'Gynecologic',
+//   ];
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: DropdownButton<String>(
+//         value: _selectedSpecialist,
+//         hint: Text('Select Specialist'),
+//         items: _specialists.map((String specialist) {
+//           return DropdownMenuItem<String>(
+//             value: specialist,
+//             child: Text(specialist),
+//           );
+//         }).toList(),
+//         onChanged: (String? newValue) {
+//           setState(() {
+//             _selectedSpecialist = newValue!;
+//           });
+//         },
+//       ),
+//     );
+//   }
+// }

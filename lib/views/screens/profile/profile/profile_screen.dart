@@ -206,7 +206,7 @@ class TwoBottonBottomSheet extends StatelessWidget {
         GestureDetector(
           onTap: () {
             AppConstants.roleMock = '';
-            Get.back();
+            Get.toNamed(AppRoutes.roleScreen);
           },
           child: Container(
             width: 166.w,

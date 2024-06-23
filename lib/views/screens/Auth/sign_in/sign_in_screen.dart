@@ -110,7 +110,7 @@ class SignInScreen extends StatelessWidget {
             CustomButton(onpress: ()async{
               var role = await PrefsHelper.getString(AppConstants.role);
 
-              if(role == AppString.user){
+              if(role == AppString.user || AppConstants.roleMock == ''){
                 Get.offAllNamed(AppRoutes.userBottomNavBar);
               }else{
                 Get.offAllNamed(AppRoutes.doctorBottomNavBar);

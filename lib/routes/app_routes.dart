@@ -2,6 +2,7 @@
 
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
+import '../views/screens/Auth/ContinueDoctorDetails/continue_doctor_details_screen.dart';
 import '../views/screens/Auth/fill_profile/fill_profile_screen.dart';
 import '../views/screens/Auth/forgot_password/forgot_password_screen.dart';
 import '../views/screens/Auth/set_password/set_password_screen.dart';
@@ -78,6 +79,7 @@ class AppRoutes {
   static const String walletScreen = "/WalletScreen.dart";
   static const String walletWithdrawalScreen = "/WalletWithdrawalScreen.dart";
   static const String reviewScreen = "/ReviewScreen.dart";
+  static const String continueDoctorDetailsScreen = "/ContinueDoctorDetailsScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -118,5 +120,6 @@ class AppRoutes {
         GetPage(name: walletScreen, page: () => WalletScreen()),
         GetPage(name: walletWithdrawalScreen, page: () => WalletWithdrawalScreen()),
         GetPage(name: reviewScreen, page: () => ReviewScreen()),
+        GetPage(name: continueDoctorDetailsScreen, page: () => ContinueDoctorDetailsScreen()),
   ];
 }
