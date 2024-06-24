@@ -93,6 +93,7 @@ class _WalletWithdrawalScreenState extends State<WalletWithdrawalScreen> {
                           CustomButton(onpress: (){}, title: AppString.requestWithdrawal),
 
 
+
                           SizedBox(height: 24.h)
 
 

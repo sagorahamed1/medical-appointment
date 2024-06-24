@@ -1,9 +1,12 @@
-import 'package:doctor_appointment/views/widgets/custom_text_field.dart';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../helpers/image_pic_helper.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_dimentions.dart';
@@ -12,12 +15,18 @@ import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
-import '../../../widgets/custom_text_field_without_border.dart';
 
-class EditProfileScreen extends StatelessWidget {
-  EditProfileScreen({super.key});
+class EditProfileScreen extends StatefulWidget {
 
+
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nameCtrl = TextEditingController();
+
+  File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +58,11 @@ class EditProfileScreen extends StatelessWidget {
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      child: SvgPicture.asset(AppIcons.galaryIcon),
+                      child: GestureDetector(
+                          onTap: (){
+                            showImagePickerOption(context);
+                          },
+                          child: SvgPicture.asset(AppIcons.galaryIcon)),
                     )
                   ],
                 ),
@@ -114,5 +127,69 @@ class EditProfileScreen extends StatelessWidget {
         SizedBox(height: 16.h)
       ],
     );
+  }
+
+  //==================================> ShowImagePickerOption Function <===============================
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: AppColors.gray767676,
+        context: context,
+        builder: (builder) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 4.2,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                     final image =  ImagePickerHelper.pickImageFromGallery();
+                     setState(() {
+                       _image = image as File?;
+                     });
+
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.image,
+                              size: 50.w,
+                            ),
+                             CustomText(text: 'Gallery')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        final image =    ImagePickerHelper.pickImageFromCamera();
+                        setState(() {
+                          _image = image as File?;
+                        });
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 50.w,
+                            ),
+                             CustomText(text: 'Camera')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

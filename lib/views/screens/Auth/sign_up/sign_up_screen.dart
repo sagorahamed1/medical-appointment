@@ -262,7 +262,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: AppString.byCratingAnAccount,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: Dimensions.fontSizeDefault,
+                    fontSize: 13,
                     overflow: TextOverflow.ellipsis,
                     color: AppColors.textColor5C5C5C,
                     fontFamily: "OpenSans-Regular",
@@ -273,7 +273,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       overflow: TextOverflow.ellipsis,
-                      fontSize: Dimensions.fontSizeDefault,
+                      fontSize: 13,
                       color: AppColors.primaryColor,
                       fontFamily: "OpenSans-Regular",
                     ),
@@ -286,7 +286,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: ' & ',
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: Dimensions.fontSizeDefault,
+                    fontSize: 13,
                     color: AppColors.textColor5C5C5C,
                     fontFamily: "OpenSans-Regular",
                   ),
@@ -295,7 +295,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     text: AppString.privacyPolicy,
                     style: const TextStyle(
                       fontWeight: FontWeight.w400,
-                      fontSize: Dimensions.fontSizeDefault,
+                      fontSize: 13,
                       color: AppColors.primaryColor,
                       fontFamily: "OpenSans-Regular",
                     ),

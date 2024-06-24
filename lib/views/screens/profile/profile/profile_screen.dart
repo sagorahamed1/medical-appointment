@@ -70,7 +70,9 @@ class ProfileScreen extends StatelessWidget {
                               AppString.appointmentRequests,
                               AppIcons.medicalRecord,
                               AppColors.primaryColor,
-                              () {})
+                              () {
+                                Get.toNamed(AppRoutes.doctorAppointmentRequestScreen);
+                              })
                           : const SizedBox(),
 
                       ///=========================Earning=========================>
@@ -87,7 +89,9 @@ class ProfileScreen extends StatelessWidget {
                               AppString.reviews,
                               AppIcons.reviewStar,
                               AppColors.primaryColor,
-                              () {})
+                              () {
+                                Get.toNamed(AppRoutes.reviewScreen);
+                              })
                           : const SizedBox(),
 
                       ///=========================Medical Records=========================>
@@ -96,7 +100,9 @@ class ProfileScreen extends StatelessWidget {
                               AppString.medicalRecords,
                               AppIcons.medicalRecord,
                               AppColors.primaryColor,
-                              () {})
+                              () {
+                                Get.toNamed(AppRoutes.userRecordsScreen);
+                              })
                           : const SizedBox(),
 
                       ///=========================Setting=========================>
@@ -204,7 +210,7 @@ class TwoBottonBottomSheet extends StatelessWidget {
         GestureDetector(
           onTap: () {
             AppConstants.roleMock = '';
-            Get.back();
+            Get.toNamed(AppRoutes.roleScreen);
           },
           child: Container(
             width: 166.w,

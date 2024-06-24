@@ -283,6 +283,7 @@ class AppointmentsCard extends StatelessWidget {
                 const Divider(),
                 SizedBox(height: 14.h),
                 CustomTwoButon(
+                  btnRadius: 8,
                     width: 154.w,
                     btnNameList: ["$leftBtnName", '$rightBtnName'],
                     rightBtnOnTap: rightBtnOnTap,

@@ -1,8 +1,10 @@
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/screens/User/User_doctor_details/Inner_widgets/top_doctor_box_card.dart';
 import 'package:doctor_appointment/views/widgets/custom_select_package_card.dart';
+import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
@@ -78,12 +80,30 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                   bottom: 16.h),
 
               CustomSelectPackageCard(
+                  allIndex: 1,
                   title: "Online Consultation",
                   icon: AppIcons.videoCallIcons,
                   price: 400,
                   description: "Video call & messages with doctor",
                   selectedIndex: 1,
                   onTap: () {}),
+
+
+              SizedBox(height: 20.h),
+
+              Get.parameters['screenType'] == "appointment Request" ?
+
+                   CustomTwoButon(
+                      initialSeclected: 0,
+                      btnRadius: 100,
+                     btnNameList: const ['Cancel', 'Accept'],
+                    rightBtnOnTap: (){},
+                    leftBtnOnTap: (){},
+                     width: 168.w,
+                  ) : const SizedBox(),
+
+
+              SizedBox(height: 30.h)
 
 
             ],

@@ -1,4 +1,5 @@
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
@@ -8,16 +9,26 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../controllers/auth_controller.dart';
+import '../../../../helpers/image_pic_helper.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
+import '../../../widgets/pop_up_menu.dart';
 
-class FillProfileScreen extends StatelessWidget {
+class FillProfileScreen extends StatefulWidget {
   FillProfileScreen({super.key});
 
+  @override
+  State<FillProfileScreen> createState() => _FillProfileScreenState();
+}
+
+class _FillProfileScreenState extends State<FillProfileScreen> {
   final AuthController _authController = Get.put(AuthController());
+
+  List genderList = ['Male', 'Female', "Others"];
+  Image? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +50,7 @@ class FillProfileScreen extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
+                  _image != null ? Image(image: _image!.image, height: 144.h,width: 144.w,fit: BoxFit.cover):
                   Image.asset(
                     AppImages.fillProfile,
                     height: 144.h,
@@ -48,7 +60,11 @@ class FillProfileScreen extends StatelessWidget {
                   Positioned(
                     bottom: 0,
                     right: 0,
-                    child: SvgPicture.asset(AppIcons.galaryIcon),
+                    child: GestureDetector(
+                        onTap: (){
+                          showImagePickerOption(context);
+                        },
+                        child: SvgPicture.asset(AppIcons.galaryIcon)),
                   )
                 ],
               ),
@@ -64,17 +80,19 @@ class FillProfileScreen extends StatelessWidget {
             ),
 
             ///=====================Gender ======================>
-            CustomTextFieldWithoutBorder(
-              contenpaddingHorizontal: 20.w,
-              contenpaddingVertical: 0.h,
-              controller: _authController.genderCtrl,
-              hintText: AppString.gender,
-              sufixicons: Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                  child: SvgPicture.asset(
-                    AppIcons.dropdown,
-                    color: AppColors.gray767676,
-                  )),
+               CustomTextFieldWithoutBorder(
+                readOnly: true,
+                contenpaddingHorizontal: 20.w,
+                contenpaddingVertical: 0.h,
+                controller: _authController.genderCtrl,
+                hintText: AppString.gender,
+                sufixicons: PopUpMenu(
+                  items: genderList,
+                  selectedItem: "Male",
+                  onTap: (int index) {
+                  },
+
+                )
             ),
             SizedBox(height: 16.h),
 
@@ -96,6 +114,7 @@ class FillProfileScreen extends StatelessWidget {
 
             ///=====================mobile number ======================>
             CustomTextFieldWithoutBorder(
+              keyboardType: TextInputType.number,
               contenpaddingHorizontal: 20.w,
               contenpaddingVertical: 0.h,
               hintText: AppString.mobileNumber,
@@ -108,7 +127,7 @@ class FillProfileScreen extends StatelessWidget {
             CustomTextFieldWithoutBorder(
               maxLines: 3,
               contenpaddingHorizontal: 20.w,
-              contenpaddingVertical: 0.h,
+              contenpaddingVertical: 15.h,
               hintText: AppString.address,
               controller: _authController.addressCtrl,
             ),
@@ -117,14 +136,77 @@ class FillProfileScreen extends StatelessWidget {
             // const Spacer(),
             CustomButton(
                 onpress: () {
-                  Get.toNamed(AppRoutes.signInScreen);
+                 AppConstants.roleMock == "doctor" ?Get.toNamed(AppRoutes.continueDoctorDetailsScreen) :  Get.toNamed(AppRoutes.signInScreen);
                 },
                 title: AppString.continues),
 
-            SizedBox(height: 98.h)
           ],
         ),
       ),
     );
+  }
+
+  //==================================> ShowImagePickerOption Function <===============================
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: AppColors.gray767676,
+        context: context,
+        builder: (builder) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 4.2,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        final image =  ImagePickerHelper.pickImageFromGallery();
+                        setState(() {
+                          _image = image as Image?;
+                        });
+
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.image,
+                              size: 50.w,
+                            ),
+                            CustomText(text: 'Gallery')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        final image =    ImagePickerHelper.pickImageFromCamera();
+                        setState(() {
+                          _image = image as Image;
+                        });
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 50.w,
+                            ),
+                            CustomText(text: 'Camera')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

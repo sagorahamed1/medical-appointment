@@ -58,7 +58,7 @@ class CustomTextFieldWithoutBorder extends StatelessWidget {
       obscuringCharacter: obscureCharacrter!,
       validator: validator,
       cursorColor: AppColors.primaryColor,
-      style: const TextStyle(color: Colors.black),
+      style:  TextStyle(color: Colors.black, fontSize: 14.h),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
             horizontal: contenpaddingHorizontal.toDouble(),
