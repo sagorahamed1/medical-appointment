@@ -81,7 +81,7 @@ class AddRecordsScreen extends StatelessWidget {
                   hintText: 'Upload files',
                   controller: addPrescriptionCtrl,
                   sufixicons: Padding(
-                    padding:  EdgeInsets.all(14.r),
+                    padding:  EdgeInsets.all(18.r),
                     child: SvgPicture.asset(AppIcons.attachFile, color: AppColors.primaryColor, height: 15.h, width: 15.w),
                   ),
               ),
