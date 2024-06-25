@@ -8,11 +8,11 @@ class AppString {
   static const String doctor  = "Doctor";
   static const String signUp  = "Sign Up";
   static const String signUpToJoin  = "Sign Up to Join";
-  static const String  firstName  = "First name";
-  static const String   lastName  = "Last name";
+  static const String  firstName  = "First Name";
+  static const String   lastName  = "Last Name";
   static const String   email  = "Email";
   static const String   password  = "Password";
-  static const String   confirmPassword  = "Confirm password";
+  static const String   confirmPassword  = "Confirm Password";
   static const String   byCratingAnAccount  = "By creating an account, I accept the";
   static const String   termsCondition  = " Terms \n & Conditions";
   static const String   privacyPolicy  = "Privacy Policy.";

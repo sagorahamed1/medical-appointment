@@ -24,10 +24,10 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
 
   final List<String> specialists = [
     'Dentist',
-    'Immunologists',
-    'Cardiologists',
+    'Immunologist',
+    'Cardiologist',
     'Neurologist',
-    'Orthopedics',
+    'Orthopedic',
     'Ophthalmologist',
     'Therapist',
     'Nutritionist',
@@ -80,7 +80,7 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
               CustomTextFieldWithoutBorder(
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 0,
-                  hintText: "Cardiologists",
+                  hintText: "Cardiologist",
                   sufixicons: PopUpMenu(
                     items: specialists,
                     selectedItem: "Dentist",
