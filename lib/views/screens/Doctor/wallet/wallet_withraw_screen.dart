@@ -59,7 +59,7 @@ class _WalletWithdrawalScreenState extends State<WalletWithdrawalScreen> {
 
                           SizedBox(height: 16.h),
                           CustomTextFieldWithoutBorder(
-                            hintText: "Bank name",
+                            hintText: "Bank Name",
                               contenpaddingHorizontal: 20,
                               contenpaddingVertical: 0,
                               controller: bankNameController),
@@ -67,7 +67,7 @@ class _WalletWithdrawalScreenState extends State<WalletWithdrawalScreen> {
 
                           SizedBox(height: 16.h),
                           CustomTextFieldWithoutBorder(
-                            hintText: 'Account type',
+                            hintText: 'Account Type',
                               contenpaddingHorizontal: 20,
                               contenpaddingVertical: 0,
                               controller: accountTypeController),
@@ -75,7 +75,7 @@ class _WalletWithdrawalScreenState extends State<WalletWithdrawalScreen> {
 
                           SizedBox(height: 16.h),
                           CustomTextFieldWithoutBorder(
-                              hintText: 'Account number',
+                              hintText: 'Account Number',
                               contenpaddingHorizontal: 20,
                               contenpaddingVertical: 0,
                               controller: accountNumberController),

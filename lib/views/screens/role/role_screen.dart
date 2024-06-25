@@ -57,7 +57,7 @@ class RoleScreen extends StatelessWidget {
                 AppConstants.roleMock = 'doctor';
                 await PrefsHelper.setString(AppConstants.role, AppString.doctor);
               },
-              btnNameList: const [AppString.user, AppString.doctor],
+              btnNameList: const ['Patient', AppString.doctor],
 
             )
 
