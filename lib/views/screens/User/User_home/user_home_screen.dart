@@ -25,75 +25,90 @@ class UserHomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: Dimensions.paddingSizeDefault.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(vertical: 8.h),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ///=====================top app bar =================================>
-            
-                const TopAppBar(),
-            
-                CustomText(
-                    text: AppString.enhancingTheHealthcareExperience,
-                    fontWeight: FontWeight.w600,
-                    fontsize: 16.h,
-                    bottom: 16.h,
-                    top: 20.h),
 
-                ///========================Search box=============================>
-                CustomTextFieldWithoutBorder(
-                  contenpaddingHorizontal: 20.w,
-                  contenpaddingVertical: 0,
-                  controller: _homeController.searchCtrl,
-                  hintText: AppString.search,
-                  prefixIcon: GestureDetector(
-                    onTap: (){
-                      Get.toNamed(AppRoutes.userSearchScreen);
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: SvgPicture.asset(AppIcons.search),
-                    ),
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
+                  child: Column(
+                    children: [
+                      const TopAppBar(),
+
+                      CustomText(
+                          text: AppString.enhancingTheHealthcareExperience,
+                          fontWeight: FontWeight.w600,
+                          fontsize: 16.h,
+                          bottom: 16.h,
+                          top: 20.h),
+
+                      ///========================Search box=============================>
+                      CustomTextFieldWithoutBorder(
+                        contenpaddingHorizontal: 20.w,
+                        contenpaddingVertical: 0,
+                        controller: _homeController.searchCtrl,
+                        hintText: AppString.search,
+                        prefixIcon: GestureDetector(
+                          onTap: (){
+                            Get.toNamed(AppRoutes.userSearchScreen);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: SvgPicture.asset(AppIcons.search),
+                          ),
+                        ),
+                      ),
+
+                      ///=======================Categories and See All Text=============================>
+                      _SeeAll(AppString.categories, AppString.seeAll, (){
+                        Get.toNamed(AppRoutes.userCategoryScreen);
+                      }),
+
+                      const Categorysection(),
+
+                      ///=======================available Doctors and See All Text=============================>
+                      _SeeAll(AppString.availableDoctors, AppString.seeAll, (){
+                        Get.toNamed(AppRoutes.useravailablleDoctorsScreen);
+                      }),
+
+
+
+                    ],
                   ),
                 ),
-            
-                ///=======================Categories and See All Text=============================>
-                _SeeAll(AppString.categories, AppString.seeAll, (){
-                  Get.toNamed(AppRoutes.userCategoryScreen);
-                }),
-            
-                const Categorysection(),
-            
-                ///=======================available Doctors and See All Text=============================>
-                _SeeAll(AppString.availableDoctors, AppString.seeAll, (){
-                  Get.toNamed(AppRoutes.useravailablleDoctorsScreen);
-                }),
 
 
+
+
+                ///======================available doctor list=================>
                 SizedBox(
                   height: 230.h,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: 1,
+                    // physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 4,
                     itemBuilder: (context, index) {
-                      return     AvailableDoctorsCard(
-                        experience: "6 years",
-                        rating: "4.0",
-                        clinicVisit: r"$20",
-                        doctorName: "Sagor Ahamed",
-                        totalConsultaion: "12",
-                        onlineConsultation: r'$50',
-                        specialist: "Therapist",
-                        imageHeight: 142,
-                        leftBtnText: AppString.seeDetails,
-                        rightBtnText: AppString.bookAppointment,
-                        leftBtnOntap: (){
-                          Get.toNamed(AppRoutes.userDoctorDetailsScreen);
-                        },
+                      return  Padding(
+                        padding:  EdgeInsets.only(left: index == 0 ? 19.w : 7.5.w),
+                        child: AvailableDoctorsCard(
+                          experience: "6 years",
+                          rating: "4.0",
+                          clinicVisit: r"$20",
+                          doctorName: "Sagor Ahamed",
+                          totalConsultaion: "12",
+                          onlineConsultation: r'$50',
+                          specialist: "Therapist",
+                          imageHeight: 142,
+                          leftBtnText: AppString.seeDetails,
+                          rightBtnText: AppString.bookAppointment,
+                          leftBtnOntap: (){
+                            Get.toNamed(AppRoutes.userDoctorDetailsScreen);
+                          },
+                        ),
                       );
                     },
                   ),
@@ -101,21 +116,39 @@ class UserHomeScreen extends StatelessWidget {
 
 
                 ///=======================Emergency Doctors and See All Text=============================>
-                _SeeAll(AppString.emergencyDoctors, AppString.seeAll, (){
-                  Get.toNamed(AppRoutes.useremergencyDoctorsScreen);
-                }),
-            
-            
-                const AvailableDoctorsCard(
-                  rating: "4.0",
-                  doctorName: "Sagor Ahamed",
-                  specialist: "Cardiologist",
-                  onlineConsultation: r'$20',
-                  totalConsultaion: '12',
-                  imageHeight: 100,
-                  leftBtnText: AppString.message,
-                  rightBtnText: AppString.videoCall,
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
+                  child: _SeeAll(AppString.emergencyDoctors, AppString.seeAll, (){
+                    Get.toNamed(AppRoutes.useremergencyDoctorsScreen);
+                  }),
                 ),
+            
+            
+                SizedBox(
+                  height: 185.h,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding:  EdgeInsets.only(left: index == 0 ? 19.w : 8.w),
+                        child: const AvailableDoctorsCard(
+                          rating: "4.0",
+                          doctorName: "Sagor Ahamed",
+                          specialist: "Cardiologist",
+                          onlineConsultation: r'$20',
+                          totalConsultaion: '12',
+                          imageHeight: 100,
+                          leftBtnText: AppString.message,
+                          rightBtnText: AppString.videoCall,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+
+                SizedBox(height: 10.h)
             
               ],
             ),
