@@ -5,10 +5,14 @@ import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
+import '../../../widgets/available_doctors_card.dart';
 import '../../../widgets/custom_text.dart';
+import '../../../widgets/custom_two_button.dart';
 
 class UserRecordsScreen extends StatelessWidget {
   const UserRecordsScreen({super.key});
@@ -28,6 +32,7 @@ class UserRecordsScreen extends StatelessWidget {
             horizontal: Dimensions.paddingSizeDefault.w,
             vertical: Dimensions.paddingSizeDefault.h),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
                 text: AppString
@@ -37,6 +42,34 @@ class UserRecordsScreen extends StatelessWidget {
                 bottom: 18.h,
                 textAlign: TextAlign.start,
                 color: AppColors.textColor5C5C5C),
+
+            ///========================Doctor Prescription==========================>
+            CustomText(
+                text: AppString.doctorsPrescription,
+                fontsize: 16.h,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primaryColor,
+                bottom: 12.h),
+
+            ///===========================Date Time==================>
+            CustomText(
+                text: '15 May 2024 5:00 pm',
+                fontWeight: FontWeight.w600,
+                bottom: 16.h,
+                color: Colors.black),
+
+            DoctorsPrescriptionCard(
+              rating: "4.0",
+              doctorName: "Sagor Ahamed",
+              specialist: "Cardiologist",
+              onlineConsultation: r'$20',
+              totalConsultaion: '12',
+              imageHeight: 100,
+              clickHereOntap: () {},
+            ),
+
+            SizedBox(height: 20.h),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -62,6 +95,7 @@ class UserRecordsScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20.h),
+
             Expanded(
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -101,8 +135,10 @@ class UserRecordsScreen extends StatelessWidget {
                           SizedBox(height: 12.h),
                           CustomButton(
                               onpress: () {
-                                Get.toNamed(AppRoutes.patientDetailsForRecordScreen);
-                              }, title: AppString.seeDetails)
+                                Get.toNamed(
+                                    AppRoutes.patientDetailsForRecordScreen);
+                              },
+                              title: AppString.seeDetails)
                         ],
                       ),
                     ),
@@ -125,6 +161,146 @@ class UserRecordsScreen extends StatelessWidget {
           CustomText(text: key, color: AppColors.textColor5C5C5C, left: 12.w),
           CustomText(
               text: value,
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.w600),
+        ],
+      ),
+    );
+  }
+}
+
+class DoctorsPrescriptionCard extends StatelessWidget {
+  final String? doctorName;
+  final VoidCallback? clickHereOntap;
+  final double? imageHeight;
+  final String? doctorImage;
+  final String? rating;
+  final String? specialist;
+  final String? experience;
+  final String? totalConsultaion;
+  final String? onlineConsultation;
+  final String? clinicVisit;
+
+  const DoctorsPrescriptionCard({
+    super.key,
+    this.doctorName,
+    this.doctorImage,
+    this.rating,
+    this.specialist,
+    this.experience,
+    this.totalConsultaion,
+    this.onlineConsultation,
+    this.clinicVisit,
+    this.imageHeight,
+    this.clickHereOntap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColors.fillColorE8EBF0,
+          borderRadius: BorderRadius.circular(8.r)),
+      child: Padding(
+        padding: EdgeInsets.all(12.r),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
+                    child: Image.asset(
+                      AppImages.getStarted1,
+                      height: imageHeight?.h,
+                      width: 110.w,
+                      fit: BoxFit.cover,
+                    )),
+                SizedBox(
+                  width: 213.w,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 20.w),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                  text: "${doctorName}",
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.w600),
+                              Row(
+                                children: [
+                                  SvgPicture.asset(AppIcons.star),
+                                  CustomText(
+                                      text: " ${rating}",
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontsize: 12.h),
+                                ],
+                              ),
+                            ],
+                          ),
+                          specialist == null
+                              ? const SizedBox()
+                              : _rowText("Specialist :", "$specialist"),
+                          experience == null
+                              ? const SizedBox()
+                              : _rowText("Experience :", "$experience"),
+                          totalConsultaion == null
+                              ? const SizedBox()
+                              : _rowText(
+                                  "Total Consultaion :", "$totalConsultaion"),
+                          onlineConsultation == null
+                              ? const SizedBox()
+                              : _rowText("Online Consultation :",
+                                  "$onlineConsultation"),
+                          clinicVisit == null
+                              ? const SizedBox()
+                              : _rowText("Clinic visit :", "$clinicVisit"),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                    text: AppString.prescription,
+                    fontsize: 18.h,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor),
+                GestureDetector(
+                    onTap: clickHereOntap,
+                    child: CustomText(
+                        text: AppString.clickHere,
+                        fontsize: 18.h,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryColor)),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _rowText(String leftText, rightText) {
+    return Padding(
+      padding: EdgeInsets.only(top: 3.5.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomText(text: leftText, color: AppColors.textColor5C5C5C),
+          CustomText(
+              text: "$rightText",
               color: AppColors.primaryColor,
               fontWeight: FontWeight.w600),
         ],

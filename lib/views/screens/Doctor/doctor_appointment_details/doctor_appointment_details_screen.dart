@@ -1,5 +1,7 @@
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/screens/User/User_doctor_details/Inner_widgets/top_doctor_box_card.dart';
+import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_select_package_card.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
@@ -102,6 +104,11 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                      width: 168.w,
                   ) : const SizedBox(),
 
+
+
+              CustomButton(onpress: (){
+                Get.parameters['screenType'] == AppString.upcoming   ?  (){} : Get.toNamed(AppRoutes.prescriptionForm);
+              }, title: Get.parameters['screenType'] == 'Complete' ? AppString.continues : 'Send Prescription'),
 
               SizedBox(height: 30.h)
 
