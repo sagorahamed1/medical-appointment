@@ -87,6 +87,11 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                       time: "14:00 PM",
                       leftBtnName: 'Cancel Appoinment',
                       rightBtnName: 'See Details',
+                      rightBtnOnTap: (){
+                        Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
+                          'screenType' : "${AppString.upcoming}"
+                        });
+                      },
                     ),
                   );
                 },

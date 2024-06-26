@@ -127,6 +127,7 @@ class AppString {
   static const String    addNewRecord  = "Add New Record";
   static const String    writeMedicalHistory  = "Write Medical History";
   static const String    addPrescription  = "Add Prescription";
+  static const String    doctorsPrescription  = "Doctors Prescription";
 
 
 

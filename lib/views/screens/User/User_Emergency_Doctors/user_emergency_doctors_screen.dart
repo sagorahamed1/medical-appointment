@@ -8,20 +8,14 @@ import '../../../../utils/app_strings.dart';
 import '../../../widgets/available_doctors_card.dart';
 import '../../../widgets/custom_text.dart';
 
-
-
-
 class UserEmergencyDoctorsScreen extends StatelessWidget {
   UserEmergencyDoctorsScreen({super.key});
 
   final HomeController _homeController = Get.put(HomeController());
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
@@ -33,7 +27,8 @@ class UserEmergencyDoctorsScreen extends StatelessWidget {
 
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w,
+          padding: EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeDefault.w,
               vertical: Dimensions.paddingSizeDefault.h),
           child: Column(
             children: [
@@ -43,9 +38,9 @@ class UserEmergencyDoctorsScreen extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   itemCount: 20,
                   itemBuilder: (context, index) {
-                    return    Padding(
-                      padding:  EdgeInsets.only(bottom: 16.h),
-                      child:                 const AvailableDoctorsCard(
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: const AvailableDoctorsCard(
                         rating: "4.0",
                         doctorName: "Sagor Ahamed",
                         specialist: "Cardiologist",
@@ -59,9 +54,6 @@ class UserEmergencyDoctorsScreen extends StatelessWidget {
                   },
                 ),
               ),
-
-
-
             ],
           ),
         ),
