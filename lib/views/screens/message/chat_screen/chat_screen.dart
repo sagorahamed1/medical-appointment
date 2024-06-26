@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:doctor_appointment/routes/app_routes.dart';
-import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -12,8 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_icons.dart';
-import '../../../../utils/app_images.dart';
-import '../../../../utils/app_strings.dart';
 import '../../../widgets/cachanetwork_image.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field.dart';
@@ -232,7 +229,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         Expanded(
           child: ChatBubble(
-            clipper: ChatBubbleClipper5(type: BubbleType.receiverBubble),
+            clipper: ChatBubbleClipper9(type: BubbleType.receiverBubble),
             backGroundColor: Colors.white,
             margin: const EdgeInsets.only(top: 8, bottom: 8),
             child: Container(
