@@ -107,8 +107,8 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
 
 
               CustomButton(onpress: (){
-                Get.parameters['screenType'] == AppString.upcoming   ?  (){} : Get.toNamed(AppRoutes.prescriptionForm);
-              }, title: Get.parameters['screenType'] == 'Complete' ? AppString.continues : 'Send Prescription'),
+                Get.parameters['screenType'] == AppString.upcoming   ?  (){} : Get.toNamed(AppRoutes.prescriptionFormScreen);
+              }, title: Get.parameters['screenType'] == AppString.upcoming ? AppString.continues : 'Send Prescription'),
 
               SizedBox(height: 30.h)
 

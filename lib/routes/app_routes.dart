@@ -89,7 +89,7 @@ class AppRoutes {
   static const String userRecordsScreen = "/UserRecordsScreen.dart";
   static const String patientDetailsForRecordScreen = "/PatientDetailsForRecordScreen.dart";
   static const String addRecordsScreen = "/AddRecordsScreen.dart";
-  static const String prescriptionForm = "/PrescriptionForm.dart";
+  static const String prescriptionFormScreen = "/PrescriptionFormScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -135,6 +135,6 @@ class AppRoutes {
         GetPage(name: userRecordsScreen, page: () => UserRecordsScreen()),
         GetPage(name: patientDetailsForRecordScreen, page: () => PatientDetailsForRecordScreen()),
         GetPage(name: addRecordsScreen, page: () => AddRecordsScreen()),
-        GetPage(name: prescriptionForm, page: () => PrescriptionForm()),
+        GetPage(name: prescriptionFormScreen, page: () => PrescriptionFormScreen()),
   ];
 }

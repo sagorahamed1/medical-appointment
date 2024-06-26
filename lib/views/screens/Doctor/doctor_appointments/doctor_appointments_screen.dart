@@ -39,7 +39,6 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
           text: AppString.appointments,
@@ -63,7 +62,6 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
           indicatorPadding: const EdgeInsets.symmetric(horizontal: 20.0),
         ),
       ),
-
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: Dimensions.paddingSizeDefault.w,
@@ -72,79 +70,70 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
           controller: _tabController,
           children: [
             ///=======================Up Coming Lists====================>
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "Sagor Ahamed",
-                      appointmentsType: "Upcoming",
-                      date: DateTime.now(),
-                      messageIcon: AppIcons.messageIcon2,
-                      time: "14:00 PM",
-                      leftBtnName: 'Cancel Appoinment',
-                      rightBtnName: 'See Details',
-                      rightBtnOnTap: (){
-                        Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
-                          'screenType' : "${AppString.upcoming}"
-                        });
-                      },
-                    ),
-                  );
-                },
-              ),
+            ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16.h),
+                  child: AppointmentsCard(
+                    image: AppImages.getStarted1,
+                    name: "Sagor Ahamed",
+                    appointmentsType: "Upcoming",
+                    date: DateTime.now(),
+                    messageIcon: AppIcons.messageIcon2,
+                    time: "14:00 PM",
+                    leftBtnName: 'Cancel Appointment',
+                    rightBtnName: 'See Details',
+                    rightBtnOnTap: () {
+                      Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
+                        'screenType': "${AppString.upcoming}"
+                      });
+                    },
+                  ),
+                );
+              },
             ),
 
             ///=======================Completed Lists====================>
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "Sagor Ahamed",
-                      leftBtnName: 'See Details',
-                      rightBtnName: 'Give Review',
-                      appointmentsType: 'Completed',
-                      date: DateTime.now(),
-                      leftBtnOnTap: (){
-                        Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen);
-                      },
-                      rightBtnOnTap: (){
-                        Get.toNamed(AppRoutes.userGiveReviewScreen);
-                      },
-
-                      time: "14:00 PM",
-                    ),
-                  );
-                },
-              ),
+            ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16.h),
+                  child: AppointmentsCard(
+                    image: AppImages.getStarted1,
+                    name: "Sagor Ahamed",
+                    leftBtnName: 'See Details',
+                    rightBtnName: 'Give Review',
+                    appointmentsType: 'Completed',
+                    date: DateTime.now(),
+                    leftBtnOnTap: () {
+                      Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen);
+                    },
+                    rightBtnOnTap: () {
+                      Get.toNamed(AppRoutes.userGiveReviewScreen);
+                    },
+                    time: "14:00 PM",
+                  ),
+                );
+              },
             ),
 
-
-
             ///=======================Cancelled Lists====================>
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "Sagor Ahamed",
-                      appointmentsType: 'Cancelled',
-                      date: DateTime.now(),
-                      time: "14:00 PM",
-                    ),
-                  );
-                },
-              ),
+            ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16.h),
+                  child: AppointmentsCard(
+                    image: AppImages.getStarted1,
+                    name: "Sagor Ahamed",
+                    appointmentsType: 'Cancelled',
+                    date: DateTime.now(),
+                    time: "14:00 PM",
+                  ),
+                );
+              },
             ),
           ],
         ),

@@ -1,21 +1,18 @@
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
-import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../utils/app_strings.dart';
 
-class PrescriptionForm extends StatefulWidget {
+class PrescriptionFormScreen extends StatefulWidget {
   @override
-  PrescriptionFormState createState() => PrescriptionFormState();
+  PrescriptionFormScreenState createState() => PrescriptionFormScreenState();
 }
 
-class PrescriptionFormState extends State<PrescriptionForm> {
+class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _formKeyMedicine = GlobalKey<FormState>();
   final List<Medication> _medications = [];
