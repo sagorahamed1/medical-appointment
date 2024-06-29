@@ -39,15 +39,14 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
           text: AppString.appointments,
-          fontsize: 18.h,
+          fontsize: 18,
           fontWeight: FontWeight.w600,
         ),
         bottom: TabBar(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           controller: _tabController,
           tabs: const [
             Tab(text: 'Upcoming'),
@@ -65,86 +64,76 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
       ),
 
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: Dimensions.paddingSizeDefault.w,
-            vertical: Dimensions.paddingSizeDefault.h),
+        padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w, vertical: Dimensions.paddingSizeDefault.h),
         child: TabBarView(
           controller: _tabController,
           children: [
-            ///=======================Up Coming Lists====================>
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "Sagor Ahamed",
-                      appointmentsType: "Upcoming",
-                      date: DateTime.now(),
-                      messageIcon: AppIcons.messageIcon2,
-                      time: "14:00 PM",
-                      leftBtnName: 'Cancel Appoinment',
-                      rightBtnName: 'See Details',
-                    ),
-                  );
-                },
-              ),
+            // Upcoming Tab
+            ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16),
+                  child: AppointmentsCard(
+                    image: AppImages.getStarted1,
+                    name: "Sagor Ahamed",
+                    appointmentsType: "Upcoming",
+                    date: DateTime.now(),
+                    messageIcon: AppIcons.messageIcon2,
+                    time: "14:00 PM",
+                    leftBtnName: 'Cancel Appointment',
+                    rightBtnName: 'See Details',
+                  ),
+                );
+              },
             ),
 
-            ///=======================Completed Lists====================>
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "Sagor Ahamed",
-                      leftBtnName: 'See Details',
-                      rightBtnName: 'Give Review',
-                      appointmentsType: 'Completed',
-                      date: DateTime.now(),
-                      leftBtnOnTap: (){
-                        Get.toNamed(AppRoutes.userAppointmentsDetailsScreen);
-                      },
-                      rightBtnOnTap: (){
-                        Get.toNamed(AppRoutes.userGiveReviewScreen);
-                      },
-
-                      time: "14:00 PM",
-                    ),
-                  );
-                },
-              ),
+            // Completed Tab
+            ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16),
+                  child: AppointmentsCard(
+                    image: AppImages.getStarted1,
+                    name: "Sagor Ahamed",
+                    leftBtnName: 'See Details',
+                    rightBtnName: 'Give Review',
+                    appointmentsType: 'Completed',
+                    date: DateTime.now(),
+                    leftBtnOnTap: () {
+                      Get.toNamed(AppRoutes.userAppointmentsDetailsScreen);
+                    },
+                    rightBtnOnTap: () {
+                      Get.toNamed(AppRoutes.userGiveReviewScreen);
+                    },
+                    time: "14:00 PM",
+                  ),
+                );
+              },
             ),
 
-
-
-            ///=======================Cancelled Lists====================>
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "Sagor Ahamed",
-                      appointmentsType: 'Cancelled',
-                      date: DateTime.now(),
-                      time: "14:00 PM",
-                    ),
-                  );
-                },
-              ),
+            // Cancelled Tab
+            ListView.builder(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 16),
+                  child: AppointmentsCard(
+                    image: AppImages.getStarted1,
+                    name: "Sagor Ahamed",
+                    appointmentsType: 'Cancelled',
+                    date: DateTime.now(),
+                    time: "14:00 PM",
+                  ),
+                );
+              },
             ),
           ],
         ),
       ),
     );
+
   }
 }
 
