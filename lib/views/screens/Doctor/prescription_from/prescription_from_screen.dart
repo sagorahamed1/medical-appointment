@@ -1,11 +1,18 @@
+import 'dart:io';
+
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
+import '../../../widgets/pop_up_menu.dart';
 
 class PrescriptionFormScreen extends StatefulWidget {
   @override
@@ -16,6 +23,19 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _formKeyMedicine = GlobalKey<FormState>();
   final List<Medication> _medications = [];
+
+  List diagnosis = [
+    'Hypertension (High Blood Pressure)',
+    'Diabetes Mellitus (Type 2 Diabetes)',
+    "Hyperlipidemia (High Cholesterol)",
+    'Asthma',
+    'Chronic Obstructive Pulmonary Disease (COPD)',
+    'Depression',
+    'Anxiety Disorders',
+    'Obesity',
+    'Osteoarthritis',
+    'Hypothyroidism'
+  ];
 
   TextEditingController doctorNameCtrl = TextEditingController();
   TextEditingController contactInfoCtrl = TextEditingController();
@@ -30,6 +50,13 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
   TextEditingController madicineNameCtrl = TextEditingController();
   TextEditingController instructionsCtrl = TextEditingController();
   TextEditingController followUpDateCtrl = TextEditingController();
+
+  String pathPDF = "";
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,16 +81,21 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
               _buildHeaderSection(),
               // Body Section
               _buildBodySection(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Footer Section
               _buildFooterSection(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Submit Button
 
               CustomButton(
-                  onpress: () {
+                  onpress: () async {
                     if (_formKey.currentState!.validate()) {
-                      // Process the prescription
+                      await generatePDF();
+                      if (pathPDF.isNotEmpty) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                PdfViewerScreen(pathPDF: pathPDF)));
+                      }
                     }
                   },
                   title: 'Submit Prescription')
@@ -97,16 +129,16 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
 
         ///=========================Contact Information===============<
 
-        Row(
+        const Row(
           children: [
             Text("Patient Name : "),
             Expanded(child: Text("Sagor Ahamed"))
           ],
         ),
-        Row(
+        const Row(
           children: [Text("Age : "), Expanded(child: Text("25"))],
         ),
-        Row(
+        const Row(
           children: [Text("Gender : "), Expanded(child: Text("Male"))],
         ),
         const Row(
@@ -134,6 +166,15 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
             contenpaddingHorizontal: 20,
             contenpaddingVertical: 0,
             hintText: 'Diagnosis',
+            sufixicons: PopUpMenu(
+              items: diagnosis,
+              selectedItem: diagnosisCtrl.text,
+              onTap: (int index) {
+                setState(() {
+                  diagnosisCtrl.text = diagnosis[index];
+                });
+              },
+            ),
             validator: (value) {
               if (value!.isEmpty) return 'Please enter diagnosis';
               return null;
@@ -276,7 +317,13 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                     name: medicineNameCtrl.text,
                     dosage: dosageCtrl.text,
                     frequency: frequencyCtrl.text,
-                    duration: durationCtrl.text));
+                    duration: durationCtrl.text)
+                );
+
+                medicineNameCtrl.clear();
+                dosageCtrl.clear();
+                frequencyCtrl.clear();
+                durationCtrl.clear();
                 setState(() {});
               }
             },
@@ -294,7 +341,8 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                     children: [
                       const Icon(Icons.add, color: AppColors.primaryColor),
                       CustomText(
-                          text: "  Add Medication", color: AppColors.primaryColor)
+                          text: "  Add Medication",
+                          color: AppColors.primaryColor)
                     ],
                   ),
                 ),
@@ -334,10 +382,197 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
               return null;
             },
             controller: instructionsCtrl),
-
       ],
     );
   }
+
+  ///==============================PDF Generator==============>
+  Future<void> generatePDF() async {
+    final pdf = pw.Document();
+    final diagnosis = diagnosisCtrl.text;
+    final instrction = instructionsCtrl.text;
+
+    final headerStyle1 =
+        pw.TextStyle(fontSize: 35.h, fontWeight: pw.FontWeight.bold);
+    final headerStyle =
+        pw.TextStyle(fontSize: 27.h, fontWeight: pw.FontWeight.bold);
+    final mediuamStyle = pw.TextStyle(fontSize: 22.h);
+    final PdfColor containerColor = const PdfColor.fromInt(0xFF193664);
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) => pw.Center(
+          child: pw.Column(
+            mainAxisAlignment: pw.MainAxisAlignment.center,
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              ///================topic Name================>
+              pw.Text('Prescription', style: headerStyle1),
+
+              pw.SizedBox(height: 16),
+              pw.Container(
+                  height: 16, width: double.infinity, color: containerColor),
+
+              ///===================Prescription No==========>
+              pw.Column(children: [
+                pw.SizedBox(height: 16),
+                pw.Row(children: [
+                  pw.Text('Prescription No :', style: mediuamStyle),
+                  pw.Text('00012145', style: mediuamStyle),
+                ])
+              ]),
+
+              ///===================Prescription Date==========>
+              pw.Column(children: [
+                pw.SizedBox(height: 10),
+                pw.Row(children: [
+                  pw.Text('Prescription Date: ', style: mediuamStyle),
+                  pw.Text('November 8, 2021', style: mediuamStyle),
+                ])
+              ]),
+
+              pw.SizedBox(height: 20),
+
+              pw.Container(
+                  height: 15, width: double.infinity, color: PdfColors.amber),
+              pw.SizedBox(height: 8),
+
+              ///====================Patient Information============>
+              pw.Align(
+                alignment: pw.Alignment.centerLeft,
+                child: pw.Text('Patient Information', style: headerStyle),
+              ),
+
+              pw.SizedBox(height: 12),
+
+              ///===================Name and Age==========>
+              pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.SizedBox(
+                      width: 150.w,
+                      child: pw.Column(children: [
+                        pw.Row(children: [
+                          pw.Text('Name: ', style: mediuamStyle),
+                          pw.Text('Sagor Ahamed', style: mediuamStyle),
+                        ])
+                      ]),
+                    ),
+                    pw.Column(children: [
+                      pw.Row(children: [
+                        pw.Text('Age: ', style: mediuamStyle),
+                        pw.Text('25 Years', style: mediuamStyle),
+                      ])
+                    ]),
+                  ]),
+
+              ///===================Phone Number and Age==========>
+              pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Column(children: [
+                      pw.SizedBox(height: 20),
+                      pw.Row(children: [
+                        pw.Text('Gender: ', style: mediuamStyle),
+                        pw.Text('Male', style: mediuamStyle),
+                      ])
+                    ]),
+                  ]),
+
+              pw.SizedBox(height: 10),
+
+              pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Problem: ', style: mediuamStyle),
+                    pw.Expanded(
+                      child: pw.Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. ',
+                          style: mediuamStyle,
+                          maxLines: 10),
+                    )
+                  ]),
+
+              pw.SizedBox(height: 12),
+
+              pw.Container(
+                  height: 15, width: double.infinity, color: PdfColors.amber),
+
+              pw.SizedBox(height: 12),
+
+              ///====================List of Prescribed Medications============>
+              pw.Align(
+                  alignment: pw.Alignment.centerLeft,
+                  child: pw.Text('List of Prescribed Medications',
+                      style: headerStyle)),
+              pw.SizedBox(height: 12),
+
+              pw.Table.fromTextArray(
+                context: context,
+                data: [
+                  // Header row
+                  ["Medicine Name", "Dosage", "Frequency", "Duration"],
+                  // Medication rows
+                  for (var medication in _medications)
+                    [
+                      medication.name ?? '',
+                      medication.dosage ?? '',
+                      medication.frequency ?? '',
+                      medication.duration ?? '',
+                    ],
+                ],
+                cellStyle: mediuamStyle,
+                headerDecoration: const pw.BoxDecoration(color: PdfColors.grey200),
+                headerStyle: pw.TextStyle(color: PdfColors.black, fontSize: 20.h, fontWeight: pw.FontWeight.bold),
+                cellAlignment: pw.Alignment.center,
+                cellHeight: 30,
+                headerHeight: 40,
+              ),
+
+              ///==============Diagnosis===============>
+              pw.Column(children: [
+                pw.SizedBox(height: 10),
+                pw.Row(children: [
+                  pw.Text('Diagnosis: ', style: mediuamStyle),
+                  pw.Text('$diagnosis', style: mediuamStyle),
+                ])
+              ]),
+
+              ///==============Instructions===============>
+              pw.Column(children: [
+                pw.SizedBox(height: 10),
+                pw.Row(children: [
+                  pw.Text('Instructions: ', style: mediuamStyle),
+                  pw.Text('$instrction', style: mediuamStyle),
+                ])
+              ]),
+
+              ///===================Physician Name and Physician Signature==========>
+              pw.Column(children: [
+                pw.SizedBox(height: 10),
+                pw.Row(children: [
+                  pw.Text('Physician Name: ', style: mediuamStyle),
+                  pw.Text('Dr. Paul', style: mediuamStyle),
+                ])
+              ]),
+              pw.SizedBox(height: 12),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final output = await getTemporaryDirectory();
+    final outputFilePath = "${output.path}/personal_info.pdf";
+    final file = File(outputFilePath);
+    await file.writeAsBytes(await pdf.save());
+
+    setState(() {
+      pathPDF = outputFilePath;
+    });
+  }
+
+
 }
 
 class Medication {
@@ -347,4 +582,37 @@ class Medication {
   String? duration;
 
   Medication({this.name, this.dosage, this.frequency, this.duration});
+}
+
+class PdfViewerScreen extends StatelessWidget {
+  final String pathPDF;
+
+  const PdfViewerScreen({super.key, required this.pathPDF});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: pathPDF.isNotEmpty
+          ? Center(
+              child: SizedBox(
+                height: 700.h,
+                width: 400.w,
+                child: PDFView(
+
+                  fitEachPage: true,
+                  filePath: pathPDF,
+                  enableSwipe: true,
+                  swipeHorizontal: true,
+                  autoSpacing: false,
+                  pageFling: false,
+                  onError: (error) {
+                    print(error.toString());
+                  },
+                ),
+              ),
+            )
+          : Text("Sagor"),
+    );
+  }
 }

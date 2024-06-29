@@ -229,7 +229,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         Expanded(
           child: ChatBubble(
-            clipper: ChatBubbleClipper9(type: BubbleType.receiverBubble),
+            clipper: ChatBubbleClipper5(type: BubbleType.receiverBubble),
             backGroundColor: Colors.white,
             margin: const EdgeInsets.only(top: 8, bottom: 8),
             child: Container(
@@ -295,7 +295,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${message['message']}' ?? "",
+                    '${message['message']}',
                     style: const TextStyle(color: Colors.white),
                     textAlign: TextAlign.start,
                   ),

@@ -35,6 +35,7 @@ class UserHomeScreen extends StatelessWidget {
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const TopAppBar(),
 
@@ -93,7 +94,7 @@ class UserHomeScreen extends StatelessWidget {
                     itemCount: 4,
                     itemBuilder: (context, index) {
                       return  Padding(
-                        padding:  EdgeInsets.only(left: index == 0 ? 19.w : 7.5.w),
+                        padding:  EdgeInsets.only(left: index == 0 ? 19.w : 7.5.w, right: index == 4-1 ? 20.w : 0.w),
                         child: AvailableDoctorsCard(
                           experience: "6 years",
                           rating: "4.0",
@@ -131,7 +132,7 @@ class UserHomeScreen extends StatelessWidget {
                     itemCount: 10,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding:  EdgeInsets.only(left: index == 0 ? 19.w : 8.w),
+                        padding:  EdgeInsets.only(left: index == 0 ? 19.w : 8.w, right: index == 10-1 ? 20.w : 0.w),
                         child: const AvailableDoctorsCard(
                           rating: "4.0",
                           doctorName: "Sagor Ahamed",
