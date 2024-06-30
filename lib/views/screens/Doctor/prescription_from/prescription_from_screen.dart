@@ -8,6 +8,8 @@ import 'package:doctor_appointment/views/widgets/custom_text_field_without_borde
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -36,6 +38,26 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
     'Osteoarthritis',
     'Hypothyroidism'
   ];
+
+  List<String> pharmacies = [
+    'CVS Pharmacy',
+    'Walgreens',
+    'Rite Aid',
+    'Walmart Pharmacy',
+    'Kroger Pharmacy',
+    'Albertsons/Safeway Pharmacy',
+    'Costco Pharmacy',
+    'Publix Pharmacy',
+    'H-E-B Pharmacy',
+    'Hy-Vee Pharmacy'
+  ];
+
+  List<String> getSuggestions(String query) {
+    List<String> matches = [];
+    matches.addAll(pharmacies);
+    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
 
   TextEditingController doctorNameCtrl = TextEditingController();
   TextEditingController contactInfoCtrl = TextEditingController();
@@ -151,8 +173,38 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
           ],
         ),
 
+        // CustomText(
+        //   text: "Diagnosis",
+        //   fontWeight: FontWeight.w600,
+        //   fontsize: 18.h,
+        //   top: 20.h,
+        //   color: AppColors.primaryColor,
+        // ),
+        //
+        // SizedBox(height: 16.h),
+        //
+        // ///=========================Contact Information===============<
+        // CustomTextFieldWithoutBorder(
+        //     contenpaddingHorizontal: 20,
+        //     contenpaddingVertical: 0,
+        //     hintText: 'Diagnosis',
+        //     sufixicons: PopUpMenu(
+        //       items: diagnosis,
+        //       selectedItem: diagnosisCtrl.text,
+        //       onTap: (int index) {
+        //         setState(() {
+        //           diagnosisCtrl.text = diagnosis[index];
+        //         });
+        //       },
+        //     ),
+        //     validator: (value) {
+        //       if (value!.isEmpty) return 'Please enter diagnosis';
+        //       return null;
+        //     },
+        //     controller: diagnosisCtrl),
+
         CustomText(
-          text: "Diagnosis",
+          text: "Pharmacy",
           fontWeight: FontWeight.w600,
           fontsize: 18.h,
           top: 20.h,
@@ -162,16 +214,39 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
         SizedBox(height: 16.h),
 
         ///=========================Contact Information===============<
+        // TypeAheadField(
+        //    controller: diagnosisCtrl,
+        //   itemBuilder: (context, value) {
+        //     return CustomText(
+        //       text: value.toString(),
+        //       fontsize: 14.h,
+        //       color: Colors.black,
+        //       top: 10.h,
+        //       textAlign: TextAlign.start,
+        //       left: 16.w,
+        //     );
+        //   },
+        //   onSelected: (String suggestion) {
+        //     setState(() {
+        //       diagnosisCtrl.text = suggestion;
+        //     });
+        //   },
+        //   suggestionsCallback: (search) {
+        //     return getSuggestions(search);
+        //   },
+        // )
+
+
         CustomTextFieldWithoutBorder(
             contenpaddingHorizontal: 20,
             contenpaddingVertical: 0,
-            hintText: 'Diagnosis',
+            hintText: 'Pharmacy',
             sufixicons: PopUpMenu(
-              items: diagnosis,
+              items: pharmacies,
               selectedItem: diagnosisCtrl.text,
               onTap: (int index) {
                 setState(() {
-                  diagnosisCtrl.text = diagnosis[index];
+                  diagnosisCtrl.text = pharmacies[index];
                 });
               },
             ),
@@ -317,8 +392,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                     name: medicineNameCtrl.text,
                     dosage: dosageCtrl.text,
                     frequency: frequencyCtrl.text,
-                    duration: durationCtrl.text)
-                );
+                    duration: durationCtrl.text));
 
                 medicineNameCtrl.clear();
                 dosageCtrl.clear();
@@ -522,8 +596,12 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                     ],
                 ],
                 cellStyle: mediuamStyle,
-                headerDecoration: const pw.BoxDecoration(color: PdfColors.grey200),
-                headerStyle: pw.TextStyle(color: PdfColors.black, fontSize: 20.h, fontWeight: pw.FontWeight.bold),
+                headerDecoration:
+                    const pw.BoxDecoration(color: PdfColors.grey200),
+                headerStyle: pw.TextStyle(
+                    color: PdfColors.black,
+                    fontSize: 20.h,
+                    fontWeight: pw.FontWeight.bold),
                 cellAlignment: pw.Alignment.center,
                 cellHeight: 30,
                 headerHeight: 40,
@@ -571,8 +649,6 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
       pathPDF = outputFilePath;
     });
   }
-
-
 }
 
 class Medication {
@@ -599,7 +675,6 @@ class PdfViewerScreen extends StatelessWidget {
                 height: 700.h,
                 width: 400.w,
                 child: PDFView(
-
                   fitEachPage: true,
                   filePath: pathPDF,
                   enableSwipe: true,
