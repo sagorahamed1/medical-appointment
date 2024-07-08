@@ -1,6 +1,8 @@
 class AppConstants{
   ///=======================Prefs Helper data===============================>
  static const String role = "role";
+ static const String isLogged = "isLogged";
+ static const String bearerToken = "bearerToken";
  static String roleMock = '';
 
   static RegExp emailValidate = RegExp(
