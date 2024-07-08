@@ -114,7 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ///==========================password name ============================>
                 Obx(
                   () => CustomTextField(
-                    onChanged: (value) {setState(() {});},
+                    // onChanged: (value) {setState(() {});},
                     contenpaddingHorizontal: 20,
                     contenpaddingVertical: 0,
                     isObscureText: _authController.isObscure.value,
@@ -152,11 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ///==========================confirm password name ============================>
                 Obx(
                   () => CustomTextField(
-                    onChanged: (value) {
-                      setState(() {
-
-                      });
-                    },
+                    // onChanged: (value) {setState(() {});},
                     contenpaddingHorizontal: 20,
                     contenpaddingVertical: 0,
                     controller: confirmPasswordCtrl,
@@ -198,15 +194,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 104.h),
 
                 CustomButton(onpress: ()  {
-                  Get.offAllNamed(AppRoutes.veryfyEmailScreen);
+
                   // if (_formKey.currentState!.validate()) {
-                  //   if (_authController.isChecked) {
-                  //    ///Route here
-                  //   } else {
-                  //     setState(() {
-                  //       _authController.isCheckboxError = true;
-                  //     });
-                  //   }
+                    // if (_authController.isChecked) {
+                      _authController.handleSignUp(
+                        firstNameCtrl.text,
+                        lastNameCtrl.text,
+                        emailCtrl.text,
+                        passwordCtrl.text.trim(),
+                      );
+                    // } else {
+                    //   setState(() {
+                    //     _authController.isCheckboxError = true;
+                    //   });
+                    // }
                   // }
                 }, title: AppString.signUp),
                 SizedBox(height: 24.h),
