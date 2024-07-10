@@ -64,9 +64,9 @@ class VeryfyEmailScreen extends StatelessWidget {
                   loading: _authController.verfyLoading.value,
                 onpress: () {
                   if (Get.parameters['screenType'] == 'forgotPassword') {
-                    _authController.verfyEmail(_authController.otpCtrl.text,Get.parameters['email'], type:  'forgotPassword');
+                    _authController.verfyEmail(_authController.otpCtrl.text,Get.parameters['email'], 'forgotPassword');
                   } else {
-                    _authController.verfyEmail(_authController.otpCtrl.text, Get.parameters['email']);
+                    _authController.verfyEmail(_authController.otpCtrl.text, Get.parameters['email'], 'signUp');
                   }
 
                   // Get.parameters['screenType'] == 'forgotPassword' ? Get.toNamed(AppRoutes.setPasswordScreen) :
