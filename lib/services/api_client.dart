@@ -24,7 +24,7 @@ class ApiClient extends GetxService {
 
     var mainHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $bearerToken'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjhhN2VkODA4MzdmODRkOTdhMjAzNjgiLCJlbWFpbCI6ImFoYWQuYWltYW4yQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzIwNDE3ODMyLCJleHAiOjE3NTE5NTM4MzJ9.K99sNDEnOQQG7KObc5uPCV6D18kGCpt2OJuMBZUtSss'
     };
     try {
       debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
@@ -45,21 +45,21 @@ class ApiClient extends GetxService {
 //==========================================> Post Data <======================================
   static Future<Response> postData(String uri, dynamic body,
       {Map<String, String>? headers}) async {
-    // String bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
-    //
-    // var mainHeaders = {
-    //   'Content-Type': 'application/json'
-    // };
+    String bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+
+    var mainHeaders = {
+      'Content-Type': 'application/json'
+    };
 
     try {
-      // print('====> API Call: $uri\nHeader: $mainHeaders');
+      print('====> API Call: $uri\nHeader: $mainHeaders');
       print('====> API Body: $body');
 
       http.Response response = await client
           .post(
         Uri.parse(ApiConstants.baseUrl + uri),
         body: body,
-        headers: headers,
+        headers: headers ?? mainHeaders,
       ).timeout(const Duration(seconds: timeoutInSeconds));
 
       print("==========> Response Post Method : ${response.statusCode}");

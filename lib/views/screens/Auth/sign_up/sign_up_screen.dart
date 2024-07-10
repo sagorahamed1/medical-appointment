@@ -193,7 +193,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 SizedBox(height: 104.h),
 
-                CustomButton(onpress: ()  {
+                CustomButton(
+                    loading: _authController.signUpLoading.value,
+                    onpress: ()  {
 
                   // if (_formKey.currentState!.validate()) {
                     // if (_authController.isChecked) {

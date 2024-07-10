@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +19,7 @@ class SetPasswordScreen extends StatelessWidget {
 
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController confirmPasswordCtrl = TextEditingController();
+  final AuthController _authController = Get.put(AuthController());
 
   RxBool isObscure = true.obs;
   RxBool isObscureConfirmPassword = true.obs;
@@ -141,7 +143,8 @@ class SetPasswordScreen extends StatelessWidget {
             const Spacer(),
             CustomButton(
                 onpress: () {
-                  Get.toNamed(AppRoutes.signInScreen);
+                  _authController.setPassword('${Get.parameters['eamil']}', passwordCtrl.text);
+                  // Get.toNamed(AppRoutes.signInScreen);
                 },
                 title: AppString.setNewPassword),
             SizedBox(height: 72.h)

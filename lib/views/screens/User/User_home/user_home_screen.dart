@@ -22,6 +22,7 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _homeController.getCetegory();
     return Scaffold(
       body: SafeArea(
         child: Padding(
