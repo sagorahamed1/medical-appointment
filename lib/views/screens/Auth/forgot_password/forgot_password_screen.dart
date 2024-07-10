@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/controllers/auth_controller.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,12 +14,16 @@ import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field_without_border.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
+
   ForgotPasswordScreen({super.key});
 
   TextEditingController emailCtrl = TextEditingController();
+  final AuthController _authController = Get.put(AuthController());
+
 
   @override
   Widget build(BuildContext context) {
+    emailCtrl.text = Get.parameters['email'] ?? '';
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
@@ -54,9 +59,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             ),
             const Spacer(),
             CustomButton(onpress: () {
-              Get.toNamed(AppRoutes.veryfyEmailScreen, parameters: {
-                "screenType" : "forgotPassword"
-              });
+             _authController.handleForgot(emailCtrl.text, 'forgotPassword');
             }, title: AppString.sendOTP),
             SizedBox(height: 72.h)
           ],

@@ -47,15 +47,16 @@ class RoleScreen extends StatelessWidget {
               btnRadius: 8,
               width: 169.w,
               initialSeclected: 1,
+              // ["admin", "user", "doctor"],
               leftBtnOnTap: ()async{
                 Get.toNamed(AppRoutes.signInScreen);
-                await PrefsHelper.setString(AppConstants.role, AppString.user);
+                // await PrefsHelper.setString(AppConstants.role, 'user');
 
               },
               rightBtnOnTap: ()async{
                 Get.toNamed(AppRoutes.signInScreen);
                 AppConstants.roleMock = 'doctor';
-                await PrefsHelper.setString(AppConstants.role, AppString.doctor);
+                // await PrefsHelper.setString(AppConstants.role, 'doctor');
               },
               btnNameList: const ['Patient', AppString.doctor],
 

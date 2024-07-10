@@ -24,7 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Timer(Duration(seconds: 3), () {
-      Get.offAllNamed(AppRoutes.onboardingScreen);
+      // Get.offAllNamed(AppRoutes.fillProfileScreen);
+       Get.offAllNamed(AppRoutes.onboardingScreen);
     });
   }
 

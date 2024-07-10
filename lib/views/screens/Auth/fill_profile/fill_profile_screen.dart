@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -7,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/auth_controller.dart';
 import '../../../../helpers/image_pic_helper.dart';
@@ -28,7 +33,12 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
   final AuthController _authController = Get.put(AuthController());
 
   List genderList = ['Male', 'Female', "Others"];
-  Image? _image;
+
+  // Image? _image;
+  // File? image;
+  DateTime selectedDate = DateTime.now();
+  Uint8List? _image;
+  File? selectedIMage;
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +60,36 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
             Center(
               child: Stack(
                 children: [
-                  _image != null ? Image(image: _image!.image, height: 144.h,width: 144.w,fit: BoxFit.cover):
-                  Image.asset(
-                    AppImages.fillProfile,
-                    height: 144.h,
-                    width: 144.w,
-                    fit: BoxFit.cover,
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppColors.primaryColor, width: 0.5),
+                    ),
+                    child: _image != null
+                        ? CircleAvatar(
+                            radius: 60.r, backgroundImage: MemoryImage(_image!))
+                        : Container(
+                            clipBehavior: Clip.antiAlias,
+                            height: 100.h,
+                            width: 100.w,
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            child:
+                                // profileData?.image?.publicFileUrl == null || profileData?.image?.publicFileUrl == '' ?
+                                // CachedNetworkImage(
+                                //   imageUrl:  "${ApiConstant.imageBaseUrl}/${profileData?.image
+                                //       ?.publicFileUrl}",fit: BoxFit.cover,)
+                                //     :
+                                Image.asset(
+                              AppImages.fillProfile,
+                              fit: BoxFit.cover,
+                            )),
                   ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           showImagePickerOption(context);
                         },
                         child: SvgPicture.asset(AppIcons.galaryIcon)),
@@ -80,7 +108,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
             ),
 
             ///=====================Gender ======================>
-               CustomTextFieldWithoutBorder(
+            CustomTextFieldWithoutBorder(
                 readOnly: true,
                 contenpaddingHorizontal: 20.w,
                 contenpaddingVertical: 0.h,
@@ -90,10 +118,9 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                   items: genderList,
                   selectedItem: "Male",
                   onTap: (int index) {
+                    _authController.genderCtrl.text = genderList[index];
                   },
-
-                )
-            ),
+                )),
             SizedBox(height: 16.h),
 
             ///=====================Date of birth ======================>
@@ -102,10 +129,30 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
               contenpaddingVertical: 0.h,
               controller: _authController.dateOfBirthCtrl,
               hintText: AppString.dateOfBirth,
+              sufixicons: GestureDetector(
+                onTap: (){
+                  selectDate(context);
+                },
+                child: Padding(
+                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                    child: SvgPicture.asset(
+                      AppIcons.calendar,
+                      color: AppColors.gray767676,
+                    )),
+              ),
+            ),
+
+            SizedBox(height: 16.h),
+            ///=====================Insurance======================>
+            CustomTextFieldWithoutBorder(
+              contenpaddingHorizontal: 20.w,
+              contenpaddingVertical: 0.h,
+              controller: _authController.dateOfBirthCtrl,
+              hintText: 'Insurance',
               sufixicons: Padding(
                   padding: EdgeInsets.only(left: 20.w, right: 20.w),
                   child: SvgPicture.asset(
-                    AppIcons.calendar,
+                    AppIcons.attachFile,
                     color: AppColors.gray767676,
                   )),
             ),
@@ -135,39 +182,37 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
             SizedBox(height: 48.h),
             // const Spacer(),
             CustomButton(
+              // loading: _authController.fillProfileLoading.value,
                 onpress: () {
-                 AppConstants.roleMock == "doctor" ?Get.toNamed(AppRoutes.continueDoctorDetailsScreen) :  Get.toNamed(AppRoutes.signInScreen);
+                   _authController.fillProfileOrUpDate(selectedIMage);
                 },
                 title: AppString.continues),
-
           ],
         ),
       ),
     );
   }
 
+
   //==================================> ShowImagePickerOption Function <===============================
+
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
-        backgroundColor: AppColors.gray767676,
+        backgroundColor: Colors.white,
         context: context,
         builder: (builder) {
           return Padding(
             padding: const EdgeInsets.all(18.0),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 4.2,
+              height: MediaQuery.of(context).size.height / 6.2,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        final image =  ImagePickerHelper.pickImageFromGallery();
-                        setState(() {
-                          _image = image as Image?;
-                        });
-
+                        _pickImageFromGallery();
                       },
                       child: SizedBox(
                         child: Column(
@@ -185,10 +230,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        final image =    ImagePickerHelper.pickImageFromCamera();
-                        setState(() {
-                          _image = image as Image;
-                        });
+                        _pickImageFromCamera();
                       },
                       child: SizedBox(
                         child: Column(
@@ -208,5 +250,45 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
             ),
           );
         });
+  }
+
+  //==================================> Gallery <===============================
+  Future _pickImageFromGallery() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    Get.back();
+  }
+
+//==================================> Camera <===============================
+  Future _pickImageFromCamera() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    // Get.back();
+  }
+
+  //==================================> Calender <==================================
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      selectedDate = pickedDate;
+      _authController.dateOfBirthCtrl.text = '$selectedDate';
+      print('Selected date: ${_authController.dateOfBirthCtrl.text}');
+    }
   }
 }
