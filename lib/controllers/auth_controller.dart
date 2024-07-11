@@ -85,7 +85,7 @@ class AuthController extends GetxController {
       if (type == 'forgotPassword') {
         Get.toNamed(AppRoutes.setPasswordScreen,
             parameters: {'email': "${Get.parameters['email']}"});
-      } else {
+      } else if(type == 'signUp'){
         Get.toNamed(AppRoutes.fillProfileScreen);
         ToastMessageHelper.showToastMessage(
             'OTP verified successfully! Your account is now active.');
@@ -151,7 +151,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(
           AppConstants.role, data['attributes']['role']);
       await PrefsHelper.setString(AppConstants.token, data['token']);
-      await PrefsHelper.setString(AppConstants.isLogged, true);
+      await PrefsHelper.setBool(AppConstants.isLogged, true);
       var role = data['attributes']['role'];
       var isAdmin = data['attributes']['isAdmin'];
 
@@ -200,13 +200,34 @@ class AuthController extends GetxController {
     var body = {"email": email, "password": password};
 
     var response = await ApiClient.postData(
-        ApiConstants.forgotPasswordPoint, jsonEncode(body));
+        ApiConstants.setPasswordPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       Get.offAllNamed(AppRoutes.signInScreen);
       ToastMessageHelper.showToastMessage('Password Changed');
       print("======>>> successful");
       setPasswordLoading(false);
+    }
+  }
+
+
+
+
+  ///===============Resend================<>
+  RxBool resendLoading = false.obs;
+
+  reSendOtp(String email) async {
+    resendLoading(true);
+    var body = {"email": email};
+
+    var response = await ApiClient.postData(
+        ApiConstants.forgotPasswordPoint, jsonEncode(body));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Get.offAllNamed(AppRoutes.signInScreen);
+      ToastMessageHelper.showToastMessage('Password Changed');
+      print("======>>> successful");
+      resendLoading(false);
     }
   }
 }
