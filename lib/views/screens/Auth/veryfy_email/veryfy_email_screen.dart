@@ -53,10 +53,15 @@ class VeryfyEmailScreen extends StatelessWidget {
                     text: AppString.didntGetTheCode,
                     fontsize: 16.h,
                     color: AppColors.textColor5C5C5C),
-                CustomText(
-                    text: AppString.resend,
-                    fontsize: 16.h,
-                    color: AppColors.primaryColor),
+                GestureDetector(
+                  onTap: (){
+                    _authController.reSendOtp('${Get.parameters['email']}');
+                  },
+                  child: CustomText(
+                      text: AppString.resend,
+                      fontsize: 16.h,
+                      color: AppColors.primaryColor),
+                ),
               ],
             ),
             const Spacer(),
