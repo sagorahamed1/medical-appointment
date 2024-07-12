@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 
@@ -31,6 +32,21 @@ class TimeFormatHelper {
   //   }
   // }
   //
+
+  //===============================> Show Clock Function <=======================
+  static Future<void> selectTime(BuildContext context, Function(String) onTimeSelected) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (pickedTime != null) {
+      final hours = pickedTime.hour.toString().padLeft(2, '0');
+      final minutes = pickedTime.minute.toString().padLeft(2, '0');
+      final time = "$hours:$minutes";
+      onTimeSelected(time);
+      print('Selected time: $time');
+    }
+  }
 
 
 }

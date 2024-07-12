@@ -1,4 +1,3 @@
-import 'package:doctor_appointment/controllers/home_controller.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/screens/User/User_home/Inner_widgets/categorySection.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../controllers/user/home_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
@@ -22,7 +22,7 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _homeController.getCetegory();
+    _homeController.getDoctorByCetegory();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -86,33 +86,35 @@ class UserHomeScreen extends StatelessWidget {
 
 
                 ///======================available doctor list=================>
-                SizedBox(
-                  height: 230.h,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    // physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return  Padding(
-                        padding:  EdgeInsets.only(left: index == 0 ? 19.w : 7.5.w, right: index == 4-1 ? 20.w : 0.w),
-                        child: AvailableDoctorsCard(
-                          experience: "6 years",
-                          rating: "4.0",
-                          clinicVisit: r"$20",
-                          doctorName: "Sagor Ahamed",
-                          totalConsultaion: "12",
-                          onlineConsultation: r'$50',
-                          specialist: "Therapist",
-                          imageHeight: 142,
-                          leftBtnText: AppString.seeDetails,
-                          rightBtnText: AppString.bookAppointment,
-                          leftBtnOntap: (){
-                            Get.toNamed(AppRoutes.userDoctorDetailsScreen);
-                          },
-                        ),
-                      );
-                    },
+                Obx(()=> SizedBox(
+                    height: 230.h,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      // physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _homeController.doctorLists.length,
+                      itemBuilder: (context, index) {
+                        var doctorInfo = _homeController.doctorLists[index];
+                        return  Padding(
+                          padding:  EdgeInsets.only(left: index == 0 ? 19.w : 7.5.w, right: index == 4-1 ? 20.w : 0.w),
+                          child: AvailableDoctorsCard(
+                            experience: "${doctorInfo.experience}",
+                            rating: "{ing}",
+                            clinicVisit: "\$${doctorInfo.clinicPrice}",
+                            doctorName: "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
+                            totalConsultaion: "12",
+                            onlineConsultation: '\$${doctorInfo.onlineConsultationPrice}',
+                            specialist: "${doctorInfo.specialist}",
+                            imageHeight: 142,
+                            leftBtnText: AppString.seeDetails,
+                            rightBtnText: AppString.bookAppointment,
+                            leftBtnOntap: (){
+                              Get.toNamed(AppRoutes.userDoctorDetailsScreen);
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
 

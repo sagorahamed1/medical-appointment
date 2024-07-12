@@ -97,7 +97,6 @@ class SignInScreen extends StatelessWidget {
             ///=====================forgot password=================>
             GestureDetector(
                 onTap: () {
-                  // _authController.handleForgot(emailCtrl.text);
                   Get.toNamed(AppRoutes.forgotPasswordScreen, parameters: {
                     'email' : emailCtrl.text
                   });

@@ -1,3 +1,6 @@
+
+import 'package:doctor_appointment/controllers/auth_controller.dart';
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/views/widgets/pop_up_menu.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +14,15 @@ import '../../../widgets/custom_doctor_time_available_card.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field_without_border.dart';
 
-class ContinueDoctorDetailsScreen extends StatelessWidget {
+class ContinueDoctorDetailsScreen extends StatefulWidget {
   ContinueDoctorDetailsScreen({super.key});
+
+  @override
+  State<ContinueDoctorDetailsScreen> createState() => _ContinueDoctorDetailsScreenState();
+}
+
+class _ContinueDoctorDetailsScreenState extends State<ContinueDoctorDetailsScreen> {
+
 
   TextEditingController specialistCtrl = TextEditingController();
   TextEditingController experienceCtrl = TextEditingController();
@@ -21,6 +31,7 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
   TextEditingController priceForClinicCtrl = TextEditingController();
   TextEditingController priceForOnlineCtrl = TextEditingController();
   TextEditingController priceForEmargenceCtrl = TextEditingController();
+  final AuthController _authController = Get.put(AuthController());
 
   final List<String> specialists = [
     'Dentist',
@@ -34,7 +45,6 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
     'Gynecologic',
   ];
 
-
   final List<String> experience = [
     '1 Year',
     '2 Year',
@@ -47,6 +57,22 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
     '9 Year',
     '10 Year',
   ];
+
+
+  String mondayStart = '08:00';
+  String mondayEnd = '04:00';
+  String tuesDayStart = '08:00';
+  String tuesDayEnd = '04:00';
+  String wednesdayStart = '08:00';
+  String wednesdayEnd = '04:00';
+  String thursdayStart = '08:00';
+  String thursdayEnd = '04:00';
+  String fridayStart = '08:00';
+  String fridayEnd = '04:00';
+  String saturdayStart = '08:00';
+  String saturdayEnd = '04:00';
+  String sundayStart = '08:00';
+  String sundayEnd = '04:00';
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +110,9 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
                   sufixicons: PopUpMenu(
                     items: specialists,
                     selectedItem: "Dentist",
-                    onTap: (int selceted){},
+                    onTap: (int selceted){
+                      specialistCtrl.text = specialists[selceted];
+                    },
 
                   ),
                   controller: specialistCtrl),
@@ -97,7 +125,9 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
                   sufixicons: PopUpMenu(
                     items: experience,
                     selectedItem: "1 Year",
-                    onTap: (int selceted){},
+                    onTap: (int selceted){
+                      experienceCtrl.text = experience[selceted];
+                    },
 
                   ),
                   controller: experienceCtrl),
@@ -107,7 +137,7 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
                   maxLines: 4,
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 15,
-                  hintText: "2972 Westheimer Rd. Santa Ana, Illinois 85486 ",
+                  hintText: "Address",
                   controller: addressCtrl),
 
               SizedBox(height: 16.h),
@@ -116,7 +146,7 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 15,
                   hintText:
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                  "About Doctor",
                   controller: aboutDoctorCtrl),
 
               ///=======================Avoidable Doctors=====================>
@@ -129,43 +159,137 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
                   color: Colors.black,
                   textAlign: TextAlign.start),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+              ///====================monday ================>
+               CustomDoctorTimeAvailableCard(
+                onTapStart: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    mondayStart = selectTime;
+                  });});
+                },
+
+                 onTapEnd: (){
+                   TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                     mondayEnd = selectTime;
+                   });});
+                 },
+                startTime: mondayStart,
+                endTime: mondayEnd,
                 dayName: AppString.monday,
               ),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+
+              ///====================tuesday ================>
+               CustomDoctorTimeAvailableCard(
+                onTapStart: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    tuesDayStart = selectTime;
+                  });});
+                },
+
+                onTapEnd: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    tuesDayEnd = selectTime;
+                  });});
+                },
+                startTime: tuesDayStart,
+                endTime: tuesDayEnd,
+                dayName: AppString.tuesday,
+              ),
+
+
+               ///====================wednesday ================>
+               CustomDoctorTimeAvailableCard(
+                onTapStart: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    wednesdayStart = selectTime;
+                  });});
+                },
+
+                onTapEnd: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    wednesdayEnd = selectTime;
+                  });});
+                },
+                startTime: wednesdayStart,
+                endTime: wednesdayEnd,
+                dayName: AppString.wednesday,
+              ),
+
+               ///==================Thursday====================?
+               CustomDoctorTimeAvailableCard(
+                onTapStart: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    thursdayStart = selectTime;
+                  });});
+                },
+
+                onTapEnd: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    thursdayEnd = selectTime;
+                  });});
+                },
+                startTime: thursdayStart,
+                endTime: thursdayEnd,
                 dayName: AppString.thursday,
               ),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
-                dayName: AppString.thursday,
-              ),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+
+               ///===============Friday==================>
+               CustomDoctorTimeAvailableCard(
+                onTapStart: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    fridayStart = selectTime;
+                  });});
+                },
+
+                onTapEnd: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    fridayEnd = selectTime;
+                  });});
+                },
+                startTime: fridayStart,
+                endTime: fridayEnd,
                 dayName: AppString.friday,
               ),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+
+               ///===================Saturday==================>
+               CustomDoctorTimeAvailableCard(
+                onTapStart: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    saturdayStart = selectTime;
+                  });});
+                },
+
+                onTapEnd: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    saturdayEnd = selectTime;
+                  });});
+                },
+                startTime: saturdayStart,
+                endTime: saturdayEnd,
                 dayName: AppString.saturday,
               ),
 
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+               ///===================Sunday=====================>
+               CustomDoctorTimeAvailableCard(
+                onTapStart: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    sundayStart = selectTime;
+                  });});
+                },
+
+                onTapEnd: (){
+                  TimeFormatHelper.selectTime(context, (selectTime){setState(() {
+                    sundayEnd = selectTime;
+                  });});
+                },
+                startTime: sundayStart,
+                endTime: sundayEnd,
                 dayName: AppString.sunday,
               ),
-
 
 
 
@@ -201,7 +325,29 @@ class ContinueDoctorDetailsScreen extends StatelessWidget {
               SizedBox(height: 20.h),
 
               CustomButton(onpress: (){
-                Get.toNamed(AppRoutes.doctorBottomNavBar);
+                _authController.continueDoctorDetails(
+                  specialist: specialistCtrl.text,
+                  experience: experienceCtrl.text,
+                  clinicAddress: addressCtrl.text,
+                  about: aboutDoctorCtrl.text,
+                  clinicPrice: priceForClinicCtrl.text,
+                  onlineConsultationPrice: priceForOnlineCtrl.text,
+                  emergencyPrice: priceForEmargenceCtrl.text,
+                  mondayStart: mondayStart,
+                  mondayEnd: mondayEnd,
+                  tuesdayStart: tuesDayStart,
+                  tuesdayEnd: tuesDayEnd,
+                  wednesdayStart: wednesdayStart,
+                  wednesdayEnd: wednesdayEnd,
+                  thursdayStart: thursdayStart,
+                  thursdayEnd: thursdayEnd,
+                  fridayStart: fridayStart,
+                  fridayEnd: fridayEnd,
+                  saturdayStart: saturdayStart,
+                  saturdayEnd: saturdayEnd,
+                  sundayStart: sundayStart,
+                  sundayEnd: sundayEnd,
+                );
               }, title: AppString.continues),
 
               SizedBox(height: 35.h)

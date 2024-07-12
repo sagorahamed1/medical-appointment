@@ -10,6 +10,9 @@ class ApiConstants{
   static const String signInEndPoint = "/user/sign-in";
   static const String forgotPasswordPoint = "/user/forgot-password";
   static const String setPasswordPoint = "/user/set-password";
+  static const String reSendOtpPoint = "/user/resendOpt";
+  static const String continueDoctorPoint = "/doctor/create-details";
+  static  String getDoctor(String cetegory) => "/doctor/get-doctors?specialist=$cetegory";
   static const String category = "/category/get-category";
 
 

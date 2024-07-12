@@ -11,9 +11,11 @@ class CustomDoctorTimeAvailableCard extends StatelessWidget {
   final String? dayName;
   final String? startTime;
   final String? endTime;
+  final VoidCallback? onTapStart;
+  final VoidCallback? onTapEnd;
 
   const CustomDoctorTimeAvailableCard(
-      {super.key, this.dayName, this.startTime, this.endTime});
+      {super.key, this.dayName, this.startTime, this.endTime, this.onTapStart, this.onTapEnd});
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +30,20 @@ class CustomDoctorTimeAvailableCard extends StatelessWidget {
               width: 167.w,
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 7.w, right: 10.w),
-                        child: SvgPicture.asset(AppIcons.chock,
-                            width: 18.w, height: 18.h, fit: BoxFit.cover, color: AppColors.primaryColor),
-                      ),
-                      CustomText(
-                          text: '$startTime', color: AppColors.primaryColor),
-                    ],
+                  ///===================Start Time============>
+                  GestureDetector(
+                    onTap: onTapStart,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 7.w, right: 10.w),
+                          child: SvgPicture.asset(AppIcons.chock,
+                              width: 18.w, height: 18.h, fit: BoxFit.cover, color: AppColors.primaryColor),
+                        ),
+                        CustomText(
+                            text: '$startTime', color: AppColors.primaryColor),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 8.h),
@@ -50,16 +56,19 @@ class CustomDoctorTimeAvailableCard extends StatelessWidget {
               width: 167.w,
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 7.w, right: 10.w),
-                        child: SvgPicture.asset(AppIcons.chock,
-                            width: 18.w, height: 18.h, fit: BoxFit.cover, color: AppColors.primaryColor),
-                      ),
-                      CustomText(
-                          text: '$endTime', color: AppColors.primaryColor),
-                    ],
+                  GestureDetector(
+                    onTap: onTapEnd,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 7.w, right: 10.w),
+                          child: SvgPicture.asset(AppIcons.chock,
+                              width: 18.w, height: 18.h, fit: BoxFit.cover, color: AppColors.primaryColor),
+                        ),
+                        CustomText(
+                            text: '$endTime', color: AppColors.primaryColor),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 8.h),

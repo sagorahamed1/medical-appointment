@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,9 +25,22 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      // Get.offAllNamed(AppRoutes.fillProfileScreen);
-       Get.offAllNamed(AppRoutes.onboardingScreen);
+    Timer(Duration(seconds: 3), () async{
+    var  islogged = await PrefsHelper.getBool(AppConstants.isLogged);
+    var  token = await PrefsHelper.getString(AppConstants.token);
+    var  role = await PrefsHelper.getString(AppConstants.role);
+    print("===========is logged $islogged");
+    if(islogged){
+      if(token != null){
+        if(role == 'user'){
+          Get.offAllNamed(AppRoutes.userBottomNavBar);
+        }else{
+          Get.offAllNamed(AppRoutes.doctorBottomNavBar);
+        }
+      }
+    }else{
+      Get.offAllNamed(AppRoutes.onboardingScreen);
+    }
     });
   }
 
