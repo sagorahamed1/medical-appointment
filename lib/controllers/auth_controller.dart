@@ -130,13 +130,11 @@ class AuthController extends GetxController {
       "email": email,
       "password": password,
     };
-    var response = await ApiClient.postData(
-        ApiConstants.signInEndPoint, jsonEncode(body),
+    var response = await ApiClient.postData(ApiConstants.signInEndPoint, jsonEncode(body),
         headers: headers);
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data'];
-      await PrefsHelper.setString(
-          AppConstants.role, data['attributes']['role']);
+      await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
       await PrefsHelper.setString(AppConstants.token, data['token']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       var role = data['attributes']['role'];

@@ -29,6 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     var  islogged = await PrefsHelper.getBool(AppConstants.isLogged);
     var  token = await PrefsHelper.getString(AppConstants.token);
     var  role = await PrefsHelper.getString(AppConstants.role);
+    print("===========is logged $islogged");
     if(islogged){
       if(token != null){
         if(role == 'user'){
