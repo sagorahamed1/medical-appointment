@@ -1,4 +1,5 @@
 
+import 'package:doctor_appointment/models/user/cetegory_model.dart';
 import 'package:doctor_appointment/models/user/doctor_details_model.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
@@ -12,10 +13,13 @@ import '../../models/user/doctor_data_models.dart';
 class HomeController extends GetxController{
   TextEditingController searchCtrl = TextEditingController();
 
+  RxList <CetegoryModel> cetegoryLists =<CetegoryModel> [].obs;
   getCetegory()async{
     var response = await ApiClient.getData(ApiConstants.category);
 
     if(response.statusCode == 200){
+      var responseData = response.body;
+      cetegoryLists.value = List<CetegoryModel>.from(responseData['data']['attributes'].map((x)=> CetegoryModel.fromJson(x)));
       print("get succussful");
     }
   }

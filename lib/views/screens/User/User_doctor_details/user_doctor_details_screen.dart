@@ -1,7 +1,9 @@
 import 'package:doctor_appointment/controllers/user/home_controller.dart';
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,15 +16,18 @@ import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/top_review_card.dart';
 import 'Inner_widgets/top_doctor_box_card.dart';
+import 'package:timeago/timeago.dart' as TimeAgo;
 
 class UserDoctorDetailsScreen extends StatelessWidget {
-   UserDoctorDetailsScreen({super.key});
+  UserDoctorDetailsScreen({super.key});
+
   final HomeController _homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
     _homeController.getDoctorDetailsHomeScreen(id: '${Get.parameters['id']}');
     return Scaffold(
+
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
@@ -37,71 +42,111 @@ class UserDoctorDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: Dimensions.paddingSizeDefault.w,
               vertical: Dimensions.paddingSizeDefault.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// ======================top Doctor Box Card==========================>
-              TopDoctorBoxCard(),
-          
-              SizedBox(height: 16.h),
-          
-              ///======================Rating and Experience Card====================>
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Obx(() {
+            var doctorInfo = _homeController.doctorDetails.value;
+            return
+              _homeController.doctorDetailsLoading.value ?
+               Center(child: Padding(
+                padding: EdgeInsets.only(top: 300.h),
+                child: const CustomLoader(),
+              )) :
+              _homeController.doctorDetails == null ? Image.asset(
+                  AppImages.noDataImage) :
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ratingExperience(
-                      '10+', "Years experience", AppIcons.experienceIcon),
-                  _ratingExperience('4.5', "Rating", AppIcons.star),
-                  _ratingExperience('4,942', "Reviews", AppIcons.messageIcon),
+
+                  /// ======================top Doctor Box Card==========================>
+                  TopDoctorBoxCard(
+                    image: doctorInfo.doctorId?.image?.publicFileUrl,
+                    doctorName: '${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}',
+                    location: doctorInfo.clinicAddress,
+                    specialist: doctorInfo.specialist,
+                  ),
+
+                  SizedBox(height: 16.h),
+
+                  ///======================Rating and Experience Card====================>
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _ratingExperience(
+                          '${doctorInfo.experience}', "Years experience", AppIcons.experienceIcon),
+                      _ratingExperience('${doctorInfo.doctorId}', "Rating", AppIcons.star),
+                      _ratingExperience(
+                          '2011', "Reviews", AppIcons.messageIcon),
+                    ],
+                  ),
+
+                  ///===============================Custom Two Text==================================>
+                  _customTwoText(
+                    AppString.aboutDoctor,
+                    '${doctorInfo.about}',
+                  ),
+
+
+                  CustomText(
+                      text: 'Working Time',
+                      fontWeight: FontWeight.w600,
+                      fontsize: 18.h,
+                      color: Colors.black,
+                      top: 16.h,
+                      bottom: 8.h),
+
+                  SizedBox(
+                    height: 200.h,
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: doctorInfo.allSchedule?.length,
+                      itemBuilder: (context, index) {
+                        var timeSchedule = doctorInfo.allSchedule![index];
+                        return
+                          CustomText(
+                            text: '${timeSchedule.day}, ${timeSchedule.startTime} - ${timeSchedule.endTime}',
+                            color: AppColors.textColor5C5C5C,
+                            bottom: 5.h,
+                            textAlign: TextAlign.start,
+                          );
+
+                      },
+                    ),
+                  ),
+
+
+                  ///======================Top Review Text=========================>
+                  CustomText(
+                      text: AppString.topReviews,
+                      fontWeight: FontWeight.w600,
+                      fontsize: 18.h,
+                      color: Colors.black,
+                      top: 16.h,
+                      bottom: 16.h),
+
+                  ///=============================Top Review List views=======================>
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: doctorInfo.topReviews?.length ?? 0,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var review = doctorInfo.topReviews![index];
+                      return TopReviewsCard(
+                        image: AppImages.getStarted2,
+                        description: '${review.comment}',
+                        rathing: "${review.rating}",
+                        reviewName: "${review.patientId?.firstName} ${review.patientId?.lastName}",
+                        timeAgo: TimeAgo.format(review.createdAt ?? DateTime.now()),
+                      );
+                    },
+                  ),
+
+                  ///===========================Button=============================>
+                  SizedBox(height: 20.h),
+                  CustomButton(onpress: () {
+                    Get.toNamed(AppRoutes.userSelectPackageScreen, arguments: doctorInfo);
+                  }, title: AppString.bookAppointment)
                 ],
-              ),
-          
-              ///===============================Custom Two Text==================================>
-              _customTwoText(
-                AppString.aboutDoctor,
-                'Dr. Jenny Watson is the top most Immunologists specialist in Christ Hospital at London. She achived several awards for her wonderful contribution in medical field. She is available for private consultation.',
-              ),
-              _customTwoText(
-                AppString.workingTime,
-                'Monday - Friday, 08.00 AM - 20.00 PM',
-              ),
-          
-              ///======================Top Review Text=========================>
-              CustomText(
-                  text: AppString.topReviews,
-                  fontWeight: FontWeight.w600,
-                  fontsize: 18.h,
-                  color: Colors.black,
-                  top: 16.h,
-                  bottom: 16.h),
-          
-              ///=============================Top Review List views=======================>
-              SizedBox(
-                height: 490.h,
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 3,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return const TopReviewsCard(
-                      image: AppImages.getStarted2,
-                      description:
-                          'Dr. Jenny is very professional in her work and responsive. I have consulted and my problem is solved. 😍😍',
-                      rathing: "5",
-                      reviewName: "Sagor Ahamed",
-                      timeAgo: "2 days ago",
-                    );
-                  },
-                ),
-              ),
-          
-              ///===========================Button=============================>
-              SizedBox(height: 20.h),
-              CustomButton(onpress: () {
-                Get.toNamed(AppRoutes.userSelectPackageScreen);
-              }, title: AppString.bookAppointment)
-            ],
-          ),
+              );
+          }),
         ),
       ),
     );

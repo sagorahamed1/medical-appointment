@@ -23,7 +23,7 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _homeController.getDoctorByCetegory();
+    _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
     return Scaffold(
       body: SafeArea(
         child: Padding(
