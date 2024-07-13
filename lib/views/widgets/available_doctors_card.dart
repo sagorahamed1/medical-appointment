@@ -12,6 +12,7 @@ import 'custom_two_button.dart';
 class AvailableDoctorsCard extends StatelessWidget {
   final String? doctorName;
   final VoidCallback? leftBtnOntap;
+  final VoidCallback? rightBtnOnTap;
   final double? imageHeight;
   final String? doctorImage;
   final String? rating;
@@ -36,7 +37,7 @@ class AvailableDoctorsCard extends StatelessWidget {
         this.clinicVisit,
         this.leftBtnText,
         this.imageHeight,
-        this.rightBtnText});
+        this.rightBtnText, this.rightBtnOnTap});
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +73,14 @@ class AvailableDoctorsCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               CustomText(
-                                  text: "${doctorName}",
+                                  text: "$doctorName",
                                   color: AppColors.primaryColor,
                                   fontWeight: FontWeight.w600),
                               Row(
                                 children: [
                                   SvgPicture.asset(AppIcons.star),
                                   CustomText(
-                                      text: " ${rating}",
+                                      text: " $rating",
                                       color: AppColors.primaryColor,
                                       fontWeight: FontWeight.w600,
                                       fontsize: 12.h),
@@ -106,7 +107,7 @@ class AvailableDoctorsCard extends StatelessWidget {
                 btnRadius: 8,
                 width: 155.w,
                 btnNameList: ["$leftBtnText", "$rightBtnText"],
-                rightBtnOnTap: () {},
+                rightBtnOnTap: rightBtnOnTap,
                 leftBtnOnTap: leftBtnOntap,
                 initialSeclected: 0,
               ),
@@ -125,11 +126,12 @@ class AvailableDoctorsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(text: leftText, color: AppColors.textColor5C5C5C),
-          // const Spacer(),
+           const Spacer(),
           Expanded(
             child: CustomText(
                 text: "$rightText",
                 color: AppColors.primaryColor,
+                textAlign: TextAlign.end,
                 fontWeight: FontWeight.w600),
           ),
         ],

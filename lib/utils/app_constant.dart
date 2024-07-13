@@ -16,3 +16,5 @@ class AppConstants{
     return regex.hasMatch(value);
   }
 }
+
+enum Status { loading, completed, error, internetError }

@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/controllers/user/home_controller.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
@@ -15,10 +16,12 @@ import '../../../widgets/top_review_card.dart';
 import 'Inner_widgets/top_doctor_box_card.dart';
 
 class UserDoctorDetailsScreen extends StatelessWidget {
-  const UserDoctorDetailsScreen({super.key});
+   UserDoctorDetailsScreen({super.key});
+  final HomeController _homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
+    _homeController.getDoctorDetailsHomeScreen(id: '${Get.parameters['id']}');
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
