@@ -1,4 +1,5 @@
 
+import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -76,9 +77,10 @@ class TopProfileCardPersonInfo extends StatelessWidget {
             Container(
               clipBehavior: Clip.antiAlias,
               decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(50.r)),
+              BoxDecoration(
+                  borderRadius: BorderRadius.circular(50.r)),
               child: CustomNetworkImage(
-                  imageUrl: '$image', height: 120.h, width: 120.w),
+                  imageUrl: '${ApiConstants.imageBaseUrl}/$image', height: 120.h, width: 120.w),
             ),
 
             ///=====================name ===============>
@@ -91,7 +93,6 @@ class TopProfileCardPersonInfo extends StatelessWidget {
             ),
 
             SizedBox(height: 16.h),
-
             ///==================edit profile btn=================>
             GestureDetector(
               onTap: onTap,
