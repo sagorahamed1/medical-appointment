@@ -1,7 +1,9 @@
+import 'package:doctor_appointment/controllers/user/user_appointments_controller.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +24,9 @@ class UserAppointmentsScreen extends StatefulWidget {
 
 class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
     with SingleTickerProviderStateMixin {
-  TabController? _tabController;
+  late TabController _tabController;
+  UserAppointmentsController appointmentsController =
+      Get.put(UserAppointmentsController());
 
   @override
   void initState() {
@@ -32,12 +36,14 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
 
   @override
   void dispose() {
-    _tabController?.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("===========${_tabController.index}");
+    appointmentsController.getAppointment(status: 'upcomming');
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
@@ -46,8 +52,20 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
           fontWeight: FontWeight.w600,
         ),
         bottom: TabBar(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          controller: _tabController,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+           controller: _tabController,
+          onTap: (int value) {
+            if (value == 0) {
+              appointmentsController.appointmentList.clear();
+              appointmentsController.getAppointment(status: 'upcomming');
+            } else if (value == 1) {
+              appointmentsController.appointmentList.clear();
+              appointmentsController.getAppointment(status: 'active');
+            } else {
+              appointmentsController.appointmentList.clear();
+              appointmentsController.getAppointment(status: 'completed');
+            }
+          },
           tabs: const [
             Tab(text: 'Upcoming'),
             Tab(text: 'Completed'),
@@ -62,78 +80,101 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
           indicatorPadding: const EdgeInsets.symmetric(horizontal: 20.0),
         ),
       ),
-
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w, vertical: Dimensions.paddingSizeDefault.h),
+        padding: EdgeInsets.symmetric(
+            horizontal: Dimensions.paddingSizeDefault.w,
+            vertical: Dimensions.paddingSizeDefault.h),
         child: TabBarView(
-          controller: _tabController,
+           controller: _tabController,
           children: [
             // Upcoming Tab
-            ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: AppointmentsCard(
-                    image: AppImages.getStarted1,
-                    name: "Sagor Ahamed",
-                    appointmentsType: "Upcoming",
-                    date: DateTime.now(),
-                    messageIcon: AppIcons.messageIcon2,
-                    time: "14:00 PM",
-                    leftBtnName: 'Cancel Appointment',
-                    rightBtnName: 'See Details',
-                  ),
-                );
-              },
+            Obx(
+              () => appointmentsController.appointmentLoading.value
+                  ? const CustomLoader()
+                  : appointmentsController.appointmentList.isEmpty
+                      ? Image.asset(AppImages.noDataImage)
+                      : ListView.builder(
+                          itemCount:
+                              appointmentsController.appointmentList.length,
+                          itemBuilder: (context, index) {
+                            var appointments =
+                                appointmentsController.appointmentList[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: AppointmentsCard(
+                                image: AppImages.getStarted1,
+                                name:
+                                    "${appointments.doctorId?.firstName}${appointments.doctorId?.lastName}",
+                                appointmentsType: "upcoming",
+                                date: DateTime.now(),
+                                messageIcon: AppIcons.messageIcon2,
+                                time: "14:00 PM",
+                                leftBtnName: 'Cancel Appointment',
+                                rightBtnName: 'See Details',
+                              ),
+                            );
+                          },
+                        ),
             ),
 
             // Completed Tab
-            ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: AppointmentsCard(
-                    image: AppImages.getStarted1,
-                    name: "Sagor Ahamed",
-                    leftBtnName: 'See Details',
-                    rightBtnName: 'Give Review',
-                    appointmentsType: 'Completed',
-                    date: DateTime.now(),
-                    leftBtnOnTap: () {
-                      Get.toNamed(AppRoutes.userAppointmentsDetailsScreen);
-                    },
-                    rightBtnOnTap: () {
-                      Get.toNamed(AppRoutes.userGiveReviewScreen);
-                    },
-                    time: "14:00 PM",
-                  ),
-                );
-              },
+            Obx(
+              () => appointmentsController.appointmentLoading.value
+                  ? const CustomLoader()
+                  : appointmentsController.appointmentList.isEmpty
+                      ? Image.asset(AppImages.noDataImage)
+                      : ListView.builder(
+                          itemCount: appointmentsController.appointmentList.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: AppointmentsCard(
+                                image: AppImages.getStarted1,
+                                name: "Sagor Ahamed",
+                                leftBtnName: 'See Details',
+                                rightBtnName: 'Give Review',
+                                appointmentsType: 'Completed',
+                                date: DateTime.now(),
+                                leftBtnOnTap: () {
+                                  Get.toNamed(
+                                      AppRoutes.userAppointmentsDetailsScreen);
+                                },
+                                rightBtnOnTap: () {
+                                  Get.toNamed(AppRoutes.userGiveReviewScreen);
+                                },
+                                time: "14:00 PM",
+                              ),
+                            );
+                          },
+                        ),
             ),
 
             // Cancelled Tab
-            ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: AppointmentsCard(
-                    image: AppImages.getStarted1,
-                    name: "Sagor Ahamed",
-                    appointmentsType: 'Cancelled',
-                    date: DateTime.now(),
-                    time: "14:00 PM",
-                  ),
-                );
-              },
-            ),
+            Obx(
+              () => appointmentsController.appointmentLoading.value
+                  ? const CustomLoader()
+                  : appointmentsController.appointmentList.isEmpty
+                      ? Image.asset(AppImages.noDataImage)
+                      : ListView.builder(
+                          itemCount:  appointmentsController.appointmentList.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: AppointmentsCard(
+                                image: AppImages.getStarted1,
+                                name: "Sagor Ahamed",
+                                appointmentsType: 'Cancelled',
+                                date: DateTime.now(),
+                                time: "14:00 PM",
+                              ),
+                            );
+                          },
+                        ),
+            )
           ],
         ),
       ),
     );
-
   }
 }
 
@@ -263,24 +304,22 @@ class AppointmentsCard extends StatelessWidget {
                 )
               ],
             ),
-
-            leftBtnName == null ? const SizedBox() :
-
-            Column(
-              children: [
-                SizedBox(height: 14.h),
-                const Divider(),
-                SizedBox(height: 14.h),
-                CustomTwoButon(
-                  btnRadius: 8,
-                    width: 154.w,
-                    btnNameList: ["$leftBtnName", '$rightBtnName'],
-                    rightBtnOnTap: rightBtnOnTap,
-                    leftBtnOnTap: leftBtnOnTap,
-                    initialSeclected: 0)
-              ],
-            )
-
+            leftBtnName == null
+                ? const SizedBox()
+                : Column(
+                    children: [
+                      SizedBox(height: 14.h),
+                      const Divider(),
+                      SizedBox(height: 14.h),
+                      CustomTwoButon(
+                          btnRadius: 8,
+                          width: 154.w,
+                          btnNameList: ["$leftBtnName", '$rightBtnName'],
+                          rightBtnOnTap: rightBtnOnTap,
+                          leftBtnOnTap: leftBtnOnTap,
+                          initialSeclected: 0)
+                    ],
+                  )
           ],
         ),
       ),

@@ -11,13 +11,15 @@ import '../../../widgets/custom_select_package_card.dart';
 import '../../../widgets/custom_text.dart';
 
 class UserSelectPackageScreen extends StatefulWidget {
-  const UserSelectPackageScreen({super.key});
+   UserSelectPackageScreen({super.key});
+  var data = Get.arguments;
 
   @override
   State<UserSelectPackageScreen> createState() => _UserSelectPackageScreenState();
 }
 
 class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
+
   final RxInt selectedIndex = 0.obs;
 
   List packageList = [
@@ -35,6 +37,7 @@ class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('====> ${widget.data}');
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(

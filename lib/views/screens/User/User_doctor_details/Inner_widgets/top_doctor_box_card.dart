@@ -1,3 +1,5 @@
+import 'package:doctor_appointment/services/api_constants.dart';
+import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,7 +14,8 @@ class TopDoctorBoxCard extends StatelessWidget {
   final String? image;
   final String? rating;
   final String? location;
-  TopDoctorBoxCard({super.key, this.doctorName, this.image, this.rating, this.location});
+  final String? specialist;
+  TopDoctorBoxCard({super.key, this.doctorName, this.image, this.rating, this.location, this.specialist});
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +33,10 @@ class TopDoctorBoxCard extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-                    child: Image.asset(
-                      AppImages.getStarted1,
+                    child: CustomNetworkImage(
+                     imageUrl: '${ApiConstants.imageBaseUrl}/$image',
                       height: 120,
                       width: 110.w,
-                      fit: BoxFit.cover,
                     )),
                 SizedBox(
                   width: 213.w,
@@ -72,7 +74,7 @@ class TopDoctorBoxCard extends StatelessWidget {
                             color: Color(0xffB8C1CF),
                           ),
                           CustomText(
-                              text: "Immunologists",
+                              text: '$specialist',
                               color: Colors.black,
                               fontsize: 12.h,
                               fontWeight: FontWeight.w500,
@@ -82,6 +84,7 @@ class TopDoctorBoxCard extends StatelessWidget {
                             text: "$location",
                             color: AppColors.textColor5C5C5C,
                             maxline: 2,
+                            textAlign: TextAlign.start,
                             fontsize: 12.h,
                             fontWeight: FontWeight.w500,
                           ),

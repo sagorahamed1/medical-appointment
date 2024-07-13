@@ -11,5 +11,6 @@ class AppImages {
   static const String logoImageWithBg = '$path/logoImage_withBg.png';
   static const String fillProfile = '$path/fillProfile.png';
   static const String bgProfile = '$path/bgProfile.png';
+  static const String noDataImage = '$path/noDataImage.png';
 
 }

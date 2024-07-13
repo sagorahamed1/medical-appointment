@@ -136,10 +136,12 @@ class AuthController extends GetxController {
       var data = response.body['data'];
       await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
       await PrefsHelper.setString(AppConstants.token, data['token']);
+      await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       var role = data['attributes']['role'];
       var isAdmin = data['attributes']['isAdmin'];
 
+      print("==============> ${data['attributes']['_id']}");
       if (!isAdmin) {
         if (role == "user") {
            Get.toNamed(AppRoutes.userBottomNavBar);

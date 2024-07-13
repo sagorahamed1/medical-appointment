@@ -2,6 +2,7 @@ import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/screens/User/User_home/Inner_widgets/categorySection.dart';
 import 'package:doctor_appointment/views/screens/User/User_home/Inner_widgets/top_app_bar.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,7 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _homeController.getDoctorByCetegory();
+    _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -75,18 +76,16 @@ class UserHomeScreen extends StatelessWidget {
                       _SeeAll(AppString.availableDoctors, AppString.seeAll, (){
                         Get.toNamed(AppRoutes.useravailablleDoctorsScreen);
                       }),
-
-
-
                     ],
                   ),
                 ),
 
 
-
-
                 ///======================available doctor list=================>
-                Obx(()=> SizedBox(
+                Obx(()=>
+                    _homeController.doctorLoading.value?
+                        const Center(child: CustomLoader()) :
+                    SizedBox(
                     height: 230.h,
                     child: ListView.builder(
                       shrinkWrap: true,
@@ -109,7 +108,10 @@ class UserHomeScreen extends StatelessWidget {
                             leftBtnText: AppString.seeDetails,
                             rightBtnText: AppString.bookAppointment,
                             leftBtnOntap: (){
-                              Get.toNamed(AppRoutes.userDoctorDetailsScreen);
+                              Get.toNamed(AppRoutes.userDoctorDetailsScreen, parameters: {'id' : '${doctorInfo.doctorId?.id}'});
+                            },
+                            rightBtnOnTap: (){
+                              Get.toNamed(AppRoutes.userSelectPackageScreen);
                             },
                           ),
                         );

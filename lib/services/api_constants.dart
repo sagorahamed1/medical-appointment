@@ -1,6 +1,6 @@
 class ApiConstants{
   static const String baseUrl = "http://192.168.10.46:3000/api/v1";
-  static const String imageBaseUrl = "http://192.168.10.46:3032";
+  static const String imageBaseUrl = "http://192.168.10.46:3000";
 
 
 
@@ -13,6 +13,8 @@ class ApiConstants{
   static const String reSendOtpPoint = "/user/resendOpt";
   static const String continueDoctorPoint = "/doctor/create-details";
   static  String getDoctor(String cetegory) => "/doctor/get-doctors?specialist=$cetegory";
+  static  String getAppointments(String status) => "/appointments/user-get-appointments?status=$status";
+  static  String doctorDetailsHomeScreen(String id) => "/doctor/get-single-doctor?id=$id";
   static const String category = "/category/get-category";
 
 
