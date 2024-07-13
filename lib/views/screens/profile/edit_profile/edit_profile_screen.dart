@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:doctor_appointment/controllers/profile_controler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../helpers/image_pic_helper.dart';
 import '../../../../routes/app_routes.dart';
@@ -24,9 +26,18 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  TextEditingController nameCtrl = TextEditingController();
 
-  File? _image;
+  final ProfileControler _profileControler = Get.put(ProfileControler());
+  TextEditingController firstNameCtrl = TextEditingController();
+  TextEditingController lastNameCtrl = TextEditingController();
+  TextEditingController phoneCtrl = TextEditingController();
+  TextEditingController dateOfBirthCtrl = TextEditingController();
+  TextEditingController addressCtrl = TextEditingController();
+
+  // File? _image;
+  DateTime selectedDate = DateTime.now();
+  Uint8List? _image;
+  File? selectedIMage;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +60,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Center(
                 child: Stack(
                   children: [
+                    _image != null
+                        ? CircleAvatar(
+                        radius: 60.r, backgroundImage: MemoryImage(_image!))
+                        :
                     Image.asset(
                       AppImages.fillProfile,
                       height: 144.h,
@@ -80,16 +95,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
 
 
-            _textField("Enter your name", AppIcons.person, nameCtrl),
-            _textField("Enter your email", AppIcons.email, nameCtrl),
-            _textField("+ 8845632140", AppIcons.call, nameCtrl),
-            _textField("16 July 2000", AppIcons.dateOfBirth, nameCtrl),
-            _textField("Address", AppIcons.location, nameCtrl),
+            _textField("Enter your first name", AppIcons.person, firstNameCtrl),
+            _textField("Enter your last name", AppIcons.person, lastNameCtrl),
+            _textField("+ 8845632140", AppIcons.call, phoneCtrl),
+            _textField("Enter your date of birth", AppIcons.dateOfBirth, dateOfBirthCtrl),
+            _textField("Address", AppIcons.location, addressCtrl),
             SizedBox(height: 20.h),
             // const Spacer(),
             CustomButton(
                 onpress: () {
-                  Get.toNamed(AppRoutes.signInScreen);
+                  _profileControler.profileUpdate(
+                    image: selectedIMage,
+                    firstName: firstNameCtrl.text,
+                    lastName: lastNameCtrl.text,
+                    phone: phoneCtrl.text,
+                    address: addressCtrl.text,
+                    dateOfBirth: dateOfBirthCtrl.text
+                  );
                 },
                 title: AppString.continues),
 
@@ -130,27 +152,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   //==================================> ShowImagePickerOption Function <===============================
+
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
-        backgroundColor: AppColors.gray767676,
+        backgroundColor: Colors.white,
         context: context,
         builder: (builder) {
           return Padding(
             padding: const EdgeInsets.all(18.0),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 4.2,
+              height: MediaQuery.of(context).size.height / 6.2,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                     final image =  ImagePickerHelper.pickImageFromGallery();
-                     setState(() {
-                       _image = image as File?;
-                     });
-
+                        _pickImageFromGallery();
                       },
                       child: SizedBox(
                         child: Column(
@@ -159,7 +178,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               Icons.image,
                               size: 50.w,
                             ),
-                             CustomText(text: 'Gallery')
+                            CustomText(text: 'Gallery')
                           ],
                         ),
                       ),
@@ -168,10 +187,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        final image =    ImagePickerHelper.pickImageFromCamera();
-                        setState(() {
-                          _image = image as File?;
-                        });
+                        _pickImageFromCamera();
                       },
                       child: SizedBox(
                         child: Column(
@@ -180,7 +196,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               Icons.camera_alt,
                               size: 50.w,
                             ),
-                             CustomText(text: 'Camera')
+                            CustomText(text: 'Camera')
                           ],
                         ),
                       ),
@@ -191,5 +207,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           );
         });
+  }
+
+  //==================================> Gallery <===============================
+  Future _pickImageFromGallery() async {
+    final returnImage =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    Get.back();
+  }
+
+//==================================> Camera <===============================
+  Future _pickImageFromCamera() async {
+    final returnImage =
+    await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    // Get.back();
+  }
+
+  //==================================> Calender <==================================
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      selectedDate = pickedDate;
+      dateOfBirthCtrl.text = '$selectedDate';
+      print('Selected date: ${dateOfBirthCtrl.text}');
+    }
   }
 }

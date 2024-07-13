@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../services/api_constants.dart';
 import '../../../../../utils/app_images.dart';
 import '../../../../widgets/cachanetwork_image.dart';
 import '../../../../widgets/custom_text.dart';
@@ -15,11 +15,11 @@ class TopProfileCard extends StatelessWidget {
 
   const TopProfileCard(
       {super.key,
-        this.appBarText,
-        this.image,
-        this.name,
-        this.height,
-        this.backIcon});
+      this.appBarText,
+      this.image,
+      this.name,
+      this.height,
+      this.backIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,8 @@ class TopProfileCard extends StatelessWidget {
         decoration: BoxDecoration(
             color: const Color(0xff193664),
             borderRadius: BorderRadius.circular(20.r),
-            image: const DecorationImage(image: AssetImage(AppImages.bgProfile))),
+            image:
+                const DecorationImage(image: AssetImage(AppImages.bgProfile))),
         child: Column(
           children: [
             SizedBox(height: 60.h),
@@ -46,10 +47,13 @@ class TopProfileCard extends StatelessWidget {
             ///=====================image=====================>
             Container(
               clipBehavior: Clip.antiAlias,
-              decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(50.r)),
+              decoration: BoxDecoration(
+                   color: Colors.black,
+                  borderRadius: BorderRadius.circular(50.r)),
               child: CustomNetworkImage(
-                  imageUrl: '$image', height: 120.h, width: 120.w),
+                  imageUrl: '${ApiConstants.imageBaseUrl}/$image',
+                  height: 120.h,
+                  width: 120.w),
             ),
 
             CustomText(
