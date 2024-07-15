@@ -2,7 +2,7 @@ class AppConstants{
   ///=======================Prefs Helper data===============================>
   static const String role = "role";
   static const String mockRole = "mockRole";
-  static const String token = "token";
+  // static const String token = "token";
   static const String userId = "userId";
  static const String isLogged = "isLogged";
  static const String bearerToken = "bearerToken";

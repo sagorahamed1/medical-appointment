@@ -1,5 +1,7 @@
 import 'package:doctor_appointment/controllers/profile_controler.dart';
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -241,8 +243,15 @@ class TwoBottonBottomSheet extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
+          onTap: () async{
             AppConstants.roleMock = '';
+            // await PrefsHelper.remove(AppConstants.token);
+            await PrefsHelper.remove(AppConstants.userId);
+            await PrefsHelper.remove(AppConstants.role);
+            await PrefsHelper.remove(AppConstants.roleMock);
+            await PrefsHelper.remove(AppConstants.bearerToken);
+            await PrefsHelper.remove(AppConstants.mockRole);
+            await PrefsHelper.remove(AppConstants.isLogged);
             Get.toNamed(AppRoutes.roleScreen);
           },
           child: Container(

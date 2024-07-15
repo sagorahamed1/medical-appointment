@@ -83,7 +83,7 @@ class UserAppointmentsDetailsScreen extends StatelessWidget {
               CustomSelectPackageCard(
                   title: "Online Consultation",
                   icon: AppIcons.videoCallIcons,
-                  price: 400,
+                  price: '400',
                   description: "Video call & messages with doctor",
                   selectedIndex: 1,
                   onTap: () {}),

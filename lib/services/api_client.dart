@@ -24,7 +24,7 @@ class ApiClient extends GetxService {
 
     var mainHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjhhN2VkODA4MzdmODRkOTdhMjAzNjgiLCJlbWFpbCI6ImFoYWQuYWltYW4yQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzIwNDE3ODMyLCJleHAiOjE3NTE5NTM4MzJ9.K99sNDEnOQQG7KObc5uPCV6D18kGCpt2OJuMBZUtSss'
+      'Authorization': 'Bearer $bearerToken'
     };
     try {
       debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
@@ -262,7 +262,7 @@ class ApiClient extends GetxService {
       // bearerToken = PrefsHelper.token;
 
       var mainHeaders = {
-        'Accept-Language': 'en',
+        // 'Content-Type': 'application/json',
         'Authorization': 'Bearer $bearerToken'
       };
 

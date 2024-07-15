@@ -135,7 +135,8 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data'];
       await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
-      await PrefsHelper.setString(AppConstants.token, data['token']);
+      // await PrefsHelper.setString(AppConstants.token, data['token']);
+      await PrefsHelper.setString(AppConstants.bearerToken, data['token']);
       await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       var role = data['attributes']['role'];

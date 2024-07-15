@@ -33,11 +33,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController phoneCtrl = TextEditingController();
   TextEditingController dateOfBirthCtrl = TextEditingController();
   TextEditingController addressCtrl = TextEditingController();
+  var profileData = Get.arguments;
 
   // File? _image;
   DateTime selectedDate = DateTime.now();
   Uint8List? _image;
   File? selectedIMage;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      firstNameCtrl.text = profileData.firstName;
+      lastNameCtrl.text = profileData.lastName;
+      phoneCtrl.text = profileData.phone;
+      dateOfBirthCtrl.text = profileData.dateOfBirth;
+      addressCtrl.text = profileData.address;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +109,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
 
 
-            _textField("Enter your first name", AppIcons.person, firstNameCtrl),
-            _textField("Enter your last name", AppIcons.person, lastNameCtrl),
-            _textField("+ 8845632140", AppIcons.call, phoneCtrl),
-            _textField("Enter your date of birth", AppIcons.dateOfBirth, dateOfBirthCtrl),
-            _textField("Address", AppIcons.location, addressCtrl),
+            _textField("Enter your first name", AppIcons.person, firstNameCtrl, TextInputType.text),
+            _textField("Enter your last name", AppIcons.person, lastNameCtrl, TextInputType.text),
+            _textField("+ 8845632140", AppIcons.call, phoneCtrl, TextInputType.number),
+            _textField("Enter your date of birth", AppIcons.dateOfBirth, dateOfBirthCtrl, TextInputType.number),
+            _textField("Address", AppIcons.location, addressCtrl, TextInputType.text),
             SizedBox(height: 20.h),
             // const Spacer(),
             CustomButton(
@@ -123,10 +137,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _textField(
-      String hinText, prefixIcon, TextEditingController controller) {
+      String hinText, prefixIcon, TextEditingController controller, TextInputType type ) {
     return Column(
       children: [
         TextFormField(
+          keyboardType: type,
           controller: controller,
           decoration: InputDecoration(
               hintText: hinText,

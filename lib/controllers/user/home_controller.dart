@@ -26,9 +26,9 @@ class HomeController extends GetxController{
 
   RxList <DoctorDataModel> doctorLists =<DoctorDataModel> [].obs;
   RxBool doctorLoading = false.obs;
-  getDoctorByCetegory({String cetegory = 'Cardiologists'})async{
+  getDoctorByCetegory({String cetegory = '', date})async{
     doctorLoading(true);
-    var response = await ApiClient.getData(ApiConstants.getDoctor(cetegory));
+    var response = await ApiClient.getData('${ApiConstants.getDoctor(cetegory)}&date=$date');
     if(response.statusCode == 200){
       var responseData = response.body;
       doctorLists.value = List<DoctorDataModel>.from(responseData['data']['attributes'].map((x)=> DoctorDataModel.fromJson(x)));
@@ -44,9 +44,9 @@ class HomeController extends GetxController{
 
   RxBool doctorDetailsLoading = false.obs;
   Rx<DoctorDetailsModel> doctorDetails = DoctorDetailsModel().obs;
-  getDoctorDetailsHomeScreen({String id = ''})async{
+  getDoctorDetailsHomeScreen({String id = '',String date = ''})async{
     doctorDetailsLoading(true);
-    var response = await ApiClient.getData(ApiConstants.doctorDetailsHomeScreen(id));
+    var response = await ApiClient.getData('${ApiConstants.doctorDetailsHomeScreen(id)}&date=$date');
     if(response.statusCode == 200){
       var responseData = response.body;
       doctorDetails.value = DoctorDetailsModel.fromJson(responseData['data']['attributes']); //responseData['data']['attributes'];
