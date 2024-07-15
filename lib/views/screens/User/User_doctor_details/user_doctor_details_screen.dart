@@ -142,7 +142,9 @@ class UserDoctorDetailsScreen extends StatelessWidget {
                   ///===========================Button=============================>
                   SizedBox(height: 20.h),
                   CustomButton(onpress: () {
-                    Get.toNamed(AppRoutes.userSelectPackageScreen, arguments: doctorInfo);
+                    Get.toNamed(AppRoutes.userSelectPackageScreen, arguments: doctorInfo, parameters: {
+                      'id' : '${Get.parameters['id']}'
+                    });
                   }, title: AppString.bookAppointment)
                 ],
               );

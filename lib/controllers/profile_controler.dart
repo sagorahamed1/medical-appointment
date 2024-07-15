@@ -50,7 +50,7 @@ class ProfileControler extends GetxController{
     String? firstName, lastName, dateOfBirth, phone, address
   }) async {
     updateProfileLoading(true);
-    String token = await PrefsHelper.getString(AppConstants.token);
+    String token = await PrefsHelper.getString(AppConstants.bearerToken);
     List<MultipartBody> multipartBody =
     image == null ? [] : [MultipartBody("image", image)];
 
@@ -65,10 +65,11 @@ class ProfileControler extends GetxController{
       "phone": '$phone',
       "address": '$address',
     };
-    var response = await ApiClient.patchMultipartData(
+    var response = await ApiClient.putMultipartData(
         ApiConstants.profileUpdate, body,
         multipartBody: multipartBody, headers: headers);
 
+    print("=======> ${response.body}");
     if (response.statusCode == 200 || response.statusCode == 201) {
 
       Get.back();

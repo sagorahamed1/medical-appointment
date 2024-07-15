@@ -36,7 +36,7 @@ class PersonalInformationScreen extends StatelessWidget {
                 name: "${profileData.firstName} ${profileData.lastName}",
                 height: 375,
                 onTap: (){
-                  Get.toNamed(AppRoutes.editProfileScreen);
+                  Get.toNamed(AppRoutes.editProfileScreen, arguments: profileData);
                 },
                 image: "${profileData.image?.publicFileUrl}",
               ),

@@ -10,7 +10,7 @@ class CustomSelectPackageCard extends StatelessWidget {
   final String? icon;
   final String? title;
   final String? description;
-  final double? price;
+  final String? price;
   final int? selectedIndex;
   final int? allIndex;
   final VoidCallback onTap;

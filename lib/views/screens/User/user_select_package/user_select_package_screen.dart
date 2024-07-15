@@ -57,16 +57,16 @@ class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
             SizedBox(
               height: 400.h,
               child:  ListView.builder(
-                itemCount: packageList.length,
+                itemCount: widget.data.packages.length,
                 itemBuilder: (context, index) {
-                  var package = packageList[index];
+                  var package = widget.data.packages[index];
                   return Padding(
                     padding: EdgeInsets.only(bottom: 24.h),
                     child: CustomSelectPackageCard(
-                      title: "${package['title']}",
-                      description: "${package['description']}",
-                      price: 40,
-                      icon: '${package['icon']}',
+                      title: "${package.packageName}",
+                      description: index == 0 ? 'Video call & messages with doctor' : "Virtual visit in doctors clinic",
+                      price: '${package.packagePrice}',
+                      icon: index == 0 ? AppIcons.videoCallIcons : AppIcons.personGroup,
                       selectedIndex: selectedIndex.value,
                       allIndex: index,
                       onTap: () {
@@ -82,7 +82,9 @@ class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
             ),
             const Spacer(),
             CustomButton(onpress: () {
-              Get.toNamed(AppRoutes.userBookScheduleScreen);
+              Get.toNamed(AppRoutes.userBookScheduleScreen, arguments: widget.data.timeSlots, parameters: {
+                'id' : '${Get.parameters['id']}'
+              });
             }, title: AppString.continues),
             SizedBox(height: 36.h)
           ],
