@@ -43,6 +43,7 @@ class _UserBookScheduleScreenState extends State<UserBookScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("=========> $selectedDate");
     return Scaffold(
       appBar: AppBar(
         title: CustomText(

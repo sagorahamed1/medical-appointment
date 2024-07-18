@@ -111,7 +111,9 @@ class UserHomeScreen extends StatelessWidget {
                               Get.toNamed(AppRoutes.userDoctorDetailsScreen, parameters: {'id' : '${doctorInfo.doctorId?.id}'});
                             },
                             rightBtnOnTap: (){
-                              Get.toNamed(AppRoutes.userSelectPackageScreen);
+                              Get.toNamed(AppRoutes.userSelectPackageScreen, arguments: doctorInfo, parameters: {
+                                'id' : '${doctorInfo.doctorId?.id}'
+                              });
                             },
                           ),
                         );

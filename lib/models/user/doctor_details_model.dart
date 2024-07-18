@@ -24,7 +24,7 @@ class DoctorDetailsModel {
   final DateTime? updatedAt;
   final int? v;
   final List<Schedule>? allSchedule;
-  final List<dynamic>? topReviews;
+  final List<TopReview>? topReviews;
   final List<String>? timeSlots;
 
   DoctorDetailsModel({
@@ -63,7 +63,7 @@ class DoctorDetailsModel {
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
     allSchedule: json["allSchedule"] == null ? [] : List<Schedule>.from(json["allSchedule"]!.map((x) => Schedule.fromJson(x))),
-    topReviews: json["topReviews"] == null ? [] : List<dynamic>.from(json["topReviews"]!.map((x) => x)),
+    topReviews: json["topReviews"] == null ? [] : List<TopReview>.from(json["topReviews"]!.map((x) => TopReview.fromJson(x))),
     timeSlots: json["timeSlots"] == null ? [] : List<String>.from(json["timeSlots"]!.map((x) => x)),
   );
 
@@ -83,7 +83,7 @@ class DoctorDetailsModel {
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
     "allSchedule": allSchedule == null ? [] : List<dynamic>.from(allSchedule!.map((x) => x.toJson())),
-    "topReviews": topReviews == null ? [] : List<dynamic>.from(topReviews!.map((x) => x)),
+    "topReviews": topReviews == null ? [] : List<dynamic>.from(topReviews!.map((x) => x.toJson())),
     "timeSlots": timeSlots == null ? [] : List<dynamic>.from(timeSlots!.map((x) => x)),
   };
 }
@@ -136,6 +136,8 @@ class DoctorId {
   final String? address;
   final String? gender;
   final String? phone;
+  final String? dateOfBirth;
+  final int? earningAmount;
 
   DoctorId({
     this.id,
@@ -161,6 +163,8 @@ class DoctorId {
     this.address,
     this.gender,
     this.phone,
+    this.dateOfBirth,
+    this.earningAmount,
   });
 
   factory DoctorId.fromJson(Map<String, dynamic> json) => DoctorId(
@@ -187,6 +191,8 @@ class DoctorId {
     address: json["address"],
     gender: json["gender"],
     phone: json["phone"],
+    dateOfBirth: json["dateOfBirth"],
+    earningAmount: json["earningAmount"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -213,6 +219,8 @@ class DoctorId {
     "address": address,
     "gender": gender,
     "phone": phone,
+    "dateOfBirth": dateOfBirth,
+    "earningAmount": earningAmount,
   };
 }
 
@@ -253,5 +261,81 @@ class Package {
   Map<String, dynamic> toJson() => {
     "packageName": packageName,
     "packagePrice": packagePrice,
+  };
+}
+
+class TopReview {
+  final String? id;
+  final String? comment;
+  final int? rating;
+  final String? doctorId;
+  final PatientId? patientId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
+
+  TopReview({
+    this.id,
+    this.comment,
+    this.rating,
+    this.doctorId,
+    this.patientId,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+  });
+
+  factory TopReview.fromJson(Map<String, dynamic> json) => TopReview(
+    id: json["_id"],
+    comment: json["comment"],
+    rating: json["rating"],
+    doctorId: json["doctorId"],
+    patientId: json["patientId"] == null ? null : PatientId.fromJson(json["patientId"]),
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    v: json["__v"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "comment": comment,
+    "rating": rating,
+    "doctorId": doctorId,
+    "patientId": patientId?.toJson(),
+    "createdAt": createdAt?.toIso8601String(),
+    "updatedAt": updatedAt?.toIso8601String(),
+    "__v": v,
+  };
+}
+
+class PatientId {
+  final String? id;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final Image? image;
+
+  PatientId({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.image,
+  });
+
+  factory PatientId.fromJson(Map<String, dynamic> json) => PatientId(
+    id: json["_id"],
+    firstName: json["firstName"],
+    lastName: json["lastName"],
+    email: json["email"],
+    image: json["image"] == null ? null : Image.fromJson(json["image"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "_id": id,
+    "firstName": firstName,
+    "lastName": lastName,
+    "email": email,
+    "image": image?.toJson(),
   };
 }

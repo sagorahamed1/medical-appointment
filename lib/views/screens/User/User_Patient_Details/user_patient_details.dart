@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/controllers/user/user_patient_details_controller.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -15,6 +16,7 @@ import '../../../widgets/custom_text.dart';
 class UserPatientDetailsScreen extends StatelessWidget {
   UserPatientDetailsScreen({super.key});
 
+  final UserPatientDetailsController _patientDetailsController = Get.put(UserPatientDetailsController());
   TextEditingController fullNameCtrl = TextEditingController();
   TextEditingController ageCtrl = TextEditingController();
   TextEditingController problemCtrl = TextEditingController();
@@ -109,7 +111,15 @@ class UserPatientDetailsScreen extends StatelessWidget {
                 ///===================Write Problem TextField================>?
                 _textAndTextField(AppString.writeYourProblem, AppString.writeYourProblem, "", problemCtrl, 10, TextInputType.text),
                 SizedBox(height: 20.h),
-                CustomButton(onpress: () {}, title: AppString.continues),
+                CustomButton(onpress: () {
+                  _patientDetailsController.patienDetailsAdd(
+                    fullName: fullNameCtrl.text,
+                    age: ageCtrl.text,
+                    gender: genderCtrl.text,
+                    description: problemCtrl.text,
+                    doctorId: ''
+                  );
+                }, title: AppString.continues),
                 SizedBox(height: 20.h),
               ],
             ),

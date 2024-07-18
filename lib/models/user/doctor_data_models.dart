@@ -1,20 +1,29 @@
+// To parse this JSON data, do
+//
+//     final doctorDataModel = doctorDataModelFromJson(jsonString);
 
+import 'dart:convert';
+
+List<DoctorDataModel> doctorDataModelFromJson(String str) => List<DoctorDataModel>.from(json.decode(str).map((x) => DoctorDataModel.fromJson(x)));
+
+String doctorDataModelToJson(List<DoctorDataModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class DoctorDataModel {
-  String? id;
-  String? specialist;
-  String? experience;
-  String? clinicAddress;
-  String? about;
-  DoctorId? doctorId;
-  String? clinicPrice;
-  String? onlineConsultationPrice;
-  String? emergencyPrice;
-  List<Schedule>? schedule;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  int? v;
-  List<String>? timeSlots;
+  final String? id;
+  final String? specialist;
+  final String? experience;
+  final String? clinicAddress;
+  final String? about;
+  final DoctorId? doctorId;
+  final String? clinicPrice;
+  final String? onlineConsultationPrice;
+  final String? emergencyPrice;
+  final List<Schedule>? schedule;
+  final List<Package>? packages;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
+  final List<String>? timeSlots;
 
   DoctorDataModel({
     this.id,
@@ -27,44 +36,12 @@ class DoctorDataModel {
     this.onlineConsultationPrice,
     this.emergencyPrice,
     this.schedule,
+    this.packages,
     this.createdAt,
     this.updatedAt,
     this.v,
     this.timeSlots,
   });
-
-  DoctorDataModel copyWith({
-    String? id,
-    String? specialist,
-    String? experience,
-    String? clinicAddress,
-    String? about,
-    DoctorId? doctorId,
-    String? clinicPrice,
-    String? onlineConsultationPrice,
-    String? emergencyPrice,
-    List<Schedule>? schedule,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    int? v,
-    List<String>? timeSlots,
-  }) =>
-      DoctorDataModel(
-        id: id ?? this.id,
-        specialist: specialist ?? this.specialist,
-        experience: experience ?? this.experience,
-        clinicAddress: clinicAddress ?? this.clinicAddress,
-        about: about ?? this.about,
-        doctorId: doctorId ?? this.doctorId,
-        clinicPrice: clinicPrice ?? this.clinicPrice,
-        onlineConsultationPrice: onlineConsultationPrice ?? this.onlineConsultationPrice,
-        emergencyPrice: emergencyPrice ?? this.emergencyPrice,
-        schedule: schedule ?? this.schedule,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        v: v ?? this.v,
-        timeSlots: timeSlots ?? this.timeSlots,
-      );
 
   factory DoctorDataModel.fromJson(Map<String, dynamic> json) => DoctorDataModel(
     id: json["_id"],
@@ -77,6 +54,7 @@ class DoctorDataModel {
     onlineConsultationPrice: json["onlineConsultationPrice"],
     emergencyPrice: json["emergencyPrice"],
     schedule: json["schedule"] == null ? [] : List<Schedule>.from(json["schedule"]!.map((x) => Schedule.fromJson(x))),
+    packages: json["packages"] == null ? [] : List<Package>.from(json["packages"]!.map((x) => Package.fromJson(x))),
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
@@ -94,6 +72,7 @@ class DoctorDataModel {
     "onlineConsultationPrice": onlineConsultationPrice,
     "emergencyPrice": emergencyPrice,
     "schedule": schedule == null ? [] : List<dynamic>.from(schedule!.map((x) => x.toJson())),
+    "packages": packages == null ? [] : List<dynamic>.from(packages!.map((x) => x.toJson())),
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
@@ -102,22 +81,29 @@ class DoctorDataModel {
 }
 
 class DoctorId {
-  String? id;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? password;
-  bool? privacyPolicyAccepted;
-  bool? isAdmin;
-  bool? isProfileCompleted;
-  bool? isEmergency;
-  bool? isVerified;
-  bool? isDeleted;
-  bool? isBlocked;
-  Image? image;
-  String? role;
-  dynamic oneTimeCode;
-  int? v;
+  final String? id;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? password;
+  final bool? privacyPolicyAccepted;
+  final bool? isAdmin;
+  final bool? isProfileCompleted;
+  final bool? isEmergency;
+  final bool? isVerified;
+  final bool? isDeleted;
+  final bool? isBlocked;
+  final Image? image;
+  final String? role;
+  final String? oneTimeCode;
+  final int? v;
+  final bool? isInsurance;
+  final String? rating;
+  final int? reviewCount;
+  final Image? insurance;
+  final String? address;
+  final String? gender;
+  final String? phone;
 
   DoctorId({
     this.id,
@@ -136,44 +122,14 @@ class DoctorId {
     this.role,
     this.oneTimeCode,
     this.v,
+    this.isInsurance,
+    this.rating,
+    this.reviewCount,
+    this.insurance,
+    this.address,
+    this.gender,
+    this.phone,
   });
-
-  DoctorId copyWith({
-    String? id,
-    String? firstName,
-    String? lastName,
-    String? email,
-    String? password,
-    bool? privacyPolicyAccepted,
-    bool? isAdmin,
-    bool? isProfileCompleted,
-    bool? isEmergency,
-    bool? isVerified,
-    bool? isDeleted,
-    bool? isBlocked,
-    Image? image,
-    String? role,
-    dynamic oneTimeCode,
-    int? v,
-  }) =>
-      DoctorId(
-        id: id ?? this.id,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName,
-        email: email ?? this.email,
-        password: password ?? this.password,
-        privacyPolicyAccepted: privacyPolicyAccepted ?? this.privacyPolicyAccepted,
-        isAdmin: isAdmin ?? this.isAdmin,
-        isProfileCompleted: isProfileCompleted ?? this.isProfileCompleted,
-        isEmergency: isEmergency ?? this.isEmergency,
-        isVerified: isVerified ?? this.isVerified,
-        isDeleted: isDeleted ?? this.isDeleted,
-        isBlocked: isBlocked ?? this.isBlocked,
-        image: image ?? this.image,
-        role: role ?? this.role,
-        oneTimeCode: oneTimeCode ?? this.oneTimeCode,
-        v: v ?? this.v,
-      );
 
   factory DoctorId.fromJson(Map<String, dynamic> json) => DoctorId(
     id: json["_id"],
@@ -192,6 +148,13 @@ class DoctorId {
     role: json["role"],
     oneTimeCode: json["oneTimeCode"],
     v: json["__v"],
+    isInsurance: json["isInsurance"],
+    rating: json["rating"],
+    reviewCount: json["reviewCount"],
+    insurance: json["insurance"] == null ? null : Image.fromJson(json["insurance"]),
+    address: json["address"],
+    gender: json["gender"],
+    phone: json["phone"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -211,26 +174,24 @@ class DoctorId {
     "role": role,
     "oneTimeCode": oneTimeCode,
     "__v": v,
+    "isInsurance": isInsurance,
+    "rating": rating,
+    "reviewCount": reviewCount,
+    "insurance": insurance?.toJson(),
+    "address": address,
+    "gender": gender,
+    "phone": phone,
   };
 }
 
 class Image {
-  String? publicFileUrl;
-  String? path;
+  final String? publicFileUrl;
+  final String? path;
 
   Image({
     this.publicFileUrl,
     this.path,
   });
-
-  Image copyWith({
-    String? publicFileUrl,
-    String? path,
-  }) =>
-      Image(
-        publicFileUrl: publicFileUrl ?? this.publicFileUrl,
-        path: path ?? this.path,
-      );
 
   factory Image.fromJson(Map<String, dynamic> json) => Image(
     publicFileUrl: json["publicFileURL"],
@@ -243,27 +204,36 @@ class Image {
   };
 }
 
+class Package {
+  final String? packageName;
+  final String? packagePrice;
+
+  Package({
+    this.packageName,
+    this.packagePrice,
+  });
+
+  factory Package.fromJson(Map<String, dynamic> json) => Package(
+    packageName: json["packageName"],
+    packagePrice: json["packagePrice"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "packageName": packageName,
+    "packagePrice": packagePrice,
+  };
+}
+
 class Schedule {
-  String? day;
-  String? startTime;
-  String? endTime;
+  final String? day;
+  final String? startTime;
+  final String? endTime;
 
   Schedule({
     this.day,
     this.startTime,
     this.endTime,
   });
-
-  Schedule copyWith({
-    String? day,
-    String? startTime,
-    String? endTime,
-  }) =>
-      Schedule(
-        day: day ?? this.day,
-        startTime: startTime ?? this.startTime,
-        endTime: endTime ?? this.endTime,
-      );
 
   factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
     day: json["day"],
