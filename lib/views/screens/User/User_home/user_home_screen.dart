@@ -88,8 +88,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             itemBuilder: (context, index) {
                               if (_homeController.cetegoryLists[index].isDeleted ==
                                   false) {
-                                var category =
-                                    _homeController.cetegoryLists[index];
+                                var category = _homeController.cetegoryLists[index];
                                 bool isSelected = selectedIndex == index;
                                 return CategoryCard(
                                   onTap: () {
@@ -130,8 +129,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             scrollDirection: Axis.horizontal,
                             itemCount: _homeController.doctorLists.length,
                             itemBuilder: (context, index) {
-                              var doctorInfo =
-                                  _homeController.doctorLists[index];
+                              var doctorInfo = _homeController.doctorLists[index];
                               return Padding(
                                 padding: EdgeInsets.only(
                                     left: index == 0 ? 19.w : 7.5.w,

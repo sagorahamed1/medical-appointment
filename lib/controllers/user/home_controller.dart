@@ -6,6 +6,7 @@ import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../../models/user/doctor_data_models.dart';
 
@@ -16,14 +17,31 @@ class HomeController extends GetxController{
 
 
   RxList <CetegoryModel> cetegoryLists =<CetegoryModel> [].obs;
+  RxList cetegoryNames = [].obs;
   RxBool cetegoryLoading = false.obs;
   getCetegory()async{
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+
     cetegoryLoading(true);
-    var response = await ApiClient.getData(ApiConstants.category);
+    var response = await ApiClient.getData(ApiConstants.category,headers: headers);
 
     if(response.statusCode == 200){
       var responseData = response.body;
       cetegoryLists.value = List<CetegoryModel>.from(responseData['data']['attributes'].map((x)=> CetegoryModel.fromJson(x)));
+
+
+      // for(var data in cetegoryLists.value){
+      //  cetegoryNames.add(data.name);
+      // }
+      cetegoryNames.clear();
+      cetegoryLists.forEach((x) {
+        if (x.name != null) {
+          cetegoryNames.add(x.name!);
+        }
+      });
+
       print("get succussful");
       cetegoryLoading(false);
     }else if(response.statusCode == 404){

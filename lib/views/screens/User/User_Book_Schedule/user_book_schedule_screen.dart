@@ -38,10 +38,12 @@ class _UserBookScheduleScreenState extends State<UserBookScheduleScreen> {
       id: '${Get.parameters['id']}',
     ).then((_) {
       setState(() {
-        timeSlots = homeController.doctorDetails.value.timeSlots!;
+        print('=======time soft ==> ${homeController.doctorDetails.value.timeSlots}');
+        timeSlots = homeController.doctorDetails.value.timeSlots ?? [];
       });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +96,7 @@ class _UserBookScheduleScreenState extends State<UserBookScheduleScreen> {
                 bottom: 16.h,
                 top: 20.h,
               ),
+
 
               timeSlots.isEmpty ? const Center(child: CustomLoader()) :
               Wrap(
