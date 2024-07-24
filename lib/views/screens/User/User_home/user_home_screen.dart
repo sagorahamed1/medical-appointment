@@ -16,14 +16,22 @@ import '../../../../utils/app_strings.dart';
 import '../../../widgets/available_doctors_card.dart';
 import '../../../widgets/custom_text.dart';
 
-class UserHomeScreen extends StatelessWidget {
+class UserHomeScreen extends StatefulWidget {
   UserHomeScreen({super.key});
 
+  @override
+  State<UserHomeScreen> createState() => _UserHomeScreenState();
+}
+
+class _UserHomeScreenState extends State<UserHomeScreen> {
   final HomeController _homeController = Get.put(HomeController());
+  int selectedIndex = 0;
+  String categoryName = '';
 
   @override
   Widget build(BuildContext context) {
-    _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
+      // _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
+    _homeController.getCetegory();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -35,7 +43,8 @@ class UserHomeScreen extends StatelessWidget {
                 ///=====================top app bar =================================>
 
                 Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeDefault.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -55,7 +64,7 @@ class UserHomeScreen extends StatelessWidget {
                         controller: _homeController.searchCtrl,
                         hintText: AppString.search,
                         prefixIcon: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.toNamed(AppRoutes.userSearchScreen);
                           },
                           child: Padding(
@@ -66,72 +75,112 @@ class UserHomeScreen extends StatelessWidget {
                       ),
 
                       ///=======================Categories and See All Text=============================>
-                      _SeeAll(AppString.categories, AppString.seeAll, (){
+                      _SeeAll(AppString.categories, AppString.seeAll, () {
                         Get.toNamed(AppRoutes.userCategoryScreen);
                       }),
 
-                      const Categorysection(),
+                      SizedBox(
+                        height: 110.h,
+                        child: Obx(
+                          () => ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _homeController.cetegoryLists.length,
+                            itemBuilder: (context, index) {
+                              if (_homeController.cetegoryLists[index].isDeleted ==
+                                  false) {
+                                var category =
+                                    _homeController.cetegoryLists[index];
+                                bool isSelected = selectedIndex == index;
+                                return CategoryCard(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                      categoryName = _homeController.cetegoryLists[selectedIndex].name ?? '';
+                                      _homeController.doctorLists.clear();
+                                      _homeController.getDoctorByCetegory(cetegory: categoryName, date: null);
+                                    });
+                                  },
+                                  categorIcon: category.image?.publicFileUrl,
+                                  categorName: category.name,
+                                  isSelected: isSelected,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ),
 
                       ///=======================available Doctors and See All Text=============================>
-                      _SeeAll(AppString.availableDoctors, AppString.seeAll, (){
+                      _SeeAll(AppString.availableDoctors, AppString.seeAll, () {
                         Get.toNamed(AppRoutes.useravailablleDoctorsScreen);
                       }),
                     ],
                   ),
                 ),
 
-
                 ///======================available doctor list=================>
-                Obx(()=>
-                    _homeController.doctorLoading.value?
-                        const Center(child: CustomLoader()) :
-                    SizedBox(
-                    height: 230.h,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      // physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _homeController.doctorLists.length,
-                      itemBuilder: (context, index) {
-                        var doctorInfo = _homeController.doctorLists[index];
-                        return  Padding(
-                          padding:  EdgeInsets.only(left: index == 0 ? 19.w : 7.5.w, right: index == 4-1 ? 20.w : 0.w),
-                          child: AvailableDoctorsCard(
-                            experience: "${doctorInfo.experience}",
-                            rating: "{ing}",
-                            clinicVisit: "\$${doctorInfo.clinicPrice}",
-                            doctorName: "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
-                            totalConsultaion: "12",
-                            onlineConsultation: '\$${doctorInfo.onlineConsultationPrice}',
-                            specialist: "${doctorInfo.specialist}",
-                            imageHeight: 142,
-                            leftBtnText: AppString.seeDetails,
-                            rightBtnText: AppString.bookAppointment,
-                            leftBtnOntap: (){
-                              Get.toNamed(AppRoutes.userDoctorDetailsScreen, parameters: {'id' : '${doctorInfo.doctorId?.id}'});
-                            },
-                            rightBtnOnTap: (){
-                              Get.toNamed(AppRoutes.userSelectPackageScreen, arguments: doctorInfo, parameters: {
-                                'id' : '${doctorInfo.doctorId?.id}'
-                              });
+                Obx(
+                  () => _homeController.doctorLoading.value
+                      ? const Center(child: CustomLoader())
+                      : SizedBox(
+                          height: 230.h,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            // physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _homeController.doctorLists.length,
+                            itemBuilder: (context, index) {
+                              var doctorInfo =
+                                  _homeController.doctorLists[index];
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    left: index == 0 ? 19.w : 7.5.w,
+                                    right: index == 4 - 1 ? 20.w : 0.w),
+                                child: AvailableDoctorsCard(
+                                  experience: "${doctorInfo.experience}",
+                                  rating: "{ing}",
+                                  clinicVisit: "\$${doctorInfo.clinicPrice}",
+                                  doctorName:
+                                      "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
+                                  totalConsultaion: "12",
+                                  onlineConsultation:
+                                      '\$${doctorInfo.onlineConsultationPrice}',
+                                  specialist: "${doctorInfo.specialist}",
+                                  imageHeight: 142,
+                                  leftBtnText: AppString.seeDetails,
+                                  rightBtnText: AppString.bookAppointment,
+                                  leftBtnOntap: () {
+                                    Get.toNamed(
+                                        AppRoutes.userDoctorDetailsScreen,
+                                        parameters: {
+                                          'id': '${doctorInfo.doctorId?.id}'
+                                        });
+                                  },
+                                  rightBtnOnTap: () {
+                                    Get.toNamed(
+                                        AppRoutes.userSelectPackageScreen,
+                                        arguments: doctorInfo,
+                                        parameters: {
+                                          'id': '${doctorInfo.doctorId?.id}'
+                                        });
+                                  },
+                                ),
+                              );
                             },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        ),
                 ),
-
 
                 ///=======================Emergency Doctors and See All Text=============================>
                 Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
-                  child: _SeeAll(AppString.emergencyDoctors, AppString.seeAll, (){
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeDefault.w),
+                  child:
+                      _SeeAll(AppString.emergencyDoctors, AppString.seeAll, () {
                     Get.toNamed(AppRoutes.useremergencyDoctorsScreen);
                   }),
                 ),
-            
-            
+
                 SizedBox(
                   height: 185.h,
                   child: ListView.builder(
@@ -139,7 +188,9 @@ class UserHomeScreen extends StatelessWidget {
                     itemCount: 10,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding:  EdgeInsets.only(left: index == 0 ? 19.w : 8.w, right: index == 10-1 ? 20.w : 0.w),
+                        padding: EdgeInsets.only(
+                            left: index == 0 ? 19.w : 8.w,
+                            right: index == 10 - 1 ? 20.w : 0.w),
                         child: const AvailableDoctorsCard(
                           rating: "4.0",
                           doctorName: "Sagor Ahamed",
@@ -155,9 +206,7 @@ class UserHomeScreen extends StatelessWidget {
                   ),
                 ),
 
-
                 SizedBox(height: 10.h)
-            
               ],
             ),
           ),

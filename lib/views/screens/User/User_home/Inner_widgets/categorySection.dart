@@ -1,42 +1,47 @@
 import 'package:doctor_appointment/controllers/category_controller.dart';
+import 'package:doctor_appointment/services/api_constants.dart';
+import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../../models/user/cetegory_model.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../widgets/custom_text.dart';
 
 class Categorysection extends StatefulWidget {
-   const Categorysection({super.key});
+  List<CetegoryModel> cetegoryList;
+
+  Categorysection({super.key, required this.cetegoryList});
 
   @override
   State<Categorysection> createState() => _CategorysectionState();
 }
 
 class _CategorysectionState extends State<Categorysection> {
-  final CategoryController _categoryController = Get.put(CategoryController());
+  int selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
-    return  SizedBox(
+    return SizedBox(
       height: 110.h,
       child: Obx(
-            () => ListView.builder(
+        () => ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: _categoryController.cetegoryList.sublist(0,4).length,
+          itemCount: widget.cetegoryList.length,
           itemBuilder: (context, index) {
-            var category = _categoryController.cetegoryList[index];
-            // bool isSelected = selectedIndex == index;
+            var category = widget.cetegoryList[index];
+            bool isSelected = selectedIndex == index;
             return CategoryCard(
               onTap: () {
                 setState(() {
-                  // setSelectedIndex(index);
+                  selectedIndex = index;
                 });
               },
-              categorIcon: category['categoryIcon'],
-              categorName: category['categoryName'],
-              // isSelected: isSelected,
+              categorIcon: category.image?.publicFileUrl,
+              categorName: category.name,
+              isSelected: isSelected,
             );
           },
         ),
@@ -44,8 +49,6 @@ class _CategorysectionState extends State<Categorysection> {
     );
   }
 }
-
-
 
 class CategoryCard extends StatelessWidget {
   final String? categorIcon;
@@ -55,29 +58,31 @@ class CategoryCard extends StatelessWidget {
 
   const CategoryCard(
       {super.key,
-        this.categorIcon,
-        this.categorName,
-        this.isSelected = false,
-        this.onTap});
+      this.categorIcon,
+      this.categorName,
+      this.isSelected = false,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap ?? (){},
+      onTap: onTap ?? () {},
       child: Column(
         children: [
           Padding(
             padding: EdgeInsets.all(13.r),
             child: Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xffE8EBF0)
+              decoration:  BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSelected ? Colors.grey : const Color(0xffE8EBF0)
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 18.5.h, horizontal: 18.w),
-                child: SvgPicture.asset(
-                  categorIcon!,
-                  color: AppColors.primaryColor
+                padding:
+                    EdgeInsets.symmetric(vertical: 18.5.h, horizontal: 18.w),
+                child: CustomNetworkImage(
+                  imageUrl: '${ApiConstants.imageBaseUrl}/$categorIcon',
+                  height: 30.h,
+                  width: 30.w,
                 ),
               ),
             ),
@@ -86,11 +91,9 @@ class CategoryCard extends StatelessWidget {
             text: categorName ?? "",
             fontsize: 12.h,
             fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.white : Colors.black,
           )
         ],
       ),
     );
   }
 }
-

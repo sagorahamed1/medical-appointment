@@ -16,19 +16,18 @@ import '../../../widgets/custom_text.dart';
 class UserPatientDetailsScreen extends StatelessWidget {
   UserPatientDetailsScreen({super.key});
 
-  final UserPatientDetailsController _patientDetailsController = Get.put(UserPatientDetailsController());
+  final UserPatientDetailsController _patientDetailsController =
+      Get.put(UserPatientDetailsController());
   TextEditingController fullNameCtrl = TextEditingController();
   TextEditingController ageCtrl = TextEditingController();
   TextEditingController problemCtrl = TextEditingController();
   TextEditingController genderCtrl = TextEditingController();
-
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   var dropDownList = ["Male", "Female"];
 
   @override
   Widget build(BuildContext context) {
-
     RxBool isDropDown = false.obs;
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
@@ -45,88 +44,130 @@ class UserPatientDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: Dimensions.paddingSizeDefault.w,
               vertical: Dimensions.paddingSizeDefault.h),
-          child: Obx(()=>
-              Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ///===================Write Full Name TextField================>?
-                _textAndTextField(AppString.fullName, "Type your full name", "", fullNameCtrl, 1, TextInputType.text),
-                CustomText(
-                    text: AppString.selecteGender,
-                    fontsize: 18.h,
-                    fontWeight: FontWeight.w600,
-                    bottom: 20.h),
+          child: Obx(
+            () => Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ///===================Write Full Name TextField================>?
+                  _textAndTextField(
+                      AppString.fullName,
+                      "Type your full name",
+                      "",
+                      fullNameCtrl,
+                      1,
+                      TextInputType.text,
+                      'Please enter your full name'),
+                  CustomText(
+                      text: AppString.selecteGender,
+                      fontsize: 18.h,
+                      fontWeight: FontWeight.w600,
+                      bottom: 20.h),
 
-                   CustomTextFieldWithoutBorder(
-                     onTap: (){
-                       if(isDropDown.value == true){
-                         isDropDown(false);
-                       }
-                       isDropDown(true);
-                     },
-                     readOnly: true,
-                     contenpaddingHorizontal: 20,
-                     contenpaddingVertical: 0,
-                     controller: genderCtrl,
-                     hintText: 'Select gender',
-                     sufixicons: Padding(
-                       padding:
-                           EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-                       child: SvgPicture.asset(
-                         AppIcons.arrowDown,
-                         color: AppColors.primaryColor,
-                         height: 20.h,
-                         width: 20.w,
-                         fit: BoxFit.cover,
-                       ),
-                     ),
-                   ),
-
-                SizedBox(height: 5.h),
-                isDropDown.value?
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.fillColorE8EBF0,
-                    borderRadius: BorderRadius.all(Radius.circular(8.r) )
-                  ),
-                  height: 142.h,
-                  child: ListView.builder(
-                    itemCount: dropDownList.length,
-                    itemBuilder: (context, index) {
-                      var dropDownItems = dropDownList[index];
-                      return ListTile(
-                        contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20.w),
-                        title: CustomText(text: dropDownItems,textAlign: TextAlign.start),
-                        onTap: (){
-                          isDropDown(false);
-                          genderCtrl.text = dropDownItems;
-                        },
-                      );
+                  CustomTextFieldWithoutBorder(
+                    onTap: () {
+                      if (isDropDown.value == true) {
+                        isDropDown(false);
+                      }
+                      isDropDown(true);
                     },
+                    readOnly: true,
+                    contenpaddingHorizontal: 20,
+                    contenpaddingVertical: 0,
+                    controller: genderCtrl,
+                    hintText: 'Select gender',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please select your gender";
+                      }
+                      return null;
+                    },
+                    sufixicons: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 18.w, vertical: 18.h),
+                      child: SvgPicture.asset(
+                        AppIcons.arrowDown,
+                        color: AppColors.primaryColor,
+                        height: 20.h,
+                        width: 20.w,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ) : const SizedBox() ,
 
-                SizedBox(height: 16.h),
-                ///===================Write you Age TextField================>
-                _textAndTextField(AppString.yourAge, "Write your Age", "", ageCtrl, 1, TextInputType.number),
-                ///===================Write Problem TextField================>?
-                _textAndTextField(AppString.writeYourProblem, AppString.writeYourProblem, "", problemCtrl, 10, TextInputType.text),
-                SizedBox(height: 20.h),
-                CustomButton(onpress: () {
-                  _patientDetailsController.patienDetailsAdd(
-                    fullName: fullNameCtrl.text,
-                    age: ageCtrl.text,
-                    gender: genderCtrl.text,
-                    description: problemCtrl.text,
-                    doctorId: "${Get.parameters['id']}",
-                    price: "${Get.parameters['price']}",
-                    packName: "${Get.parameters['packageName']}",
-                    timeSlot: "${Get.parameters['timeSlot']}",
-                    date: '${Get.parameters['date']}'
-                  );
-                }, title: AppString.continues),
-                SizedBox(height: 20.h),
-              ],
+                  SizedBox(height: 5.h),
+                  isDropDown.value
+                      ? Container(
+                          decoration: BoxDecoration(
+                              color: AppColors.fillColorE8EBF0,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.r))),
+                          height: 142.h,
+                          child: ListView.builder(
+                            itemCount: dropDownList.length,
+                            itemBuilder: (context, index) {
+                              var dropDownItems = dropDownList[index];
+                              return ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 20.w),
+                                title: CustomText(
+                                    text: dropDownItems,
+                                    textAlign: TextAlign.start),
+                                onTap: () {
+                                  isDropDown(false);
+                                  genderCtrl.text = dropDownItems;
+                                },
+                              );
+                            },
+                          ),
+                        )
+                      : const SizedBox(),
+
+                  SizedBox(height: 16.h),
+
+                  ///===================Write you Age TextField================>
+                  _textAndTextField(
+                      AppString.yourAge,
+                      "Write your Age",
+                      "",
+                      ageCtrl,
+                      1,
+                      TextInputType.number,
+                      'Please enter your age'),
+
+                  ///===================Write Problem TextField================>?
+                  _textAndTextField(
+                      AppString.writeYourProblem,
+                      AppString.writeYourProblem,
+                      "",
+                      problemCtrl,
+                      10,
+                      TextInputType.text,
+                      'Please write your problems'),
+                  SizedBox(height: 20.h),
+                  CustomButton(
+                    loading: _patientDetailsController.patientDetailsLoading.value,
+                      onpress: () {
+
+                        if (_formKey.currentState!.validate()){
+                          _patientDetailsController.patienDetailsAdd(
+                              fullName: fullNameCtrl.text,
+                              age: ageCtrl.text,
+                              gender: genderCtrl.text,
+                              description: problemCtrl.text,
+                              doctorId: "${Get.parameters['id']}",
+                              price: "${Get.parameters['price']}",
+                              packName: "${Get.parameters['packageName']}",
+                              timeSlot: "${Get.parameters['timeSlot']}",
+                              date: '${Get.parameters['date']}');
+                        }
+
+                      },
+                      title: AppString.continues),
+                  SizedBox(height: 20.h),
+                ],
+              ),
             ),
           ),
         ),
@@ -134,8 +175,14 @@ class UserPatientDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _textAndTextField(String title, hinText, icon,
-      TextEditingController controller, int maxLine, TextInputType keyboardType) {
+  Widget _textAndTextField(
+      String title,
+      hinText,
+      icon,
+      TextEditingController controller,
+      int maxLine,
+      TextInputType keyboardType,
+      String validationText) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -151,6 +198,12 @@ class UserPatientDetailsScreen extends StatelessWidget {
           maxLines: maxLine,
           keyboardType: keyboardType,
           hintText: '$hinText',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return validationText;
+            }
+            return null;
+          },
           sufixicons: icon == ""
               ? const SizedBox()
               : Padding(
