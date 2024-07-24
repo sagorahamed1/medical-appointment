@@ -152,6 +152,8 @@ class AuthController extends GetxController {
         ToastMessageHelper.showToastMessage('Your are logged in!');
       }
       logInLoading(false);
+    }else{
+      ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }
 

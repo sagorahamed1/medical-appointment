@@ -14,11 +14,18 @@ class ApiConstants{
   static const String continueDoctorPoint = "/doctor/create-details";
   static const String getProfileEndPoint = "/user/login-user";
   static const String profileUpdate = "/user/update-profile";
+  static const String patientDetailsAdd = "/user/patient-details-for-doctor";
+
   static  String getDoctor(String cetegory) => "/doctor/get-doctors?specialist=$cetegory";
   static  String getAppointments(String status) => "/appointments/user-get-appointments?status=$status";
   static  String doctorDetailsHomeScreen(String id) => "/doctor/get-single-doctor?id=$id";
   static const String category = "/category/get-category";
 
+
+
+
+
+  static const String userPayment = "/payment/create-payment";
 
 
 }
