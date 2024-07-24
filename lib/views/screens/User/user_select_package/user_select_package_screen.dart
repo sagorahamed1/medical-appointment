@@ -1,3 +1,4 @@
+
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../helpers/toast_message_helper.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_select_package_card.dart';
 import '../../../widgets/custom_text.dart';
@@ -20,23 +22,15 @@ class UserSelectPackageScreen extends StatefulWidget {
 
 class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
 
-  final RxInt selectedIndex = 0.obs;
+  String price = '';
+  String packageName = '';
+  final RxInt selectedIndex = (-1).obs;
 
-  List packageList = [
-    {
-      'icon' : AppIcons.videoCallIcons,
-      'title' : "Online Consultation",
-      "description" : "video call & messages with doctor"
-    },
-    {
-      'icon' : AppIcons.personGroup,
-      'title' : "Clinic Visit",
-      "description" : "Virtual visit in doctors clinic"
-    }
-  ];
 
   @override
   Widget build(BuildContext context) {
+    print('price ====< > $price');
+    print('price ====< > $packageName');
     print('====> ${widget.data}');
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
@@ -72,6 +66,8 @@ class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
                       onTap: () {
                         setState(() {
                           selectedIndex.value = index;
+                          price = package.packagePrice;
+                          packageName = package.packageName;
                         });
 
                       },
@@ -80,13 +76,20 @@ class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
                 },
               ),
             ),
-            const Spacer(),
+            SizedBox(height: 150.h),
             CustomButton(onpress: () {
-              Get.toNamed(AppRoutes.userBookScheduleScreen, arguments: widget.data.timeSlots, parameters: {
-                'id' : '${Get.parameters['id']}'
-              });
+
+              if(price == '' || packageName == ''){
+                ToastMessageHelper.showToastMessage('Please Select Package');
+              }else{
+                Get.toNamed(AppRoutes.userBookScheduleScreen, arguments: widget.data.timeSlots, parameters: {
+                  'id' : '${Get.parameters['id']}',
+                  'price' : price,
+                  'packageName' : packageName
+                });
+              }
             }, title: AppString.continues),
-            SizedBox(height: 36.h)
+
           ],
         ),
       ),

@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../helpers/toast_message_helper.dart';
+
 class UserBookScheduleScreen extends StatefulWidget {
   UserBookScheduleScreen({super.key});
 
@@ -125,7 +127,20 @@ class _UserBookScheduleScreenState extends State<UserBookScheduleScreen> {
               SizedBox(height: 24.h),
               CustomButton(
                 onpress: () {
-                  Get.toNamed(AppRoutes.userPatientDetailsScreen);
+
+                  if(selectedTime == ''){
+                    ToastMessageHelper.showToastMessage('Please Select Time');
+                  }else{
+                    Get.toNamed(AppRoutes.userPatientDetailsScreen, parameters: {
+                      'id' : '${Get.parameters['id']}',
+                      'price' : '${Get.parameters['price']}',
+                      'packageName' : '${Get.parameters['packageName']}',
+                      'timeSlot' : selectedTime,
+                      'date' : '$selectedDate'
+                    });
+                  }
+
+
                 },
                 title: AppString.continues,
               ),

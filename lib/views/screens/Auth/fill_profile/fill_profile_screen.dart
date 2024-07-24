@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -54,140 +55,147 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
       body: Padding(
         padding: EdgeInsets.symmetric(
             vertical: 24.h, horizontal: Dimensions.paddingSizeDefault.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.primaryColor, width: 0.5),
-                    ),
-                    child: _image != null
-                        ? CircleAvatar(
-                            radius: 60.r, backgroundImage: MemoryImage(_image!))
-                        : Container(
-                            clipBehavior: Clip.antiAlias,
-                            height: 100.h,
-                            width: 100.w,
-                            decoration:
-                                const BoxDecoration(shape: BoxShape.circle),
-                            child:
-                                // profileData?.image?.publicFileUrl == null || profileData?.image?.publicFileUrl == '' ?
-                                // CachedNetworkImage(
-                                //   imageUrl:  "${ApiConstant.imageBaseUrl}/${profileData?.image
-                                //       ?.publicFileUrl}",fit: BoxFit.cover,)
-                                //     :
-                                Image.asset(
-                              AppImages.fillProfile,
-                              fit: BoxFit.cover,
-                            )),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  height: 130.h,
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AppColors.primaryColor, width: 0.5),
+                        ),
+                        child: _image != null
+                            ? CircleAvatar(
+                                radius: 60.r, backgroundImage: MemoryImage(_image!))
+                            : Container(
+                                clipBehavior: Clip.antiAlias,
+                                height: 100.h,
+                                width: 100.w,
+                                decoration:
+                                    const BoxDecoration(shape: BoxShape.circle),
+                                child:
+                                    // profileData?.image?.publicFileUrl == null || profileData?.image?.publicFileUrl == '' ?
+                                    // CachedNetworkImage(
+                                    //   imageUrl:  "${ApiConstant.imageBaseUrl}/${profileData?.image
+                                    //       ?.publicFileUrl}",fit: BoxFit.cover,)
+                                    //     :
+                                    Image.asset(
+                                  AppImages.fillProfile,
+                                  fit: BoxFit.cover,
+                                )),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                            onTap: () {
+                              showImagePickerOption(context);
+                            },
+                            child: SvgPicture.asset(AppIcons.galaryIcon)),
+                      )
+                    ],
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                        onTap: () {
-                          showImagePickerOption(context);
-                        },
-                        child: SvgPicture.asset(AppIcons.galaryIcon)),
-                  )
-                ],
+                ),
               ),
-            ),
-
-            Align(
-              alignment: Alignment.center,
-              child: CustomText(
-                  text: AppString.uploadProfilePicture,
-                  color: AppColors.textColor193664,
-                  top: 8.h,
-                  bottom: 24.h),
-            ),
-
-            ///=====================Gender ======================>
-            CustomTextFieldWithoutBorder(
-                readOnly: true,
+          
+              Align(
+                alignment: Alignment.center,
+                child: CustomText(
+                    text: AppString.uploadProfilePicture,
+                    color: AppColors.textColor193664,
+                    top: 8.h,
+                    bottom: 24.h),
+              ),
+          
+              ///=====================Gender ======================>
+              CustomTextFieldWithoutBorder(
+                  readOnly: true,
+                  contenpaddingHorizontal: 20.w,
+                  contenpaddingVertical: 0.h,
+                  controller: _authController.genderCtrl,
+                  hintText: AppString.gender,
+                  sufixicons: PopUpMenu(
+                    items: genderList,
+                    selectedItem: "Male",
+                    onTap: (int index) {
+                      _authController.genderCtrl.text = genderList[index];
+                    },
+                  )),
+              SizedBox(height: 16.h),
+          
+              ///=====================Date of birth ======================>
+              CustomTextFieldWithoutBorder(
                 contenpaddingHorizontal: 20.w,
                 contenpaddingVertical: 0.h,
-                controller: _authController.genderCtrl,
-                hintText: AppString.gender,
-                sufixicons: PopUpMenu(
-                  items: genderList,
-                  selectedItem: "Male",
-                  onTap: (int index) {
-                    _authController.genderCtrl.text = genderList[index];
+                controller: _authController.dateOfBirthCtrl,
+                hintText: AppString.dateOfBirth,
+                sufixicons: GestureDetector(
+                  onTap: (){
+                    selectDate(context);
                   },
-                )),
-            SizedBox(height: 16.h),
-
-            ///=====================Date of birth ======================>
-            CustomTextFieldWithoutBorder(
-              contenpaddingHorizontal: 20.w,
-              contenpaddingVertical: 0.h,
-              controller: _authController.dateOfBirthCtrl,
-              hintText: AppString.dateOfBirth,
-              sufixicons: GestureDetector(
-                onTap: (){
-                  selectDate(context);
-                },
-                child: Padding(
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: SvgPicture.asset(
+                        AppIcons.calendar,
+                        color: AppColors.gray767676,
+                      )),
+                ),
+              ),
+          
+              SizedBox(height: 16.h),
+              ///=====================Insurance======================>
+              CustomTextFieldWithoutBorder(
+                contenpaddingHorizontal: 20.w,
+                contenpaddingVertical: 0.h,
+                controller: _authController.dateOfBirthCtrl,
+                hintText: 'Insurance',
+                sufixicons: Padding(
                     padding: EdgeInsets.only(left: 20.w, right: 20.w),
                     child: SvgPicture.asset(
-                      AppIcons.calendar,
+                      AppIcons.attachFile,
                       color: AppColors.gray767676,
                     )),
               ),
-            ),
+          
+              SizedBox(height: 16.h),
+          
+              ///=====================mobile number ======================>
+              CustomTextFieldWithoutBorder(
+                keyboardType: TextInputType.number,
+                contenpaddingHorizontal: 20.w,
+                contenpaddingVertical: 0.h,
+                hintText: AppString.mobileNumber,
+                controller: _authController.mobileNumberCtrl,
+              ),
+          
+              SizedBox(height: 16.h),
+          
+              ///=====================Address======================>
+              CustomTextFieldWithoutBorder(
+                maxLines: 3,
+                contenpaddingHorizontal: 20.w,
+                contenpaddingVertical: 15.h,
+                hintText: AppString.address,
+                controller: _authController.addressCtrl,
+              ),
+          
+              SizedBox(height: 48.h),
+              // const Spacer(),
+              CustomButton(
+                // loading: _authController.fillProfileLoading.value,
+                  onpress: () {
+                     _authController.fillProfileOrUpDate(selectedIMage);
+                  },
+                  title: AppString.continues),
 
-            SizedBox(height: 16.h),
-            ///=====================Insurance======================>
-            CustomTextFieldWithoutBorder(
-              contenpaddingHorizontal: 20.w,
-              contenpaddingVertical: 0.h,
-              controller: _authController.dateOfBirthCtrl,
-              hintText: 'Insurance',
-              sufixicons: Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                  child: SvgPicture.asset(
-                    AppIcons.attachFile,
-                    color: AppColors.gray767676,
-                  )),
-            ),
-
-            SizedBox(height: 16.h),
-
-            ///=====================mobile number ======================>
-            CustomTextFieldWithoutBorder(
-              keyboardType: TextInputType.number,
-              contenpaddingHorizontal: 20.w,
-              contenpaddingVertical: 0.h,
-              hintText: AppString.mobileNumber,
-              controller: _authController.mobileNumberCtrl,
-            ),
-
-            SizedBox(height: 16.h),
-
-            ///=====================Address======================>
-            CustomTextFieldWithoutBorder(
-              maxLines: 3,
-              contenpaddingHorizontal: 20.w,
-              contenpaddingVertical: 15.h,
-              hintText: AppString.address,
-              controller: _authController.addressCtrl,
-            ),
-
-            SizedBox(height: 48.h),
-            // const Spacer(),
-            CustomButton(
-              // loading: _authController.fillProfileLoading.value,
-                onpress: () {
-                   _authController.fillProfileOrUpDate(selectedIMage);
-                },
-                title: AppString.continues),
-          ],
+              SizedBox(height: 200.h),
+            ],
+          ),
         ),
       ),
     );
@@ -281,13 +289,13 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
     );
 
     if (pickedDate != null && pickedDate != selectedDate) {
       selectedDate = pickedDate;
-      _authController.dateOfBirthCtrl.text = '$selectedDate';
+      _authController.dateOfBirthCtrl.text = TimeFormatHelper.formatDate(selectedDate);
       print('Selected date: ${_authController.dateOfBirthCtrl.text}');
     }
   }

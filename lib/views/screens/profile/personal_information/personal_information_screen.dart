@@ -1,5 +1,4 @@
 import 'package:doctor_appointment/controllers/profile_controler.dart';
-import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
@@ -19,11 +18,12 @@ class PersonalInformationScreen extends StatelessWidget {
   final ProfileControler _profileControler = Get.put(ProfileControler());
   @override
   Widget build(BuildContext context) {
-    var profileData = _profileControler.profileInfo.value;
     _profileControler.getProfile();
     return Scaffold(
+
       body: SingleChildScrollView(
         child: Obx(() {
+          var profileData = _profileControler.profileInfo.value;
           return  _profileControler.profileLoading.value ?
           Center(child: Padding(
             padding:  EdgeInsets.only(top :280.h),

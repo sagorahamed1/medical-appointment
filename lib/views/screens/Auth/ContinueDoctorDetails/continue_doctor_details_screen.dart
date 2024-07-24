@@ -296,6 +296,7 @@ class _ContinueDoctorDetailsScreenState extends State<ContinueDoctorDetailsScree
               SizedBox(height: 16.h),
               ///=======================Price for Clinic Controller ============================>
               CustomTextFieldWithoutBorder(
+                keyboardType: TextInputType.number,
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 15,
 
@@ -306,6 +307,7 @@ class _ContinueDoctorDetailsScreenState extends State<ContinueDoctorDetailsScree
               SizedBox(height: 16.h),
               ///=======================Price for Online Controller ============================>
               CustomTextFieldWithoutBorder(
+                  keyboardType: TextInputType.number,
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 15,
                   hintText: "Set Price for online consultatation",
@@ -316,6 +318,7 @@ class _ContinueDoctorDetailsScreenState extends State<ContinueDoctorDetailsScree
               SizedBox(height: 16.h),
               ///=======================Price for emergency Controller ============================>
               CustomTextFieldWithoutBorder(
+                  keyboardType: TextInputType.number,
                   contenpaddingHorizontal: 20,
                   contenpaddingVertical: 15,
                   hintText: "Set Price for emergency consultatation",

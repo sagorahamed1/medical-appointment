@@ -23,6 +23,7 @@ class UserPatientDetailsScreen extends StatelessWidget {
   TextEditingController genderCtrl = TextEditingController();
 
 
+
   var dropDownList = ["Male", "Female"];
 
   @override
@@ -117,7 +118,11 @@ class UserPatientDetailsScreen extends StatelessWidget {
                     age: ageCtrl.text,
                     gender: genderCtrl.text,
                     description: problemCtrl.text,
-                    doctorId: ''
+                    doctorId: "${Get.parameters['id']}",
+                    price: "${Get.parameters['price']}",
+                    packName: "${Get.parameters['packageName']}",
+                    timeSlot: "${Get.parameters['timeSlot']}",
+                    date: '${Get.parameters['date']}'
                   );
                 }, title: AppString.continues),
                 SizedBox(height: 20.h),

@@ -12,6 +12,11 @@ import '../utils/app_constant.dart';
 
 class ProfileControler extends GetxController{
 
+  @override
+  void onInit() {
+    getProfile();
+    super.onInit();
+  }
 
   final rxRequestStatus = Status.loading.obs;
   RxBool profileLoading = false.obs;
@@ -71,7 +76,6 @@ class ProfileControler extends GetxController{
 
     print("=======> ${response.body}");
     if (response.statusCode == 200 || response.statusCode == 201) {
-
       Get.back();
       Get.back();
       ToastMessageHelper.showToastMessage('Profile Updated Successful');
