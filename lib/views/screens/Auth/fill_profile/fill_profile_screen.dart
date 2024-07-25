@@ -226,9 +226,15 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                     )
                         :  Align(
                         alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding:  EdgeInsets.only(right: 20.w),
-                          child: SvgPicture.asset(AppIcons.attachFile),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(text: "insurance",left: 20.w),
+                            Padding(
+                              padding:  EdgeInsets.only(right: 20.w),
+                              child: SvgPicture.asset(AppIcons.attachFile),
+                            ),
+                          ],
                         )),
                   ),
                 ),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../helpers/prefs_helper.dart';
 import '../../helpers/toast_message_helper.dart';
 import '../../models/doctor/doctor_details_molel_doctor_part.dart';
+import '../../models/doctor/doctor_see_details_model_doctor_part.dart';
 import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
 import '../../utils/app_constant.dart';
@@ -19,7 +20,7 @@ class DoctorDetailsControllerDoctorPart extends GetxController{
     var response = await ApiClient.getData(ApiConstants.doctorDetailsDoctorPart);
     if(response.statusCode == 200){
       var responseData = response.body;
-      doctorDetails.value = DoctorDetailsModelDoctorPart.fromJson(responseData['data']['attributes']); //responseData['data']['attributes'];
+      doctorDetails.value = DoctorDetailsModelDoctorPart.fromJson(responseData['data']['attributes']);
       print("get succussful");
       doctorDetailsLoading(false);
     }else if(response.statusCode == 404){
@@ -85,4 +86,5 @@ class DoctorDetailsControllerDoctorPart extends GetxController{
       resendLoading(false);
     }
   }
+
 }

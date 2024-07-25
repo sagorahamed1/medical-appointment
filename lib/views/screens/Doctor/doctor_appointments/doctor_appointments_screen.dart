@@ -2,12 +2,16 @@ import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
+import 'package:doctor_appointment/views/widgets/custom_button.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../controllers/doctor/doctor_home_controller.dart';
+import '../../../../helpers/newwork_connection.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
@@ -24,6 +28,9 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
+  final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
+  final NetworkController networkController = Get.put(NetworkController());
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +45,8 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
 
   @override
   Widget build(BuildContext context) {
+    print("============> ${ networkController.isConnected ? 'Connected' : 'Not Connected'}");
+    _homeController.getAppointment();
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
@@ -48,10 +57,22 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
         bottom: TabBar(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           controller: _tabController,
+          onTap: (int value) {
+            if (value == 0) {
+              _homeController.appointmentsList.clear();
+              _homeController.getAppointment(status: 'upcomming');
+            } else if (value == 1) {
+              _homeController.appointmentsList.clear();
+              _homeController.getAppointment(status: 'active');
+            } else {
+              _homeController.appointmentsList.clear();
+              _homeController.getAppointment(status: 'completed');
+            }
+          },
           tabs: const [
             Tab(text: 'Upcoming'),
-            Tab(text: 'Completed'),
-            Tab(text: 'Cancelled'),
+            Tab(text: 'Active'),
+            Tab(text: 'completed'),
           ],
           labelColor: AppColors.primaryColor,
           unselectedLabelStyle: const TextStyle(color: Colors.red),
@@ -70,70 +91,98 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
           controller: _tabController,
           children: [
             ///=======================Up Coming Lists====================>
-            ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 16.h),
-                  child: AppointmentsCard(
-                    image: AppImages.getStarted1,
-                    name: "Sagor Ahamed",
-                    appointmentsType: "Upcoming",
-                    date: DateTime.now(),
-                    messageIcon: AppIcons.messageIcon2,
-                    time: "14:00 PM",
-                    leftBtnName: 'Cancel Appointment',
-                    rightBtnName: 'See Details',
-                    rightBtnOnTap: () {
-                      Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
-                        'screenType': "${AppString.upcoming}"
-                      });
-                    },
-                  ),
-                );
-              },
+            Obx(()=>
+            _homeController.appointmentLoading.value ? Center(child: Padding(
+              padding:  EdgeInsets.only(top: 190.h),
+              child: const CustomLoader(),
+            )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
+               ListView.builder(
+                itemCount: _homeController.appointmentsList.length,
+                itemBuilder: (context, index) {
+                  var appointment = _homeController.appointmentsList[index];
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: AppointmentsCard(
+                      image: AppImages.getStarted1,
+                      name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                      appointmentsType: "${appointment.status}",
+                      date: appointment.createdAt,
+                      time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
+                      // messageIcon: AppIcons.messageIcon2,
+                      // time: "${TimeFormatHelper.timeWithAMPM('${appointment.createdAt}')}",
+                      // leftBtnName: 'Cancel Appointment',
+                      // rightBtnName: 'See Details',
+                      btnText: 'See Details',
+                      rightBtnOnTap: () {
+                        Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
+                          'screenType': AppString.upcoming
+                        });
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
 
-            ///=======================Completed Lists====================>
-            ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 16.h),
-                  child: AppointmentsCard(
-                    image: AppImages.getStarted1,
-                    name: "Sagor Ahamed",
-                    leftBtnName: 'See Details',
-                    rightBtnName: 'Give Review',
-                    appointmentsType: 'Completed',
-                    date: DateTime.now(),
-                    leftBtnOnTap: () {
-                      Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen);
-                    },
-                    rightBtnOnTap: () {
-                      Get.toNamed(AppRoutes.userGiveReviewScreen);
-                    },
-                    time: "14:00 PM",
-                  ),
-                );
-              },
+            ///=======================Active Lists====================>
+            Obx(()=>
+               _homeController.appointmentLoading.value ? Center(child: Padding(
+                 padding:  EdgeInsets.only(top: 190.h),
+                 child: const CustomLoader(),
+               )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
+               ListView.builder(
+                itemCount: _homeController.appointmentsList.length,
+                itemBuilder: (context, index) {
+                  var appointment = _homeController.appointmentsList[index];
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: AppointmentsCard(
+                      image: AppImages.getStarted1,
+                      name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                      leftBtnName: 'See Details',
+                      rightBtnName: 'Message',
+                      appointmentsType:  "${appointment.status}",
+                      date: appointment.createdAt,
+                      time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
+                      leftBtnOnTap: () {
+                        Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
+                          'id' : "${appointment.id}"
+                        });
+                      },
+                      rightBtnOnTap: () {
+                        Get.toNamed(AppRoutes.userGiveReviewScreen);
+                      },
+
+                    ),
+                  );
+                },
+              ),
             ),
 
-            ///=======================Cancelled Lists====================>
-            ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 16.h),
-                  child: AppointmentsCard(
-                    image: AppImages.getStarted1,
-                    name: "Sagor Ahamed",
-                    appointmentsType: 'Cancelled',
-                    date: DateTime.now(),
-                    time: "14:00 PM",
-                  ),
-                );
-              },
+            ///=======================completed Lists====================>
+            Obx(()=>
+            _homeController.appointmentLoading.value ? Center(child: Padding(
+              padding:  EdgeInsets.only(top: 190.h),
+              child: const CustomLoader(),
+            )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
+               ListView.builder(
+                itemCount: _homeController.appointmentsList.length,
+                itemBuilder: (context, index) {
+                  var appointment = _homeController.appointmentsList[index];
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 16.h),
+                    child: AppointmentsCard(
+                      image: AppImages.getStarted1,
+                      name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                      appointmentsType:  "${appointment.status}",
+                      date: appointment.createdAt,
+                      time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
+                      leftBtnName: 'See Details',
+                      rightBtnName: 'Send Prescription',
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -155,6 +204,8 @@ class AppointmentsCard extends StatelessWidget {
   final VoidCallback? leftBtnOnTap;
   final String? rightBtnName;
   final VoidCallback? rightBtnOnTap;
+  final String? btnText;
+  final VoidCallback? btnOnTap;
 
   const AppointmentsCard(
       {super.key,
@@ -167,11 +218,12 @@ class AppointmentsCard extends StatelessWidget {
         this.leftBtnName,
         this.leftBtnOnTap,
         this.rightBtnName,
-        this.rightBtnOnTap});
+        this.rightBtnOnTap, this.btnText, this.btnOnTap});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 200,
       decoration: BoxDecoration(
           color: AppColors.fillColorE8EBF0,
           borderRadius: BorderRadius.circular(8.r)),
@@ -278,6 +330,7 @@ class AppointmentsCard extends StatelessWidget {
                 SizedBox(height: 14.h),
                 const Divider(),
                 SizedBox(height: 14.h),
+                leftBtnName == null ? CustomButton(onpress: (){btnOnTap;}, title: '$btnText') :
                 CustomTwoButon(
                   btnRadius: 100,
                     width: 154.w,
