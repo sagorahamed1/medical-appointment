@@ -23,6 +23,8 @@ class ApiConstants{
 
 
 
+  ///=================Doctor Part============>
+  static String doctorAppointmentHomeScreenApiEndPoint(String status) => '/appointments/doctor-get-appointments?status=$status';
 
 
   static const String userPayment = "/payment/create-payment";
