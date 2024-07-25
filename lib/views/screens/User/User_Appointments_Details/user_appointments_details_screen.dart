@@ -1,10 +1,12 @@
+import 'package:doctor_appointment/controllers/doctor/see_details_controller.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/screens/User/User_doctor_details/Inner_widgets/top_doctor_box_card.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_select_package_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
@@ -12,10 +14,15 @@ import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 
 class UserAppointmentsDetailsScreen extends StatelessWidget {
-  const UserAppointmentsDetailsScreen({super.key});
+   UserAppointmentsDetailsScreen({super.key});
+
+
+  final SeeDetailsController _seeDetailsController = Get.put(SeeDetailsController());
+
 
   @override
   Widget build(BuildContext context) {
+    _seeDetailsController.getSeeDetails(id: '${Get.parameters['id']}');
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
@@ -31,67 +38,73 @@ class UserAppointmentsDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: Dimensions.paddingSizeDefault.w,
               vertical: Dimensions.paddingSizeDefault.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TopDoctorBoxCard(
-                doctorName: "Sagor Ahamed",
-                rating: '4.8',
-                location: 'Christ Hospital in London, UK',
-              ),
-        
-              ///===================Scheduled Appointment===================>
-              CustomText(
-                  text: AppString.scheduledAppointment,
-                  fontWeight: FontWeight.w600,
-                  fontsize: 18.h,
-                  top: 20.h,
-                  bottom: 16.h),
-        
-              CustomText(
-                  text: 'Today, December 22, 2022',
-                  fontsize: 16.h,
-                  color: AppColors.textColor5C5C5C),
-              CustomText(
-                  text: '16:00 PM',
-                  fontsize: 16.h,
-                  color: AppColors.textColor5C5C5C,
-                  top: 12.h),
-        
-              ///===================Patient Information===================>
-              CustomText(
-                  text: AppString.patientInformation,
-                  fontWeight: FontWeight.w600,
-                  fontsize: 18.h,
-                  top: 20.h,
-                  bottom: 16.h),
-        
-              _leftAndRightText(AppString.fullName, "Sagor Ahamed"),
-              _leftAndRightText(AppString.gender, "Male"),
-              _leftAndRightText(AppString.age, "25"),
-              _leftAndRightText(AppString.problem,
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. "),
-        
-              ///===================Your Package===================>
-              CustomText(
-                  text: AppString.yourPackage,
-                  fontWeight: FontWeight.w600,
-                  fontsize: 18.h,
-                  top: 20.h,
-                  bottom: 16.h),
-        
-              CustomSelectPackageCard(
-                  title: "Online Consultation",
-                  icon: AppIcons.videoCallIcons,
-                  price: '400',
-                  description: "Video call & messages with doctor",
-                  selectedIndex: 1,
-                  onTap: () {}),
+          child: Obx(()=>
+           _seeDetailsController.doctorSeeDetailsLoading.value ? Center(child: Padding(
+             padding:  EdgeInsets.only(top: 280.h),
+             child: const CustomLoader(),
+           )) :
+             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TopDoctorBoxCard(
+                  doctorName: "Sagor Ahamed",
+                  rating: '4.8',
+                  location: 'Christ Hospital in London, UK',
+                ),
 
-              SizedBox(height: 20.h),
-        
-              CustomButton(onpress: () {}, title: AppString.completeAppointment)
-            ],
+                ///===================Scheduled Appointment===================>
+                CustomText(
+                    text: AppString.scheduledAppointment,
+                    fontWeight: FontWeight.w600,
+                    fontsize: 18.h,
+                    top: 20.h,
+                    bottom: 16.h),
+
+                CustomText(
+                    text: 'Today, December 22, 2022',
+                    fontsize: 16.h,
+                    color: AppColors.textColor5C5C5C),
+                CustomText(
+                    text: '16:00 PM',
+                    fontsize: 16.h,
+                    color: AppColors.textColor5C5C5C,
+                    top: 12.h),
+
+                ///===================Patient Information===================>
+                CustomText(
+                    text: AppString.patientInformation,
+                    fontWeight: FontWeight.w600,
+                    fontsize: 18.h,
+                    top: 20.h,
+                    bottom: 16.h),
+
+                _leftAndRightText(AppString.fullName, "Sagor Ahamed"),
+                _leftAndRightText(AppString.gender, "Male"),
+                _leftAndRightText(AppString.age, "25"),
+                _leftAndRightText(AppString.problem,
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. "),
+
+                ///===================Your Package===================>
+                CustomText(
+                    text: AppString.yourPackage,
+                    fontWeight: FontWeight.w600,
+                    fontsize: 18.h,
+                    top: 20.h,
+                    bottom: 16.h),
+
+                CustomSelectPackageCard(
+                    title: "Online Consultation",
+                    icon: AppIcons.videoCallIcons,
+                    price: '400',
+                    description: "Video call & messages with doctor",
+                    selectedIndex: 1,
+                    onTap: () {}),
+
+                SizedBox(height: 20.h),
+
+                CustomButton(onpress: () {}, title: AppString.completeAppointment)
+              ],
+            ),
           ),
         ),
       ),

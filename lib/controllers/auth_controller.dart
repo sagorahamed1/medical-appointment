@@ -267,4 +267,9 @@ class AuthController extends GetxController {
       resendLoading(false);
     }
   }
+
+
+
+
+
 }

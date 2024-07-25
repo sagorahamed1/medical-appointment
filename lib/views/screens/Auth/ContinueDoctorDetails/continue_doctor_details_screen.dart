@@ -37,31 +37,34 @@ class _ContinueDoctorDetailsScreenState
 
   final List<String> experience = [
     '1 Year',
-    '2 Year',
-    '3 Year',
-    '4 Year',
-    '5 Year',
-    '6 Year',
-    '7 Year',
-    '8 Year',
-    '9 Year',
-    '10 Year',
+    '2 Years',
+    '3 Years',
+    '4 Years',
+    '5 Years',
+    '6 Years',
+    '7 Years',
+    '8 Years',
+    '9 Years',
+    '10 Years',
+    '11 Years',
+    '12 Years',
+    '13 Years',
   ];
 
   String mondayStart = '08:00';
-  String mondayEnd = '04:00';
+  String mondayEnd = '14:00';
   String tuesDayStart = '08:00';
-  String tuesDayEnd = '04:00';
+  String tuesDayEnd = '14:00';
   String wednesdayStart = '08:00';
-  String wednesdayEnd = '04:00';
+  String wednesdayEnd = '14:00';
   String thursdayStart = '08:00';
-  String thursdayEnd = '04:00';
+  String thursdayEnd = '14:00';
   String fridayStart = '08:00';
-  String fridayEnd = '04:00';
+  String fridayEnd = '14:00';
   String saturdayStart = '08:00';
-  String saturdayEnd = '04:00';
+  String saturdayEnd = '14:00';
   String sundayStart = '08:00';
-  String sundayEnd = '04:00';
+  String sundayEnd = '14:00';
 
   @override
   Widget build(BuildContext context) {
