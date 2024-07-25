@@ -1,23 +1,28 @@
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/screens/Doctor/doctor_home/inner_widgets/doctor_top_app_bar.dart';
 import 'package:doctor_appointment/views/screens/User/User_Appointments/user_appointments_screen.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
+import '../../../../controllers/doctor/doctor_home_controller.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_strings.dart';
 
 class DoctorHomeScreen extends StatelessWidget {
-  const DoctorHomeScreen({super.key});
+   DoctorHomeScreen({super.key});
+
+  final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
 
   @override
   Widget build(BuildContext context) {
+    _homeController.getAppointment(status: 'upcomming');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -43,27 +48,31 @@ class DoctorHomeScreen extends StatelessWidget {
 
 
               Expanded(
-                child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding:  EdgeInsets.only(bottom: 16.h),
-                      child: AppointmentsCard(
-                        rightBtnOnTap: () {
-                          Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen);
-                        },
-                        leftBtnOnTap: () {},
-                        image: AppImages.getStarted1,
-                        name: "Sagor Ahamed",
-                        messageIcon: AppIcons.messageIcon2,
-                        appointmentsType: "Upcoming",
-                        rightBtnName: "See Details",
-                        leftBtnName: "Cancel Appoinment",
-                        date: DateTime.now(),
-                        time: '14:00 PM',
-                      ),
-                    );
-                  },
+                child: Obx(()=>
+                _homeController.appointmentLoading.value ? const CustomLoader() : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
+                  ListView.builder(
+                    itemCount: _homeController.appointmentsList.length,
+                    itemBuilder: (context, index) {
+                      var appointment = _homeController.appointmentsList[index];
+                      return Padding(
+                        padding:  EdgeInsets.only(bottom: 16.h),
+                        child: AppointmentsCard(
+                          rightBtnOnTap: () {
+                            Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen);
+                          },
+                          leftBtnOnTap: () {},
+                          image: AppImages.getStarted1,
+                          name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                          messageIcon: AppIcons.messageIcon2,
+                          appointmentsType: "${appointment.status}",
+                          rightBtnName: "See Details",
+                          leftBtnName: "Cancel Appointment",
+                          date: DateTime.now(),
+                          time: TimeFormatHelper.timeFormat(appointment.createdAt!),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
 

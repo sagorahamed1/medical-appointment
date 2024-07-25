@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../../../../controllers/user/home_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
+import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/available_doctors_card.dart';
 import '../../../widgets/custom_text.dart';
@@ -30,7 +31,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-      // _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
+    // _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
     _homeController.getCetegory();
     return Scaffold(
       body: SafeArea(
@@ -86,9 +87,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             scrollDirection: Axis.horizontal,
                             itemCount: _homeController.cetegoryLists.length,
                             itemBuilder: (context, index) {
-                              if (_homeController.cetegoryLists[index].isDeleted ==
+                              if (_homeController
+                                      .cetegoryLists[index].isDeleted ==
                                   false) {
-                                var category = _homeController.cetegoryLists[index];
+                                var category =
+                                    _homeController.cetegoryLists[index];
                                 bool isSelected = selectedIndex == index;
                                 return CategoryCard(
                                   onTap: () {
@@ -111,7 +114,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
                       ///=======================available Doctors and See All Text=============================>
                       _SeeAll(AppString.availableDoctors, AppString.seeAll, () {
-                        Get.toNamed(AppRoutes.useravailablleDoctorsScreen);
+                        Get.toNamed(AppRoutes.useravailablleDoctorsScreen,
+                            parameters: {'category': categoryName});
                       }),
                     ],
                   ),
@@ -119,54 +123,65 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
                 ///======================available doctor list=================>
                 Obx(
-                  () => _homeController.doctorLoading.value
-                      ? const Center(child: CustomLoader())
-                      : SizedBox(
-                          height: 230.h,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            // physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _homeController.doctorLists.length,
-                            itemBuilder: (context, index) {
-                              var doctorInfo = _homeController.doctorLists[index];
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    left: index == 0 ? 19.w : 7.5.w,
-                                    right: index == 4 - 1 ? 20.w : 0.w),
-                                child: AvailableDoctorsCard(
-                                  experience: "${doctorInfo.experience}",
-                                  rating: "{ing}",
-                                  clinicVisit: "\$${doctorInfo.clinicPrice}",
-                                  doctorName:
-                                      "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
-                                  totalConsultaion: "12",
-                                  onlineConsultation:
-                                      '\$${doctorInfo.onlineConsultationPrice}',
-                                  specialist: "${doctorInfo.specialist}",
-                                  imageHeight: 142,
-                                  leftBtnText: AppString.seeDetails,
-                                  rightBtnText: AppString.bookAppointment,
-                                  leftBtnOntap: () {
-                                    Get.toNamed(
-                                        AppRoutes.userDoctorDetailsScreen,
-                                        parameters: {
-                                          'id': '${doctorInfo.doctorId?.id}'
-                                        });
-                                  },
-                                  rightBtnOnTap: () {
-                                    Get.toNamed(
-                                        AppRoutes.userSelectPackageScreen,
-                                        arguments: doctorInfo,
-                                        parameters: {
-                                          'id': '${doctorInfo.doctorId?.id}'
-                                        });
+                  () => Center(
+                    child: _homeController.doctorLoading.value
+                        ? const Center(child: CustomLoader())
+                        : _homeController.doctorLists.isEmpty
+                            ? SizedBox(
+                                height: 180.h,
+                                width: 200.w,
+                                child: Image.asset(AppImages.noDataImage))
+                            : SizedBox(
+                                height: 230.h,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  // physics: const NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: _homeController.doctorLists.length,
+                                  itemBuilder: (context, index) {
+                                    var doctorInfo =
+                                        _homeController.doctorLists[index];
+                                    return Padding(
+                                      padding: EdgeInsets.only(
+                                          left: index == 0 ? 19.w : 7.5.w,
+                                          right: index == 4 - 1 ? 20.w : 0.w),
+                                      child: AvailableDoctorsCard(
+                                        experience: "${doctorInfo.experience}",
+                                        rating: "{ing}",
+                                        clinicVisit:
+                                            "\$${doctorInfo.clinicPrice}",
+                                        doctorName:
+                                            "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
+                                        totalConsultaion: "12",
+                                        onlineConsultation:
+                                            '\$${doctorInfo.onlineConsultationPrice}',
+                                        specialist: "${doctorInfo.specialist}",
+                                        imageHeight: 142,
+                                        leftBtnText: AppString.seeDetails,
+                                        rightBtnText: AppString.bookAppointment,
+                                        leftBtnOntap: () {
+                                          Get.toNamed(
+                                              AppRoutes.userDoctorDetailsScreen,
+                                              parameters: {
+                                                'id':
+                                                    '${doctorInfo.doctorId?.id}'
+                                              });
+                                        },
+                                        rightBtnOnTap: () {
+                                          Get.toNamed(
+                                              AppRoutes.userSelectPackageScreen,
+                                              arguments: doctorInfo,
+                                              parameters: {
+                                                'id':
+                                                    '${doctorInfo.doctorId?.id}'
+                                              });
+                                        },
+                                      ),
+                                    );
                                   },
                                 ),
-                              );
-                            },
-                          ),
-                        ),
+                              ),
+                  ),
                 ),
 
                 ///=======================Emergency Doctors and See All Text=============================>
