@@ -83,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
                                 }),
 
                             ///=========================Doctor Details=========================>
-                            AppConstants.roleMock == "doctor"
+                            profileData.role == "doctor"
                                 ? ListTileWidget(
                                 AppString.doctorDetails,
                                 AppIcons.medicalRecord,
@@ -94,7 +94,7 @@ class ProfileScreen extends StatelessWidget {
                                 : const SizedBox(),
 
                             ///=========================Appointment Requests=========================>
-                            AppConstants.roleMock == "doctor"
+                            profileData.role == "doctor"
                                 ? ListTileWidget(
                                 AppString.appointmentRequests,
                                 AppIcons.medicalRecord,
@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                                 : const SizedBox(),
 
                             ///=========================Earning=========================>
-                            AppConstants.roleMock == "doctor"
+                            profileData.role == "doctor"
                                 ? ListTileWidget(
                                 AppString.earnings,
                                 AppIcons.earning,
@@ -115,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                                 : const SizedBox(),
 
                             ///=========================Review=========================>
-                            AppConstants.roleMock == "doctor"
+                            profileData.role== "doctor"
                                 ? ListTileWidget(
                                 AppString.reviews,
                                 AppIcons.reviewStar,
@@ -125,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
                                 : const SizedBox(),
 
                             ///=========================Medical Records=========================>
-                            AppConstants.roleMock == ""
+                            profileData.role == "user"
                                 ? ListTileWidget(
                                 AppString.medicalRecords,
                                 AppIcons.medicalRecord,

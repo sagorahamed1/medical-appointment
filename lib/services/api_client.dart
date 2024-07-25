@@ -99,6 +99,37 @@ class ApiClient extends GetxService {
     }
   }
 
+
+
+  //==========================================> patch<======================================
+  static Future<Response> patch(String uri, var body,
+      {Map<String, String>? headers}) async {
+    bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+
+    var mainHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $bearerToken'
+    };
+    try {
+      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Body: $body');
+
+      http.Response response = await client
+          .patch(
+        Uri.parse(ApiConstants.baseUrl + uri),
+        body: body,
+        headers: headers ?? mainHeaders,
+      )
+          .timeout(const Duration(seconds: timeoutInSeconds));
+      debugPrint(
+          "==========> Response Post Method :------ : ${response.statusCode}");
+      return handleResponse(response, uri);
+    } catch (e) {
+      print("===> $e");
+      return const Response(statusCode: 1, statusText: noInternetMessage);
+    }
+  }
+
   //==========================================> Post Multipart Data <======================================
   static Future<Response> postMultipartData(
       String uri, Map<String, String> body,

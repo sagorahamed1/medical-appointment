@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../../controllers/doctor/doctor_details_controller_doctor_part.dart';
+import '../../../../helpers/time_format.dart';
+import '../../../../models/doctor/doctor_details_molel_doctor_part.dart';
 import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_button.dart';
@@ -8,13 +12,56 @@ import '../../../widgets/custom_doctor_time_available_card.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field_without_border.dart';
 
-class DoctorEditDetailsProfileScreen extends StatelessWidget {
-   DoctorEditDetailsProfileScreen({super.key});
+class DoctorEditDetailsProfileScreen extends StatefulWidget {
+  DoctorDetailsModelDoctorPart? doctorData;
+   DoctorEditDetailsProfileScreen({super.key, this.doctorData});
+
+  @override
+  State<DoctorEditDetailsProfileScreen> createState() => _DoctorEditDetailsProfileScreenState();
+}
+
+class _DoctorEditDetailsProfileScreenState extends State<DoctorEditDetailsProfileScreen> {
+
+  DoctorDetailsControllerDoctorPart doctorDetailsCtrl =
+  Get.put(DoctorDetailsControllerDoctorPart());
+
 
   TextEditingController specialistCtrl = TextEditingController();
   TextEditingController experienceCtrl = TextEditingController();
   TextEditingController addressCtrl = TextEditingController();
   TextEditingController aboutDoctorCtrl = TextEditingController();
+  TextEditingController priceForClinicCtrl = TextEditingController();
+  TextEditingController priceForOnlineCtrl = TextEditingController();
+  TextEditingController priceForEmargenceCtrl = TextEditingController();
+
+  @override
+  void initState() {
+    specialistCtrl.text = widget.doctorData?.specialist.toString() ?? '';
+    experienceCtrl.text = widget.doctorData?.experience.toString() ?? '';
+    addressCtrl.text = widget.doctorData?.clinicAddress.toString() ?? '';
+    aboutDoctorCtrl.text = widget.doctorData?.about.toString() ?? '';
+    priceForClinicCtrl.text = widget.doctorData?.clinicPrice.toString() ?? '';
+    priceForOnlineCtrl.text = widget.doctorData?.onlineConsultationPrice.toString() ?? '';
+    priceForEmargenceCtrl.text = widget.doctorData?.emergencyPrice.toString() ?? '';
+    super.initState();
+  }
+
+
+
+  String mondayStart = '08:00';
+  String mondayEnd = '14:00';
+  String tuesDayStart = '08:00';
+  String tuesDayEnd = '14:00';
+  String wednesdayStart = '08:00';
+  String wednesdayEnd = '14:00';
+  String thursdayStart = '08:00';
+  String thursdayEnd = '14:00';
+  String fridayStart = '08:00';
+  String fridayEnd = '14:00';
+  String saturdayStart = '08:00';
+  String saturdayEnd = '14:00';
+  String sundayStart = '08:00';
+  String sundayEnd = '14:00';
 
 
   @override
@@ -86,46 +133,215 @@ class DoctorEditDetailsProfileScreen extends StatelessWidget {
                   color: Colors.black,
                   textAlign: TextAlign.start),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+              ///====================monday ================>
+              CustomDoctorTimeAvailableCard(
+                onTapStart: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      mondayStart = selectTime;
+                    });
+                  });
+                },
+                onTapEnd: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      mondayEnd = selectTime;
+                    });
+                  });
+                },
+                startTime: mondayStart,
+                endTime: mondayEnd,
                 dayName: AppString.monday,
               ),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+              ///====================tuesday ================>
+              CustomDoctorTimeAvailableCard(
+                onTapStart: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      tuesDayStart = selectTime;
+                    });
+                  });
+                },
+                onTapEnd: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      tuesDayEnd = selectTime;
+                    });
+                  });
+                },
+                startTime: tuesDayStart,
+                endTime: tuesDayEnd,
+                dayName: AppString.tuesday,
+              ),
+
+              ///====================wednesday ================>
+              CustomDoctorTimeAvailableCard(
+                onTapStart: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      wednesdayStart = selectTime;
+                    });
+                  });
+                },
+                onTapEnd: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      wednesdayEnd = selectTime;
+                    });
+                  });
+                },
+                startTime: wednesdayStart,
+                endTime: wednesdayEnd,
+                dayName: AppString.wednesday,
+              ),
+
+              ///==================Thursday====================?
+              CustomDoctorTimeAvailableCard(
+                onTapStart: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      thursdayStart = selectTime;
+                    });
+                  });
+                },
+                onTapEnd: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      thursdayEnd = selectTime;
+                    });
+                  });
+                },
+                startTime: thursdayStart,
+                endTime: thursdayEnd,
                 dayName: AppString.thursday,
               ),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
-                dayName: AppString.thursday,
-              ),
-
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+              ///===============Friday==================>
+              CustomDoctorTimeAvailableCard(
+                onTapStart: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      fridayStart = selectTime;
+                    });
+                  });
+                },
+                onTapEnd: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      fridayEnd = selectTime;
+                    });
+                  });
+                },
+                startTime: fridayStart,
+                endTime: fridayEnd,
                 dayName: AppString.friday,
               ),
 
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+              ///===================Saturday==================>
+              CustomDoctorTimeAvailableCard(
+                onTapStart: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      saturdayStart = selectTime;
+                    });
+                  });
+                },
+                onTapEnd: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      saturdayEnd = selectTime;
+                    });
+                  });
+                },
+                startTime: saturdayStart,
+                endTime: saturdayEnd,
                 dayName: AppString.saturday,
               ),
 
-
-              const CustomDoctorTimeAvailableCard(
-                startTime: "8.00 AM",
-                endTime: "10.00 AM",
+              ///===================Sunday=====================>
+              CustomDoctorTimeAvailableCard(
+                onTapStart: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      sundayStart = selectTime;
+                    });
+                  });
+                },
+                onTapEnd: () {
+                  TimeFormatHelper.selectTime(context, (selectTime) {
+                    setState(() {
+                      sundayEnd = selectTime;
+                    });
+                  });
+                },
+                startTime: sundayStart,
+                endTime: sundayEnd,
                 dayName: AppString.sunday,
               ),
+              SizedBox(height: 20.h),
+
+
+              ///=======================Price for Clinic Controller ============================>
+              CustomTextFieldWithoutBorder(
+                  keyboardType: TextInputType.number,
+                  contenpaddingHorizontal: 20,
+                  contenpaddingVertical: 15,
+                  hintText: "Set Price for clinic visit",
+                  controller: priceForClinicCtrl),
+
+              SizedBox(height: 16.h),
+
+              ///=======================Price for Online Controller ============================>
+              CustomTextFieldWithoutBorder(
+                  keyboardType: TextInputType.number,
+                  contenpaddingHorizontal: 20,
+                  contenpaddingVertical: 15,
+                  hintText: "Set Price for online consultation",
+                  controller: priceForOnlineCtrl),
+
+              SizedBox(height: 16.h),
+
+              ///=======================Price for emergency Controller ============================>
+              CustomTextFieldWithoutBorder(
+                  keyboardType: TextInputType.number,
+                  contenpaddingHorizontal: 20,
+                  contenpaddingVertical: 15,
+                  hintText: "Set Price for emergency consultation",
+                  controller: priceForEmargenceCtrl),
 
               SizedBox(height: 20.h),
 
-              CustomButton(onpress: (){}, title: AppString.updateDetails),
+              CustomButton(
+                loading: doctorDetailsCtrl.doctorDetailsLoading.value,
+                  onpress: (){
+                doctorDetailsCtrl.continueDoctorDetailsEdit(
+                  specialist: specialistCtrl.text,
+                  experience: experienceCtrl.text,
+                  clinicAddress: addressCtrl.text,
+                  about: aboutDoctorCtrl.text,
+                  clinicPrice: priceForClinicCtrl.text,
+                  onlineConsultationPrice: priceForOnlineCtrl.text,
+                  emergencyPrice: priceForEmargenceCtrl.text,
+                  mondayStart: mondayStart,
+                  mondayEnd: mondayEnd,
+                  tuesdayStart: tuesDayStart,
+                  tuesdayEnd: tuesDayEnd,
+                  wednesdayStart: wednesdayStart,
+                  wednesdayEnd: wednesdayEnd,
+                  thursdayStart: thursdayStart,
+                  thursdayEnd: thursdayEnd,
+                  fridayStart: fridayStart,
+                  fridayEnd: fridayEnd,
+                  saturdayStart: saturdayStart,
+                  saturdayEnd: saturdayEnd,
+                  sundayStart: sundayStart,
+                  sundayEnd: sundayEnd,
+                );
+
+
+
+              }, title: AppString.updateDetails),
 
               SizedBox(height: 35.h)
             ],
