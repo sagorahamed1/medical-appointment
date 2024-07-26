@@ -1,8 +1,10 @@
 
+import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../services/api_constants.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_icons.dart';
 import '../../utils/app_images.dart';
@@ -23,6 +25,7 @@ class AvailableDoctorsCard extends StatelessWidget {
   final String? clinicVisit;
   final String? leftBtnText;
   final String? rightBtnText;
+  final String? image;
 
   const AvailableDoctorsCard(
       {super.key,
@@ -37,7 +40,7 @@ class AvailableDoctorsCard extends StatelessWidget {
         this.clinicVisit,
         this.leftBtnText,
         this.imageHeight,
-        this.rightBtnText, this.rightBtnOnTap});
+        this.rightBtnText, this.rightBtnOnTap, this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +58,10 @@ class AvailableDoctorsCard extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-                    child: Image.asset(
-                      AppImages.getStarted1,
-                      height: imageHeight?.h,
+                    child: CustomNetworkImage(
+                      imageUrl : '${ApiConstants.imageBaseUrl}/$image',
+                      height: imageHeight!.h,
                       width: 110.w,
-                      fit: BoxFit.cover,
                     )),
                 SizedBox(
                   width: 213.w,

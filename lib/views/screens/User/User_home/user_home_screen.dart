@@ -146,6 +146,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                           left: index == 0 ? 19.w : 7.5.w,
                                           right: index == 4 - 1 ? 20.w : 0.w),
                                       child: AvailableDoctorsCard(
+                                        image: '${doctorInfo.doctorId?.image?.publicFileUrl}',
                                         experience: "${doctorInfo.experience}",
                                         rating: "{ing}",
                                         clinicVisit:

@@ -1,8 +1,10 @@
 import 'package:doctor_appointment/controllers/user/user_appointments_controller.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
+import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
@@ -28,16 +30,30 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
   UserAppointmentsController appointmentsController =
       Get.put(UserAppointmentsController());
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    _addScrollListener();
     _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _tabController.dispose();
     super.dispose();
+  }
+
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        appointmentsController.loadMore();
+        print("load more true");
+      }
+    });
   }
 
   @override
@@ -46,6 +62,7 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
     appointmentsController.getAppointment(status: 'upcomming');
     return Scaffold(
       appBar: AppBar(
+        leading: const SizedBox(),
         title: CustomText(
           text: AppString.appointments,
           fontsize: 18,
@@ -53,23 +70,26 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
         ),
         bottom: TabBar(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-           controller: _tabController,
+          controller: _tabController,
           onTap: (int value) {
             if (value == 0) {
               appointmentsController.appointmentList.clear();
+              appointmentsController.page.value = 1;
               appointmentsController.getAppointment(status: 'upcomming');
             } else if (value == 1) {
               appointmentsController.appointmentList.clear();
+              appointmentsController.page.value = 1;
               appointmentsController.getAppointment(status: 'active');
             } else {
               appointmentsController.appointmentList.clear();
+              appointmentsController.page.value = 1;
               appointmentsController.getAppointment(status: 'completed');
             }
           },
           tabs: const [
             Tab(text: 'Upcoming'),
+            Tab(text: 'Active'),
             Tab(text: 'Completed'),
-            Tab(text: 'Cancelled'),
           ],
           labelColor: AppColors.primaryColor,
           unselectedLabelStyle: const TextStyle(color: Colors.red),
@@ -85,89 +105,125 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
             horizontal: Dimensions.paddingSizeDefault.w,
             vertical: Dimensions.paddingSizeDefault.h),
         child: TabBarView(
-           controller: _tabController,
+          controller: _tabController,
           children: [
-            // Upcoming Tab
+            /// Upcoming Tab
             Obx(
               () => appointmentsController.appointmentLoading.value
                   ? const CustomLoader()
                   : appointmentsController.appointmentList.isEmpty
                       ? Image.asset(AppImages.noDataImage)
                       : ListView.builder(
+                          controller: _scrollController,
                           itemCount:
-                              appointmentsController.appointmentList.length,
+                              appointmentsController.appointmentList.length + 1,
                           itemBuilder: (context, index) {
-                            var appointments =
-                                appointmentsController.appointmentList[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: AppointmentsCard(
-                                image: AppImages.getStarted1,
-                                name:
-                                    "${appointments.doctorId?.firstName}${appointments.doctorId?.lastName}",
-                                appointmentsType: "upcoming",
-                                date: DateTime.now(),
-                                messageIcon: AppIcons.messageIcon2,
-                                time: "14:00 PM",
-                                leftBtnName: 'Cancel Appointment',
-                                rightBtnName: 'See Details',
-                              ),
-                            );
+                            if(index < appointmentsController.appointmentList.length){
+                              var appointments =
+                              appointmentsController.appointmentList[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: AppointmentsCard(
+                                  image:
+                                  '${appointments.doctorId?.image?.publicFileUrl}',
+                                  name:
+                                  "${appointments.doctorId?.firstName}${appointments.doctorId?.lastName}",
+                                  appointmentsType: '${appointments.status}',
+                                  date: appointments.date,
+                                  time: '${appointments.timeSlot}',
+                                  leftBtnName: 'Cancel Appointment',
+                                  rightBtnName: 'See Details',
+                                ),
+                              );
+
+                            }else if (index >=
+                                appointmentsController.totalResult) {
+                              return null;
+                            } else {
+                              return const CustomLoader();
+                            }
+
                           },
                         ),
             ),
 
-            // Completed Tab
+            /// Active Tab
             Obx(
               () => appointmentsController.appointmentLoading.value
                   ? const CustomLoader()
                   : appointmentsController.appointmentList.isEmpty
                       ? Image.asset(AppImages.noDataImage)
                       : ListView.builder(
-                          itemCount: appointmentsController.appointmentList.length,
+                          controller: _scrollController,
+                          itemCount:
+                              appointmentsController.appointmentList.length + 1,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: AppointmentsCard(
-                                image: AppImages.getStarted1,
-                                name: "Sagor Ahamed",
-                                leftBtnName: 'See Details',
-                                rightBtnName: 'Give Review',
-                                appointmentsType: 'Completed',
-                                date: DateTime.now(),
-                                leftBtnOnTap: () {
-                                  Get.toNamed(
-                                      AppRoutes.userAppointmentsDetailsScreen);
-                                },
-                                rightBtnOnTap: () {
-                                  Get.toNamed(AppRoutes.userGiveReviewScreen);
-                                },
-                                time: "14:00 PM",
-                              ),
-                            );
+                            if (index < appointmentsController.appointmentList.length) {
+                              var appointments =
+                                  appointmentsController.appointmentList[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: AppointmentsCard(
+                                  image:
+                                      '${appointments.doctorId?.image?.publicFileUrl}',
+                                  name:
+                                      "${appointments.doctorId?.firstName} ${appointments.doctorId?.lastName}",
+                                  leftBtnName: 'See Details',
+                                  rightBtnName: 'Message',
+                                  appointmentsType: '${appointments.status}',
+                                  date: appointments.date,
+                                  time: '${appointments.timeSlot}',
+                                  leftBtnOnTap: () {
+                                    Get.toNamed(AppRoutes
+                                        .userAppointmentsDetailsScreen);
+                                  },
+                                  rightBtnOnTap: () {
+                                    Get.toNamed(AppRoutes.userGiveReviewScreen);
+                                  },
+                                ),
+                              );
+                            } else if (index >=
+                                appointmentsController.totalResult) {
+                              // appointmentsController.getAppointment(status: 'active');
+                              return null;
+                            } else {
+                              return const CustomLoader();
+                            }
                           },
                         ),
             ),
 
-            // Cancelled Tab
+            /// Complete Tab
             Obx(
               () => appointmentsController.appointmentLoading.value
                   ? const CustomLoader()
                   : appointmentsController.appointmentList.isEmpty
                       ? Image.asset(AppImages.noDataImage)
                       : ListView.builder(
-                          itemCount:  appointmentsController.appointmentList.length,
+                          controller: _scrollController,
+                          itemCount:
+                              appointmentsController.appointmentList.length + 1,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: AppointmentsCard(
-                                image: AppImages.getStarted1,
-                                name: "Sagor Ahamed",
-                                appointmentsType: 'Cancelled',
-                                date: DateTime.now(),
-                                time: "14:00 PM",
-                              ),
-                            );
+                            if (index < appointmentsController.appointmentList.length){
+                              var appointments = appointmentsController.appointmentList[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: AppointmentsCard(
+                                  image:
+                                  '${appointments.doctorId?.image?.publicFileUrl}',
+                                  name:
+                                  "${appointments.doctorId?.firstName} ${appointments.doctorId?.lastName}",
+                                  date: appointments.date,
+                                  time: '${appointments.timeSlot}',
+                                  appointmentsType: '${appointments.status}',
+                                ),
+                              );
+                            } else if (index >= appointmentsController.totalResult) {
+                              return null;
+                            } else {
+                              return const CustomLoader();
+                            }
+
                           },
                         ),
             )
@@ -220,11 +276,10 @@ class AppointmentsCard extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-                    child: Image.asset(
-                      "$image",
+                    child: CustomNetworkImage(
+                      imageUrl: "${ApiConstants.imageBaseUrl}/$image",
                       height: 120,
                       width: 110.w,
-                      fit: BoxFit.cover,
                     )),
                 SizedBox(
                   width: 213.w,

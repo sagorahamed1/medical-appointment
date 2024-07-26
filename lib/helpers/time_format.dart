@@ -7,6 +7,10 @@ class TimeFormatHelper {
     return DateFormat('dd MMM, yyyy').format(date);
   }
 
+  static String justDateWithUnderscoll(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
   static String dateMountFormat(DateTime date) {
     return DateFormat('dd\n MMM ').format(date);
   }

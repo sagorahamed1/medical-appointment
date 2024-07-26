@@ -72,25 +72,32 @@ class CategoryCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(13.r),
             child: Container(
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected ? Colors.grey : const Color(0xffE8EBF0)
-              ),
+                  color: isSelected ? Colors.grey : const Color(0xffE8EBF0)),
               child: Padding(
                 padding:
                     EdgeInsets.symmetric(vertical: 18.5.h, horizontal: 18.w),
-                child: CustomNetworkImage(
-                  imageUrl: '${ApiConstants.imageBaseUrl}/$categorIcon',
-                  height: 30.h,
-                  width: 30.w,
-                ),
+                child: categorIcon?.split('.').last.toLowerCase() == 'svg'
+                    ? SvgPicture.network(
+                        '${ApiConstants.imageBaseUrl}/$categorIcon',
+                        height: 30.h,
+                        width: 30.w)
+                    : CustomNetworkImage(
+                        imageUrl: '${ApiConstants.imageBaseUrl}/$categorIcon',
+                        height: 30.h,
+                        width: 30.w,
+                      ),
               ),
             ),
           ),
-          CustomText(
-            text: categorName ?? "",
-            fontsize: 12.h,
-            fontWeight: FontWeight.w500,
+          SizedBox(
+            width: 80.w,
+            child: CustomText(
+              text: categorName ?? "",
+              fontsize: 12.h,
+              fontWeight: FontWeight.w500,
+            ),
           )
         ],
       ),
