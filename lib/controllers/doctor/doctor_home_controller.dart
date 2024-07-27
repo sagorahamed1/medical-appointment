@@ -44,4 +44,45 @@ class DoctorHomeControllerDoctorPart extends GetxController{
       appointmentLoading(false);
     }
   }
+
+
+  RxBool doctorStatus = false.obs;
+  Rx<DoctorStatus> status = DoctorStatus().obs;
+  getDoctorStatus()async{
+    var response = await ApiClient.getData(ApiConstants.doctorStatus);
+
+    if(response.statusCode == 200){
+      var responseData = response.body;
+      status.value = DoctorStatus.fromJson(responseData['data']['attributes']);
+      print('==========> ${response.body['data']['attributes']['totalAppointments']}');
+      update();
+
+
+    }
+  }
+}
+
+
+class DoctorStatus {
+  final int? totalAppointments;
+  final int? activeAppointments;
+  final int? completedAppointments;
+
+  DoctorStatus({
+    this.totalAppointments,
+    this.activeAppointments,
+    this.completedAppointments,
+  });
+
+  factory DoctorStatus.fromJson(Map<String, dynamic> json) => DoctorStatus(
+    totalAppointments: json["totalAppointments"],
+    activeAppointments: json["activeAppointments"],
+    completedAppointments: json["completedAppointments"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "totalAppointments": totalAppointments,
+    "activeAppointments": activeAppointments,
+    "completedAppointments": completedAppointments,
+  };
 }

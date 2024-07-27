@@ -27,8 +27,8 @@ class ApiConstants{
   ///=================Doctor Part============>
   static String doctorAppointmentHomeScreenApiEndPoint(String status) => '/appointments/doctor-get-appointments?status=$status';
   static String seeDetailsDoctorPart(String id) => '/appointments/doctor-get-single-appointment/$id';
-
   static const String doctorDetailsDoctorPart = "/doctor/doctor-details";
+  static const String doctorStatus = "/doctor/login-doctor-status";
   static const String doctorEditDetailsDoctorPart = "/doctor/edit-details";
 
 

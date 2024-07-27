@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../controllers/doctor/doctor_home_controller.dart';
+import '../../../../controllers/profile_controler.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_strings.dart';
 
@@ -19,9 +20,12 @@ class DoctorHomeScreen extends StatelessWidget {
    DoctorHomeScreen({super.key});
 
   final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
+   final ProfileControler _profileControler = Get.put(ProfileControler());
 
   @override
   Widget build(BuildContext context) {
+    _homeController.getDoctorStatus();
+    _profileControler.getProfile();
     _homeController.getAppointment(status: 'upcomming');
     return Scaffold(
       body: SafeArea(
@@ -30,16 +34,30 @@ class DoctorHomeScreen extends StatelessWidget {
           EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
           child: Column(
             children: [
-              const DoctorTopAppBar(),
-              SizedBox(height: 20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _topCard("Total Appointments", '800'),
-                  _topCard("Completed", '800'),
-                  _topCard("Cancelled", '800'),
-                ],
-              ),
+
+             Obx((){
+               var profileData = _profileControler.profileInfo.value;
+              return Column(
+                 children: [
+                    DoctorTopAppBar(
+                     image: profileData.image?.publicFileUrl,
+                      name: '${profileData.firstName} ${profileData.lastName}',
+                   ),
+                   SizedBox(height: 20.h),
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     children: [
+                       _topCard("Total Appointments","${_homeController.status.value.totalAppointments}"),
+                       _topCard("Active", "${_homeController.status.value.activeAppointments}"),
+                       _topCard("Completed", "${_homeController.status.value.completedAppointments}"),
+                     ],
+                   ),
+
+                 ],
+               );
+             },
+             ) ,
+
 
               ///=======================Categories and See All Text=============================>
               _SeeAll(AppString.recentAppointments, AppString.seeAll, () {

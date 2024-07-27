@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../controllers/profile_controler.dart';
 import '../../../../controllers/user/home_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
@@ -26,12 +27,15 @@ class UserHomeScreen extends StatefulWidget {
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
   final HomeController _homeController = Get.put(HomeController());
+  final ProfileControler _profileControler = Get.put(ProfileControler());
+
   int selectedIndex = 0;
   String categoryName = '';
 
   @override
   Widget build(BuildContext context) {
     // _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
+    _profileControler.getProfile();
     _homeController.getCetegory();
     return Scaffold(
       body: SafeArea(
@@ -49,7 +53,15 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TopAppBar(),
+
+
+                       Obx((){
+                         var profileData = _profileControler.profileInfo.value;
+                         return TopAppBar(
+                           image: profileData.image?.publicFileUrl,
+                           name: '${profileData.firstName} ${profileData.lastName}',
+                         );
+                       } ),
 
                       CustomText(
                           text: AppString.enhancingTheHealthcareExperience,
