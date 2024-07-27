@@ -77,7 +77,7 @@ class CategoryCard extends StatelessWidget {
                   color: isSelected ? Colors.grey : const Color(0xffE8EBF0)),
               child: Padding(
                 padding:
-                    EdgeInsets.symmetric(vertical: 18.5.h, horizontal: 18.w),
+                    EdgeInsets.symmetric(vertical: 18.5.h, horizontal: 12.w),
                 child: categorIcon?.split('.').last.toLowerCase() == 'svg'
                     ? SvgPicture.network(
                         '${ApiConstants.imageBaseUrl}/$categorIcon',

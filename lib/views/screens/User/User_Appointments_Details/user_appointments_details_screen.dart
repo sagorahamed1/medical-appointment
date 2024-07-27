@@ -38,18 +38,21 @@ class UserAppointmentsDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: Dimensions.paddingSizeDefault.w,
               vertical: Dimensions.paddingSizeDefault.h),
-          child: Obx(()=>
-           _seeDetailsController.doctorSeeDetailsLoading.value ? Center(child: Padding(
-             padding:  EdgeInsets.only(top: 280.h),
-             child: const CustomLoader(),
-           )) :
-             Column(
+          child: Obx((){
+
+            var data =  _seeDetailsController.seeDetails.value;
+
+          return  _seeDetailsController.doctorSeeDetailsLoading.value ? Center(child: Padding(
+              padding:  EdgeInsets.only(top: 280.h),
+              child: const CustomLoader(),
+            )) :
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TopDoctorBoxCard(
-                  doctorName: "Sagor Ahamed",
-                  rating: '4.8',
-                  location: 'Christ Hospital in London, UK',
+                  doctorName: "${data.doctorId?.firstName} ${data.doctorId?.lastName}",
+                  rating: '${data.doctorId?.rating}',
+                  location: '${data.doctorId?.address}',
                 ),
 
                 ///===================Scheduled Appointment===================>
@@ -104,7 +107,9 @@ class UserAppointmentsDetailsScreen extends StatelessWidget {
 
                 CustomButton(onpress: () {}, title: AppString.completeAppointment)
               ],
-            ),
+            );
+          }
+
           ),
         ),
       ),
