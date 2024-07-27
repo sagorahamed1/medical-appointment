@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
@@ -41,9 +42,11 @@ class UserPatientDetailsController extends GetxController{
 
 
   payment({String? price, packageName, date, timeSlot, doctorId })async{
+    var newData = TimeFormatHelper.justDateWithUnderscoll(DateTime.parse(date));
+    print('=========date $newData');
     patientDetailsLoading(true);
     var body =  {
-      "date":"$date",
+      "date":'$newData',
       "timeSlot":"$timeSlot",
       "doctorId":"$doctorId",
       "package":{

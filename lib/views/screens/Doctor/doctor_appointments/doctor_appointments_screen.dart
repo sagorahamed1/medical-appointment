@@ -30,18 +30,35 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
 
   final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
   final NetworkController networkController = Get.put(NetworkController());
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _addScrollListener();
     _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _tabController?.dispose();
     super.dispose();
   }
+
+
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _homeController.loadMore();
+        print("load more true");
+      }
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +77,15 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
           onTap: (int value) {
             if (value == 0) {
               _homeController.appointmentsList.clear();
+              _homeController.page.value = 1;
               _homeController.getAppointment(status: 'upcomming');
             } else if (value == 1) {
               _homeController.appointmentsList.clear();
+              _homeController.page.value = 1;
               _homeController.getAppointment(status: 'active');
             } else {
               _homeController.appointmentsList.clear();
+              _homeController.page.value = 1;
               _homeController.getAppointment(status: 'completed');
             }
           },
@@ -97,29 +117,39 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
               child: const CustomLoader(),
             )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
                ListView.builder(
-                itemCount: _homeController.appointmentsList.length,
+                 controller: _scrollController,
+                itemCount: _homeController.appointmentsList.length+1,
                 itemBuilder: (context, index) {
-                  var appointment = _homeController.appointmentsList[index];
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
-                      appointmentsType: "${appointment.status}",
-                      date: appointment.createdAt,
-                      time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
-                      // messageIcon: AppIcons.messageIcon2,
-                      // time: "${TimeFormatHelper.timeWithAMPM('${appointment.createdAt}')}",
-                      // leftBtnName: 'Cancel Appointment',
-                      // rightBtnName: 'See Details',
-                      btnText: 'See Details',
-                      rightBtnOnTap: () {
-                        Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
-                          'screenType': AppString.upcoming
-                        });
-                      },
-                    ),
-                  );
+
+                  if(index < _homeController.appointmentsList.length){
+                    var appointment = _homeController.appointmentsList[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: AppointmentsCard(
+                        image: AppImages.getStarted1,
+                        name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                        appointmentsType: "${appointment.status}",
+                        date: appointment.createdAt,
+                        time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
+                        // messageIcon: AppIcons.messageIcon2,
+                        // time: "${TimeFormatHelper.timeWithAMPM('${appointment.createdAt}')}",
+                        leftBtnName: 'Cancel Appointment',
+                        rightBtnName: 'See Details',
+                        btnText: 'See Details',
+                        rightBtnOnTap: () {
+                          Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
+                            'screenType': AppString.upcoming
+                          });
+                        },
+                      ),
+                    );
+                  }else if (index >=
+                      _homeController.totalResult) {
+                    return null;
+                  } else {
+                    return const CustomLoader();
+                  }
+
                 },
               ),
             ),
@@ -131,30 +161,39 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                  child: const CustomLoader(),
                )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
                ListView.builder(
-                itemCount: _homeController.appointmentsList.length,
+                 controller: _scrollController,
+                itemCount: _homeController.appointmentsList.length+1,
                 itemBuilder: (context, index) {
-                  var appointment = _homeController.appointmentsList[index];
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
-                      leftBtnName: 'See Details',
-                      rightBtnName: 'Message',
-                      appointmentsType:  "${appointment.status}",
-                      date: appointment.createdAt,
-                      time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
-                      leftBtnOnTap: () {
-                        Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
-                          'id' : "${appointment.id}"
-                        });
-                      },
-                      rightBtnOnTap: () {
-                        Get.toNamed(AppRoutes.userGiveReviewScreen);
-                      },
+                  if(index < _homeController.appointmentsList.length){
+                    var appointment = _homeController.appointmentsList[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: AppointmentsCard(
+                        image: AppImages.getStarted1,
+                        name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                        leftBtnName: 'See Details',
+                        rightBtnName: 'Message',
+                        appointmentsType:  "${appointment.status}",
+                        date: appointment.createdAt,
+                        time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
+                        leftBtnOnTap: () {
+                          Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
+                            'id' : "${appointment.id}"
+                          });
+                        },
+                        rightBtnOnTap: () {
+                          Get.toNamed(AppRoutes.userGiveReviewScreen);
+                        },
 
-                    ),
-                  );
+                      ),
+                    );
+                  }else if (index >=
+                      _homeController.totalResult) {
+                    return null;
+                  } else {
+                    return const CustomLoader();
+                  }
+
                 },
               ),
             ),
@@ -166,21 +205,30 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
               child: const CustomLoader(),
             )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
                ListView.builder(
-                itemCount: _homeController.appointmentsList.length,
+                 controller: _scrollController,
+                itemCount: _homeController.appointmentsList.length+1,
                 itemBuilder: (context, index) {
-                  var appointment = _homeController.appointmentsList[index];
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: AppointmentsCard(
-                      image: AppImages.getStarted1,
-                      name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
-                      appointmentsType:  "${appointment.status}",
-                      date: appointment.createdAt,
-                      time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
-                      leftBtnName: 'See Details',
-                      rightBtnName: 'Send Prescription',
-                    ),
-                  );
+                  if(index < _homeController.appointmentsList.length){
+                    var appointment = _homeController.appointmentsList[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: AppointmentsCard(
+                        image: AppImages.getStarted1,
+                        name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                        appointmentsType:  "${appointment.status}",
+                        date: appointment.createdAt,
+                        time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
+                        leftBtnName: 'See Details',
+                        rightBtnName: 'Send Prescription',
+                      ),
+                    );
+                  }else if (index >=
+                      _homeController.totalResult) {
+                    return null;
+                  } else {
+                    return const CustomLoader();
+                  }
+
                 },
               ),
             ),

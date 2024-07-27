@@ -40,7 +40,7 @@ class UserAvailablleDoctorsScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Obx(() {
-                  return _homeController.doctorLoading.value ? const CustomLoader() : _homeController.doctorLists.isEmpty ? Image.asset(AppImages.noDataImage) : ListView.builder(
+                  return  _homeController.doctorLists.isEmpty ? Image.asset(AppImages.noDataImage) : ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemCount: _homeController.doctorLists.length,
@@ -49,14 +49,13 @@ class UserAvailablleDoctorsScreen extends StatelessWidget {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 16.h),
                         child: AvailableDoctorsCard(
+                          image: "${doctorInfo.doctorId?.image?.publicFileUrl}",
                           experience: "${doctorInfo.experience}",
-                          rating: "{ing}",
+                          rating: "${doctorInfo.doctorId?.rating}",
                           clinicVisit: "\$${doctorInfo.clinicPrice}",
-                          doctorName:
-                              "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
-                          totalConsultaion: "12",
-                          onlineConsultation:
-                              '\$${doctorInfo.onlineConsultationPrice}',
+                          doctorName: "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
+                          totalConsultaion: "10",
+                          onlineConsultation: '\$${doctorInfo.onlineConsultationPrice}',
                           specialist: "${doctorInfo.specialist}",
                           imageHeight: 142,
                           leftBtnText: AppString.seeDetails,

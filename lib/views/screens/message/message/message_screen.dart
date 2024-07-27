@@ -17,6 +17,7 @@ class MessageScreen extends StatelessWidget {
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
+        leading: const SizedBox(),
         title: CustomText(
           text: AppString.message,
           fontsize: 18.h,

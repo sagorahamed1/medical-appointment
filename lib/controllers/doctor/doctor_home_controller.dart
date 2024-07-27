@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,7 @@ class DoctorHomeControllerDoctorPart extends GetxController{
     if (totalPage > page.value) {
       page.value += 1;
       update();
+      getAppointment();
     }
   }
 
@@ -26,12 +29,15 @@ class DoctorHomeControllerDoctorPart extends GetxController{
       appointmentLoading(true);
     }
 
-    var response = await ApiClient.getData(ApiConstants.doctorAppointmentHomeScreenApiEndPoint(status));
+    var response = await ApiClient.getData("${ApiConstants.doctorAppointmentHomeScreenApiEndPoint(status)}&limit=3&page=${page.value}");
 
     if(response.statusCode == 200){
       if(response.body != null){
+        totalPage = jsonDecode(response.body['pagination']['totalPages'].toString());
+        currectPage = jsonDecode(response.body['pagination']['currentPage'].toString());
+        totalResult = jsonDecode(response.body['pagination']['totalUsers'].toString()) ?? 0;
         var data = List<DoctorAppointmentModelDoctorPart>.from(response.body['data']['attributes'].map((x)=> DoctorAppointmentModelDoctorPart.fromJson(x)));
-        appointmentsList.value.addAll(data);
+        appointmentsList.addAll(data);
         appointmentLoading(false);
       }
     }else if(response.statusCode == 404){
