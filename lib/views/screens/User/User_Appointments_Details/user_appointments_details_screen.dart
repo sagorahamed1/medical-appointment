@@ -1,4 +1,5 @@
-import 'package:doctor_appointment/controllers/doctor/see_details_controller.dart';
+import 'package:doctor_appointment/controllers/user/see_details_controller.dart';
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/screens/User/User_doctor_details/Inner_widgets/top_doctor_box_card.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
@@ -14,11 +15,10 @@ import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 
 class UserAppointmentsDetailsScreen extends StatelessWidget {
-   UserAppointmentsDetailsScreen({super.key});
+  UserAppointmentsDetailsScreen({super.key});
 
-
-  final SeeDetailsController _seeDetailsController = Get.put(SeeDetailsController());
-
+  final SeeDetailsController _seeDetailsController =
+      Get.put(SeeDetailsController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,79 +38,79 @@ class UserAppointmentsDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: Dimensions.paddingSizeDefault.w,
               vertical: Dimensions.paddingSizeDefault.h),
-          child: Obx((){
+          child: Obx(() {
+            var data = _seeDetailsController.seeDetails.value;
+            return _seeDetailsController.doctorSeeDetailsLoading.value
+                ? Center(
+                    child: Padding(
+                    padding: EdgeInsets.only(top: 280.h),
+                    child: const CustomLoader(),
+                  ))
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TopDoctorBoxCard(
+                        image: "${data.doctorId?.image?.publicFileUrl}",
+                        doctorName: "${data.doctorId?.firstName} ${data.doctorId?.lastName}",
+                        rating: '${data.doctorId?.rating}',
+                        specialist: '${data.doctorId}',
+                        location: '${data.doctorId?.address}',
+                      ),
 
-            var data =  _seeDetailsController.seeDetails.value;
+                      ///===================Scheduled Appointment===================>
+                      CustomText(
+                          text: AppString.scheduledAppointment,
+                          fontWeight: FontWeight.w600,
+                          fontsize: 18.h,
+                          top: 20.h,
+                          bottom: 16.h),
 
-          return  _seeDetailsController.doctorSeeDetailsLoading.value ? Center(child: Padding(
-              padding:  EdgeInsets.only(top: 280.h),
-              child: const CustomLoader(),
-            )) :
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TopDoctorBoxCard(
-                  doctorName: "${data.doctorId?.firstName} ${data.doctorId?.lastName}",
-                  rating: '${data.doctorId?.rating}',
-                  location: '${data.doctorId?.address}',
-                ),
+                      CustomText(
+                          text: TimeFormatHelper.formatDate(data.date!),
+                          fontsize: 16.h,
+                          color: AppColors.textColor5C5C5C),
+                      CustomText(
+                          text: '${data.timeSlot}',
+                          fontsize: 16.h,
+                          color: AppColors.textColor5C5C5C,
+                          top: 12.h),
 
-                ///===================Scheduled Appointment===================>
-                CustomText(
-                    text: AppString.scheduledAppointment,
-                    fontWeight: FontWeight.w600,
-                    fontsize: 18.h,
-                    top: 20.h,
-                    bottom: 16.h),
+                      ///===================Patient Information===================>
+                      CustomText(
+                          text: AppString.patientInformation,
+                          fontWeight: FontWeight.w600,
+                          fontsize: 18.h,
+                          top: 20.h,
+                          bottom: 16.h),
 
-                CustomText(
-                    text: 'Today, December 22, 2022',
-                    fontsize: 16.h,
-                    color: AppColors.textColor5C5C5C),
-                CustomText(
-                    text: '16:00 PM',
-                    fontsize: 16.h,
-                    color: AppColors.textColor5C5C5C,
-                    top: 12.h),
+                      _leftAndRightText(AppString.fullName, "${data.patientDetailsId?.fullName}"),
+                      _leftAndRightText(AppString.gender, "${data.patientDetailsId?.gender}"),
+                      _leftAndRightText(AppString.age, "${data.patientDetailsId?.age}"),
+                      _leftAndRightText(AppString.problem, "${data.patientDetailsId?.description}"),
 
-                ///===================Patient Information===================>
-                CustomText(
-                    text: AppString.patientInformation,
-                    fontWeight: FontWeight.w600,
-                    fontsize: 18.h,
-                    top: 20.h,
-                    bottom: 16.h),
+                      ///===================Your Package===================>
+                      CustomText(
+                          text: AppString.yourPackage,
+                          fontWeight: FontWeight.w600,
+                          fontsize: 18.h,
+                          top: 20.h,
+                          bottom: 16.h),
 
-                _leftAndRightText(AppString.fullName, "Sagor Ahamed"),
-                _leftAndRightText(AppString.gender, "Male"),
-                _leftAndRightText(AppString.age, "25"),
-                _leftAndRightText(AppString.problem,
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. "),
+                      CustomSelectPackageCard(
+                          title: "${data.package?.packageName}",
+                          icon: "${data.package?.packageName}".toLowerCase() == 'clinicprice' ?  AppIcons.videoCallIcons : AppIcons.personGroup,
+                          price: '${data.package?.packagePrice}',
+                          description: "${data.package?.packageName}".toLowerCase() == 'clinicprice' ? 'Video call & messages with doctor' : "Virtual visit in doctors clinic"  ,
+                          selectedIndex: 1,
+                          onTap: () {}),
 
-                ///===================Your Package===================>
-                CustomText(
-                    text: AppString.yourPackage,
-                    fontWeight: FontWeight.w600,
-                    fontsize: 18.h,
-                    top: 20.h,
-                    bottom: 16.h),
+                      SizedBox(height: 20.h),
 
-                CustomSelectPackageCard(
-                    title: "Online Consultation",
-                    icon: AppIcons.videoCallIcons,
-                    price: '400',
-                    description: "Video call & messages with doctor",
-                    selectedIndex: 1,
-                    onTap: () {}),
-
-                SizedBox(height: 20.h),
-
-                CustomButton(onpress: () {}, title: AppString.completeAppointment)
-              ],
-            );
-          }
-
-          ),
+                      CustomButton(
+                          onpress: () {}, title: AppString.completeAppointment)
+                    ],
+                  );
+          }),
         ),
       ),
     );

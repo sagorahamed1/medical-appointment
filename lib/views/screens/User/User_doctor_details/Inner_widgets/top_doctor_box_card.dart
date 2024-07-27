@@ -61,7 +61,7 @@ class TopDoctorBoxCard extends StatelessWidget {
                                 children: [
                                   SvgPicture.asset(AppIcons.star),
                                   CustomText(
-                                      text: " 4.8",
+                                      text: " $rating",
                                       color: AppColors.primaryColor,
                                       fontWeight: FontWeight.w600,
                                       fontsize: 12.h),

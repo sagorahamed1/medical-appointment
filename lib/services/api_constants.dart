@@ -20,12 +20,14 @@ class ApiConstants{
   static  String getAppointments(String status) => "/appointments/user-get-appointments?status=$status";
   static  String doctorDetailsHomeScreen(String id) => "/doctor/get-single-doctor?id=$id";
   static const String category = "/category/get-category";
+  static String seeDetailsUserPart(String id) => '/appointments/user-get-single-appointment/$id';
 
 
 
   ///=================Doctor Part============>
   static String doctorAppointmentHomeScreenApiEndPoint(String status) => '/appointments/doctor-get-appointments?status=$status';
   static String seeDetailsDoctorPart(String id) => '/appointments/doctor-get-single-appointment/$id';
+
   static const String doctorDetailsDoctorPart = "/doctor/doctor-details";
   static const String doctorEditDetailsDoctorPart = "/doctor/edit-details";
 

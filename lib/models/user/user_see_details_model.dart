@@ -1,5 +1,14 @@
+// To parse this JSON data, do
+//
+//     final userSeeDetailsModel = userSeeDetailsModelFromJson(jsonString);
 
-class DoctorSeeDetailsModelDoctorPart {
+import 'dart:convert';
+
+UserSeeDetailsModel userSeeDetailsModelFromJson(String str) => UserSeeDetailsModel.fromJson(json.decode(str));
+
+String userSeeDetailsModelToJson(UserSeeDetailsModel data) => json.encode(data.toJson());
+
+class UserSeeDetailsModel {
   final String? id;
   final String? transactionId;
   final Id? patientId;
@@ -15,7 +24,7 @@ class DoctorSeeDetailsModelDoctorPart {
   final DateTime? updatedAt;
   final int? v;
 
-  DoctorSeeDetailsModelDoctorPart({
+  UserSeeDetailsModel({
     this.id,
     this.transactionId,
     this.patientId,
@@ -32,7 +41,7 @@ class DoctorSeeDetailsModelDoctorPart {
     this.v,
   });
 
-  factory DoctorSeeDetailsModelDoctorPart.fromJson(Map<String, dynamic> json) => DoctorSeeDetailsModelDoctorPart(
+  factory UserSeeDetailsModel.fromJson(Map<String, dynamic> json) => UserSeeDetailsModel(
     id: json["_id"],
     transactionId: json["transactionId"],
     patientId: json["patientId"] == null ? null : Id.fromJson(json["patientId"]),
@@ -72,6 +81,8 @@ class Id {
   final String? firstName;
   final String? lastName;
   final String? email;
+  final String? rating;
+  final int? reviewCount;
   final bool? privacyPolicyAccepted;
   final bool? isAdmin;
   final bool? isProfileCompleted;
@@ -80,25 +91,25 @@ class Id {
   final bool? isDeleted;
   final bool? isBlocked;
   final Image? image;
-  final String? role;
-  final String? oneTimeCode;
-  final int? v;
+  final dynamic insurance;
   final bool? isInsurance;
-  final String? rating;
-  final int? reviewCount;
-  final Image? insurance;
+  final String? role;
+  final dynamic oneTimeCode;
+  final int? earningAmount;
+  final int? v;
   final String? address;
   final String? gender;
   final String? phone;
-  final String? dateOfBirth;
-  final int? earningAmount;
   final String? rate;
+  final String? dateOfBirth;
 
   Id({
     this.id,
     this.firstName,
     this.lastName,
     this.email,
+    this.rating,
+    this.reviewCount,
     this.privacyPolicyAccepted,
     this.isAdmin,
     this.isProfileCompleted,
@@ -107,19 +118,17 @@ class Id {
     this.isDeleted,
     this.isBlocked,
     this.image,
+    this.insurance,
+    this.isInsurance,
     this.role,
     this.oneTimeCode,
+    this.earningAmount,
     this.v,
-    this.isInsurance,
-    this.rating,
-    this.reviewCount,
-    this.insurance,
     this.address,
     this.gender,
     this.phone,
-    this.dateOfBirth,
-    this.earningAmount,
     this.rate,
+    this.dateOfBirth,
   });
 
   factory Id.fromJson(Map<String, dynamic> json) => Id(
@@ -127,6 +136,8 @@ class Id {
     firstName: json["firstName"],
     lastName: json["lastName"],
     email: json["email"],
+    rating: json["rating"],
+    reviewCount: json["reviewCount"],
     privacyPolicyAccepted: json["privacyPolicyAccepted"],
     isAdmin: json["isAdmin"],
     isProfileCompleted: json["isProfileCompleted"],
@@ -135,19 +146,17 @@ class Id {
     isDeleted: json["isDeleted"],
     isBlocked: json["isBlocked"],
     image: json["image"] == null ? null : Image.fromJson(json["image"]),
+    insurance: json["insurance"],
+    isInsurance: json["isInsurance"],
     role: json["role"],
     oneTimeCode: json["oneTimeCode"],
+    earningAmount: json["earningAmount"],
     v: json["__v"],
-    isInsurance: json["isInsurance"],
-    rating: json["rating"],
-    reviewCount: json["reviewCount"],
-    insurance: json["insurance"] == null ? null : Image.fromJson(json["insurance"]),
     address: json["address"],
     gender: json["gender"],
     phone: json["phone"],
-    dateOfBirth: json["dateOfBirth"],
-    earningAmount: json["earningAmount"],
     rate: json["rate"],
+    dateOfBirth: json["dateOfBirth"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -155,6 +164,8 @@ class Id {
     "firstName": firstName,
     "lastName": lastName,
     "email": email,
+    "rating": rating,
+    "reviewCount": reviewCount,
     "privacyPolicyAccepted": privacyPolicyAccepted,
     "isAdmin": isAdmin,
     "isProfileCompleted": isProfileCompleted,
@@ -163,19 +174,17 @@ class Id {
     "isDeleted": isDeleted,
     "isBlocked": isBlocked,
     "image": image?.toJson(),
+    "insurance": insurance,
+    "isInsurance": isInsurance,
     "role": role,
     "oneTimeCode": oneTimeCode,
+    "earningAmount": earningAmount,
     "__v": v,
-    "isInsurance": isInsurance,
-    "rating": rating,
-    "reviewCount": reviewCount,
-    "insurance": insurance?.toJson(),
     "address": address,
     "gender": gender,
     "phone": phone,
-    "dateOfBirth": dateOfBirth,
-    "earningAmount": earningAmount,
     "rate": rate,
+    "dateOfBirth": dateOfBirth,
   };
 }
 

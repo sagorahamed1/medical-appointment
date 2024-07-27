@@ -63,7 +63,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
   @override
   Widget build(BuildContext context) {
     print("============> ${ networkController.isConnected ? 'Connected' : 'Not Connected'}");
-    _homeController.getAppointment();
+    // _homeController.getAppointment();
     return Scaffold(
       appBar: AppBar(
         title: CustomText(

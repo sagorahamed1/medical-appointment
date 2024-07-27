@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../helpers/prefs_helper.dart';
 import '../../helpers/toast_message_helper.dart';
 import '../../models/doctor/doctor_details_molel_doctor_part.dart';
-import '../../models/doctor/doctor_see_details_model_doctor_part.dart';
+import '../../models/user/user_see_details_model.dart';
 import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
 import '../../utils/app_constant.dart';

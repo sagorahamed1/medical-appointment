@@ -5,6 +5,7 @@ import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
+import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +128,7 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                   image:
                                   '${appointments.doctorId?.image?.publicFileUrl}',
                                   name:
-                                  "${appointments.doctorId?.firstName}${appointments.doctorId?.lastName}",
+                                  "${appointments.doctorId?.firstName} ${appointments.doctorId?.lastName}",
                                   appointmentsType: '${appointments.status}',
                                   date: appointments.date,
                                   time: '${appointments.timeSlot}',
@@ -174,8 +175,9 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                   date: appointments.date,
                                   time: '${appointments.timeSlot}',
                                   leftBtnOnTap: () {
-                                    Get.toNamed(AppRoutes
-                                        .userAppointmentsDetailsScreen);
+                                    Get.toNamed(AppRoutes.userAppointmentsDetailsScreen, parameters: {
+                                      'id' : "${appointments.id}"
+                                    });
                                   },
                                   rightBtnOnTap: () {
                                     Get.toNamed(AppRoutes.userGiveReviewScreen);
@@ -244,7 +246,10 @@ class AppointmentsCard extends StatelessWidget {
   final String? leftBtnName;
   final VoidCallback? leftBtnOnTap;
   final String? rightBtnName;
+  final String? btnName;
   final VoidCallback? rightBtnOnTap;
+  final Function()? btnOntap;
+
 
   const AppointmentsCard(
       {super.key,
@@ -257,7 +262,7 @@ class AppointmentsCard extends StatelessWidget {
       this.leftBtnName,
       this.leftBtnOnTap,
       this.rightBtnName,
-      this.rightBtnOnTap});
+      this.rightBtnOnTap, this.btnName, this.btnOntap});
 
   @override
   Widget build(BuildContext context) {
@@ -360,7 +365,24 @@ class AppointmentsCard extends StatelessWidget {
               ],
             ),
             leftBtnName == null
-                ? const SizedBox()
+                ?  Column(
+                  children: [
+                    SizedBox(height: 14.h),
+                    GestureDetector(
+                      onTap: btnOntap,
+                      child: Container(
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24.r),
+                          color: AppColors.primaryColor
+                        ),
+                        child: Center(
+                          child: CustomText(text: '$btnName', color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                )
                 : Column(
                     children: [
                       SizedBox(height: 14.h),

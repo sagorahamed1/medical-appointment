@@ -57,18 +57,19 @@ class DoctorHomeScreen extends StatelessWidget {
                       return Padding(
                         padding:  EdgeInsets.only(bottom: 16.h),
                         child: AppointmentsCard(
-                          rightBtnOnTap: () {
-                            Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen);
+                          btnOntap: () {
+                            Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
+                              'id' : '${appointment.id}',
+                              'type' : 'upcomming'
+                            });
                           },
+                          btnName: 'See Details',
                           leftBtnOnTap: () {},
-                          image: AppImages.getStarted1,
+                          image: '${appointment.patientId?.image?.publicFileUrl}',
                           name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
-                          messageIcon: AppIcons.messageIcon2,
                           appointmentsType: "${appointment.status}",
-                          rightBtnName: "See Details",
-                          leftBtnName: "Cancel Appointment",
-                          date: DateTime.now(),
-                          time: TimeFormatHelper.timeFormat(appointment.createdAt!),
+                          date: appointment.date,
+                          time: '${appointment.timeSlot}',
                         ),
                       );
                     },
