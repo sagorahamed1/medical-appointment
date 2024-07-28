@@ -11,8 +11,8 @@ import '../../models/doctor/withdraw_list_model.dart';
 class WalletController extends GetxController {
 
 
-  num earnThisMonth = 0;
   num totalEarn = 0;
+  num requiredAmount = 0;
   RxBool getEarningMonthlyLoading = false.obs;
   getEarningMonthly() async {
     getEarningMonthlyLoading(true);
@@ -20,8 +20,8 @@ class WalletController extends GetxController {
     if (response.statusCode == 200) {
       var jsonResponse = response.body;
       var attributes = jsonResponse['data']['attributes'];
-      earnThisMonth = attributes['earnThisMonth'];
       totalEarn = attributes['totalEarn'];
+      requiredAmount = attributes['requiredAmount'];
       getEarningMonthlyLoading(false);
       update();
     }else if(response.statusCode == 404){

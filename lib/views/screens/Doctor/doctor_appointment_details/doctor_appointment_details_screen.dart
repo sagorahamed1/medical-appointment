@@ -115,6 +115,8 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                   width: 168.w,
                 ) : const SizedBox(),
 
+                data.prescription?.publicFileUrl != '' ? CustomButton(onpress: (){}, title: 'Completed') : const SizedBox() ,
+                CustomText(text: '${data.prescription?.publicFileUrl}',),
 
 
                 Get.parameters['type'] == 'upcomming' ? const SizedBox() :

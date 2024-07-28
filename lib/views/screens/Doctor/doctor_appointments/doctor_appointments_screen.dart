@@ -29,7 +29,6 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
   TabController? _tabController;
 
   final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
-  final NetworkController networkController = Get.put(NetworkController());
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -61,8 +60,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("============> ${ networkController.isConnected ? 'Connected' : 'Not Connected'}");
-    // _homeController.getAppointment();
+    _homeController.onInit();
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
