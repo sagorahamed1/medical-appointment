@@ -75,8 +75,8 @@ class _WalletScreenState extends State<WalletScreen> {
                 Obx(() =>
                     WalletAmountCard(
                       isAmount: walletController.getEarningMonthlyLoading.value,
-                      title: 'Earned this Month',
-                      amount: walletController.earnThisMonth.toDouble(),
+                      title: 'Withdrawal amount',
+                      amount: walletController.requiredAmount.toDouble(),
                     ),
                 ),
 
@@ -169,7 +169,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               CustomText(
                                 text: '-\$${withDraw.withdrawAmount}',
                                 fontWeight: FontWeight.w600,
-                                color: Colors.red,
+                                color: Colors.black,
                               ),
                               SizedBox(height: 6.h),
 
@@ -182,8 +182,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                   color: withDraw.status == 'Completed'
                                       ? AppColors.primaryColor
                                       : withDraw.status == 'Pending'
-                                      ? Colors.red
-                                      : withDraw.status == 'Pending' ? Colors.red : Colors.black
+                                      ? Colors.green
+                                      : withDraw.status == 'Cancelled' ? Colors.red : Colors.black
                               ),
                             ],
                           ),

@@ -111,9 +111,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                       if (pathPDF.isNotEmpty) {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => PdfViewerScreen(pathPDF: pathPDF)));
-
-
-                        sendPrescriptionController.sendPrescription('${data.patientId?.id}', pdfFile);
+                        sendPrescriptionController.sendPrescription('${data.patientId?.id}','${data.patientDetailsId?.id}', pdfFile);
                       }
                     }
                   },

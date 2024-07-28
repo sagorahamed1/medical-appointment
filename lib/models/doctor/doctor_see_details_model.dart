@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final doctorSeeDetailsModel = doctorSeeDetailsModelFromJson(jsonString);
 
-import 'dart:convert';
-
-DoctorSeeDetailsModel doctorSeeDetailsModelFromJson(String str) => DoctorSeeDetailsModel.fromJson(json.decode(str));
-
-String doctorSeeDetailsModelToJson(DoctorSeeDetailsModel data) => json.encode(data.toJson());
 
 class DoctorSeeDetailsModel {
   final String? id;
@@ -18,12 +10,13 @@ class DoctorSeeDetailsModel {
   final String? timeSlot;
   final PatientDetailsId? patientDetailsId;
   final Id? doctorId;
-  final dynamic status;
+  final String? status;
   final bool? isCompleted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
   final String? specialist;
+  final Prescription? prescription;
 
   DoctorSeeDetailsModel({
     this.id,
@@ -41,6 +34,7 @@ class DoctorSeeDetailsModel {
     this.updatedAt,
     this.v,
     this.specialist,
+    this.prescription,
   });
 
   factory DoctorSeeDetailsModel.fromJson(Map<String, dynamic> json) => DoctorSeeDetailsModel(
@@ -59,6 +53,7 @@ class DoctorSeeDetailsModel {
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
     specialist: json["specialist"],
+    prescription: json["prescription"] == null ? null : Prescription.fromJson(json["prescription"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -77,6 +72,7 @@ class DoctorSeeDetailsModel {
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
     "specialist": specialist,
+    "prescription": prescription?.toJson(),
   };
 }
 
@@ -94,7 +90,7 @@ class Id {
   final bool? isVerified;
   final bool? isDeleted;
   final bool? isBlocked;
-  final Image? image;
+  final Prescription? image;
   final dynamic insurance;
   final bool? isInsurance;
   final String? role;
@@ -104,8 +100,8 @@ class Id {
   final String? address;
   final String? gender;
   final String? phone;
-  final String? rate;
   final String? dateOfBirth;
+  final String? rate;
 
   Id({
     this.id,
@@ -131,8 +127,8 @@ class Id {
     this.address,
     this.gender,
     this.phone,
-    this.rate,
     this.dateOfBirth,
+    this.rate,
   });
 
   factory Id.fromJson(Map<String, dynamic> json) => Id(
@@ -149,7 +145,7 @@ class Id {
     isVerified: json["isVerified"],
     isDeleted: json["isDeleted"],
     isBlocked: json["isBlocked"],
-    image: json["image"] == null ? null : Image.fromJson(json["image"]),
+    image: json["image"] == null ? null : Prescription.fromJson(json["image"]),
     insurance: json["insurance"],
     isInsurance: json["isInsurance"],
     role: json["role"],
@@ -159,8 +155,8 @@ class Id {
     address: json["address"],
     gender: json["gender"],
     phone: json["phone"],
-    rate: json["rate"],
     dateOfBirth: json["dateOfBirth"],
+    rate: json["rate"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -187,21 +183,21 @@ class Id {
     "address": address,
     "gender": gender,
     "phone": phone,
-    "rate": rate,
     "dateOfBirth": dateOfBirth,
+    "rate": rate,
   };
 }
 
-class Image {
+class Prescription {
   final String? publicFileUrl;
   final String? path;
 
-  Image({
+  Prescription({
     this.publicFileUrl,
     this.path,
   });
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory Prescription.fromJson(Map<String, dynamic> json) => Prescription(
     publicFileUrl: json["publicFileURL"],
     path: json["path"],
   );

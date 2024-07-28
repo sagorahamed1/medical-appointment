@@ -26,7 +26,7 @@ class DoctorHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     _homeController.getDoctorStatus();
     _profileControler.getProfile();
-    _homeController.getAppointment(status: 'upcomming');
+    // _homeController.getAppointment(status: 'upcomming');
     return Scaffold(
       body: SafeArea(
         child: Padding(

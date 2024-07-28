@@ -12,6 +12,7 @@ class DoctorHomeControllerDoctorPart extends GetxController {
   var currectPage = (-1);
   var totalResult = (-1);
 
+
   void loadMore() {
     if (totalPage > page.value) {
       page.value += 1;
@@ -20,24 +21,36 @@ class DoctorHomeControllerDoctorPart extends GetxController {
     }
   }
 
+  @override
+  void onInit() {
+    appointmentsList.clear();
+    getAppointment(status: 'upcomming');
+    super.onInit();
+  }
+
   RxBool appointmentLoading = false.obs;
   RxList<DoctorAppointmentModelDoctorPart> appointmentsList =
       <DoctorAppointmentModelDoctorPart>[].obs;
-
+  String currentStatus = '';
   getAppointment({String status = ''}) async {
+    if(status != ''){
+      currentStatus = status;
+    }
     if (page.value == 1) {
       appointmentLoading(true);
     }
 
     var response = await ApiClient.getData(
-        "${ApiConstants.doctorAppointmentHomeScreenApiEndPoint(status)}&limit=3&page=${page.value}");
+        "${ApiConstants.doctorAppointmentHomeScreenApiEndPoint(currentStatus)}&limit=3&page=${page.value}");
 
     if (response.statusCode == 200) {
       if (response.body != null) {
         totalPage = jsonDecode(response.body['pagination']['totalPages'].toString());
         currectPage = jsonDecode(response.body['pagination']['currentPage'].toString());
         totalResult = jsonDecode(response.body['pagination']['totalUsers'].toString()) ?? 0;
-        var data = List<DoctorAppointmentModelDoctorPart>.from(response.body['data']['attributes'].map((x) => DoctorAppointmentModelDoctorPart.fromJson(x)));
+        var data = List<DoctorAppointmentModelDoctorPart>.from(response
+            .body['data']['attributes']
+            .map((x) => DoctorAppointmentModelDoctorPart.fromJson(x)));
         appointmentsList.addAll(data);
         appointmentLoading(false);
       }
