@@ -130,79 +130,113 @@ class ApiClient extends GetxService {
     }
   }
 
-  //==========================================> Post Multipart Data <======================================
+  // //==========================================> Post Multipart Data <======================================
+  // static Future<Response> postMultipartData(
+  //     String uri, Map<String, String> body,
+  //     {List<MultipartBody>? multipartBody,
+  //       List<MultipartListBody>? multipartListBody,
+  //       Map<String, String>? headers}) async {
+  //   try {
+  //     bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+  //     var mainHeaders = {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer $bearerToken'
+  //     };
+  //     debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+  //     debugPrint('====> API Body: $body with ${multipartBody?.length} picture');
+  //
+  //     var request =
+  //     http.MultipartRequest('POST', Uri.parse(ApiConstants.baseUrl + uri));
+  //     request.fields.addAll(body);
+  //
+  //     if (multipartBody!.isNotEmpty) {
+  //       multipartBody.forEach((element) async {
+  //         debugPrint("path : ${element.file.path}");
+  //
+  //         if (element.file.path.contains(".mp4")) {
+  //           debugPrint("media type mp4 ==== ${element.file.path}");
+  //           request.files.add(http.MultipartFile(
+  //             element.key,
+  //             element.file.readAsBytes().asStream(),
+  //             element.file.lengthSync(),
+  //             filename: 'video.mp4',
+  //             contentType: MediaType('video', 'mp4'),
+  //           ));
+  //         } else if (element.file.path.contains(".png")) {
+  //           debugPrint("media type png ==== ${element.file.path}");
+  //           request.files.add(http.MultipartFile(
+  //             element.key,
+  //             element.file.readAsBytes().asStream(),
+  //             element.file.lengthSync(),
+  //             filename: 'image.png',
+  //             contentType: MediaType('image', 'png'),
+  //           ));
+  //         } else if (element.file.path.contains(".jpg")) {
+  //           debugPrint("media type png ==== ${element.file.path}");
+  //           request.files.add(http.MultipartFile(
+  //             element.key,
+  //             element.file.readAsBytes().asStream(),
+  //             element.file.lengthSync(),
+  //             filename: 'image.jpg',
+  //             contentType: MediaType('image', 'jpg'),
+  //           ));
+  //         } else if (element.file.path.contains(".jpeg")) {
+  //           debugPrint("media type jpeg ==== ${element.file.path}");
+  //           request.files.add(http.MultipartFile(
+  //             element.key,
+  //             element.file.readAsBytes().asStream(),
+  //             element.file.lengthSync(),
+  //             filename: 'image.jpeg',
+  //             contentType: MediaType('image', 'jpeg'),
+  //           ));
+  //         }
+  //       });
+  //     }
+  //
+  //     request.headers.addAll(mainHeaders);
+  //     http.StreamedResponse response = await request.send();
+  //     final content = await response.stream.bytesToString();
+  //     debugPrint(
+  //         '====> API Response: [${response.statusCode}}] $uri\n${content}');
+  //
+  //     return Response(
+  //         statusCode: response.statusCode,
+  //         statusText: noInternetMessage,
+  //         body: content);
+  //   } catch (e) {
+  //     return const Response(statusCode: 1, statusText: noInternetMessage);
+  //   }
+  // }
+
+
+
   static Future<Response> postMultipartData(
       String uri, Map<String, String> body,
-      {List<MultipartBody>? multipartBody,
-        List<MultipartListBody>? multipartListBody,
+      {required List<MultipartBody> multipartBody,
         Map<String, String>? headers}) async {
     try {
       bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+
       var mainHeaders = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Bearer $bearerToken'
       };
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
-      debugPrint('====> API Body: $body with ${multipartBody?.length} picture');
 
+      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Body: $body with ${multipartBody.length} picture');
       var request =
       http.MultipartRequest('POST', Uri.parse(ApiConstants.baseUrl + uri));
-      request.fields.addAll(body);
-
-      if (multipartBody!.isNotEmpty) {
-        multipartBody.forEach((element) async {
-          debugPrint("path : ${element.file.path}");
-
-          if (element.file.path.contains(".mp4")) {
-            debugPrint("media type mp4 ==== ${element.file.path}");
-            request.files.add(http.MultipartFile(
-              element.key,
-              element.file.readAsBytes().asStream(),
-              element.file.lengthSync(),
-              filename: 'video.mp4',
-              contentType: MediaType('video', 'mp4'),
-            ));
-          } else if (element.file.path.contains(".png")) {
-            debugPrint("media type png ==== ${element.file.path}");
-            request.files.add(http.MultipartFile(
-              element.key,
-              element.file.readAsBytes().asStream(),
-              element.file.lengthSync(),
-              filename: 'image.png',
-              contentType: MediaType('image', 'png'),
-            ));
-          } else if (element.file.path.contains(".jpg")) {
-            debugPrint("media type png ==== ${element.file.path}");
-            request.files.add(http.MultipartFile(
-              element.key,
-              element.file.readAsBytes().asStream(),
-              element.file.lengthSync(),
-              filename: 'image.jpg',
-              contentType: MediaType('image', 'jpg'),
-            ));
-          } else if (element.file.path.contains(".jpeg")) {
-            debugPrint("media type jpeg ==== ${element.file.path}");
-            request.files.add(http.MultipartFile(
-              element.key,
-              element.file.readAsBytes().asStream(),
-              element.file.lengthSync(),
-              filename: 'image.jpeg',
-              contentType: MediaType('image', 'jpeg'),
-            ));
-          }
-        });
+      request.headers.addAll(headers ?? mainHeaders);
+      for (MultipartBody element in multipartBody) {
+        request.files.add(await http.MultipartFile.fromPath(
+          element.key,
+          element.file.path,
+        ));
       }
-
-      request.headers.addAll(mainHeaders);
-      http.StreamedResponse response = await request.send();
-      final content = await response.stream.bytesToString();
-      debugPrint(
-          '====> API Response: [${response.statusCode}}] $uri\n${content}');
-
-      return Response(
-          statusCode: response.statusCode,
-          statusText: noInternetMessage,
-          body: content);
+      request.fields.addAll(body);
+      http.Response _response =
+      await http.Response.fromStream(await request.send());
+      return handleResponse(_response, uri);
     } catch (e) {
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }

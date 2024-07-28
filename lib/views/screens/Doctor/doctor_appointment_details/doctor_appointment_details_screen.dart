@@ -120,7 +120,7 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                 Get.parameters['type'] == 'upcomming' ? const SizedBox() :
 
                 CustomButton(onpress: (){
-                  Get.parameters['screenType'] == AppString.upcoming   ?  (){} : Get.toNamed(AppRoutes.prescriptionFormScreen);
+                  Get.parameters['screenType'] == AppString.upcoming   ?  (){} : Get.toNamed(AppRoutes.prescriptionFormScreen, arguments: data);
                 }, title: Get.parameters['screenType'] == AppString.upcoming ? AppString.continues : 'Send Prescription'),
 
                 SizedBox(height: 30.h)

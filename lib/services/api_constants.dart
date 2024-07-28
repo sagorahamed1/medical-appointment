@@ -30,6 +30,7 @@ class ApiConstants{
   static const String doctorDetailsDoctorPart = "/doctor/doctor-details";
   static const String doctorStatus = "/doctor/login-doctor-status";
   static const String doctorEditDetailsDoctorPart = "/doctor/edit-details";
+  static const String sendPrescriptionEndPoint = "/doctor/send-prescription";
 
 
 

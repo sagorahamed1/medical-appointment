@@ -131,14 +131,11 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                         appointmentsType: "${appointment.status}",
                         date: appointment.createdAt,
                         time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
-                        // messageIcon: AppIcons.messageIcon2,
-                        // time: "${TimeFormatHelper.timeWithAMPM('${appointment.createdAt}')}",
-                        leftBtnName: 'Cancel Appointment',
-                        rightBtnName: 'See Details',
                         btnText: 'See Details',
-                        rightBtnOnTap: () {
+                        btnOnTap: () {
                           Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
-                            'screenType': AppString.upcoming
+                            'id' : '${appointment.id}',
+                            'type' : 'upcomming'
                           });
                         },
                       ),
@@ -182,7 +179,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                           });
                         },
                         rightBtnOnTap: () {
-                          Get.toNamed(AppRoutes.userGiveReviewScreen);
+                           Get.toNamed(AppRoutes.chatScreen);
                         },
 
                       ),
@@ -371,7 +368,25 @@ class AppointmentsCard extends StatelessWidget {
               ],
             ),
 
-            leftBtnName == null ? const SizedBox() :
+            leftBtnName == null ? Column(
+              children: [
+                SizedBox(height: 14.h),
+                GestureDetector(
+                  onTap: btnOnTap,
+                  child: Container(
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24.r),
+                        color: AppColors.primaryColor
+                    ),
+                    child: Center(
+                      child: CustomText(text: '$btnText', color: Colors.white),
+                    ),
+                  ),
+                )
+              ],
+            )
+                :
 
             Column(
               children: [
