@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:doctor_appointment/controllers/doctor/send_prescription_controller.dart';
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
@@ -9,11 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:get/get.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
+import '../../../../models/doctor/doctor_see_details_model.dart';
 import '../../../widgets/pop_up_menu.dart';
 
 class PrescriptionFormScreen extends StatefulWidget {
@@ -25,19 +29,9 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _formKeyMedicine = GlobalKey<FormState>();
   final List<Medication> _medications = [];
+  DoctorSeeDetailsModel data = Get.arguments;
+  SendPrescriptionController sendPrescriptionController = Get.put(SendPrescriptionController());
 
-  List diagnosis = [
-    'Hypertension (High Blood Pressure)',
-    'Diabetes Mellitus (Type 2 Diabetes)',
-    "Hyperlipidemia (High Cholesterol)",
-    'Asthma',
-    'Chronic Obstructive Pulmonary Disease (COPD)',
-    'Depression',
-    'Anxiety Disorders',
-    'Obesity',
-    'Osteoarthritis',
-    'Hypothyroidism'
-  ];
 
   List<String> pharmacies = [
     'CVS Pharmacy',
@@ -74,6 +68,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
   TextEditingController followUpDateCtrl = TextEditingController();
 
   String pathPDF = "";
+  late File pdfFile;
 
   @override
   void dispose() {
@@ -115,20 +110,14 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                       await generatePDF();
                       if (pathPDF.isNotEmpty) {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                PdfViewerScreen(pathPDF: pathPDF)));
+                            builder: (context) => PdfViewerScreen(pathPDF: pathPDF)));
+
+
+                        sendPrescriptionController.sendPrescription('${data.patientId?.id}', pdfFile);
                       }
                     }
                   },
                   title: 'Submit Prescription')
-              // ElevatedButton(
-              //   onPressed: () {
-              //     if (_formKey.currentState!.validate()) {
-              //       // Process the prescription
-              //     }
-              //   },
-              //   child: Text('Submit Prescription'),
-              // ),
             ],
           ),
         ),
@@ -151,57 +140,28 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
 
         ///=========================Contact Information===============<
 
-        const Row(
+         Row(
           children: [
-            Text("Patient Name : "),
-            Expanded(child: Text("Sagor Ahamed"))
+            const Text("Patient Name : "),
+            Expanded(child: Text("${data.patientDetailsId?.fullName}"))
           ],
         ),
-        const Row(
-          children: [Text("Age : "), Expanded(child: Text("25"))],
+         Row(
+          children: [const Text("Age : "), Expanded(child: Text("${data.patientDetailsId?.age}"))],
         ),
-        const Row(
-          children: [Text("Gender : "), Expanded(child: Text("Male"))],
+         Row(
+          children: [const Text("Gender : "), Expanded(child: Text("${data.patientDetailsId?.gender}"))],
         ),
-        const Row(
+         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Problem : "),
+            const Text("Problem : "),
             Expanded(
                 child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit "))
+                    "${data.patientDetailsId?.description}"))
           ],
         ),
 
-        // CustomText(
-        //   text: "Diagnosis",
-        //   fontWeight: FontWeight.w600,
-        //   fontsize: 18.h,
-        //   top: 20.h,
-        //   color: AppColors.primaryColor,
-        // ),
-        //
-        // SizedBox(height: 16.h),
-        //
-        // ///=========================Contact Information===============<
-        // CustomTextFieldWithoutBorder(
-        //     contenpaddingHorizontal: 20,
-        //     contenpaddingVertical: 0,
-        //     hintText: 'Diagnosis',
-        //     sufixicons: PopUpMenu(
-        //       items: diagnosis,
-        //       selectedItem: diagnosisCtrl.text,
-        //       onTap: (int index) {
-        //         setState(() {
-        //           diagnosisCtrl.text = diagnosis[index];
-        //         });
-        //       },
-        //     ),
-        //     validator: (value) {
-        //       if (value!.isEmpty) return 'Please enter diagnosis';
-        //       return null;
-        //     },
-        //     controller: diagnosisCtrl),
 
         CustomText(
           text: "Pharmacy",
@@ -212,29 +172,6 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
         ),
 
         SizedBox(height: 16.h),
-
-        ///=========================Contact Information===============<
-        // TypeAheadField(
-        //    controller: diagnosisCtrl,
-        //   itemBuilder: (context, value) {
-        //     return CustomText(
-        //       text: value.toString(),
-        //       fontsize: 14.h,
-        //       color: Colors.black,
-        //       top: 10.h,
-        //       textAlign: TextAlign.start,
-        //       left: 16.w,
-        //     );
-        //   },
-        //   onSelected: (String suggestion) {
-        //     setState(() {
-        //       diagnosisCtrl.text = suggestion;
-        //     });
-        //   },
-        //   suggestionsCallback: (search) {
-        //     return getSuggestions(search);
-        //   },
-        // )
 
 
         CustomTextFieldWithoutBorder(
@@ -424,10 +361,6 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
             ),
           ),
         )
-        // ElevatedButton(
-        //   onPressed: _addMedication,
-        //   child: Text('Add Medication'),
-        // ),
       ],
     );
   }
@@ -492,7 +425,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                 pw.SizedBox(height: 16),
                 pw.Row(children: [
                   pw.Text('Prescription No :', style: mediuamStyle),
-                  pw.Text('00012145', style: mediuamStyle),
+                  pw.Text('${data.patientDetailsId?.id}', style: mediuamStyle),
                 ])
               ]),
 
@@ -501,7 +434,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                 pw.SizedBox(height: 10),
                 pw.Row(children: [
                   pw.Text('Prescription Date: ', style: mediuamStyle),
-                  pw.Text('November 8, 2021', style: mediuamStyle),
+                  pw.Text('${data.date}', style: mediuamStyle),
                 ])
               ]),
 
@@ -528,14 +461,14 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                       child: pw.Column(children: [
                         pw.Row(children: [
                           pw.Text('Name: ', style: mediuamStyle),
-                          pw.Text('Sagor Ahamed', style: mediuamStyle),
+                          pw.Text('${data.patientDetailsId?.fullName}', style: mediuamStyle),
                         ])
                       ]),
                     ),
                     pw.Column(children: [
                       pw.Row(children: [
                         pw.Text('Age: ', style: mediuamStyle),
-                        pw.Text('25 Years', style: mediuamStyle),
+                        pw.Text('${data.patientDetailsId?.age} Years', style: mediuamStyle),
                       ])
                     ]),
                   ]),
@@ -548,7 +481,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                       pw.SizedBox(height: 20),
                       pw.Row(children: [
                         pw.Text('Gender: ', style: mediuamStyle),
-                        pw.Text('Male', style: mediuamStyle),
+                        pw.Text('${data.patientDetailsId?.gender}', style: mediuamStyle),
                       ])
                     ]),
                   ]),
@@ -561,7 +494,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                     pw.Text('Problem: ', style: mediuamStyle),
                     pw.Expanded(
                       child: pw.Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. ',
+                          '${data.patientDetailsId?.description}',
                           style: mediuamStyle,
                           maxLines: 10),
                     )
@@ -629,11 +562,12 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
               pw.Column(children: [
                 pw.SizedBox(height: 10),
                 pw.Row(children: [
-                  pw.Text('Physician Name: ', style: mediuamStyle),
-                  pw.Text('Dr. Paul', style: mediuamStyle),
+                  pw.Text('Doctor Signature: ', style: mediuamStyle),
+                  pw.Text('${data.doctorId?.firstName} ${data.doctorId?.lastName}', style: mediuamStyle),
                 ])
               ]),
               pw.SizedBox(height: 12),
+
             ],
           ),
         ),
@@ -646,7 +580,9 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
     await file.writeAsBytes(await pdf.save());
 
     setState(() {
+      pdfFile = file;
       pathPDF = outputFilePath;
+      print("=----------------------------> $pdfFile");
     });
   }
 }
@@ -668,26 +604,52 @@ class PdfViewerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: pathPDF.isNotEmpty
-          ? Center(
-              child: SizedBox(
-                height: 700.h,
-                width: 400.w,
-                child: PDFView(
-                  fitEachPage: true,
-                  filePath: pathPDF,
-                  enableSwipe: true,
-                  swipeHorizontal: true,
-                  autoSpacing: false,
-                  pageFling: false,
-                  onError: (error) {
-                    print(error.toString());
-                  },
+       appBar: AppBar(leading: const SizedBox(),),
+      body: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: GestureDetector(
+              onTap: (){
+                Get.offAllNamed(AppRoutes.doctorBottomNavBar);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 20.w),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomText(text: "Go to Home Page",color: Colors.white),
                 ),
               ),
-            )
-          : Text("Sagor"),
+            ),
+          ),
+          pathPDF.isNotEmpty
+              ? Center(
+            child: SizedBox(
+              height: 700.h,
+              width: 400.w,
+              child: PDFView(
+                fitEachPage: true,
+                filePath: pathPDF,
+                enableSwipe: true,
+                swipeHorizontal: true,
+                autoSpacing: false,
+                pageFling: false,
+                onError: (error) {
+                  print(error.toString());
+                },
+              ),
+            ),
+          )
+              : const Text("Pdf not found"),
+
+
+
+        ],
+      )
     );
   }
 }

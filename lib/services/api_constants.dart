@@ -20,6 +20,7 @@ class ApiConstants{
   static  String getAppointments(String status) => "/appointments/user-get-appointments?status=$status";
   static  String doctorDetailsHomeScreen(String id) => "/doctor/get-single-doctor?id=$id";
   static const String category = "/category/get-category";
+  static String seeDetailsUserPart(String id) => '/appointments/user-get-single-appointment/$id';
 
 
 
@@ -27,7 +28,12 @@ class ApiConstants{
   static String doctorAppointmentHomeScreenApiEndPoint(String status) => '/appointments/doctor-get-appointments?status=$status';
   static String seeDetailsDoctorPart(String id) => '/appointments/doctor-get-single-appointment/$id';
   static const String doctorDetailsDoctorPart = "/doctor/doctor-details";
+  static const String doctorStatus = "/doctor/login-doctor-status";
   static const String doctorEditDetailsDoctorPart = "/doctor/edit-details";
+  static const String sendPrescriptionEndPoint = "/doctor/send-prescription";
+  static const String getEarningMonthlyEndPoint = "/doctor/doctor-earnings";
+  static const String getWithdrawListEndPoint = "/doctor/last-withdraw-list";
+  static const String withdrawRequestEndPoint = "/doctor/withdrawal-request";
 
 
 

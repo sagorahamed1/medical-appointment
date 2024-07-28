@@ -4,28 +4,32 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../../routes/app_routes.dart';
+import '../../../../../services/api_constants.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_icons.dart';
 import '../../../../../utils/app_images.dart';
 import '../../../../widgets/custom_text.dart';
 
 class TopAppBar extends StatelessWidget {
-  const TopAppBar({super.key});
+  final String? image;
+  final String? name;
+  const TopAppBar({super.key, this.image, this.name});
 
   @override
   Widget build(BuildContext context) {
     return               Row(
       children: [
         ///---------------------profile image------------------------>
-        CircleAvatar(
+      image == null?
+      CircleAvatar(
           radius: 20.r,
           backgroundImage: const AssetImage(AppImages.splashBgImage),
+        )
+              : CircleAvatar(
+          radius: 20.r,
+          backgroundImage: NetworkImage(
+              "${ApiConstants.imageBaseUrl}/$image"),
         ),
-        //       : CircleAvatar(
-        //   radius: 20.r,
-        //   backgroundImage: NetworkImage(
-        //       "${ApiConstants.imageBaseUrl}${_profileData.image?.url}"),
-        // ),
         SizedBox(
           width: 12.w,
         ),

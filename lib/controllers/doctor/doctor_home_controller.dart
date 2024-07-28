@@ -6,12 +6,11 @@ import 'package:get/get.dart';
 
 import '../../models/doctor/doctor_appointment_model.dart';
 
-class DoctorHomeControllerDoctorPart extends GetxController{
+class DoctorHomeControllerDoctorPart extends GetxController {
   RxInt page = 1.obs;
   var totalPage = (-1);
   var currectPage = (-1);
   var totalResult = (-1);
-
 
   void loadMore() {
     if (totalPage > page.value) {
@@ -21,27 +20,68 @@ class DoctorHomeControllerDoctorPart extends GetxController{
     }
   }
 
-
   RxBool appointmentLoading = false.obs;
-  RxList <DoctorAppointmentModelDoctorPart> appointmentsList = <DoctorAppointmentModelDoctorPart> [].obs;
-  getAppointment({String status = ''})async{
+  RxList<DoctorAppointmentModelDoctorPart> appointmentsList =
+      <DoctorAppointmentModelDoctorPart>[].obs;
+
+  getAppointment({String status = ''}) async {
     if (page.value == 1) {
       appointmentLoading(true);
     }
 
-    var response = await ApiClient.getData("${ApiConstants.doctorAppointmentHomeScreenApiEndPoint(status)}&limit=3&page=${page.value}");
+    var response = await ApiClient.getData(
+        "${ApiConstants.doctorAppointmentHomeScreenApiEndPoint(status)}&limit=3&page=${page.value}");
 
-    if(response.statusCode == 200){
-      if(response.body != null){
+    if (response.statusCode == 200) {
+      if (response.body != null) {
         totalPage = jsonDecode(response.body['pagination']['totalPages'].toString());
         currectPage = jsonDecode(response.body['pagination']['currentPage'].toString());
         totalResult = jsonDecode(response.body['pagination']['totalUsers'].toString()) ?? 0;
-        var data = List<DoctorAppointmentModelDoctorPart>.from(response.body['data']['attributes'].map((x)=> DoctorAppointmentModelDoctorPart.fromJson(x)));
+        var data = List<DoctorAppointmentModelDoctorPart>.from(response.body['data']['attributes'].map((x) => DoctorAppointmentModelDoctorPart.fromJson(x)));
         appointmentsList.addAll(data);
         appointmentLoading(false);
       }
-    }else if(response.statusCode == 404){
+    } else if (response.statusCode == 404) {
       appointmentLoading(false);
     }
   }
+
+  RxBool doctorStatus = false.obs;
+  Rx<DoctorStatus> status = DoctorStatus().obs;
+
+  getDoctorStatus() async {
+    var response = await ApiClient.getData(ApiConstants.doctorStatus);
+
+    if (response.statusCode == 200) {
+      var responseData = response.body;
+      status.value = DoctorStatus.fromJson(responseData['data']['attributes']);
+      print(
+          '==========> ${response.body['data']['attributes']['totalAppointments']}');
+      update();
+    }
+  }
+}
+
+class DoctorStatus {
+  final int? totalAppointments;
+  final int? activeAppointments;
+  final int? completedAppointments;
+
+  DoctorStatus({
+    this.totalAppointments,
+    this.activeAppointments,
+    this.completedAppointments,
+  });
+
+  factory DoctorStatus.fromJson(Map<String, dynamic> json) => DoctorStatus(
+        totalAppointments: json["totalAppointments"],
+        activeAppointments: json["activeAppointments"],
+        completedAppointments: json["completedAppointments"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "totalAppointments": totalAppointments,
+        "activeAppointments": activeAppointments,
+        "completedAppointments": completedAppointments,
+      };
 }
