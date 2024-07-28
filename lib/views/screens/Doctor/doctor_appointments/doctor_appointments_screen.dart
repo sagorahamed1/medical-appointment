@@ -39,14 +39,6 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
     _tabController = TabController(length: 3, vsync: this);
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    _tabController?.dispose();
-    super.dispose();
-  }
-
-
   void _addScrollListener() {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -57,6 +49,13 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
     });
   }
 
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _tabController?.dispose();
+    super.dispose();
+  }
 
 
 
@@ -113,7 +112,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
             ///=======================Up Coming Lists====================>
             Obx(()=>
             _homeController.appointmentLoading.value ? Center(child: Padding(
-              padding:  EdgeInsets.only(top: 190.h),
+              padding:  EdgeInsets.only(top: 100.h),
               child: const CustomLoader(),
             )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
                ListView.builder(
@@ -154,7 +153,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
             ///=======================Active Lists====================>
             Obx(()=>
                _homeController.appointmentLoading.value ? Center(child: Padding(
-                 padding:  EdgeInsets.only(top: 190.h),
+                 padding:  EdgeInsets.only(top: 100.h),
                  child: const CustomLoader(),
                )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
                ListView.builder(
@@ -198,7 +197,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
             ///=======================completed Lists====================>
             Obx(()=>
             _homeController.appointmentLoading.value ? Center(child: Padding(
-              padding:  EdgeInsets.only(top: 190.h),
+              padding:  EdgeInsets.only(top: 100.h),
               child: const CustomLoader(),
             )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
                ListView.builder(
@@ -219,8 +218,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                         rightBtnName: 'Send Prescription',
                       ),
                     );
-                  }else if (index >=
-                      _homeController.totalResult) {
+                  }else if (index >= _homeController.totalResult) {
                     return null;
                   } else {
                     return const CustomLoader();

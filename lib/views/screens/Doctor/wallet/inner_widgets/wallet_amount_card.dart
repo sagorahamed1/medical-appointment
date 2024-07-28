@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,8 +11,9 @@ import '../../../../widgets/custom_text.dart';
 class WalletAmountCard extends StatelessWidget {
   final String? title;
   final double? amount;
+  final bool isAmount;
 
-  const WalletAmountCard({super.key, this.title, this.amount});
+  const WalletAmountCard({super.key, this.title, this.amount, required this.isAmount});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class WalletAmountCard extends StatelessWidget {
                     children: [
                       SizedBox(height: 52.h),
                       CustomText(text: '$title', fontsize: 16.h, bottom: 4.h),
-                      CustomText(
+                      isAmount ?  const CircularProgressIndicator(color: AppColors.primaryColor) : CustomText(
                           text: '\$$amount',
                           fontsize: 18.h,
                           fontWeight: FontWeight.w600,

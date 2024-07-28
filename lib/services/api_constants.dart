@@ -31,6 +31,9 @@ class ApiConstants{
   static const String doctorStatus = "/doctor/login-doctor-status";
   static const String doctorEditDetailsDoctorPart = "/doctor/edit-details";
   static const String sendPrescriptionEndPoint = "/doctor/send-prescription";
+  static const String getEarningMonthlyEndPoint = "/doctor/doctor-earnings";
+  static const String getWithdrawListEndPoint = "/doctor/last-withdraw-list";
+  static const String withdrawRequestEndPoint = "/doctor/withdrawal-request";
 
 
 

@@ -1,7 +1,9 @@
+import 'package:doctor_appointment/controllers/doctor/wallet_controller.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
@@ -20,6 +22,7 @@ class _WalletWithdrawalScreenState extends State<WalletWithdrawalScreen> {
   TextEditingController accountNumberController = TextEditingController();
   TextEditingController withdrawalAmountController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  WalletController walletController = Get.put(WalletController());
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +65,11 @@ class _WalletWithdrawalScreenState extends State<WalletWithdrawalScreen> {
                             hintText: "Bank Name",
                               contenpaddingHorizontal: 20,
                               contenpaddingVertical: 0,
+                              validator: (value){
+                                if(value == null || value.isEmpty){
+                                  return 'Please enter your bank name!';
+                                }return null;
+                              },
                               controller: bankNameController),
 
 
@@ -70,6 +78,11 @@ class _WalletWithdrawalScreenState extends State<WalletWithdrawalScreen> {
                             hintText: 'Account Type',
                               contenpaddingHorizontal: 20,
                               contenpaddingVertical: 0,
+                              validator: (value){
+                                if(value == null || value.isEmpty){
+                                  return 'Please enter your account type!';
+                                }return null;
+                              },
                               controller: accountTypeController),
 
 
@@ -78,19 +91,42 @@ class _WalletWithdrawalScreenState extends State<WalletWithdrawalScreen> {
                               hintText: 'Account Number',
                               contenpaddingHorizontal: 20,
                               contenpaddingVertical: 0,
+                              validator: (value){
+                                if(value == null || value.isEmpty){
+                                  return 'Please enter your account number!';
+                                }return null;
+                              },
                               controller: accountNumberController),
 
 
                           SizedBox(height: 16.h),
                           CustomTextFieldWithoutBorder(
+                            keyboardType: TextInputType.number,
                               hintText: 'Withdraw Amount',
                               contenpaddingHorizontal: 20,
                               contenpaddingVertical: 0,
+                              validator: (value){
+                                if(value == null || value.isEmpty){
+                                  return 'Please enter amount';
+                                }return null;
+                              },
                               controller: withdrawalAmountController),
 
                           SizedBox(height: 280.h),
 
-                          CustomButton(onpress: (){}, title: AppString.requestWithdrawal),
+                          CustomButton(
+                             loading: walletController.withDrawRequestLoading.value,
+                              onpress: (){
+                            if(_formKey.currentState!.validate()){
+                              walletController.withDrawRequest(
+                                  accountNumber: accountNumberController.text,
+                                  accountType: accountTypeController.text,
+                                  bankName: bankNameController.text,
+                                  withDrawAmount: withdrawalAmountController.text
+                              );
+                            }
+
+                          }, title: AppString.requestWithdrawal),
 
 
 
