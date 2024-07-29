@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:doctor_appointment/controllers/messaging/chat_list_controller.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +24,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final StreamController _streamController = StreamController();
+  // final StreamController _streamController = StreamController();
   final ScrollController _scrollController = ScrollController();
   TextEditingController messageController = TextEditingController();
+  ChatListController chatListController = Get.put(ChatListController());
+  int maxLine = 1;
 
   List messageList = [
     {"name": "Alice", "status": "sender", "message": "Hey there!"},
@@ -63,15 +66,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-      // If you want a smooth scroll animation instead of jumping directly, use animateTo:
-      // _scrollController.animateTo(
-      //   _scrollController.position.maxScrollExtent,
-      //   duration: Duration(milliseconds: 300),
-      //   curve: Curves.easeOut,
-      // );
-    });
   }
 
   @override
@@ -114,24 +108,18 @@ class _ChatScreenState extends State<ChatScreen> {
                 height: 20.h,
               ),
               Expanded(
-                child: StreamBuilder(
-                  stream: _streamController.stream,
-                  builder: (context, snapshot) {
-                    if (true) {
-                      return ListView.builder(
-                          controller: _scrollController,
-                          dragStartBehavior: DragStartBehavior.down,
-                          itemCount: messageList.length,
-                          itemBuilder: (context, index) {
-                            var message = messageList[index];
+                child: ListView.builder(
+                    reverse: true,
+                    controller: _scrollController,
+                    dragStartBehavior: DragStartBehavior.down,
+                    itemCount: messageList.length,
+                    itemBuilder: (context, index) {
+                      var message = messageList[index];
 
-                            return message['status'] == "sender"
-                                ? senderBubble(context, message)
-                                : receiverBubble(context, message);
-                          });
-                    }
-                  },
-                ),
+                      return message['status'] == "sender"
+                          ? senderBubble(context, message)
+                          : receiverBubble(context, message);
+                    })
               ),
               SizedBox(height: 10.h),
               Row(
@@ -151,14 +139,35 @@ class _ChatScreenState extends State<ChatScreen> {
                   ///======================Input filed=========================>
                   SizedBox(
                     width: 200.w,
-                    child: CustomTextField(
-                      hintText: "Send Messages",
-                      controller: messageController,
-                      contenpaddingHorizontal: 1,
-                      contenpaddingVertical: 0,
+                    child:
 
-                      sufixicons: const Icon(Icons.send, color: AppColors.primaryColor),
+                    TextFormField(
+                      maxLines: maxLine,
+                      controller: messageController,
+                      onChanged: (value) {
+                        for (var x = 0; x < value.length; x++) {
+                          print("=====");
+                          if (x % 18 == 0) {
+                            maxLine++;
+                          }
+                        }
+                        print("Max Line: $maxLine");
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Send Messages',
+                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: AppColors.primaryColor), borderRadius: BorderRadius.circular(16.r)),
+                        enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: AppColors.primaryColor), borderRadius: BorderRadius.circular(16.r)),
+                      ),
                     ),
+
+                    // CustomTextField(
+                    //   hintText: "Send Messages",
+                    //   controller: messageController,
+                    //   contenpaddingHorizontal: 1,
+                    //   contenpaddingVertical: 0,
+                    //
+                    //   sufixicons: const Icon(Icons.send, color: AppColors.primaryColor),
+                    // ),
                   ),
                   //
                   // GestureDetector(
