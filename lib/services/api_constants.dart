@@ -36,6 +36,11 @@ class ApiConstants{
   static const String getWithdrawListEndPoint = "/doctor/last-withdraw-list";
   static const String withdrawRequestEndPoint = "/doctor/withdrawal-request";
   static const String emergencyToggleEndPoint = "/doctor/emergency";
+  static const String completeAppointmentEndPoint = "/doctor/complete-appointment";
+
+
+  ///Chats
+  static const String createChatList = "/chat/create-chat";
 
 
 
