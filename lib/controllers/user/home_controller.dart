@@ -49,6 +49,8 @@ class HomeController extends GetxController{
     }
   }
 
+
+  ///===========Get doctor by cetegory==============>
   RxList <DoctorDataModel> doctorLists =<DoctorDataModel> [].obs;
   RxBool doctorLoading = false.obs;
   getDoctorByCetegory({String cetegory = '', date})async{
