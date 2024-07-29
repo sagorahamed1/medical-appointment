@@ -137,7 +137,10 @@ class ProfileScreen extends StatelessWidget {
                             ///=========================Setting=========================>
                             ListTileWidget(AppString.settings,
                                 AppIcons.setting, AppColors.primaryColor, () {
-                                  Get.toNamed(AppRoutes.settingScreen);
+                                  Get.toNamed(AppRoutes.settingScreen, parameters: {
+                                    'role' : '${profileData.role}',
+                                    'emergency' : '${profileData.isEmergency}'
+                                  });
                                 }),
                             ListTileWidget(
                                 AppString.logout, AppIcons.logout, Colors.red,

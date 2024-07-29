@@ -133,6 +133,11 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                   time: '${appointments.timeSlot}',
                                   leftBtnName: 'Cancel Appointment',
                                   rightBtnName: 'See Details',
+                                  rightBtnOnTap: (){
+                                    Get.toNamed(AppRoutes.userAppointmentsDetailsScreen, parameters: {
+                                      'id' : "${appointments.id}"
+                                    });
+                                  },
                                 ),
                               );
 

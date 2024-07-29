@@ -35,6 +35,7 @@ class ApiConstants{
   static const String getEarningMonthlyEndPoint = "/doctor/doctor-earnings";
   static const String getWithdrawListEndPoint = "/doctor/last-withdraw-list";
   static const String withdrawRequestEndPoint = "/doctor/withdrawal-request";
+  static const String emergencyToggleEndPoint = "/doctor/emergency";
 
 
 

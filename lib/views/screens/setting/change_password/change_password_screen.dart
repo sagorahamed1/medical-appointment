@@ -199,32 +199,4 @@ class ChangePasswordScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _textField(String hintext, TextEditingController controller,
-      bool isObscure, VoidCallback onTap) {
-    return CustomTextFieldWithoutBorder(
-        contenpaddingHorizontal: 20,
-        contenpaddingVertical: 20,
-        hintText: hintext,
-        isObscureText: isObscure,
-        maxLines: 1,
-        prefixIcon: Padding(
-          padding: EdgeInsets.only(left: 20.w, right: 12.w),
-          child: SvgPicture.asset(AppIcons.lock),
-        ),
-        sufixicons: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.w),
-          child: GestureDetector(
-              onTap: onTap,
-              child: SvgPicture.asset(
-                  isObscure ? AppIcons.obsecureHide : AppIcons.obsecure,
-                  color: AppColors.gray767676)),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your password';
-          }
-        },
-        controller: controller);
-  }
 }
