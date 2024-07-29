@@ -6,6 +6,7 @@ class AppConstants{
   static const String userId = "userId";
  static const String isLogged = "isLogged";
  static const String bearerToken = "bearerToken";
+ static const String email = "email";
  static const String isPrescription = "isPrescription";
  static String roleMock = '';
 

@@ -1,3 +1,5 @@
+import 'package:doctor_appointment/controllers/auth_controller.dart';
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -8,11 +10,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../routes/app_routes.dart';
+import '../../../../utils/app_constant.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({super.key});
+
+  final AuthController _authController = Get.put(AuthController());
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController currectPasswordCtrl = TextEditingController();
   TextEditingController newPasswordCtrl = TextEditingController();
@@ -31,7 +38,8 @@ class ChangePasswordScreen extends StatelessWidget {
   }
 
   toggleconfirmPasswordTextFieldObscure() {
-    confirmPasswordTextfieldObscure.value = !confirmPasswordTextfieldObscure.value;
+    confirmPasswordTextfieldObscure.value =
+        !confirmPasswordTextfieldObscure.value;
   }
 
   @override
@@ -49,41 +57,143 @@ class ChangePasswordScreen extends StatelessWidget {
             vertical: Dimensions.paddingSizeDefault.h,
             horizontal: Dimensions.paddingSizeDefault.w),
         child: Obx(
-          () => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ///===============Current password=================>
-              _textField('Current password', currectPasswordCtrl,
-                  currectTextfieldObscure.value, () {
-                toggleCurrentTextFieldObscure();
-              }),
-              SizedBox(height: 16.h),
+          () => Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ///===============Current password=================>
+                CustomTextFieldWithoutBorder(
+                    contenpaddingHorizontal: 20,
+                    contenpaddingVertical: 20,
+                    hintText: 'Current password',
+                    isObscureText: currectTextfieldObscure.value,
+                    maxLines: 1,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 12.w),
+                      child: SvgPicture.asset(AppIcons.lock),
+                    ),
+                    sufixicons: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      child: GestureDetector(
+                          onTap: () {
+                            toggleCurrentTextFieldObscure();
+                          },
+                          child: SvgPicture.asset(
+                              currectTextfieldObscure.value
+                                  ? AppIcons.obsecureHide
+                                  : AppIcons.obsecure,
+                              color: AppColors.gray767676)),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your old password';
+                      }
+                    },
+                    controller: currectPasswordCtrl),
 
-              ///===============New password=================>
-              _textField('New password', newPasswordCtrl,
-                  newPasswordTextfieldObscure.value, () {
-                toggleNewPasswordTextFieldObscure();
-              }),
-              SizedBox(height: 16.h),
+                SizedBox(height: 16.h),
 
-              ///===============Confirm password=================>
-              _textField('Confirm new password', confirmPasswordCtrl,
-                  confirmPasswordTextfieldObscure.value, () {
-                    toggleconfirmPasswordTextFieldObscure();
-                  }),
+                ///===============New password=================>
 
+                CustomTextFieldWithoutBorder(
+                    contenpaddingHorizontal: 20,
+                    contenpaddingVertical: 20,
+                    hintText: 'New password',
+                    isObscureText: newPasswordTextfieldObscure.value,
+                    maxLines: 1,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 12.w),
+                      child: SvgPicture.asset(AppIcons.lock),
+                    ),
+                    sufixicons: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      child: GestureDetector(
+                          onTap: () {
+                            toggleNewPasswordTextFieldObscure();
+                          },
+                          child: SvgPicture.asset(
+                              newPasswordTextfieldObscure.value
+                                  ? AppIcons.obsecureHide
+                                  : AppIcons.obsecure,
+                              color: AppColors.gray767676)),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your new password';
+                      } else if (value.length < 8 ||
+                          !AppConstants.validatePassword(value)) {
+                        return "Password: 8 characters min, letters & digits \nrequired";
+                      }
+                      return null;
+                    },
+                    controller: newPasswordCtrl),
+                SizedBox(height: 16.h),
 
-              SizedBox(height: 20.h),
+                ///===============Confirm password=================>
 
+                CustomTextFieldWithoutBorder(
+                    contenpaddingHorizontal: 20,
+                    contenpaddingVertical: 20,
+                    hintText: 'Confirm new password',
+                    isObscureText: confirmPasswordTextfieldObscure.value,
+                    maxLines: 1,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 12.w),
+                      child: SvgPicture.asset(AppIcons.lock),
+                    ),
+                    sufixicons: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      child: GestureDetector(
+                          onTap: () {
+                            toggleconfirmPasswordTextFieldObscure();
+                          },
+                          child: SvgPicture.asset(
+                              confirmPasswordTextfieldObscure.value
+                                  ? AppIcons.obsecureHide
+                                  : AppIcons.obsecure,
+                              color: AppColors.gray767676)),
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Please enter again your user password";
+                      } else if (value != newPasswordCtrl.text) {
+                        return "Passwords do not match";
+                      }
+                      return null;
+                    },
+                    controller: confirmPasswordCtrl),
 
-              CustomText(text: AppString.forgetPassword,fontWeight: FontWeight.w600,fontsize: 18.h,color: AppColors.primaryColor),
+                SizedBox(height: 20.h),
 
-              Spacer(),
+                GestureDetector(
+                  onTap: () async{
+                   var email = await PrefsHelper.getString(AppConstants.email);
+                    Get.toNamed(AppRoutes.forgotPasswordScreen, parameters: {
+                      'email' : email
+                    });
+                  },
+                  child: CustomText(
+                      text: AppString.forgetPassword,
+                      fontWeight: FontWeight.w600,
+                      fontsize: 18.h,
+                      color: AppColors.primaryColor),
+                ),
 
-              CustomButton(onpress: (){}, title: AppString.updatePassword),
+                Spacer(),
 
-              SizedBox(height: 20.h),
-            ],
+                CustomButton(
+                    onpress: () {
+                      if (_formKey.currentState!.validate()) {
+                        _authController.changePassword(
+                            currectPasswordCtrl.text, newPasswordCtrl.text);
+                      }
+                    },
+                    title: AppString.updatePassword),
+
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         ),
       ),
@@ -93,7 +203,6 @@ class ChangePasswordScreen extends StatelessWidget {
   Widget _textField(String hintext, TextEditingController controller,
       bool isObscure, VoidCallback onTap) {
     return CustomTextFieldWithoutBorder(
-
         contenpaddingHorizontal: 20,
         contenpaddingVertical: 20,
         hintText: hintext,
@@ -111,6 +220,11 @@ class ChangePasswordScreen extends StatelessWidget {
                   isObscure ? AppIcons.obsecureHide : AppIcons.obsecure,
                   color: AppColors.gray767676)),
         ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your password';
+          }
+        },
         controller: controller);
   }
 }
