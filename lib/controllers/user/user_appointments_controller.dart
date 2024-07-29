@@ -16,8 +16,9 @@ class UserAppointmentsController extends GetxController{
 
   @override
   void onInit() {
+    appointmentList.clear();
+    getAppointment(status: 'upcomming');
     super.onInit();
-    getAppointment();
   }
 
   void loadMore() {
@@ -34,14 +35,16 @@ class UserAppointmentsController extends GetxController{
   final rxRequestStatus = Status.loading.obs;
   void setRxRequestStatus(Status value) => rxRequestStatus.value = value;
   RxList <UserAppointMentModel> appointmentList = <UserAppointMentModel> [].obs;
-  
-  getAppointment({String status = 'upcomming'})async{
-    print("=======Call hare");
+  String currentStatus = '';
+  getAppointment({String status = ''})async{
+    if(status != ''){
+      currentStatus = status;
+    }
     if (page.value == 1) {
       appointmentLoading(true);
     }
 
-    var response = await ApiClient.getData("${ApiConstants.getAppointments(status)}&limit=3&page=${page.value}");
+    var response = await ApiClient.getData("${ApiConstants.getAppointments(currentStatus)}&limit=3&page=${page.value}");
 
     if(response.statusCode == 200){
 

@@ -28,20 +28,23 @@ class UserPatientDetailsController extends GetxController{
     var response = await ApiClient.testPostData(ApiConstants.patientDetailsAdd, jsonEncode(body));
 
     if(response.statusCode == 200 || response.statusCode == 201){
+      var patientDetailsId = response.body['data']['attributes']['_id'];
+      print("----------patientDetailsId : $patientDetailsId and type ${patientDetailsId.runtimeType}");
       patientDetailsLoading(false);
       payment(
         price: price,
         doctorId: doctorId,
         date: date,
         packageName: packName,
-        timeSlot: timeSlot
+        timeSlot: timeSlot,
+        patientDetailsId: patientDetailsId
       );
       print("---------------------------successful");
     }
   }
 
 
-  payment({String? price, packageName, date, timeSlot, doctorId })async{
+  payment({String? price, packageName, date, timeSlot, doctorId, patientDetailsId })async{
     var newData = TimeFormatHelper.justDateWithUnderscoll(DateTime.parse(date));
     print('=========date $newData');
     patientDetailsLoading(true);
@@ -49,6 +52,7 @@ class UserPatientDetailsController extends GetxController{
       "date":'$newData',
       "timeSlot":"$timeSlot",
       "doctorId":"$doctorId",
+      "patientDetailsId": "$patientDetailsId",
       "package":{
         "packageName":"$packageName",
         "packagePrice":"$price"

@@ -137,6 +137,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
       // await PrefsHelper.setString(AppConstants.token, data['token']);
       await PrefsHelper.setString(AppConstants.bearerToken, data['token']);
+      await PrefsHelper.setString(AppConstants.email, email);
       await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       var role = data['attributes']['role'];
@@ -269,6 +270,27 @@ class AuthController extends GetxController {
   }
 
 
+  ///===============Change Password================<>
+  RxBool changePasswordLoading = false.obs;
+
+  changePassword(String oldPassword, newPassword) async {
+    changePasswordLoading(true);
+    var body = {
+      "oldPassword": "$oldPassword",
+      "newPassword": "$newPassword"
+    };
+
+    var response = await ApiClient.testPostData(
+        ApiConstants.changePasswordPoint, jsonEncode(body));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ToastMessageHelper.showToastMessage('Password Changed Successful');
+      print("======>>> successful");
+      changePasswordLoading(false);
+    }else{
+      ToastMessageHelper.showToastMessage(response.body['message']);
+    }
+  }
 
 
 

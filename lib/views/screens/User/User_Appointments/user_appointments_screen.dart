@@ -59,8 +59,7 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("===========${_tabController.index}");
-    appointmentsController.getAppointment(status: 'upcomming');
+    appointmentsController.onInit();
     return Scaffold(
       appBar: AppBar(
         leading: const SizedBox(),
@@ -134,6 +133,11 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                   time: '${appointments.timeSlot}',
                                   leftBtnName: 'Cancel Appointment',
                                   rightBtnName: 'See Details',
+                                  rightBtnOnTap: (){
+                                    Get.toNamed(AppRoutes.userAppointmentsDetailsScreen, parameters: {
+                                      'id' : "${appointments.id}"
+                                    });
+                                  },
                                 ),
                               );
 

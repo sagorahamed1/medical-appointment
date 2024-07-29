@@ -11,15 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../controllers/doctor/complete_appoinment_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 
 class DcotorAppointmentsDetailsScreen extends StatelessWidget {
-   DcotorAppointmentsDetailsScreen({super.key});
+  DcotorAppointmentsDetailsScreen({super.key});
 
-  DoctorSeeDetailsController seeDetailsController = Get.put(DoctorSeeDetailsController());
+  DoctorSeeDetailsController seeDetailsController =
+      Get.put(DoctorSeeDetailsController());
+  final CompleteAppointmentController _completeAppointmentController =
+      Get.put(CompleteAppointmentController());
 
   @override
   Widget build(BuildContext context) {
@@ -40,96 +44,117 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: Dimensions.paddingSizeDefault.w,
               vertical: Dimensions.paddingSizeDefault.h),
-          child: Obx((){
+          child: Obx(() {
             var data = seeDetailsController.seeDetails.value;
-            return seeDetailsController.doctorSeeDetailsLoading.value ? const CustomLoader() : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TopDoctorBoxCard(
-                  location: '${data.doctorId?.address}',
-                  image: '${data.doctorId?.image?.publicFileUrl}',
-                  doctorName: "${data.doctorId?.firstName} ${data.doctorId?.lastName}",
-                  specialist: "${data.specialist}",
-                ),
+            return seeDetailsController.doctorSeeDetailsLoading.value
+                ? const CustomLoader()
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TopDoctorBoxCard(
+                        location: '${data.doctorId?.address}',
+                        image: '${data.doctorId?.image?.publicFileUrl}',
+                        doctorName:
+                            "${data.doctorId?.firstName} ${data.doctorId?.lastName}",
+                        specialist: "${data.specialist}",
+                      ),
 
-                ///===================Scheduled Appointment===================>
-                CustomText(
-                    text: AppString.scheduledAppointment,
-                    fontWeight: FontWeight.w600,
-                    fontsize: 18.h,
-                    top: 20.h,
-                    bottom: 16.h),
+                      ///===================Scheduled Appointment===================>
+                      CustomText(
+                          text: AppString.scheduledAppointment,
+                          fontWeight: FontWeight.w600,
+                          fontsize: 18.h,
+                          top: 20.h,
+                          bottom: 16.h),
 
-                CustomText(
-                    text: TimeFormatHelper.formatDate(data.date ?? DateTime.now()),
-                    fontsize: 16.h,
-                    color: AppColors.textColor5C5C5C),
-                CustomText(
-                    text: '${data.timeSlot}',
-                    fontsize: 16.h,
-                    color: AppColors.textColor5C5C5C,
-                    top: 12.h),
+                      CustomText(
+                          text: TimeFormatHelper.formatDate(
+                              data.date ?? DateTime.now()),
+                          fontsize: 16.h,
+                          color: AppColors.textColor5C5C5C),
+                      CustomText(
+                          text: '${data.timeSlot}',
+                          fontsize: 16.h,
+                          color: AppColors.textColor5C5C5C,
+                          top: 12.h),
 
-                ///===================Patient Information===================>
-                CustomText(
-                    text: AppString.patientInformation,
-                    fontWeight: FontWeight.w600,
-                    fontsize: 18.h,
-                    top: 20.h,
-                    bottom: 16.h),
+                      ///===================Patient Information===================>
+                      CustomText(
+                          text: AppString.patientInformation,
+                          fontWeight: FontWeight.w600,
+                          fontsize: 18.h,
+                          top: 20.h,
+                          bottom: 16.h),
 
-                _leftAndRightText(AppString.fullName, "${data.patientDetailsId?.fullName}"),
-                _leftAndRightText(AppString.gender, "${data.patientDetailsId?.gender}"),
-                _leftAndRightText(AppString.age, "${data.patientDetailsId?.age}"),
-                _leftAndRightText(AppString.problem,
-                    "${data.patientDetailsId?.description}"),
+                      _leftAndRightText(AppString.fullName,
+                          "${data.patientDetailsId?.fullName}"),
+                      _leftAndRightText(
+                          AppString.gender, "${data.patientDetailsId?.gender}"),
+                      _leftAndRightText(
+                          AppString.age, "${data.patientDetailsId?.age}"),
+                      _leftAndRightText(AppString.problem,
+                          "${data.patientDetailsId?.description}"),
 
-                ///===================Your Package===================>
-                CustomText(
-                    text: AppString.yourPackage,
-                    fontWeight: FontWeight.w600,
-                    fontsize: 18.h,
-                    top: 20.h,
-                    bottom: 16.h),
+                      ///===================Your Package===================>
+                      CustomText(
+                          text: AppString.yourPackage,
+                          fontWeight: FontWeight.w600,
+                          fontsize: 18.h,
+                          top: 20.h,
+                          bottom: 16.h),
 
-                CustomSelectPackageCard(
-                    allIndex: 1,
-                    title: "Online Consultation",
-                    icon: AppIcons.videoCallIcons,
-                    price: '400',
-                    description: "Video call & messages with doctor",
-                    selectedIndex: 1,
-                    onTap: () {}),
+                      CustomSelectPackageCard(
+                          allIndex: 1,
+                          title: "Online Consultation",
+                          icon: AppIcons.videoCallIcons,
+                          price: '400',
+                          description: "Video call & messages with doctor",
+                          selectedIndex: 1,
+                          onTap: () {}),
 
+                      SizedBox(height: 20.h),
 
-                SizedBox(height: 20.h),
+                      Get.parameters['screenType'] == "appointment Request"
+                          ? CustomTwoButon(
+                              initialSeclected: 0,
+                              btnRadius: 100,
+                              btnNameList: const ['Cancel', 'Accept'],
+                              rightBtnOnTap: () {},
+                              leftBtnOnTap: () {},
+                              width: 168.w,
+                            )
+                          : const SizedBox(),
 
-                Get.parameters['screenType'] == "appointment Request" ?
-
-                CustomTwoButon(
-                  initialSeclected: 0,
-                  btnRadius: 100,
-                  btnNameList: const ['Cancel', 'Accept'],
-                  rightBtnOnTap: (){},
-                  leftBtnOnTap: (){},
-                  width: 168.w,
-                ) : const SizedBox(),
-
-                data.prescription?.publicFileUrl != '' ? CustomButton(onpress: (){}, title: 'Completed') : const SizedBox() ,
-                CustomText(text: '${data.prescription?.publicFileUrl}',),
-
-
-                Get.parameters['type'] == 'upcomming' ? const SizedBox() :
-
-                CustomButton(onpress: (){
-                  Get.parameters['screenType'] == AppString.upcoming   ?  (){} : Get.toNamed(AppRoutes.prescriptionFormScreen, arguments: data);
-                }, title: Get.parameters['screenType'] == AppString.upcoming ? AppString.continues : 'Send Prescription'),
-
-                SizedBox(height: 30.h)
+                      ///===============Completed Button=================>
+                      data.prescription?.publicFileUrl != null || data.prescription?.publicFileUrl == ''
+                          ? CustomButton(onpress: () {
+                        _completeAppointmentController
+                            .completeAppointment('${data.id}');
+                      }, title: 'Completed')
+                          : const SizedBox(),
 
 
-              ],
-            );
+                      SizedBox(height: 16.h),
+
+                      ///===============Send Prescription=================>
+                      Get.parameters['type'] == 'upcomming'
+                          ? const SizedBox()
+                          : CustomButton(
+                              onpress: () {
+                                Get.parameters['screenType'] == AppString.upcoming
+                                    ? () {}
+                                    : Get.toNamed(
+                                        AppRoutes.prescriptionFormScreen,
+                                        arguments: data);
+                              },
+                              title: Get.parameters['screenType'] ==
+                                      AppString.upcoming
+                                  ? AppString.continues
+                                  : 'Send Prescription'),
+
+                      SizedBox(height: 30.h)
+                    ],
+                  );
           }),
         ),
       ),
