@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -10,20 +9,27 @@ class SocketServices {
 
   SocketServices._internal();
 
+  static final SocketServices _socketApi = SocketServices._internal();
+  static IO.Socket socket = IO.io('http://192.168.10.46:3000',
+      IO.OptionBuilder().setTransports(['websocket']).build());
+
   static void init() {
     if (!socket.connected) {
       socket.onConnect((_) {
-        print('========> socket connecting : ${socket.connected}');
+        print('========> socket connected: ${socket.connected}');
+      });
+
+      socket.onConnectError((err) {
+        print('========> socket connect error: $err');
+      });
+
+      socket.onDisconnect((_) {
+        print('========> socket disconnected');
       });
     } else {
       print("=======> socket already connected");
     }
   }
-
-  static final SocketServices _socketApi = SocketServices._internal();
-
-  static IO.Socket socket = IO.io('http://192.168.10.46:3000',
-      IO.OptionBuilder().setTransports(['websocket']).build());
 
   static Future<dynamic> emitWithAck(String event, dynamic body) async {
     Completer<dynamic> completer = Completer<dynamic>();
@@ -41,7 +47,7 @@ class SocketServices {
   static emit(String event, dynamic body) {
     if (body != null) {
       socket.emit(event, body);
-      print('===========> Emit');
+      print('===========> Emit $event and \n $body');
     }
   }
 }

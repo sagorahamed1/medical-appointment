@@ -1,4 +1,5 @@
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/services/socket_services.dart';
 import 'package:doctor_appointment/themes/light_theme.dart';
 import 'package:doctor_appointment/views/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:get/get.dart';
 import 'helpers/newwork_connection.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SocketServices.init();
   runApp(const MyApp());
 }
 

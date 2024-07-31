@@ -62,7 +62,11 @@ class ChatListController extends GetxController {
     var response = await ApiClient.testPostData(ApiConstants.createChatList, jsonEncode(body));
 
     if(response.statusCode == 200 || response.statusCode == 201){
-      Get.toNamed(AppRoutes.chatScreen);
+      var chatId = response.body['data']['attributes']['_id'];
+      print("----------Chat id : $chatId");
+      Get.toNamed(AppRoutes.chatScreen, parameters: {
+        'id' : '$chatId'
+      });
     }
   }
 

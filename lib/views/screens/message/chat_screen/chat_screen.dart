@@ -35,16 +35,26 @@ class _ChatScreenState extends State<ChatScreen> {
   String? selectedImage;
   String currentUserId = '';
 
+
   @override
   void initState() {
     getUserId();
+    chatController.onInit();
+    chatController.listenMessage('${Get.parameters['id']}');
     super.initState();
   }
 
-  getUserId() async {
-    setState(() async {
-      currentUserId = await PrefsHelper.getString(AppConstants.userId);
+  getUserId()  async{
+    var userId =  await PrefsHelper.getString(AppConstants.userId);
+    setState(()  {
+      currentUserId =userId;
     });
+  }
+
+  @override
+  void dispose() {
+    chatController.offSocket('${Get.parameters['receiverId']}');
+    super.dispose();
   }
 
   @override
@@ -102,6 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             itemBuilder: (context, index) {
                               var message = chatController.chatMessages[index];
 
+                              print("=======>s ${message.senderId?.id} c:$currentUserId");
                               return message.senderId?.id == currentUserId
                                   ? senderBubble(
                                       context, '${message.content?.message}')
@@ -141,7 +152,14 @@ class _ChatScreenState extends State<ChatScreen> {
                       },
                       decoration: InputDecoration(
                         hintText: 'Send Messages',
-                        suffixIcon: const Icon(Icons.send),
+                        suffixIcon: GestureDetector(
+                            onTap: (){
+                              ///message, receiverId , senderId, chatId
+                              chatController.sendMessage(messageController.text, '${Get.parameters['receiverId']}', currentUserId, '${Get.parameters['id']}'
+                              );
+                              messageController.clear();
+                            },
+                            child: const Icon(Icons.send)),
                         focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(color: AppColors.primaryColor),
                             borderRadius: BorderRadius.circular(16.r)),

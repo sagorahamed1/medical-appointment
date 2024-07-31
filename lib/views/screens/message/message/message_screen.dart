@@ -10,16 +10,40 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as TimeAgo;
 
+import '../../../../helpers/prefs_helper.dart';
+import '../../../../utils/app_constant.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 
-class MessageScreen extends StatelessWidget {
+class MessageScreen extends StatefulWidget {
   MessageScreen({super.key});
 
+  @override
+  State<MessageScreen> createState() => _MessageScreenState();
+}
+
+class _MessageScreenState extends State<MessageScreen> {
   ChatListController chatListController = Get.put(ChatListController());
+  String currentUserId = '';
+  String receiverId = '';
+
+  @override
+  void initState() {
+    getUserId();
+    super.initState();
+  }
+
+  getUserId()  async{
+    var userId =  await PrefsHelper.getString(AppConstants.userId);
+    setState(()  {
+      currentUserId =userId;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    chatListController.onInit();
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
@@ -48,18 +72,32 @@ class MessageScreen extends StatelessWidget {
                             itemCount: chatListController.chatUsers.length,
                             itemBuilder: (context, index) {
                               var users = chatListController.chatUsers[index];
+                              var participants = chatListController.chatUsers[index].participants;
+
+                              if(participants?[0].id != null || participants?[1].id != null){
+
+                                for(var x in participants!){
+                                  if(x.id != currentUserId){
+                                    receiverId = '${x.id}';
+                                  }else{
+                                    receiverId = '${x.id}';
+                                  }
+                                }
+
+                              }
 
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 16.h),
                                 child: GestureDetector(
                                     onTap: () {
                                       Get.toNamed(AppRoutes.chatScreen, parameters: {
-                                        'id' : '${users.id}'
+                                        'id' : '${users.id}',
+                                        'receiverId' : receiverId
                                       });
                                     },
                                     child: _messageCard(
                                         '${users.participants?[0].image?.publicFileUrl}',
-                                        "${users.participants?[0].firstName} ${users.participants?[0].lastName}",
+                                        "${users.participants?[0].firstName} ${users.participants?[0].lastName} (${users.appointmentId?.patientDetailsId?.fullName})",
                                          users.lastMessage?.content?.message ?? '',
                                         "${users.createdAt}")),
                               );
