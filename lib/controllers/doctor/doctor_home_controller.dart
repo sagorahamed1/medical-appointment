@@ -48,9 +48,7 @@ class DoctorHomeControllerDoctorPart extends GetxController {
         totalPage = jsonDecode(response.body['pagination']['totalPages'].toString());
         currectPage = jsonDecode(response.body['pagination']['currentPage'].toString());
         totalResult = jsonDecode(response.body['pagination']['totalUsers'].toString()) ?? 0;
-        var data = List<DoctorAppointmentModelDoctorPart>.from(response
-            .body['data']['attributes']
-            .map((x) => DoctorAppointmentModelDoctorPart.fromJson(x)));
+        var data = List<DoctorAppointmentModelDoctorPart>.from(response.body['data']['attributes'].map((x) => DoctorAppointmentModelDoctorPart.fromJson(x)));
         appointmentsList.addAll(data);
         appointmentLoading(false);
       }

@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'package:doctor_appointment/controllers/messaging/chat_controller.dart';
 import 'package:doctor_appointment/controllers/messaging/chat_list_controller.dart';
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -24,54 +28,39 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  // final StreamController _streamController = StreamController();
   final ScrollController _scrollController = ScrollController();
   TextEditingController messageController = TextEditingController();
-  ChatListController chatListController = Get.put(ChatListController());
+  ChatController chatController = Get.put(ChatController());
   int maxLine = 1;
-
-  List messageList = [
-    {"name": "Alice", "status": "sender", "message": "Hey there!"},
-    {"name": "Bob", "status": "receiver", "message": "Hi, what's up?"},
-    {"name": "Charlie", "status": "sender", "message": "Just checking in."},
-    {
-      "name": "David",
-      "status": "receiver",
-      "message": "Everything's good here, thanks!"
-    },
-    {"name": "Eve", "status": "sender", "message": "Cool."},
-    {
-      "name": "Frank",
-      "status": "receiver",
-      "message": "Did you see the latest update?"
-    },
-    {"name": "Alice", "status": "sender", "message": "Hey there!"},
-    {"name": "Bob", "status": "receiver", "message": "Hi, what's up?"},
-    {"name": "Charlie", "status": "sender", "message": "Just checking in."},
-    {
-      "name": "David",
-      "status": "receiver",
-      "message": "Everything's good here, thanks!"
-    },
-    {"name": "Eve", "status": "sender", "message": "Cool."},
-    {
-      "name": "Frank",
-      "status": "receiver",
-      "message": "Did you see the latest update?"
-    },
-  ];
-
   String? selectedImage;
+  String currentUserId = '';
+
 
   @override
   void initState() {
+    getUserId();
+    chatController.onInit();
+    chatController.listenMessage('${Get.parameters['id']}');
     super.initState();
+  }
+
+  getUserId()  async{
+    var userId =  await PrefsHelper.getString(AppConstants.userId);
+    setState(()  {
+      currentUserId =userId;
+    });
+  }
+
+  @override
+  void dispose() {
+    chatController.offSocket('${Get.parameters['receiverId']}');
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    chatController.getChatList(id: '${Get.parameters['id']}');
     return Scaffold(
-
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
@@ -79,28 +68,28 @@ class _ChatScreenState extends State<ChatScreen> {
           fontsize: 18.h,
           fontWeight: FontWeight.w600,
         ),
-
         actions: [
           GestureDetector(
-              onTap: (){
+              onTap: () {
                 Get.toNamed(AppRoutes.audioCallScreen);
               },
-              child: SvgPicture.asset(AppIcons.call, height: 20.h,width: 20.w,fit: BoxFit.cover)),
+              child: SvgPicture.asset(AppIcons.call,
+                  height: 20.h, width: 20.w, fit: BoxFit.cover)),
           SizedBox(width: 24.w),
           GestureDetector(
-              onTap: (){
+              onTap: () {
                 Get.toNamed(AppRoutes.videoCallScreen);
               },
-              child: SvgPicture.asset(AppIcons.videoCallIcons, height: 20.h,width: 20.w,fit: BoxFit.cover)),
+              child: SvgPicture.asset(AppIcons.videoCallIcons,
+                  height: 20.h, width: 20.w, fit: BoxFit.cover)),
           SizedBox(width: 20.w),
         ],
       ),
 
-
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: Dimensions.paddingSizeDefault.w),
+          padding:
+              EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -108,108 +97,88 @@ class _ChatScreenState extends State<ChatScreen> {
                 height: 20.h,
               ),
               Expanded(
-                child: ListView.builder(
-                    reverse: true,
-                    controller: _scrollController,
-                    dragStartBehavior: DragStartBehavior.down,
-                    itemCount: messageList.length,
-                    itemBuilder: (context, index) {
-                      var message = messageList[index];
+                  child: Obx(
+                () => chatController.getChatLoading.value
+                    ? const CustomLoader()
+                    : chatController.chatMessages.isEmpty
+                        ? CustomText(
+                            text: 'no chatyet',
+                          )
+                        : ListView.builder(
+                            reverse: true,
+                            controller: _scrollController,
+                            dragStartBehavior: DragStartBehavior.down,
+                            itemCount: chatController.chatMessages.length,
+                            itemBuilder: (context, index) {
+                              var message = chatController.chatMessages[index];
 
-                      return message['status'] == "sender"
-                          ? senderBubble(context, message)
-                          : receiverBubble(context, message);
-                    })
-              ),
+                              print("=======>s ${message.senderId?.id} c:$currentUserId");
+                              return message.senderId?.id == currentUserId
+                                  ? senderBubble(
+                                      context, '${message.content?.message}')
+                                  : receiverBubble(
+                                      context, '${message.content?.message}');
+                            }),
+              )),
               SizedBox(height: 10.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   Row(
                     children: [
-                      SvgPicture.asset(AppIcons.camera, height: 20.h,width: 20.w,fit: BoxFit.cover),
+                      SvgPicture.asset(AppIcons.camera,
+                          height: 20.h, width: 20.w, fit: BoxFit.cover),
                       SizedBox(width: 20.w),
-                      SvgPicture.asset(AppIcons.voice, height: 20.h,width: 20.w,fit: BoxFit.cover),
+                      SvgPicture.asset(AppIcons.voice,
+                          height: 20.h, width: 20.w, fit: BoxFit.cover),
                       SizedBox(width: 14.w),
                     ],
                   ),
-
 
                   ///======================Input filed=========================>
                   SizedBox(
                     width: 200.w,
-                    child:
-
-                    TextFormField(
+                    child: TextFormField(
                       maxLines: maxLine,
                       controller: messageController,
                       onChanged: (value) {
-                        for (var x = 0; x < value.length; x++) {
-                          print("=====");
-                          if (x % 18 == 0) {
-                            maxLine++;
-                          }
-                        }
-                        print("Max Line: $maxLine");
+                        // for (var x = 0; x < value.length; x++) {
+                        //   print("=====");
+                        //   if (x % 18 == 0) {
+                        //     maxLine++;
+                        //   }
+                        // }
+                        // print("Max Line: $maxLine");
                       },
                       decoration: InputDecoration(
                         hintText: 'Send Messages',
-                        focusedBorder: OutlineInputBorder(borderSide: const BorderSide(color: AppColors.primaryColor), borderRadius: BorderRadius.circular(16.r)),
-                        enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: AppColors.primaryColor), borderRadius: BorderRadius.circular(16.r)),
+                        suffixIcon: GestureDetector(
+                            onTap: (){
+                              ///message, receiverId , senderId, chatId
+                              chatController.sendMessage(messageController.text, '${Get.parameters['receiverId']}', currentUserId, '${Get.parameters['id']}'
+                              );
+                              messageController.clear();
+                            },
+                            child: const Icon(Icons.send)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: AppColors.primaryColor),
+                            borderRadius: BorderRadius.circular(16.r)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: AppColors.primaryColor),
+                            borderRadius: BorderRadius.circular(16.r)),
                       ),
                     ),
-
-                    // CustomTextField(
-                    //   hintText: "Send Messages",
-                    //   controller: messageController,
-                    //   contenpaddingHorizontal: 1,
-                    //   contenpaddingVertical: 0,
-                    //
-                    //   sufixicons: const Icon(Icons.send, color: AppColors.primaryColor),
-                    // ),
                   ),
-                  //
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Map<String, dynamic> newMessage = {
-                  //       "name": "John",
-                  //       "status": "sender",
-                  //       "message": messageController.text,
-                  //     };
-                  //
-                  //     if (messageController.text.isNotEmpty) {
-                  //       messageList.add(newMessage);
-                  //       _streamController.sink.add(messageList);
-                  //
-                  //       messageController.clear();
-                  //     }
-                  //   },
-                  //   child: Container(
-                  //       decoration: BoxDecoration(
-                  //           border: Border.all(color: AppColors.primaryColor),
-                  //           borderRadius: BorderRadius.circular(8.r)),
-                  //       child: Padding(
-                  //         padding: EdgeInsets.all(11.r),
-                  //         child: SvgPicture.asset(AppIcons.appointments),
-                  //       )),
-                  // ),
-
-
                   Row(
                     children: [
                       SizedBox(width: 14.w),
-                      SvgPicture.asset(AppIcons.attachFile, height: 20.h,width: 20.w,fit: BoxFit.cover),
+                      SvgPicture.asset(AppIcons.attachFile,
+                          height: 20.h, width: 20.w, fit: BoxFit.cover),
                       SizedBox(width: 20.w),
-                      SvgPicture.asset(AppIcons.like, height: 20.h,width: 20.w,fit: BoxFit.cover),
-
+                      SvgPicture.asset(AppIcons.like,
+                          height: 20.h, width: 20.w, fit: BoxFit.cover),
                     ],
                   ),
-
-
-
-
-
                 ],
               )
             ],
@@ -220,7 +189,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   // ChatWidget(Map message) {
-  receiverBubble(BuildContext context, Map message) {
+  receiverBubble(BuildContext context, String message) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -249,7 +218,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '${message['message']}' ?? "",
+                    '${message}' ?? "",
                     style: const TextStyle(
                       color: AppColors.textColor5C5C5C,
                       fontSize: 14,
@@ -283,8 +252,8 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  senderBubble(BuildContext context, Map message) {
-    print("==============> ${message['message'].runtimeType}");
+  senderBubble(BuildContext context, String message) {
+    // print("==============> ${message['message'].runtimeType}");
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -304,7 +273,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${message['message']}',
+                    '${message}',
                     style: const TextStyle(color: Colors.white),
                     textAlign: TextAlign.start,
                   ),

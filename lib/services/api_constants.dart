@@ -41,6 +41,8 @@ class ApiConstants{
 
   ///Chats
   static const String createChatList = "/chat/create-chat";
+  static const String getUserListEndPoint = "/chat/get-chat";
+  static  String getChatEndPoint(String id) => "/message/get-message/$id";
 
 
 
