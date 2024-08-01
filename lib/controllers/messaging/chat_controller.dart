@@ -1,20 +1,25 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:doctor_appointment/models/chat_model.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
 import '../../services/socket_services.dart';
 
 class ChatController extends GetxController {
+  late ScrollController scrollController;
   RxInt page = 1.obs;
   var totalPage = (-1);
   var currectPage = (-1);
   var totalResult = (-1);
   RxBool getChatLoading = false.obs;
-  RxList<ChatModel> chatMessages = <ChatModel>[].obs;
+  String chatId = '';
+  // String receiverId = '66a20a567945362b252447fb';
+
 
   void loadMore() {
     if (totalPage > page.value) {
@@ -25,48 +30,44 @@ class ChatController extends GetxController {
 
   @override
   void onInit() {
-    chatMessages.clear();
+
+    // listenMessage(chatId);
+    // getChatList(id: chatId);
     super.onInit();
   }
+  RxList<ChatModel> chatMessages = <ChatModel>[].obs;
 
-
-
-  listenMessage(String chatId) async {
-    SocketServices.init();
-    print('Setting up listener for chat::$chatId');
-    try{
+  void listenMessage(String chatId) async {
+    try {
       SocketServices.socket.on("lastMessage::$chatId", (data) {
         print("=========> Response Message: $data -------------------------");
-
         if (data != null) {
           ChatModel demoData = ChatModel.fromJson(data);
-          print("demoData : $demoData \n ${demoData.runtimeType}");
-          chatMessages.add(demoData);
+          print("---------------demoData: ${demoData.senderId} \n ${demoData.runtimeType}");
+          chatMessages.insert(0, demoData);
+          // chatMessages.add(demoData);
           chatMessages.refresh();
           update();
-          print('done');
-
+          print('Message added to chatMessages list');
         } else {
           print("No message data found in the response");
         }
       });
-    }catch(e, s){
-      print("--------------e : $e");
-      print("--------------s : $s");
+    } catch (e, s) {
+      print("Error: $e");
+      print("Stack Trace: $s");
     }
-
   }
 
 
-  offSocket(String receiverId) {
-    SocketServices.socket.off("chat::$receiverId");
+
+
+  offSocket(String chatId) {
+    SocketServices.socket.off("lastMessage::$chatId");
     debugPrint("Socket off New message");
   }
 
-  String chatId = '';
-  String receiverId = '66a20a567945362b252447fb';
 
-  // String chatId = '';
   getChatList({String id = ''}) async {
     getChatLoading(true);
     if (id != '') {
@@ -97,5 +98,27 @@ class ChatController extends GetxController {
       "chatId": chatId,
     };
     SocketServices.emit('send-message', body);
+  }
+
+
+
+
+  ///  scroll bottom and end
+  scrollToEnd() {
+    Timer(const Duration(milliseconds: 100), () {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(scrollController.position.minScrollExtent,
+            duration: Duration(milliseconds: 100), curve: Curves.decelerate);
+      }
+    });
+  }
+
+  ///  scroll fast time
+  scrollTime() async {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      scrollController.jumpTo(
+        scrollController.position.minScrollExtent,
+      );
+    });
   }
 }

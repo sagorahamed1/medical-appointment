@@ -1,4 +1,10 @@
+import 'dart:convert';
 
+List<ChatModel> chatModelFromJson(String str) =>
+    List<ChatModel>.from(json.decode(str).map((x) => ChatModel.fromJson(x)));
+
+String chatModelToJson(List<ChatModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ChatModel {
   final Content? content;
@@ -24,14 +30,24 @@ class ChatModel {
   });
 
   factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
-    content: json["content"] == null ? null : Content.fromJson(json["content"]),
+    content: json["content"] == null
+        ? null
+        : Content.fromJson(json["content"]),
     id: json["_id"],
-    chatId: json["chatId"]!,
-    senderId: json["senderId"] == null ? null : ErId.fromJson(json["senderId"]),
-    receiverId: json["receiverId"] == null ? null : ErId.fromJson(json["receiverId"]),
+    chatId: json["chatId"],
+    senderId: json["senderId"] == null
+        ? null
+        : ErId.fromJson(json["senderId"]),
+    receiverId: json["receiverId"] == null
+        ? null
+        : ErId.fromJson(json["receiverId"]),
     file: json["file"] == null ? null : FileClass.fromJson(json["file"]),
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    createdAt: json["createdAt"] == null
+        ? null
+        : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null
+        ? null
+        : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 
@@ -48,9 +64,8 @@ class ChatModel {
   };
 }
 
-
 class Content {
-  final String? messageType;
+  final MessageType? messageType;
   final String? message;
 
   Content({
@@ -59,16 +74,21 @@ class Content {
   });
 
   factory Content.fromJson(Map<String, dynamic> json) => Content(
-    messageType: json["messageType"]!,
+    messageType: messageTypeValues.map[json["messageType"]],
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
-    "messageType": messageType,
+    "messageType": messageTypeValues.reverse[messageType],
     "message": message,
   };
 }
 
+enum MessageType { TEXT }
+
+final messageTypeValues = EnumValues({
+  "text": MessageType.TEXT,
+});
 
 class FileClass {
   final String? publicFileUrl;
@@ -80,8 +100,8 @@ class FileClass {
   });
 
   factory FileClass.fromJson(Map<String, dynamic> json) => FileClass(
-    publicFileUrl: json["publicFileURL"]!,
-    path: json["path"]!,
+    publicFileUrl: json["publicFileURL"],
+    path: json["path"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -89,9 +109,6 @@ class FileClass {
     "path": path,
   };
 }
-
-
-
 
 class ErId {
   final String? id;
@@ -149,10 +166,10 @@ class ErId {
   });
 
   factory ErId.fromJson(Map<String, dynamic> json) => ErId(
-    id: json["_id"]!,
-    firstName: json["firstName"]!,
-    lastName: json["lastName"]!,
-    email: json["email"]!,
+    id: json["_id"],
+    firstName: json["firstName"],
+    lastName: json["lastName"],
+    email: json["email"],
     rating: json["rating"],
     reviewCount: json["reviewCount"],
     privacyPolicyAccepted: json["privacyPolicyAccepted"],
@@ -165,14 +182,14 @@ class ErId {
     image: json["image"] == null ? null : FileClass.fromJson(json["image"]),
     insurance: json["insurance"],
     isInsurance: json["isInsurance"],
-    role: json["role"]!,
+    role: json["role"],
     oneTimeCode: json["oneTimeCode"],
     earningAmount: json["earningAmount"],
     v: json["__v"],
-    address: json["address"]!,
-    gender: json["gender"]!,
+    address: json["address"],
+    gender: json["gender"],
     phone: json["phone"],
-    dateOfBirth: json["dateOfBirth"]!,
+    dateOfBirth: json["dateOfBirth"],
     rate: json["rate"],
   );
 
@@ -200,11 +217,10 @@ class ErId {
     "address": address,
     "gender": gender,
     "phone": phone,
-    "dateOfBirth":dateOfBirth,
+    "dateOfBirth": dateOfBirth,
     "rate": rate,
   };
 }
-
 
 class EnumValues<T> {
   Map<String, T> map;

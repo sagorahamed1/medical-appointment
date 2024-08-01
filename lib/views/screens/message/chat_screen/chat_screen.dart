@@ -3,6 +3,7 @@ import 'package:doctor_appointment/controllers/messaging/chat_controller.dart';
 import 'package:doctor_appointment/controllers/messaging/chat_list_controller.dart';
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/gestures.dart';
@@ -41,6 +42,21 @@ class _ChatScreenState extends State<ChatScreen> {
     getUserId();
     chatController.onInit();
     chatController.listenMessage('${Get.parameters['id']}');
+    chatController.scrollController =
+        ScrollController(initialScrollOffset: 0.0);
+
+    chatController.scrollController =
+        ScrollController(initialScrollOffset: 0.0);
+    chatController.scrollController.addListener(() {
+      if (chatController.scrollController.position.pixels <=
+          chatController.scrollController.position.minScrollExtent) {
+      } else if (chatController.scrollController.position.pixels ==
+          chatController.scrollController.position.maxScrollExtent) {
+        print("====> scroll bottom");
+      }
+    });
+
+    chatController.getChatList(id: '${Get.parameters['id']}');
     super.initState();
   }
 
@@ -53,13 +69,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    chatController.offSocket('${Get.parameters['receiverId']}');
+    chatController.offSocket('${Get.parameters['id']}');
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    chatController.getChatList(id: '${Get.parameters['id']}');
+    // chatController.getChatList(id: '${Get.parameters['id']}');
+
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
@@ -98,26 +115,23 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               Expanded(
                   child: Obx(
-                () => chatController.getChatLoading.value
-                    ? const CustomLoader()
-                    : chatController.chatMessages.isEmpty
-                        ? CustomText(
-                            text: 'no chatyet',
-                          )
-                        : ListView.builder(
-                            reverse: true,
+                () => ListView.builder(
+                             reverse: true,
                             controller: _scrollController,
-                            dragStartBehavior: DragStartBehavior.down,
-                            itemCount: chatController.chatMessages.length,
+                             dragStartBehavior: DragStartBehavior.down,
+                            itemCount: chatController.chatMessages.value.length,
                             itemBuilder: (context, index) {
-                              var message = chatController.chatMessages[index];
+                              // 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl'
 
-                              print("=======>s ${message.senderId?.id} c:$currentUserId");
-                              return message.senderId?.id == currentUserId
+                              var message = chatController.chatMessages[index];
+                              return
+                                message.content?.message == 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl'
+                                    ? firstMessage() :
+                                message.senderId?.id == currentUserId
                                   ? senderBubble(
-                                      context, '${message.content?.message}')
+                                      context, '${message.content?.message}' ,'${message.receiverId?.image?.publicFileUrl}')
                                   : receiverBubble(
-                                      context, '${message.content?.message}');
+                                      context, '${message.content?.message}',"${message.senderId?.image?.publicFileUrl}");
                             }),
               )),
               SizedBox(height: 10.h),
@@ -189,14 +203,14 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   // ChatWidget(Map message) {
-  receiverBubble(BuildContext context, String message) {
+  receiverBubble(BuildContext context, String message, profileImage) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         CustomNetworkImage(
           imageUrl:
-              "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630",
+              "${ApiConstants.imageBaseUrl}/$profileImage",
           height: 35,
           width: 35,
           boxShape: BoxShape.circle,
@@ -252,7 +266,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  senderBubble(BuildContext context, String message) {
+  senderBubble(BuildContext context, String message, profileImage) {
     // print("==============> ${message['message'].runtimeType}");
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -295,7 +309,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         CustomNetworkImage(
           imageUrl:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTem_2VAfW3H2BtegHsTMUPffW8hvDRPpywu_EM-0U8Nh8j3hagOJzyfNmQKlvBb7gMpc4&usqp=CAU',
+              '${ApiConstants.imageBaseUrl}/$profileImage',
           height: 35,
           width: 35,
           boxShape: BoxShape.circle,
@@ -313,6 +327,20 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       messageController.text = returnImage.path;
     });
+  }
+
+  Widget firstMessage(){
+    return Column(
+      children: [
+        SizedBox(height: 10.h),
+        SvgPicture.asset(AppIcons.appointments),
+        CustomText(
+          text: "Get started",
+          top: 10,
+          bottom: 10,
+        ),
+      ],
+    );
   }
 
   // sendCallButton({
