@@ -314,4 +314,35 @@ class _ChatScreenState extends State<ChatScreen> {
       messageController.text = returnImage.path;
     });
   }
+
+  // sendCallButton({
+  //   required bool isVideoCall,
+  //   required String inviteUserId,
+  //   required String name,
+  //   void Function(String code, String message, List<String>)? onCallFinished,
+  // }){
+  //   return ZegoSendCallInvitationButton(
+  //     isVideoCall: isVideoCall,
+  //     invitees: [
+  //       ZegoUIKitUser(
+  //         id: inviteUserId,
+  //         name: name,
+  //       )
+  //     ],
+  //     resourceID: "zego_call",
+  //     icon: ButtonIcon(
+  //         icon: SvgPicture.asset(
+  //           isVideoCall ? AppIcons.videoCamera : AppIcons.phone,
+  //           color: AppColors.green_500,
+  //         )),
+  //     iconSize: const Size(30, 30),
+  //     buttonSize: const Size(40, 40),
+  //     onPressed: onCallFinished,
+  //   );
+  // }
+
+
 }
+
+
+

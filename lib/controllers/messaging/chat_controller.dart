@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:doctor_appointment/models/chat_model.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
@@ -36,11 +38,13 @@ class ChatController extends GetxController {
       SocketServices.socket.on("lastMessage::$chatId", (data) {
         print("=========> Response Message: $data -------------------------");
 
-        if (data['message'] != null) {
-          ChatModel demoData = ChatModel.fromJson(data['message']);
+        if (data != null) {
+          ChatModel demoData = ChatModel.fromJson(data);
+          print("demoData : $demoData \n ${demoData.runtimeType}");
           chatMessages.add(demoData);
           chatMessages.refresh();
           update();
+          print('done');
 
         } else {
           print("No message data found in the response");
@@ -75,6 +79,8 @@ class ChatController extends GetxController {
       chatMessages.value = List<ChatModel>.from(response.body['data']
               ['attributes']
           .map((x) => ChatModel.fromJson(x)));
+      chatMessages.refresh();
+      update();
       getChatLoading(false);
     } else if (response.statusCode == 404) {
       getChatLoading(false);

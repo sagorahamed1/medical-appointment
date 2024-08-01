@@ -1,4 +1,5 @@
 
+
 class ChatModel {
   final Content? content;
   final String? id;
@@ -25,7 +26,7 @@ class ChatModel {
   factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
     content: json["content"] == null ? null : Content.fromJson(json["content"]),
     id: json["_id"],
-    chatId: json["chatId"],
+    chatId: json["chatId"]!,
     senderId: json["senderId"] == null ? null : ErId.fromJson(json["senderId"]),
     receiverId: json["receiverId"] == null ? null : ErId.fromJson(json["receiverId"]),
     file: json["file"] == null ? null : FileClass.fromJson(json["file"]),
@@ -47,6 +48,7 @@ class ChatModel {
   };
 }
 
+
 class Content {
   final String? messageType;
   final String? message;
@@ -57,7 +59,7 @@ class Content {
   });
 
   factory Content.fromJson(Map<String, dynamic> json) => Content(
-    messageType: json["messageType"],
+    messageType: json["messageType"]!,
     message: json["message"],
   );
 
@@ -66,6 +68,7 @@ class Content {
     "message": message,
   };
 }
+
 
 class FileClass {
   final String? publicFileUrl;
@@ -77,8 +80,8 @@ class FileClass {
   });
 
   factory FileClass.fromJson(Map<String, dynamic> json) => FileClass(
-    publicFileUrl: json["publicFileURL"],
-    path: json["path"],
+    publicFileUrl: json["publicFileURL"]!,
+    path: json["path"]!,
   );
 
   Map<String, dynamic> toJson() => {
@@ -86,6 +89,9 @@ class FileClass {
     "path": path,
   };
 }
+
+
+
 
 class ErId {
   final String? id;
@@ -143,10 +149,10 @@ class ErId {
   });
 
   factory ErId.fromJson(Map<String, dynamic> json) => ErId(
-    id: json["_id"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-    email: json["email"],
+    id: json["_id"]!,
+    firstName: json["firstName"]!,
+    lastName: json["lastName"]!,
+    email: json["email"]!,
     rating: json["rating"],
     reviewCount: json["reviewCount"],
     privacyPolicyAccepted: json["privacyPolicyAccepted"],
@@ -159,14 +165,14 @@ class ErId {
     image: json["image"] == null ? null : FileClass.fromJson(json["image"]),
     insurance: json["insurance"],
     isInsurance: json["isInsurance"],
-    role: json["role"],
+    role: json["role"]!,
     oneTimeCode: json["oneTimeCode"],
     earningAmount: json["earningAmount"],
     v: json["__v"],
-    address: json["address"],
-    gender: json["gender"],
+    address: json["address"]!,
+    gender: json["gender"]!,
     phone: json["phone"],
-    dateOfBirth: json["dateOfBirth"],
+    dateOfBirth: json["dateOfBirth"]!,
     rate: json["rate"],
   );
 
@@ -194,7 +200,20 @@ class ErId {
     "address": address,
     "gender": gender,
     "phone": phone,
-    "dateOfBirth": dateOfBirth,
+    "dateOfBirth":dateOfBirth,
     "rate": rate,
   };
+}
+
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }
