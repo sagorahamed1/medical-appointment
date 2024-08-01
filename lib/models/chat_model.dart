@@ -1,3 +1,10 @@
+import 'dart:convert';
+
+List<ChatModel> chatModelFromJson(String str) =>
+    List<ChatModel>.from(json.decode(str).map((x) => ChatModel.fromJson(x)));
+
+String chatModelToJson(List<ChatModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ChatModel {
   final Content? content;
@@ -23,14 +30,24 @@ class ChatModel {
   });
 
   factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
-    content: json["content"] == null ? null : Content.fromJson(json["content"]),
+    content: json["content"] == null
+        ? null
+        : Content.fromJson(json["content"]),
     id: json["_id"],
     chatId: json["chatId"],
-    senderId: json["senderId"] == null ? null : ErId.fromJson(json["senderId"]),
-    receiverId: json["receiverId"] == null ? null : ErId.fromJson(json["receiverId"]),
+    senderId: json["senderId"] == null
+        ? null
+        : ErId.fromJson(json["senderId"]),
+    receiverId: json["receiverId"] == null
+        ? null
+        : ErId.fromJson(json["receiverId"]),
     file: json["file"] == null ? null : FileClass.fromJson(json["file"]),
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    createdAt: json["createdAt"] == null
+        ? null
+        : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null
+        ? null
+        : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 
@@ -48,7 +65,7 @@ class ChatModel {
 }
 
 class Content {
-  final String? messageType;
+  final MessageType? messageType;
   final String? message;
 
   Content({
@@ -57,15 +74,21 @@ class Content {
   });
 
   factory Content.fromJson(Map<String, dynamic> json) => Content(
-    messageType: json["messageType"],
+    messageType: messageTypeValues.map[json["messageType"]],
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
-    "messageType": messageType,
+    "messageType": messageTypeValues.reverse[messageType],
     "message": message,
   };
 }
+
+enum MessageType { TEXT }
+
+final messageTypeValues = EnumValues({
+  "text": MessageType.TEXT,
+});
 
 class FileClass {
   final String? publicFileUrl;
@@ -197,4 +220,16 @@ class ErId {
     "dateOfBirth": dateOfBirth,
     "rate": rate,
   };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }
