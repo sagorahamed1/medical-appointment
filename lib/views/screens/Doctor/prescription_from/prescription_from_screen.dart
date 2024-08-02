@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:doctor_appointment/controllers/doctor/send_prescription_controller.dart';
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
@@ -432,7 +433,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                 pw.SizedBox(height: 10),
                 pw.Row(children: [
                   pw.Text('Prescription Date: ', style: mediuamStyle),
-                  pw.Text('${data.date}', style: mediuamStyle),
+                  pw.Text(TimeFormatHelper.formatDate(data.date!), style: mediuamStyle),
                 ])
               ]),
 
