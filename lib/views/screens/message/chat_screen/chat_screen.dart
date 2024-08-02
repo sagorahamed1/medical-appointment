@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:doctor_appointment/controllers/messaging/chat_controller.dart';
 import 'package:doctor_appointment/controllers/messaging/chat_list_controller.dart';
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
+import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_dimentions.dart';
@@ -49,8 +51,8 @@ class _ChatScreenState extends State<ChatScreen> {
         ScrollController(initialScrollOffset: 0.0);
     chatController.scrollController.addListener(() {
       if (chatController.scrollController.position.pixels <=
-          chatController.scrollController.position.minScrollExtent) {
-      } else if (chatController.scrollController.position.pixels ==
+          chatController.scrollController.position.minScrollExtent) {} else
+      if (chatController.scrollController.position.pixels ==
           chatController.scrollController.position.maxScrollExtent) {
         print("====> scroll bottom");
       }
@@ -60,10 +62,10 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-  getUserId()  async{
-    var userId =  await PrefsHelper.getString(AppConstants.userId);
-    setState(()  {
-      currentUserId =userId;
+  getUserId() async {
+    var userId = await PrefsHelper.getString(AppConstants.userId);
+    setState(() {
+      currentUserId = userId;
     });
   }
 
@@ -78,127 +80,139 @@ class _ChatScreenState extends State<ChatScreen> {
     // chatController.getChatList(id: '${Get.parameters['id']}');
 
     return Scaffold(
+
       ///-----------------------------------app bar section-------------------------->
-      appBar: AppBar(
-        title: CustomText(
-          text: 'Sagor ahamed',
-          fontsize: 18.h,
-          fontWeight: FontWeight.w600,
-        ),
-        actions: [
-          GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoutes.audioCallScreen);
-              },
-              child: SvgPicture.asset(AppIcons.call,
-                  height: 20.h, width: 20.w, fit: BoxFit.cover)),
-          SizedBox(width: 24.w),
-          GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoutes.videoCallScreen);
-              },
-              child: SvgPicture.asset(AppIcons.videoCallIcons,
-                  height: 20.h, width: 20.w, fit: BoxFit.cover)),
-          SizedBox(width: 20.w),
-        ],
-      ),
-
-      body: SafeArea(
-        child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              Expanded(
-                  child: Obx(
-                () => ListView.builder(
-                             reverse: true,
-                            controller: _scrollController,
-                             dragStartBehavior: DragStartBehavior.down,
-                            itemCount: chatController.chatMessages.value.length,
-                            itemBuilder: (context, index) {
-                              // 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl'
-
-                              var message = chatController.chatMessages[index];
-                              return
-                                message.content?.message == 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl'
-                                    ? firstMessage() :
-                                message.senderId?.id == currentUserId
-                                  ? senderBubble(
-                                      context, '${message.content?.message}' ,'${message.receiverId?.image?.publicFileUrl}')
-                                  : receiverBubble(
-                                      context, '${message.content?.message}',"${message.senderId?.image?.publicFileUrl}");
-                            }),
-              )),
-              SizedBox(height: 10.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.camera,
-                          height: 20.h, width: 20.w, fit: BoxFit.cover),
-                      SizedBox(width: 20.w),
-                      SvgPicture.asset(AppIcons.voice,
-                          height: 20.h, width: 20.w, fit: BoxFit.cover),
-                      SizedBox(width: 14.w),
-                    ],
-                  ),
-
-                  ///======================Input filed=========================>
-                  SizedBox(
-                    width: 200.w,
-                    child: TextFormField(
-                      maxLines: maxLine,
-                      controller: messageController,
-                      onChanged: (value) {
-                        // for (var x = 0; x < value.length; x++) {
-                        //   print("=====");
-                        //   if (x % 18 == 0) {
-                        //     maxLine++;
-                        //   }
-                        // }
-                        // print("Max Line: $maxLine");
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Send Messages',
-                        suffixIcon: GestureDetector(
-                            onTap: (){
-                              ///message, receiverId , senderId, chatId
-                              chatController.sendMessage(messageController.text, '${Get.parameters['receiverId']}', currentUserId, '${Get.parameters['id']}'
-                              );
-                              messageController.clear();
-                            },
-                            child: const Icon(Icons.send)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: AppColors.primaryColor),
-                            borderRadius: BorderRadius.circular(16.r)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: AppColors.primaryColor),
-                            borderRadius: BorderRadius.circular(16.r)),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(width: 14.w),
-                      SvgPicture.asset(AppIcons.attachFile,
-                          height: 20.h, width: 20.w, fit: BoxFit.cover),
-                      SizedBox(width: 20.w),
-                      SvgPicture.asset(AppIcons.like,
-                          height: 20.h, width: 20.w, fit: BoxFit.cover),
-                    ],
-                  ),
-                ],
-              )
-            ],
+        appBar: AppBar(
+          title: CustomText(
+            text: 'Sagor ahamed',
+            fontsize: 18.h,
+            fontWeight: FontWeight.w600,
           ),
-        ),
-      ),
+          actions: [
+        currentUserId != null ? sendCallButton(
+        inviteUserId: '${Get.parameters['id']}',
+          name: '${Get.parameters['id']}',
+          isVideoCall: false,
+          onCallFinished: onSendCallInvitationFinished,
+        ) :
+
+        GestureDetector(
+        onTap: ()
+    {
+      // Get.toNamed(AppRoutes.audioCallScreen);
+    },
+    child: SvgPicture.asset(AppIcons.call,
+    height: 20.h, width: 20.w, fit: BoxFit.cover)),
+    SizedBox(width: 24.w),
+    GestureDetector(
+    onTap: () {
+    Get.toNamed(AppRoutes.videoCallScreen);
+    },
+    child: SvgPicture.asset(AppIcons.videoCallIcons,
+    height: 20.h, width: 20.w, fit: BoxFit.cover)),
+    SizedBox(width: 20.w),
+    ],
+    ),
+
+    body: SafeArea(
+    child: Padding(
+    padding:
+    EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
+    child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    SizedBox(
+    height: 20.h,
+    ),
+    Expanded(
+    child: Obx(
+    () => ListView.builder(
+    reverse: true,
+    controller: _scrollController,
+    dragStartBehavior: DragStartBehavior.down,
+    itemCount: chatController.chatMessages.value.length,
+    itemBuilder: (context, index) {
+    // 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl'
+
+    var message = chatController.chatMessages[index];
+    return
+    message.content?.message == 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl'
+    ? firstMessage() :
+    message.senderId?.id == currentUserId
+    ? senderBubble(
+    context, '${message.content?.message}' ,'${message.receiverId?.image?.publicFileUrl}')
+        : receiverBubble(
+    context, '${message.content?.message}',"${message.senderId?.image?.publicFileUrl}");
+    }),
+    )),
+    SizedBox(height: 10.h),
+    Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+    Row(
+    children: [
+    SvgPicture.asset(AppIcons.camera,
+    height: 20.h, width: 20.w, fit: BoxFit.cover),
+    SizedBox(width: 20.w),
+    SvgPicture.asset(AppIcons.voice,
+    height: 20.h, width: 20.w, fit: BoxFit.cover),
+    SizedBox(width: 14.w),
+    ],
+    ),
+
+    ///======================Input filed=========================>
+    SizedBox(
+    width: 200.w,
+    child: TextFormField(
+    maxLines: maxLine,
+    controller: messageController,
+    onChanged: (value) {
+    // for (var x = 0; x < value.length; x++) {
+    //   print("=====");
+    //   if (x % 18 == 0) {
+    //     maxLine++;
+    //   }
+    // }
+    // print("Max Line: $maxLine");
+    },
+    decoration: InputDecoration(
+    hintText: 'Send Messages',
+    suffixIcon: GestureDetector(
+    onTap: (){
+    ///message, receiverId , senderId, chatId
+    chatController.sendMessage(messageController.text, '${Get.parameters['receiverId']}', currentUserId, '${Get.parameters['id']}'
+    );
+    messageController.clear();
+    },
+    child: const Icon(Icons.send)),
+    focusedBorder: OutlineInputBorder(
+    borderSide: const BorderSide(color: AppColors.primaryColor),
+    borderRadius: BorderRadius.circular(16.r)),
+    enabledBorder: OutlineInputBorder(
+    borderSide: const BorderSide(color: AppColors.primaryColor),
+    borderRadius: BorderRadius.circular(16.r)),
+    ),
+    ),
+    ),
+    Row(
+    children: [
+    SizedBox(width: 14.w),
+    SvgPicture.asset(AppIcons.attachFile,
+    height: 20.h, width: 20.w, fit: BoxFit.cover),
+    SizedBox(width: 20.w),
+    SvgPicture.asset(AppIcons.like,
+    height: 20.h, width: 20.w, fit: BoxFit.cover),
+    ],
+    ),
+    ],
+    )
+    ],
+    )
+    ,
+    )
+    ,
+    )
+    ,
     );
   }
 
@@ -210,7 +224,7 @@ class _ChatScreenState extends State<ChatScreen> {
       children: [
         CustomNetworkImage(
           imageUrl:
-              "${ApiConstants.imageBaseUrl}/$profileImage",
+          "${ApiConstants.imageBaseUrl}/$profileImage",
           height: 35,
           width: 35,
           boxShape: BoxShape.circle,
@@ -226,7 +240,10 @@ class _ChatScreenState extends State<ChatScreen> {
             margin: const EdgeInsets.only(top: 8, bottom: 8),
             child: Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.57,
+                maxWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.57,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -281,7 +298,10 @@ class _ChatScreenState extends State<ChatScreen> {
             backGroundColor: AppColors.primaryColor,
             child: Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.57,
+                maxWidth: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.57,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +329,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         CustomNetworkImage(
           imageUrl:
-              '${ApiConstants.imageBaseUrl}/$profileImage',
+          '${ApiConstants.imageBaseUrl}/$profileImage',
           height: 35,
           width: 35,
           boxShape: BoxShape.circle,
@@ -319,17 +339,57 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+
+  void onSendCallInvitationFinished(String code,
+      String message,
+      List<String> errorInvitees,) {
+    if (errorInvitees.isNotEmpty) {
+      String userIDs = "";
+      for (int index = 0; index < errorInvitees.length; index++) {
+        if (index >= 5) {
+          userIDs += '... ';
+          break;
+        }
+
+        var userID = errorInvitees.elementAt(index);
+        userIDs += userID + ' ';
+      }
+      if (userIDs.isNotEmpty) {
+        userIDs = userIDs.substring(0, userIDs.length - 1);
+      }
+
+      var message = 'User doesn\'t exist or is offline: $userIDs';
+      if (code.isNotEmpty) {
+        message += ', code: $code, message:$message';
+      }
+      ToastMessageHelper.showToastMessage(message);
+      // showToast(
+      //   message,
+      //   position: StyledToastPosition.top,
+      //   context: context,
+      // );
+    } else if (code.isNotEmpty) {
+      ToastMessageHelper.showToastMessage(message);
+      // showToast(
+      //   'code: $code, message:$message',
+      //   position: StyledToastPosition.top,
+      //   context: context,
+      // );
+
+    }
+  }
+
   //==================================> Gallery <===============================
   Future _pickImageFromGallery() async {
     final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
     setState(() {
       messageController.text = returnImage.path;
     });
   }
 
-  Widget firstMessage(){
+  Widget firstMessage() {
     return Column(
       children: [
         SizedBox(height: 10.h),
@@ -343,33 +403,34 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // sendCallButton({
-  //   required bool isVideoCall,
-  //   required String inviteUserId,
-  //   required String name,
-  //   void Function(String code, String message, List<String>)? onCallFinished,
-  // }){
-  //   return ZegoSendCallInvitationButton(
-  //     isVideoCall: isVideoCall,
-  //     invitees: [
-  //       ZegoUIKitUser(
-  //         id: inviteUserId,
-  //         name: name,
-  //       )
-  //     ],
-  //     resourceID: "zego_call",
-  //     icon: ButtonIcon(
-  //         icon: SvgPicture.asset(
-  //           isVideoCall ? AppIcons.videoCamera : AppIcons.phone,
-  //           color: AppColors.green_500,
-  //         )),
-  //     iconSize: const Size(30, 30),
-  //     buttonSize: const Size(40, 40),
-  //     onPressed: onCallFinished,
-  //   );
-  // }
+
+}
 
 
+sendCallButton({
+  required bool isVideoCall,
+  required String inviteUserId,
+  required String name,
+  void Function(String code, String message, List<String>)? onCallFinished,
+}) {
+  return ZegoSendCallInvitationButton(
+    isVideoCall: isVideoCall,
+    invitees: [
+      ZegoUIKitUser(
+        id: inviteUserId,
+        name: name,
+      )
+    ],
+    resourceID: "zego_call",
+    icon: ButtonIcon(
+        icon: SvgPicture.asset(
+          isVideoCall ? AppIcons.videoCallIcons : AppIcons.call,
+          color: AppColors.gray767676,
+        )),
+    iconSize: const Size(30, 30),
+    buttonSize: const Size(40, 40),
+    onPressed: onCallFinished,
+  );
 }
 
 
