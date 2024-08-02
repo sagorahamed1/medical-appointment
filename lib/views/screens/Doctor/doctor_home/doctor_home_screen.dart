@@ -59,9 +59,9 @@ class DoctorHomeScreen extends StatelessWidget {
              ) ,
 
 
-              ///=======================Categories and See All Text=============================>
+              ///=======================Recent Appointments and See All Text=============================>
               _SeeAll(AppString.recentAppointments, AppString.seeAll, () {
-                // Get.toNamed(AppRoutes.userCategoryScreen);
+                 Get.toNamed(AppRoutes.seeAllAppintmentScreen);
               }),
 
 

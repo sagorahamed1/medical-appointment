@@ -16,6 +16,7 @@ import '../views/screens/Doctor/doctor_details/doctor_details_screen.dart';
 import '../views/screens/Doctor/doctor_edit_details_prfile/doctor_edit_details_profile_screen.dart';
 import '../views/screens/Doctor/prescription_from/prescription_from_screen.dart';
 import '../views/screens/Doctor/review/review_screen.dart';
+import '../views/screens/Doctor/see_all_appointments/see_all_appintment_screen.dart';
 import '../views/screens/Doctor/wallet/wallet_screen.dart';
 import '../views/screens/Doctor/wallet/wallet_withraw_screen.dart';
 import '../views/screens/User/User_Appointments_Details/user_appointments_details_screen.dart';
@@ -90,6 +91,7 @@ class AppRoutes {
   static const String patientDetailsForRecordScreen = "/PatientDetailsForRecordScreen.dart";
   static const String addRecordsScreen = "/AddRecordsScreen.dart";
   static const String prescriptionFormScreen = "/PrescriptionFormScreen.dart";
+  static const String seeAllAppintmentScreen = "/SeeAllAppintmentScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -136,5 +138,6 @@ class AppRoutes {
         GetPage(name: patientDetailsForRecordScreen, page: () => PatientDetailsForRecordScreen()),
         GetPage(name: addRecordsScreen, page: () => AddRecordsScreen()),
         GetPage(name: prescriptionFormScreen, page: () => PrescriptionFormScreen()),
+        GetPage(name: seeAllAppintmentScreen, page: () => SeeAllAppintmentScreen()),
   ];
 }
