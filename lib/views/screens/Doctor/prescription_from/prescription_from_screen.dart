@@ -2,21 +2,25 @@ import 'dart:io';
 
 import 'package:doctor_appointment/controllers/doctor/send_prescription_controller.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
+import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
+import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:get/get.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:searchable_paginated_dropdown/searchable_paginated_dropdown.dart';
 
 import '../../../../models/doctor/doctor_see_details_model.dart';
 import '../../../widgets/pop_up_menu.dart';
@@ -29,30 +33,11 @@ class PrescriptionFormScreen extends StatefulWidget {
 class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _formKeyMedicine = GlobalKey<FormState>();
+  final pharmachiesFormKey = GlobalKey<FormState>();
   final List<Medication> _medications = [];
   DoctorSeeDetailsModel data = Get.arguments;
-  SendPrescriptionController sendPrescriptionController = Get.put(SendPrescriptionController());
-
-
-  List<String> pharmacies = [
-    'CVS Pharmacy',
-    'Walgreens',
-    'Rite Aid',
-    'Walmart Pharmacy',
-    'Kroger Pharmacy',
-    'Albertsons/Safeway Pharmacy',
-    'Costco Pharmacy',
-    'Publix Pharmacy',
-    'H-E-B Pharmacy',
-    'Hy-Vee Pharmacy'
-  ];
-
-  List<String> getSuggestions(String query) {
-    List<String> matches = [];
-    matches.addAll(pharmacies);
-    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
-    return matches;
-  }
+  SendPrescriptionController sendPrescriptionController =
+      Get.put(SendPrescriptionController());
 
   TextEditingController doctorNameCtrl = TextEditingController();
   TextEditingController contactInfoCtrl = TextEditingController();
@@ -60,6 +45,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
   TextEditingController patienAgeCtrl = TextEditingController();
   TextEditingController dateCtrl = TextEditingController();
   TextEditingController diagnosisCtrl = TextEditingController();
+  TextEditingController npiCtrl = TextEditingController();
   TextEditingController medicineNameCtrl = TextEditingController();
   TextEditingController dosageCtrl = TextEditingController();
   TextEditingController frequencyCtrl = TextEditingController();
@@ -108,11 +94,19 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
               CustomButton(
                   onpress: () async {
                     if (_formKey.currentState!.validate()) {
-                      await generatePDF();
-                      if (pathPDF.isNotEmpty) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PdfViewerScreen(pathPDF: pathPDF)));
-                        sendPrescriptionController.sendPrescription('${data.patientId?.id}','${data.patientDetailsId?.id}', pdfFile);
+                      if(!_medications.isEmpty){
+                        await generatePDF();
+                        if (pathPDF.isNotEmpty) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  PdfViewerScreen(pathPDF: pathPDF)));
+                          sendPrescriptionController.sendPrescription(
+                              '${data.patientId?.id}',
+                              '${data.patientDetailsId?.id}',
+                              pdfFile);
+                        }
+                      }else{
+                        ToastMessageHelper.showToastMessage("Please add medications");
                       }
                     }
                   },
@@ -139,28 +133,31 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
 
         ///=========================Contact Information===============<
 
-         Row(
+        Row(
           children: [
             const Text("Patient Name : "),
             Expanded(child: Text("${data.patientDetailsId?.fullName}"))
           ],
         ),
-         Row(
-          children: [const Text("Age : "), Expanded(child: Text("${data.patientDetailsId?.age}"))],
+        Row(
+          children: [
+            const Text("Age : "),
+            Expanded(child: Text("${data.patientDetailsId?.age}"))
+          ],
         ),
-         Row(
-          children: [const Text("Gender : "), Expanded(child: Text("${data.patientDetailsId?.gender}"))],
+        Row(
+          children: [
+            const Text("Gender : "),
+            Expanded(child: Text("${data.patientDetailsId?.gender}"))
+          ],
         ),
-         Row(
+        Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text("Problem : "),
-            Expanded(
-                child: Text(
-                    "${data.patientDetailsId?.description}"))
+            Expanded(child: Text("${data.patientDetailsId?.description}"))
           ],
         ),
-
 
         CustomText(
           text: "Pharmacy",
@@ -172,25 +169,95 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
 
         SizedBox(height: 16.h),
 
+        // CustomTextFieldWithoutBorder(
+        //     contenpaddingHorizontal: 20,
+        //     contenpaddingVertical: 0,
+        //     hintText: 'Pharmacy',
+        //     sufixicons: PopUpMenu(
+        //       items: pharmacies,
+        //       selectedItem: diagnosisCtrl.text,
+        //       onTap: (int index) {
+        //         setState(() {
+        //           diagnosisCtrl.text = pharmacies[index];
+        //         });
+        //       },
+        //     ),
+        //     validator: (value) {
+        //       if (value!.isEmpty) return 'Please enter diagnosis';
+        //       return null;
+        //     },
+        //     controller: diagnosisCtrl),
+
+        
+        
+        CustomTextFieldWithoutBorder(
+          contenpaddingHorizontal: 20,
+          contenpaddingVertical: 0,
+          hintText: 'Search Pharmacy',
+          sufixicons: Padding(
+            padding:  EdgeInsets.all(16.r),
+            child: SvgPicture.asset(AppIcons.search),
+          ),
+          onChanged: (value) {
+            sendPrescriptionController.searchPharmacies(value);
+            sendPrescriptionController.isSuggestions(true);
+          },
+          validator: (value) {
+            if (value!.isEmpty) return 'Please enter diagnosis';
+            return null;
+          },
+          controller: diagnosisCtrl,
+        ),
+
+        Obx(() => sendPrescriptionController.suggestions.isEmpty || !sendPrescriptionController.isSuggestions.value
+            ? const SizedBox()
+            : Container(
+          height: sendPrescriptionController.suggestions.length >= 6 ? 200.h : (40 * sendPrescriptionController.suggestions.length).toDouble().h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.r),
+            color: Colors.white,
+            border: const Border(
+              bottom: BorderSide( color: Colors.black, width: 0.5),
+              left: BorderSide( color: Colors.black, width: 0.5),
+              right: BorderSide( color: Colors.black, width: 0.5),
+            ),
+          ),
+          child: ListView.builder(
+            itemCount: sendPrescriptionController.suggestions.length,
+            itemBuilder: (context, index) {
+              var pharmacy = sendPrescriptionController.suggestions[index];
+              return GestureDetector(
+                onTap: () {
+                  diagnosisCtrl.text = pharmacy;
+                  sendPrescriptionController.isSuggestions(false);
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6.h),
+                  child: CustomText(
+                    text: pharmacy,
+                    textAlign: TextAlign.start,
+                    left: 12.w,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        ),
+
+        SizedBox(height: 16.h),
 
         CustomTextFieldWithoutBorder(
             contenpaddingHorizontal: 20,
             contenpaddingVertical: 0,
-            hintText: 'Pharmacy',
-            sufixicons: PopUpMenu(
-              items: pharmacies,
-              selectedItem: diagnosisCtrl.text,
-              onTap: (int index) {
-                setState(() {
-                  diagnosisCtrl.text = pharmacies[index];
-                });
-              },
-            ),
+            hintText: 'NPI number',
             validator: (value) {
-              if (value!.isEmpty) return 'Please enter diagnosis';
+              if (value!.isEmpty) return 'Please enter NPI';
               return null;
             },
-            controller: diagnosisCtrl),
+            controller: npiCtrl),
+
+
       ],
     );
   }
@@ -206,7 +273,6 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
           top: 20.h,
           color: AppColors.primaryColor,
         ),
-
         ..._medications.map((medication) {
           int index = _medications.indexOf(medication);
           return Row(
@@ -314,11 +380,9 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
             ],
           ),
         ),
-
         SizedBox(
           height: 10.h,
         ),
-
         Align(
           alignment: Alignment.centerRight,
           child: GestureDetector(
@@ -403,7 +467,7 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
     final headerStyle =
         pw.TextStyle(fontSize: 27.h, fontWeight: pw.FontWeight.bold);
     final mediuamStyle = pw.TextStyle(fontSize: 22.h);
-    final PdfColor containerColor = const PdfColor.fromInt(0xFF193664);
+    const PdfColor containerColor = PdfColor.fromInt(0xFF193664);
 
     pdf.addPage(
       pw.Page(
@@ -415,9 +479,9 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
               ///================topic Name================>
               pw.Text('Prescription', style: headerStyle1),
 
-              pw.SizedBox(height: 16),
+              pw.SizedBox(height: 12),
               pw.Container(
-                  height: 16, width: double.infinity, color: containerColor),
+                  height: 4, width: double.infinity, color: containerColor),
 
               ///===================Prescription No==========>
               pw.Column(children: [
@@ -430,17 +494,18 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
 
               ///===================Prescription Date==========>
               pw.Column(children: [
-                pw.SizedBox(height: 10),
+                pw.SizedBox(height: 8),
                 pw.Row(children: [
                   pw.Text('Prescription Date: ', style: mediuamStyle),
-                  pw.Text(TimeFormatHelper.formatDate(data.date!), style: mediuamStyle),
+                  pw.Text(TimeFormatHelper.formatDate(data.date!),
+                      style: mediuamStyle),
                 ])
               ]),
 
-              pw.SizedBox(height: 20),
-
-              pw.Container(
-                  height: 15, width: double.infinity, color: PdfColors.amber),
+              // pw.SizedBox(height: 20),
+              //
+              // pw.Container(
+              //     height: 15, width: double.infinity, color: PdfColors.amber),
               pw.SizedBox(height: 8),
 
               ///====================Patient Information============>
@@ -460,14 +525,16 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                       child: pw.Column(children: [
                         pw.Row(children: [
                           pw.Text('Name: ', style: mediuamStyle),
-                          pw.Text('${data.patientDetailsId?.fullName}', style: mediuamStyle),
+                          pw.Text('${data.patientDetailsId?.fullName}',
+                              style: mediuamStyle),
                         ])
                       ]),
                     ),
                     pw.Column(children: [
                       pw.Row(children: [
                         pw.Text('Age: ', style: mediuamStyle),
-                        pw.Text('${data.patientDetailsId?.age} Years', style: mediuamStyle),
+                        pw.Text('${data.patientDetailsId?.age} Years',
+                            style: mediuamStyle),
                       ])
                     ]),
                   ]),
@@ -480,7 +547,8 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                       pw.SizedBox(height: 20),
                       pw.Row(children: [
                         pw.Text('Gender: ', style: mediuamStyle),
-                        pw.Text('${data.patientDetailsId?.gender}', style: mediuamStyle),
+                        pw.Text('${data.patientDetailsId?.gender}',
+                            style: mediuamStyle),
                       ])
                     ]),
                   ]),
@@ -492,26 +560,28 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                   children: [
                     pw.Text('Problem: ', style: mediuamStyle),
                     pw.Expanded(
-                      child: pw.Text(
-                          '${data.patientDetailsId?.description}',
-                          style: mediuamStyle,
-                          maxLines: 10),
+                      child: pw.Text('${data.patientDetailsId?.description}',
+                          style: mediuamStyle, maxLines: 10),
                     )
                   ]),
 
-              pw.SizedBox(height: 12),
+              pw.SizedBox(height: 8),
 
               pw.Container(
-                  height: 15, width: double.infinity, color: PdfColors.amber),
+                  height: 3, width: double.infinity, color: PdfColors.amber),
 
-              pw.SizedBox(height: 12),
+              pw.SizedBox(height: 8),
 
               ///====================List of Prescribed Medications============>
+              // pw.Align(
+              //     alignment: pw.Alignment.centerLeft,
+              //     child: pw.Text('List of Prescribed Medications',
+              //         style: headerStyle)),
               pw.Align(
-                  alignment: pw.Alignment.centerLeft,
-                  child: pw.Text('List of Prescribed Medications',
-                      style: headerStyle)),
-              pw.SizedBox(height: 12),
+                alignment: pw.Alignment.centerLeft,
+                child: pw. Text('Rx', style: headerStyle1)
+              ),
+              pw.SizedBox(height: 8),
 
               pw.Table.fromTextArray(
                 context: context,
@@ -539,21 +609,38 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                 headerHeight: 40,
               ),
 
-              ///==============Diagnosis===============>
+              ///==============Instructions===============>
+              pw.Column(children: [
+                pw.SizedBox(height: 10),
+                  pw.SizedBox(
+                    child:   pw.Row(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                      pw.Text('Instructions: ', style: mediuamStyle),
+                      pw.SizedBox(
+                        width: 265,
+                        child: pw.Text(instrction, style: mediuamStyle,maxLines: 5),
+                      )
+                    ])
+                  )
+              ]),
+
+
+              ///==============Pharmacy===============>
               pw.Column(children: [
                 pw.SizedBox(height: 10),
                 pw.Row(children: [
-                  pw.Text('Diagnosis: ', style: mediuamStyle),
+                  pw.Text('Pharmacy: ', style: mediuamStyle),
                   pw.Text('$diagnosis', style: mediuamStyle),
                 ])
               ]),
 
-              ///==============Instructions===============>
+              ///==============NPI===============>
               pw.Column(children: [
                 pw.SizedBox(height: 10),
                 pw.Row(children: [
-                  pw.Text('Instructions: ', style: mediuamStyle),
-                  pw.Text('$instrction', style: mediuamStyle),
+                  pw.Text('NPI Number: ', style: mediuamStyle),
+                  pw.Text(npiCtrl.text, style: mediuamStyle),
                 ])
               ]),
 
@@ -562,11 +649,12 @@ class PrescriptionFormScreenState extends State<PrescriptionFormScreen> {
                 pw.SizedBox(height: 10),
                 pw.Row(children: [
                   pw.Text('Doctor Signature: ', style: mediuamStyle),
-                  pw.Text('${data.doctorId?.firstName} ${data.doctorId?.lastName}', style: mediuamStyle),
+                  pw.Text(
+                      '${data.doctorId?.firstName} ${data.doctorId?.lastName}',
+                      style: mediuamStyle),
                 ])
               ]),
               pw.SizedBox(height: 12),
-
             ],
           ),
         ),
@@ -603,52 +691,52 @@ class PdfViewerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(leading: const SizedBox(),),
-      body: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onTap: (){
-                Get.offAllNamed(AppRoutes.doctorBottomNavBar);
-              },
-              child: Container(
-                margin: EdgeInsets.only(left: 20.w),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomText(text: "Go to Home Page",color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-          pathPDF.isNotEmpty
-              ? Center(
-            child: SizedBox(
-              height: 700.h,
-              width: 400.w,
-              child: PDFView(
-                fitEachPage: true,
-                filePath: pathPDF,
-                enableSwipe: true,
-                swipeHorizontal: true,
-                autoSpacing: false,
-                pageFling: false,
-                onError: (error) {
-                  print(error.toString());
+      resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          leading: const SizedBox(),
+        ),
+        body: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: () {
+                  Get.offAllNamed(AppRoutes.doctorBottomNavBar);
                 },
+                child: Container(
+                  margin: EdgeInsets.only(left: 20.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(16.r),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomText(
+                        text: "Go to Home Page", color: Colors.white),
+                  ),
+                ),
               ),
             ),
-          )
-              : const Text("Pdf not found"),
-
-
-
-        ],
-      )
-    );
+            pathPDF.isNotEmpty
+                ? Center(
+                    child: SizedBox(
+                      height: 600.h,
+                      width: 600.w,
+                      child: PDFView(
+                        fitEachPage: true,
+                        filePath: pathPDF,
+                        enableSwipe: true,
+                        swipeHorizontal: true,
+                        autoSpacing: false,
+                        pageFling: false,
+                        onError: (error) {
+                          print(error.toString());
+                        },
+                      ),
+                    ),
+                  )
+                : const Text("Pdf not found"),
+          ],
+        ));
   }
 }

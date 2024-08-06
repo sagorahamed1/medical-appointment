@@ -28,6 +28,7 @@ class ProfileControler extends GetxController{
     if(response.statusCode == 200){
       var responseData = response.body;
       profileInfo.value = ProfileModel.fromJson(responseData['data']['attributes']);
+      await PrefsHelper.setString(AppConstants.userName, "${responseData['data']['attributes']['firstName']} responseData['data']['attributes']['lastName']");
       print("get succussful");
       profileLoading(false);
       setRxRequestStatus(Status.completed);
