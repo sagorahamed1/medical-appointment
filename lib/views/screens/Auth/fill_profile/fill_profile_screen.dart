@@ -242,7 +242,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                 SizedBox(height: 48.h),
                 // const Spacer(),
                 CustomButton(
-                   loading: _authController.fillProfileLoading.value,
+                   // loading: _authController.fillProfileLoading.value,
                     onpress: () {
                      if(_formKey.currentState!.validate()){
                        _authController.fillProfileOrUpDate(selectedIMage);

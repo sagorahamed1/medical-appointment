@@ -25,7 +25,7 @@ class _CategorysectionState extends State<Categorysection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 110.h,
+      height: 130.h,
       child: Obx(
         () => ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -70,7 +70,7 @@ class CategoryCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(13.r),
+            padding: EdgeInsets.all(10.r),
             child: Container(
               decoration: BoxDecoration(
                   shape: BoxShape.circle,

@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 
 import '../../../../controllers/doctor/doctor_home_controller.dart';
 import '../../../../controllers/messaging/chat_list_controller.dart';
-import '../../../../helpers/newwork_connection.dart';
+import '../../../../helpers/network_connection.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
@@ -30,6 +30,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
   TabController? _tabController;
 
   final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
+  final NetworkController networkController = Get.put(NetworkController());
   final ChatListController chatController = Get.put(ChatListController());
   final ScrollController _scrollController = ScrollController();
 

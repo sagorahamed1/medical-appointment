@@ -10,7 +10,7 @@ class SocketServices {
   SocketServices._internal();
 
   static final SocketServices _socketApi = SocketServices._internal();
-  static IO.Socket socket = IO.io('http://192.168.10.46:3000',
+  static IO.Socket socket = IO.io('http://192.168.10.149:3000',
       IO.OptionBuilder().setTransports(['websocket']).build());
 
   static void init() {

@@ -3,11 +3,13 @@ import 'package:doctor_appointment/models/user/cetegory_model.dart';
 import 'package:doctor_appointment/models/user/doctor_details_model.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
+import '../../models/doctor/emergeny_doctor_model.dart';
 import '../../models/user/doctor_data_models.dart';
 
 
@@ -23,25 +25,18 @@ class HomeController extends GetxController{
     var headers = {
       'Content-Type': 'application/json'
     };
-
     cetegoryLoading(true);
     var response = await ApiClient.getData(ApiConstants.category,headers: headers);
-
     if(response.statusCode == 200){
       var responseData = response.body;
       cetegoryLists.value = List<CetegoryModel>.from(responseData['data']['attributes'].map((x)=> CetegoryModel.fromJson(x)));
-
-
       // for(var data in cetegoryLists.value){
       //  cetegoryNames.add(data.name);
       // }
       cetegoryNames.clear();
       cetegoryLists.forEach((x) {
         if (x.name != null) {
-          cetegoryNames.add(x.name!);
-        }
-      });
-
+          cetegoryNames.add(x.name!);}});
       print("get succussful");
       cetegoryLoading(false);
     }else if(response.statusCode == 404){
@@ -83,4 +78,24 @@ class HomeController extends GetxController{
       doctorDetailsLoading(false);
     }
   }
+
+
+
+
+  ///===========Get doctor by cetegory==============>
+  RxList <EmergenyDoctorModel> emergencyDoctors =<EmergenyDoctorModel> [].obs;
+  RxBool emergencyDoctorLoading = false.obs;
+  getEmergencyDoctor()async{
+    emergencyDoctorLoading(true);
+    var response = await ApiClient.getData('${ApiConstants.emergencyDoctors}?page=1');
+    if(response.statusCode == 200){
+      var responseData = response.body;
+      emergencyDoctors.value = List<EmergenyDoctorModel>.from(responseData['data']['attributes'].map((x)=> EmergenyDoctorModel.fromJson(x)));
+      print("get succussful");
+      emergencyDoctorLoading(false);
+    }else if(response.statusCode == 404){
+      emergencyDoctorLoading(false);
+    }
+  }
+
 }

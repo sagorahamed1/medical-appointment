@@ -2,13 +2,13 @@ import 'package:doctor_appointment/views/screens/message/message/message_screen.
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import '../../../../helpers/network_connection.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../profile/profile/profile_screen.dart';
 import '../doctor_appointments/doctor_appointments_screen.dart';
 import '../doctor_home/doctor_home_screen.dart';
-
-
 
 
 class DoctorBottomNavBar extends StatefulWidget {
@@ -20,7 +20,7 @@ class DoctorBottomNavBar extends StatefulWidget {
 
 class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
   int _selectedIndex = 0;
-
+  final NetworkController networkController = Get.put(NetworkController());
 
   static final List _widgetOptions = [
     DoctorHomeScreen(),
@@ -28,7 +28,6 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
     MessageScreen(),
     ProfileScreen(),
   ];
-
 
   void _onItemTapped(int index) {
     setState(() {
@@ -39,18 +38,36 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: _widgetOptions.elementAt(_selectedIndex),
-
-      ///------------------------bottom nav bar----------------------------?>
+      body: Column(
+        children: [
+          Expanded(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+          // এখানে ইন্টারনেট চেক করে টেক্সট দেখানো হবে
+          Obx(() {
+            return networkController.isConnection.value
+                ? SizedBox.shrink()
+                : Container(
+              color: Colors.red, // ব্যাকগ্রাউন্ডের জন্য কালার
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "No Internet Connection",
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            );
+          }),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           ///---------------home---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                AppIcons.homeicon,
-                color: Colors.white
+              AppIcons.homeicon,
+              color: Colors.white,
             ),
             label: 'Home',
           ),
@@ -58,8 +75,8 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           ///---------------Appointments---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                AppIcons.appointments,
-                color: Colors.white
+              AppIcons.appointments,
+              color: Colors.white,
             ),
             label: 'Appointments',
           ),
@@ -67,8 +84,8 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           ///---------------Message---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                AppIcons.messageIcon,
-                color: Colors.white
+              AppIcons.messageIcon,
+              color: Colors.white,
             ),
             label: 'Message',
           ),
@@ -76,14 +93,13 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           ///---------------Profile---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                AppIcons.profileIcon,
-                color: Colors.white
+              AppIcons.profileIcon,
+              color: Colors.white,
             ),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-
         onTap: _onItemTapped,
         showUnselectedLabels: true,
         iconSize: 20.h,
@@ -91,7 +107,6 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
         selectedFontSize: 14.h,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
-
       ),
     );
   }

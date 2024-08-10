@@ -35,8 +35,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   Widget build(BuildContext context) {
     // _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
+
     _profileControler.getProfile();
     _homeController.getCetegory();
+    _homeController.getEmergencyDoctor();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -111,6 +113,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                       selectedIndex = index;
                                       categoryName = _homeController.cetegoryLists[selectedIndex].name ?? '';
                                       _homeController.doctorLists.clear();
+                                      print('---------------------------------->?');
                                       _homeController.getDoctorByCetegory(cetegory: categoryName, date: null);
                                     });
                                   },
@@ -211,17 +214,18 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   height: 185.h,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 10,
+                    itemCount: _homeController.emergencyDoctors.length,
                     itemBuilder: (context, index) {
+                      var emergencyDoctors = _homeController.emergencyDoctors[index];
                       return Padding(
                         padding: EdgeInsets.only(
                             left: index == 0 ? 19.w : 8.w,
-                            right: index == 10 - 1 ? 20.w : 0.w),
-                        child: const AvailableDoctorsCard(
+                            right: index == _homeController.emergencyDoctors.length - 1 ? 20.w : 0.w),
+                        child:  AvailableDoctorsCard(
                           rating: "4.0",
-                          doctorName: "Sagor Ahamed",
-                          specialist: "Cardiologist",
-                          onlineConsultation: r'$20',
+                          doctorName: "${emergencyDoctors.firstName} ${emergencyDoctors.lastName}",
+                          specialist: "${emergencyDoctors.lastName}",
+                          onlineConsultation: '${emergencyDoctors.lastName}',
                           totalConsultaion: '12',
                           imageHeight: 100,
                           leftBtnText: AppString.message,
