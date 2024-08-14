@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment/models/chat_model.dart';
 import 'package:doctor_appointment/services/api_client.dart';
@@ -8,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
+import '../../helpers/prefs_helper.dart';
 import '../../services/socket_services.dart';
+import '../../utils/app_constant.dart';
 
 class ChatController extends GetxController {
   late ScrollController scrollController;
@@ -36,6 +39,7 @@ class ChatController extends GetxController {
     super.onInit();
   }
   RxList<ChatModel> chatMessages = <ChatModel>[].obs;
+  RxString receiverName = ''.obs;
 
   void listenMessage(String chatId) async {
     try {
@@ -103,22 +107,46 @@ class ChatController extends GetxController {
 
 
 
-  ///  scroll bottom and end
-  scrollToEnd() {
-    Timer(const Duration(milliseconds: 100), () {
-      if (scrollController.hasClients) {
-        scrollController.animateTo(scrollController.position.minScrollExtent,
-            duration: Duration(milliseconds: 100), curve: Curves.decelerate);
-      }
-    });
-  }
+  // ///  scroll bottom and end
+  // scrollToEnd() {
+  //   Timer(const Duration(milliseconds: 100), () {
+  //     if (scrollController.hasClients) {
+  //       scrollController.animateTo(scrollController.position.minScrollExtent,
+  //           duration: Duration(milliseconds: 100), curve: Curves.decelerate);
+  //     }
+  //   });
+  // }
+  //
+  // ///  scroll fast time
+  // scrollTime() async {
+  //   SchedulerBinding.instance.addPostFrameCallback((_) async {
+  //     scrollController.jumpTo(
+  //       scrollController.position.minScrollExtent,
+  //     );
+  //   });
+  // }
 
-  ///  scroll fast time
-  scrollTime() async {
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      scrollController.jumpTo(
-        scrollController.position.minScrollExtent,
-      );
-    });
+  sendMessageWithImage(File? image, String receiverId, String chatId)async{
+    String token = await PrefsHelper.getString(AppConstants.bearerToken);
+    List<MultipartBody> multipartBody =
+    image == null ? [] : [MultipartBody("image", image)];
+    var body = {
+      'messageType' : 'image',
+      'message' : '',
+      'receiverId' : '$receiverId',
+      'chatId' : '$chatId',
+    };
+    var headers = {
+      'Authorization': 'Bearer $token'
+    };
+
+
+    var response = await ApiClient.postMultipartData(
+        ApiConstants.senMessageWithFileEndPoint, body,
+        multipartBody: multipartBody, headers: headers);
+
+    if(response.statusCode == 200 || response.statusCode == 201){
+      print("=================message send successful");
+    }
   }
 }

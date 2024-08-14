@@ -56,8 +56,8 @@ class ChatListController extends GetxController {
 
   ///====Create Chat list=====>
   createChat({String? receiverId, appointmentId}) async {
-    var body = {"receiverId": "$receiverId", "appointmentId": "$appointmentId"};
 
+    var body = {"receiverId": "$receiverId", "appointmentId": "$appointmentId"};
     var currentUserId = await PrefsHelper.getString(AppConstants.userId);
     var response = await ApiClient.testPostData(
         ApiConstants.createChatList, jsonEncode(body));

@@ -75,7 +75,6 @@ class _MessageScreenState extends State<MessageScreen> {
                               var participants = chatListController.chatUsers[index].participants;
 
                               if(participants?[0].id != null || participants?[1].id != null){
-
                                 for(var x in participants!){
                                   if(x.id != currentUserId){
                                     receiverId = '${x.id}';
@@ -92,7 +91,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                     onTap: () {
                                       Get.toNamed(AppRoutes.chatScreen, parameters: {
                                         'id' : '${users.id}',
-                                        'receiverId' : receiverId
+                                        'receiverId' : receiverId,
                                       });
                                     },
                                     child: _messageCard(

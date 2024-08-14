@@ -163,12 +163,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                       child: AvailableDoctorsCard(
                                         image: '${doctorInfo.doctorId?.image?.publicFileUrl}',
                                         experience: "${doctorInfo.experience}",
-                                        rating: "{ing}",
+                                        rating: "${doctorInfo.doctorId?.rating}",
                                         clinicVisit:
                                             "\$${doctorInfo.clinicPrice}",
                                         doctorName:
                                             "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
-                                        totalConsultaion: "12",
+                                        totalConsultaion: "${doctorInfo.totalConsultation}",
                                         onlineConsultation:
                                             '\$${doctorInfo.onlineConsultationPrice}',
                                         specialist: "${doctorInfo.specialist}",

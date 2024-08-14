@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../helpers/network_connection.dart';
 import '../../../../helpers/toast_message_helper.dart';
 
 class UserBookScheduleScreen extends StatefulWidget {

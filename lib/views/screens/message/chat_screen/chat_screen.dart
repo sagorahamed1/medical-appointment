@@ -1,7 +1,13 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
+
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gallery_picker/gallery_picker.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -33,6 +39,9 @@ class _ChatScreenState extends State<ChatScreen> {
   int maxLine = 1;
   String? selectedImage;
   String currentUserId = '';
+  Uint8List? _image;
+  File? selectedIMage;
+
 
   @override
   void initState() {
@@ -42,6 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
     chatController.listenMessage('${Get.parameters['id']}');
     chatController.scrollController = _scrollController;
     chatController.getChatList(id: '${Get.parameters['id']}');
+
 
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {
@@ -73,13 +83,27 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: buildAppBar(),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
+          padding:
+              EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20.h),
               Expanded(child: buildMessageList()),
               SizedBox(height: 10.h),
+
+              _image != null
+                  ? Container(
+                margin: EdgeInsets.only(bottom: 15.h),
+                height: 150.h,
+                    width: 250.w,
+                    child: Image.memory(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                  ),
+                  )
+                  : const SizedBox(),
+              
               buildMessageInput()
             ],
           ),
@@ -91,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
   AppBar buildAppBar() {
     return AppBar(
       title: CustomText(
-        text: 'Sagor ahamed',
+        text: 'Sagor Ahamed',
         fontsize: 18.h,
         fontWeight: FontWeight.w600,
       ),
@@ -107,38 +131,48 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget buildCallButton({required bool isVideoCall}) {
     return currentUserId != null
         ? sendCallButton(
-      inviteUserId: '${Get.parameters['id']}',
-      name: '${Get.parameters['id']}',
-      isVideoCall: isVideoCall,
-      onCallFinished: onSendCallInvitationFinished,
-    )
+            inviteUserId: '${Get.parameters['id']}',
+            name: '${Get.parameters['id']}',
+            isVideoCall: isVideoCall,
+            onCallFinished: onSendCallInvitationFinished,
+          )
         : GestureDetector(
-      onTap: () {
-        // Navigate to call screen
-      },
-      child: SvgPicture.asset(
-        isVideoCall ? AppIcons.videoCallIcons : AppIcons.call,
-        height: 20.h,
-        width: 20.w,
-        fit: BoxFit.cover,
-      ),
-    );
+            onTap: () {
+              // Navigate to call screen
+            },
+            child: SvgPicture.asset(
+              isVideoCall ? AppIcons.videoCallIcons : AppIcons.call,
+              height: 20.h,
+              width: 20.w,
+              fit: BoxFit.cover,
+            ),
+          );
   }
 
   Widget buildMessageList() {
     return Obx(
-          () => ListView.builder(
+      () => ListView.builder(
         reverse: true,
         controller: _scrollController,
         dragStartBehavior: DragStartBehavior.down,
         itemCount: chatController.chatMessages.value.length,
         itemBuilder: (context, index) {
           var message = chatController.chatMessages[index];
-          return message.content?.message == 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl'
-              ? firstMessage()
+          return
+
+          ///===========if message == demo message true this is first message
+            message.content?.message == 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl'
+              ? firstMessage(
+                  '${message.senderId?.image?.publicFileUrl}',
+                  message.senderId?.id == currentUserId
+                      ? "${message.receiverId?.firstName} ${message.receiverId?.lastName}"
+                      : "${message.senderId?.firstName} ${message.senderId?.lastName}")
+            ///======this is all message without first message======>
               : message.senderId?.id == currentUserId
-              ? senderBubble(context, "${message.content?.message}", message.receiverId?.image?.publicFileUrl)
-              : receiverBubble(context, "${message.content?.message}", message.senderId?.image?.publicFileUrl);
+                  ? senderBubble(context, "${message.content?.message}",
+                      message.receiverId?.image?.publicFileUrl)
+                  : receiverBubble(context, "${message.content?.message}",
+                      message.senderId?.image?.publicFileUrl);
         },
       ),
     );
@@ -176,24 +210,31 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  ///===========camara  voice button====>
   Row buildMediaButtons() {
     return Row(
       children: [
-        SvgPicture.asset(AppIcons.camera, height: 20.h, width: 20.w, fit: BoxFit.cover),
-        SizedBox(width: 20.w),
-        SvgPicture.asset(AppIcons.voice, height: 20.h, width: 20.w, fit: BoxFit.cover),
+        GestureDetector(
+          onTap: (){
+            showImagePickerOption(context);
+          },
+          child: SvgPicture.asset(AppIcons.camera,
+              height: 20.h, width: 20.w, fit: BoxFit.cover),
+        ),
         SizedBox(width: 14.w),
       ],
     );
   }
-
+  ///===========attach file  like button====>
   Row buildActionButtons() {
     return Row(
       children: [
         SizedBox(width: 14.w),
-        SvgPicture.asset(AppIcons.attachFile, height: 20.h, width: 20.w, fit: BoxFit.cover),
+        SvgPicture.asset(AppIcons.attachFile,
+            height: 20.h, width: 20.w, fit: BoxFit.cover),
         SizedBox(width: 20.w),
-        SvgPicture.asset(AppIcons.like, height: 20.h, width: 20.w, fit: BoxFit.cover),
+        SvgPicture.asset(AppIcons.like,
+            height: 20.h, width: 20.w, fit: BoxFit.cover),
       ],
     );
   }
@@ -208,7 +249,8 @@ class _ChatScreenState extends State<ChatScreen> {
     messageController.clear();
   }
 
-  Widget receiverBubble(BuildContext context, String message, String? profileImage) {
+  Widget receiverBubble(
+      BuildContext context, String message, String? profileImage) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -227,13 +269,15 @@ class _ChatScreenState extends State<ChatScreen> {
             backGroundColor: Colors.white,
             margin: const EdgeInsets.only(top: 8, bottom: 8),
             child: Container(
-              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.57),
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.57),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     message ?? "",
-                    style: const TextStyle(color: AppColors.textColor5C5C5C, fontSize: 14),
+                    style: const TextStyle(
+                        color: AppColors.textColor5C5C5C, fontSize: 14),
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 5.h),
@@ -244,7 +288,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       Flexible(
                         child: Text(
                           '12:00 am',
-                          style: TextStyle(color: AppColors.textColor5C5C5C, fontSize: 12.sp),
+                          style: TextStyle(
+                              color: AppColors.textColor5C5C5C,
+                              fontSize: 12.sp),
                           textAlign: TextAlign.end,
                         ),
                       ),
@@ -259,7 +305,8 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget senderBubble(BuildContext context, String message, String? profileImage) {
+  Widget senderBubble(
+      BuildContext context, String message, String? profileImage) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -270,7 +317,8 @@ class _ChatScreenState extends State<ChatScreen> {
             margin: const EdgeInsets.only(top: 8, bottom: 8),
             backGroundColor: AppColors.primaryColor,
             child: Container(
-              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.57),
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.57),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -304,7 +352,8 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void onSendCallInvitationFinished(String code, String message, List<String> errorInvitees) {
+  void onSendCallInvitationFinished(
+      String code, String message, List<String> errorInvitees) {
     if (errorInvitees.isNotEmpty) {
       String userIDs = "";
       for (int index = 0; index < errorInvitees.length; index++) {
@@ -328,16 +377,29 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Widget firstMessage() {
+  Widget firstMessage(String image, name) {
     return Column(
       children: [
         SizedBox(height: 10.h),
-        SvgPicture.asset(AppIcons.appointments),
+        CustomNetworkImage(
+            boxShape: BoxShape.circle,
+            imageUrl: '${ApiConstants.imageBaseUrl}/$image',
+            height: 80.h,
+            width: 80.w),
         CustomText(
-          text: "Get started",
+          text: "$name",
           top: 10,
           bottom: 10,
         ),
+
+        CustomText(
+          text: "Started conversation with you",
+          top: 10,
+          bottom: 10,
+        ),
+
+
+        CustomText(text: '👋', fontsize: 40.h)
       ],
     );
   }
@@ -364,5 +426,137 @@ class _ChatScreenState extends State<ChatScreen> {
       buttonSize: const Size(40, 40),
       onPressed: onCallFinished,
     );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  //==================================> ShowImagePickerOption Function <===============================
+
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (builder) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 6.2,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        // _pickImageFromGallery();
+                        _pickImages();
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.image,
+                              size: 50.w,
+                            ),
+                            CustomText(text: 'Gallery')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _pickImageFromCamera();
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 50.w,
+                            ),
+                            CustomText(text: 'Camera')
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+
+
+  // //==================================> Gallery <===============================
+  // Future _pickImageFromGallery() async {
+  //   final returnImage =
+  //   await ImagePicker().pickImage(source: ImageSource.gallery);
+  //   if (returnImage == null) return;
+  //   setState(() {
+  //     selectedIMage = File(returnImage.path);
+  //     _image = File(returnImage.path).readAsBytesSync();
+  //   });
+  //   Get.back();
+  // }
+
+  List<MediaFile> selectedMedias = [];
+
+  void _pickImages() async {
+    List<MediaFile>? media = await GalleryPicker.pickMedia(
+        context: context,
+         initSelectedMedia: selectedMedias,
+        extraRecentMedia: selectedMedias,
+        startWithRecent: true,
+      singleMedia: true,
+      config: Config(
+        recents: "RECENTS",
+        gallery: "GALLERY",
+        lastMonth: "Last Month",
+        lastWeek: "Last Week",
+        tapPhotoSelect: "Tap photo to select",
+        selected: "Selected",
+        selectIcon: Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color.fromARGB(255, 0, 168, 132),
+          ),
+          child: const Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+    setState(() {
+      if(media != null){
+        selectedMedias += media;
+      }
+
+    });
+  }
+
+//==================================> Camera <===============================
+  Future _pickImageFromCamera() async {
+    final returnImage =
+    await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    // Get.back();
   }
 }

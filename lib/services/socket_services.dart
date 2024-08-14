@@ -33,7 +33,6 @@ class SocketServices {
 
   static Future<dynamic> emitWithAck(String event, dynamic body) async {
     Completer<dynamic> completer = Completer<dynamic>();
-
     socket.emitWithAck(event, body, ack: (data) {
       if (data != null) {
         completer.complete(data);
@@ -43,6 +42,7 @@ class SocketServices {
     });
     return completer.future;
   }
+
 
   static emit(String event, dynamic body) {
     if (body != null) {
