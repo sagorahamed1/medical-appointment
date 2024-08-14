@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../../controllers/messaging/chat_list_controller.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
@@ -28,8 +29,8 @@ class UserAppointmentsScreen extends StatefulWidget {
 class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  UserAppointmentsController appointmentsController =
-      Get.put(UserAppointmentsController());
+  UserAppointmentsController appointmentsController = Get.put(UserAppointmentsController());
+  final ChatListController chatController = Get.put(ChatListController());
 
   final ScrollController _scrollController = ScrollController();
 
@@ -131,8 +132,8 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                   appointmentsType: '${appointments.status}',
                                   date: appointments.date,
                                   time: '${appointments.timeSlot}',
-                                  leftBtnName: 'Cancel Appointment',
-                                  rightBtnName: 'See Details',
+                                  // leftBtnName: 'Cancel Appointment',
+                                  btnName: 'See Details',
                                   rightBtnOnTap: (){
                                     Get.toNamed(AppRoutes.userAppointmentsDetailsScreen, parameters: {
                                       'id' : "${appointments.id}"
@@ -184,7 +185,10 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                     });
                                   },
                                   rightBtnOnTap: () {
-                                    Get.toNamed(AppRoutes.userGiveReviewScreen);
+                                    chatController.createChat(
+                                        receiverId: appointments.doctorId?.id,
+                                        appointmentId: appointments.id
+                                    );
                                   },
                                 ),
                               );
@@ -222,6 +226,7 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                   date: appointments.date,
                                   time: '${appointments.timeSlot}',
                                   appointmentsType: '${appointments.status}',
+                                  btnName: 'See Details',
                                 ),
                               );
                             } else if (index >= appointmentsController.totalResult) {
@@ -239,6 +244,9 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
     );
   }
 }
+
+
+
 
 class AppointmentsCard extends StatelessWidget {
   final String? image;

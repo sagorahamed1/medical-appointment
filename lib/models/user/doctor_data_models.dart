@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-List<DoctorDataModel> doctorDataModelFromJson(String str) => List<DoctorDataModel>.from(json.decode(str).map((x) => DoctorDataModel.fromJson(x)));
+DoctorDataModel doctorDataModelFromJson(String str) => DoctorDataModel.fromJson(json.decode(str));
 
-String doctorDataModelToJson(List<DoctorDataModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String doctorDataModelToJson(DoctorDataModel data) => json.encode(data.toJson());
 
 class DoctorDataModel {
   final String? id;
@@ -23,6 +23,7 @@ class DoctorDataModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
+  final int? totalConsultation;
   final List<String>? timeSlots;
 
   DoctorDataModel({
@@ -40,6 +41,7 @@ class DoctorDataModel {
     this.createdAt,
     this.updatedAt,
     this.v,
+    this.totalConsultation,
     this.timeSlots,
   });
 
@@ -58,6 +60,7 @@ class DoctorDataModel {
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
+    totalConsultation: json["totalConsultation"],
     timeSlots: json["timeSlots"] == null ? [] : List<String>.from(json["timeSlots"]!.map((x) => x)),
   );
 
@@ -76,6 +79,7 @@ class DoctorDataModel {
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
+    "totalConsultation": totalConsultation,
     "timeSlots": timeSlots == null ? [] : List<dynamic>.from(timeSlots!.map((x) => x)),
   };
 }
@@ -86,6 +90,8 @@ class DoctorId {
   final String? lastName;
   final String? email;
   final String? password;
+  final String? rating;
+  final int? reviewCount;
   final bool? privacyPolicyAccepted;
   final bool? isAdmin;
   final bool? isProfileCompleted;
@@ -94,13 +100,12 @@ class DoctorId {
   final bool? isDeleted;
   final bool? isBlocked;
   final Image? image;
-  final String? role;
-  final String? oneTimeCode;
-  final int? v;
+  final dynamic insurance;
   final bool? isInsurance;
-  final String? rating;
-  final int? reviewCount;
-  final Image? insurance;
+  final String? role;
+  final dynamic oneTimeCode;
+  final int? earningAmount;
+  final int? v;
   final String? address;
   final String? gender;
   final String? phone;
@@ -111,6 +116,8 @@ class DoctorId {
     this.lastName,
     this.email,
     this.password,
+    this.rating,
+    this.reviewCount,
     this.privacyPolicyAccepted,
     this.isAdmin,
     this.isProfileCompleted,
@@ -119,13 +126,12 @@ class DoctorId {
     this.isDeleted,
     this.isBlocked,
     this.image,
+    this.insurance,
+    this.isInsurance,
     this.role,
     this.oneTimeCode,
+    this.earningAmount,
     this.v,
-    this.isInsurance,
-    this.rating,
-    this.reviewCount,
-    this.insurance,
     this.address,
     this.gender,
     this.phone,
@@ -137,6 +143,8 @@ class DoctorId {
     lastName: json["lastName"],
     email: json["email"],
     password: json["password"],
+    rating: json["rating"],
+    reviewCount: json["reviewCount"],
     privacyPolicyAccepted: json["privacyPolicyAccepted"],
     isAdmin: json["isAdmin"],
     isProfileCompleted: json["isProfileCompleted"],
@@ -145,13 +153,12 @@ class DoctorId {
     isDeleted: json["isDeleted"],
     isBlocked: json["isBlocked"],
     image: json["image"] == null ? null : Image.fromJson(json["image"]),
+    insurance: json["insurance"],
+    isInsurance: json["isInsurance"],
     role: json["role"],
     oneTimeCode: json["oneTimeCode"],
+    earningAmount: json["earningAmount"],
     v: json["__v"],
-    isInsurance: json["isInsurance"],
-    rating: json["rating"],
-    reviewCount: json["reviewCount"],
-    insurance: json["insurance"] == null ? null : Image.fromJson(json["insurance"]),
     address: json["address"],
     gender: json["gender"],
     phone: json["phone"],
@@ -163,6 +170,8 @@ class DoctorId {
     "lastName": lastName,
     "email": email,
     "password": password,
+    "rating": rating,
+    "reviewCount": reviewCount,
     "privacyPolicyAccepted": privacyPolicyAccepted,
     "isAdmin": isAdmin,
     "isProfileCompleted": isProfileCompleted,
@@ -171,13 +180,12 @@ class DoctorId {
     "isDeleted": isDeleted,
     "isBlocked": isBlocked,
     "image": image?.toJson(),
+    "insurance": insurance,
+    "isInsurance": isInsurance,
     "role": role,
     "oneTimeCode": oneTimeCode,
+    "earningAmount": earningAmount,
     "__v": v,
-    "isInsurance": isInsurance,
-    "rating": rating,
-    "reviewCount": reviewCount,
-    "insurance": insurance?.toJson(),
     "address": address,
     "gender": gender,
     "phone": phone,

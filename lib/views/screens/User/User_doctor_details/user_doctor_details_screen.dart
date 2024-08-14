@@ -72,9 +72,9 @@ class UserDoctorDetailsScreen extends StatelessWidget {
                     children: [
                       _ratingExperience(
                           '${doctorInfo.experience}', "Years experience", AppIcons.experienceIcon),
-                      _ratingExperience('${doctorInfo.doctorId}', "Rating", AppIcons.star),
+                      _ratingExperience('${doctorInfo.doctorId?.rating}', "Rating", AppIcons.star),
                       _ratingExperience(
-                          '2011', "Reviews", AppIcons.messageIcon),
+                          '${doctorInfo.doctorId?.reviewCount}', "Reviews", AppIcons.messageIcon),
                     ],
                   ),
 

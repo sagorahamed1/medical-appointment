@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import '../../../../helpers/network_connection.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../message/message/message_screen.dart';
@@ -18,6 +20,7 @@ class UserBottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
+  final NetworkController networkController = Get.put(NetworkController());
   int _selectedIndex = 0;
 
 
@@ -39,7 +42,29 @@ class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body:
+      Column(
+        children: [
+          Expanded(child:  _widgetOptions.elementAt(_selectedIndex) )
+         ,
+
+          Obx(() {
+            return networkController.isConnection.value
+                ? SizedBox.shrink()
+                : Container(
+              color: Colors.red,
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "No Internet Connection",
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            );
+          }),
+        ],
+      ),
+
 
       ///------------------------bottom nav bar----------------------------?>
       bottomNavigationBar: BottomNavigationBar(

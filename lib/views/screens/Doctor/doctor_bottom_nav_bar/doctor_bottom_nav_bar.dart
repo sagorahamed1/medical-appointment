@@ -43,12 +43,12 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           Expanded(
             child: _widgetOptions.elementAt(_selectedIndex),
           ),
-          // এখানে ইন্টারনেট চেক করে টেক্সট দেখানো হবে
+
           Obx(() {
             return networkController.isConnection.value
                 ? SizedBox.shrink()
                 : Container(
-              color: Colors.red, // ব্যাকগ্রাউন্ডের জন্য কালার
+              color: Colors.red,
               width: double.infinity,
               padding: EdgeInsets.all(10),
               child: Text(
