@@ -1,12 +1,3 @@
-// To parse this JSON data, do
-//
-//     final chatUserModel = chatUserModelFromJson(jsonString);
-
-import 'dart:convert';
-
-List<ChatUserModel> chatUserModelFromJson(String str) => List<ChatUserModel>.from(json.decode(str).map((x) => ChatUserModel.fromJson(x)));
-
-String chatUserModelToJson(List<ChatUserModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ChatUserModel {
   final String? id;

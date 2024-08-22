@@ -47,7 +47,7 @@ class ChatController extends GetxController {
         print("=========> Response Message: $data -------------------------");
         if (data != null) {
           ChatModel demoData = ChatModel.fromJson(data);
-          print("---------------demoData: ${demoData.senderId} \n ${demoData.runtimeType}");
+          // print("---------------demoData: ${demoData.senderId} \n ${demoData.runtimeType}");
           chatMessages.insert(0, demoData);
           // chatMessages.add(demoData);
           chatMessages.refresh();
@@ -132,7 +132,7 @@ class ChatController extends GetxController {
     image == null ? [] : [MultipartBody("image", image)];
     var body = {
       'messageType' : 'image',
-      'message' : '',
+      'message' : 'image',
       'receiverId' : '$receiverId',
       'chatId' : '$chatId',
     };

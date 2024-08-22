@@ -178,7 +178,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   //==================================> ShowImagePickerOption Function <===============================
-
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
         backgroundColor: Colors.white,

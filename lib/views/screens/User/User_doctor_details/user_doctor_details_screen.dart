@@ -23,6 +23,7 @@ class UserDoctorDetailsScreen extends StatelessWidget {
 
   final HomeController _homeController = Get.put(HomeController());
 
+
   @override
   Widget build(BuildContext context) {
     _homeController.getDoctorDetailsHomeScreen(id: '${Get.parameters['id']}');
@@ -142,9 +143,20 @@ class UserDoctorDetailsScreen extends StatelessWidget {
                   ///===========================Button=============================>
                   SizedBox(height: 20.h),
                   CustomButton(onpress: () {
-                    Get.toNamed(AppRoutes.userSelectPackageScreen, arguments: doctorInfo, parameters: {
-                      'id' : '${Get.parameters['id']}'
-                    });
+
+                    if(doctorInfo.doctorId?.isEmergency == true){
+                      Get.toNamed(
+                          AppRoutes.userPatientDetailsScreen,
+                          arguments: doctorInfo,
+                          parameters: {
+                            'id':
+                            '${doctorInfo.doctorId?.id}'
+                          });
+                    }else{
+                      Get.toNamed(AppRoutes.userSelectPackageScreen, arguments: doctorInfo, parameters: {
+                        'id' : '${Get.parameters['id']}'
+                      });
+                    }
                   }, title: AppString.bookAppointment)
                 ],
               );
