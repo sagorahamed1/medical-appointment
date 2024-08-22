@@ -1,10 +1,12 @@
+// To parse this JSON data, do
+//
+//     final chatModel = chatModelFromJson(jsonString);
+
 import 'dart:convert';
 
-List<ChatModel> chatModelFromJson(String str) =>
-    List<ChatModel>.from(json.decode(str).map((x) => ChatModel.fromJson(x)));
+List<ChatModel> chatModelFromJson(String str) => List<ChatModel>.from(json.decode(str).map((x) => ChatModel.fromJson(x)));
 
-String chatModelToJson(List<ChatModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String chatModelToJson(List<ChatModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ChatModel {
   final Content? content;
@@ -30,24 +32,14 @@ class ChatModel {
   });
 
   factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
-    content: json["content"] == null
-        ? null
-        : Content.fromJson(json["content"]),
+    content: json["content"] == null ? null : Content.fromJson(json["content"]),
     id: json["_id"],
     chatId: json["chatId"],
-    senderId: json["senderId"] == null
-        ? null
-        : ErId.fromJson(json["senderId"]),
-    receiverId: json["receiverId"] == null
-        ? null
-        : ErId.fromJson(json["receiverId"]),
+    senderId: json["senderId"] == null ? null : ErId.fromJson(json["senderId"]),
+    receiverId: json["receiverId"] == null ? null : ErId.fromJson(json["receiverId"]),
     file: json["file"] == null ? null : FileClass.fromJson(json["file"]),
-    createdAt: json["createdAt"] == null
-        ? null
-        : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null
-        ? null
-        : DateTime.parse(json["updatedAt"]),
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
   );
 
@@ -65,7 +57,7 @@ class ChatModel {
 }
 
 class Content {
-  final MessageType? messageType;
+  final String? messageType;
   final String? message;
 
   Content({
@@ -74,21 +66,15 @@ class Content {
   });
 
   factory Content.fromJson(Map<String, dynamic> json) => Content(
-    messageType: messageTypeValues.map[json["messageType"]],
+    messageType: json["messageType"],
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
-    "messageType": messageTypeValues.reverse[messageType],
+    "messageType": messageType,
     "message": message,
   };
 }
-
-enum MessageType { TEXT }
-
-final messageTypeValues = EnumValues({
-  "text": MessageType.TEXT,
-});
 
 class FileClass {
   final String? publicFileUrl;
@@ -114,7 +100,7 @@ class ErId {
   final String? id;
   final String? firstName;
   final String? lastName;
-  final String? email;
+  final Email? email;
   final String? rating;
   final int? reviewCount;
   final bool? privacyPolicyAccepted;
@@ -128,14 +114,13 @@ class ErId {
   final dynamic insurance;
   final bool? isInsurance;
   final String? role;
-  final String? oneTimeCode;
+  final dynamic oneTimeCode;
   final int? earningAmount;
   final int? v;
   final String? address;
-  final String? gender;
-  final String? phone;
   final String? dateOfBirth;
-  final String? rate;
+  final Phone? phone;
+  final String? gender;
 
   ErId({
     this.id,
@@ -159,17 +144,16 @@ class ErId {
     this.earningAmount,
     this.v,
     this.address,
-    this.gender,
-    this.phone,
     this.dateOfBirth,
-    this.rate,
+    this.phone,
+    this.gender,
   });
 
   factory ErId.fromJson(Map<String, dynamic> json) => ErId(
     id: json["_id"],
     firstName: json["firstName"],
     lastName: json["lastName"],
-    email: json["email"],
+    email: emailValues.map[json["email"]]!,
     rating: json["rating"],
     reviewCount: json["reviewCount"],
     privacyPolicyAccepted: json["privacyPolicyAccepted"],
@@ -179,7 +163,7 @@ class ErId {
     isVerified: json["isVerified"],
     isDeleted: json["isDeleted"],
     isBlocked: json["isBlocked"],
-    image: json["image"] == null ? null : FileClass.fromJson(json["image"]),
+    image: json["image"],
     insurance: json["insurance"],
     isInsurance: json["isInsurance"],
     role: json["role"],
@@ -187,17 +171,16 @@ class ErId {
     earningAmount: json["earningAmount"],
     v: json["__v"],
     address: json["address"],
-    gender: json["gender"],
-    phone: json["phone"],
     dateOfBirth: json["dateOfBirth"],
-    rate: json["rate"],
+    phone: phoneValues.map[json["phone"]]!,
+    gender: json["gender"],
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
     "firstName": firstName,
     "lastName": lastName,
-    "email": email,
+    "email": emailValues.reverse[email],
     "rating": rating,
     "reviewCount": reviewCount,
     "privacyPolicyAccepted": privacyPolicyAccepted,
@@ -215,12 +198,34 @@ class ErId {
     "earningAmount": earningAmount,
     "__v": v,
     "address": address,
-    "gender": gender,
-    "phone": phone,
     "dateOfBirth": dateOfBirth,
-    "rate": rate,
+    "phone": phoneValues.reverse[phone],
+    "gender": gender,
   };
 }
+
+
+enum Email {
+  DOCTOR2_GMAIL_COM,
+  PATIENT_GMAIL_COM
+}
+
+final emailValues = EnumValues({
+  "doctor2@gmail.com": Email.DOCTOR2_GMAIL_COM,
+  "patient@gmail.com": Email.PATIENT_GMAIL_COM
+});
+
+
+enum Phone {
+  EMPTY,
+  THE_01533887945
+}
+
+final phoneValues = EnumValues({
+  "": Phone.EMPTY,
+  "01533887945": Phone.THE_01533887945
+});
+
 
 class EnumValues<T> {
   Map<String, T> map;

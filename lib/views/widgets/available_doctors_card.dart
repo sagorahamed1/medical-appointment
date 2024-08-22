@@ -125,19 +125,24 @@ class AvailableDoctorsCard extends StatelessWidget {
       padding: EdgeInsets.only(top: 3.5.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(text: leftText, color: AppColors.textColor5C5C5C),
-           const Spacer(),
+          Flexible(
+            child: CustomText(
+              text: leftText,
+              color: AppColors.textColor5C5C5C,
+            ),
+          ),
+          // const Spacer(),
           Expanded(
             child: CustomText(
-                text: "$rightText",
-                color: AppColors.primaryColor,
-                textAlign: TextAlign.end,
-                fontWeight: FontWeight.w600),
+              text: rightText,
+              color: AppColors.primaryColor,
+              textAlign: TextAlign.end,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
-      ),
+      )
     );
   }
 }

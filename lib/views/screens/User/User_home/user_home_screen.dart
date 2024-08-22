@@ -55,15 +55,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-
-                       Obx((){
-                         var profileData = _profileControler.profileInfo.value;
-                         return TopAppBar(
-                           image: profileData.image?.publicFileUrl,
-                           name: '${profileData.firstName} ${profileData.lastName}',
-                         );
-                       } ),
+                      Obx(() {
+                        var profileData = _profileControler.profileInfo.value;
+                        return TopAppBar(
+                          image: profileData.image?.publicFileUrl,
+                          name:
+                              '${profileData.firstName} ${profileData.lastName}',
+                        );
+                      }),
 
                       CustomText(
                           text: AppString.enhancingTheHealthcareExperience,
@@ -111,10 +110,15 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                   onTap: () {
                                     setState(() {
                                       selectedIndex = index;
-                                      categoryName = _homeController.cetegoryLists[selectedIndex].name ?? '';
+                                      categoryName = _homeController
+                                              .cetegoryLists[selectedIndex]
+                                              .name ??
+                                          '';
                                       _homeController.doctorLists.clear();
-                                      print('---------------------------------->?');
-                                      _homeController.getDoctorByCetegory(cetegory: categoryName, date: null);
+                                      print(
+                                          '---------------------------------->?');
+                                      _homeController.getDoctorByCetegory(
+                                          cetegory: categoryName, date: null);
                                     });
                                   },
                                   categorIcon: category.image?.publicFileUrl,
@@ -161,14 +165,17 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                           left: index == 0 ? 19.w : 7.5.w,
                                           right: index == 4 - 1 ? 20.w : 0.w),
                                       child: AvailableDoctorsCard(
-                                        image: '${doctorInfo.doctorId?.image?.publicFileUrl}',
+                                        image:
+                                            '${doctorInfo.doctorId?.image?.publicFileUrl}',
                                         experience: "${doctorInfo.experience}",
-                                        rating: "${doctorInfo.doctorId?.rating}",
+                                        rating:
+                                            "${doctorInfo.doctorId?.rating}",
                                         clinicVisit:
                                             "\$${doctorInfo.clinicPrice}",
                                         doctorName:
                                             "${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}",
-                                        totalConsultaion: "${doctorInfo.totalConsultation}",
+                                        totalConsultaion:
+                                            "${doctorInfo.totalConsultation}",
                                         onlineConsultation:
                                             '\$${doctorInfo.onlineConsultationPrice}',
                                         specialist: "${doctorInfo.specialist}",
@@ -210,29 +217,61 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   }),
                 ),
 
-                SizedBox(
-                  height: 185.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _homeController.emergencyDoctors.length,
-                    itemBuilder: (context, index) {
-                      var emergencyDoctors = _homeController.emergencyDoctors[index];
-                      return Padding(
-                        padding: EdgeInsets.only(
-                            left: index == 0 ? 19.w : 8.w,
-                            right: index == _homeController.emergencyDoctors.length - 1 ? 20.w : 0.w),
-                        child:  AvailableDoctorsCard(
-                          rating: "4.0",
-                          doctorName: "${emergencyDoctors.firstName} ${emergencyDoctors.lastName}",
-                          specialist: "${emergencyDoctors.lastName}",
-                          onlineConsultation: '${emergencyDoctors.lastName}',
-                          totalConsultaion: '12',
-                          imageHeight: 100,
-                          leftBtnText: AppString.message,
-                          rightBtnText: AppString.videoCall,
-                        ),
-                      );
-                    },
+                Obx(
+                  () => SizedBox(
+                    height: 185.h,
+                    child: _homeController.emergencyDoctorLoading.value
+                        ? const Center(child: CustomLoader())
+                        : _homeController.emergencyDoctors.isEmpty
+                            ? SizedBox(
+                                height: 180.h,
+                                width: 200.w,
+                                child: Image.asset(AppImages.noDataImage))
+                            : ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _homeController.emergencyDoctors.value.length,
+                                itemBuilder: (context, index) {
+                                  var emergencyDoctors = _homeController.emergencyDoctors.value[index];
+                                  print('=====emergency doctors : $emergencyDoctors');
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                        left: index == 0 ? 19.w : 8.w,
+                                        right: index == _homeController.emergencyDoctors.length - 1 ? 20.w : 0.w),
+                                    child: AvailableDoctorsCard(
+                                      image: '${emergencyDoctors.doctorId?.image?.publicFileUrl}',
+                                      rating: "${emergencyDoctors.doctorId?.rating}",
+                                      doctorName:
+                                          "${emergencyDoctors.doctorId?.firstName} ${emergencyDoctors.doctorId?.lastName}",
+                                      specialist:
+                                          "${emergencyDoctors.specialist}",
+                                      onlineConsultation:
+                                          '${emergencyDoctors.onlineConsultationPrice}',
+                                      totalConsultaion: '${emergencyDoctors.totalConsultation}',
+                                      imageHeight: 100,
+                                      leftBtnText: AppString.seeDetails,
+                                      rightBtnText: AppString.bookAppointment,
+                                      leftBtnOntap: () {
+                                        Get.toNamed(
+                                            AppRoutes.userDoctorDetailsScreen,
+                                            arguments: emergencyDoctors,
+                                            parameters: {
+                                              'id':
+                                              '${emergencyDoctors.doctorId?.id}'
+                                            });
+                                      },
+                                      rightBtnOnTap: () {
+                                        Get.toNamed(
+                                            AppRoutes.userPatientDetailsScreen,
+                                            arguments: emergencyDoctors,
+                                            parameters: {
+                                              'id':
+                                              '${emergencyDoctors.doctorId?.id}'
+                                            });
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
                   ),
                 ),
 
