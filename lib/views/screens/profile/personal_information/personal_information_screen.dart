@@ -15,7 +15,8 @@ import 'Inner_widgets/top_profile_card_personal_info.dart';
 class PersonalInformationScreen extends StatelessWidget {
    PersonalInformationScreen({super.key});
 
-  final ProfileControler _profileControler = Get.put(ProfileControler());
+  final ProfileControler _profileControler = Get.find<ProfileControler>();
+
   @override
   Widget build(BuildContext context) {
     _profileControler.getProfile();
