@@ -100,98 +100,118 @@ class _ChatScreenState extends State<ChatScreen> {
                             child: pickedImages.isEmpty
                                 ? const SizedBox()
                                 : Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 8,
-                                      child: Container(
-                                          margin: const EdgeInsets.all(8),
-                                          height: 100,
-                                          width: 200,
-                                          child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20),
-                                              child: ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: pickedImages.length+1,
-                                                scrollDirection: Axis.horizontal,
-                                                itemBuilder: (context, index) {
-                                                  if(index == pickedImages.length){
-                                                    return GestureDetector(
-                                                      onTap: (){
-                                                        if(pickedImages.length <= 5){
-                                                          showImagePickerOption(context);
-                                                        }else{
-                                                          ToastMessageHelper.showToastMessage('You cannot select more than four pictures');
-                                                        }
+                              children: [
+                                Expanded(
+                                  flex: 8,
+                                  child: Container(
+                                    margin: const EdgeInsets.all(8),
+                                    height: 100,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: pickedImages.length + 1,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          if (index == pickedImages.length) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                if (pickedImages.length <= 5) {
+                                                  showImagePickerOption(context);
+                                                } else {
+                                                  ToastMessageHelper.showToastMessage(
+                                                      'You cannot select more than four pictures');
+                                                }
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.only(right: 20.w),
+                                                width: 80.w,
+                                                height: 151.h,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey[200],
+                                                  borderRadius: BorderRadius.circular(12),
+                                                ),
+                                                child: Icon(
+                                                  Icons.add,
+                                                  size: 40.w,
+                                                  color: AppColors.primaryColor,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            return Padding(
+                                              padding: EdgeInsets.only(right: 8.w),
+                                              child: Stack(
+                                                children: [
+                                                  Container(
+                                                    width: 120.w,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(12),
+                                                      image: DecorationImage(
+                                                        image: FileImage(pickedImages[index]),
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    top: 8.h,
+                                                    right: 8.w,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        pickedImages.removeAt(index);
                                                       },
                                                       child: Container(
-                                                        margin: EdgeInsets.only(right: 20.w),
-                                                        width: 80.w,
-                                                        height: 151.h,
                                                         decoration: BoxDecoration(
-                                                          color: Colors.grey[200],
-                                                          borderRadius: const BorderRadius.only(
-                                                            topLeft: Radius.circular(8),
+                                                          color: Colors.white,
+                                                          shape: BoxShape.circle,
+                                                          border: Border.all(
+                                                            color: AppColors.primaryColor,
                                                           ),
                                                         ),
                                                         child: Icon(
-                                                          Icons.add,
-                                                          size: 50.w,
+                                                          Icons.close,
                                                           color: AppColors.primaryColor,
+                                                          size: 18.w,
                                                         ),
                                                       ),
-
-                                                    );
-                                                  }else{
-                                                  return  Padding(
-                                                      padding:
-                                                      EdgeInsets.only(right: 8.w),
-                                                      child: Stack(
-                                                        children: [
-                                                          Container(
-                                                              width: 120.w,
-                                                              child: Image.file(
-                                                                  pickedImages[index],
-                                                                  fit: BoxFit.cover)),
-                                                          Positioned(
-                                                            top: 8.h,
-                                                            right: 8.w,
-                                                            child: GestureDetector(
-                                                              onTap: () {
-                                                                pickedImages.removeAt(index);
-                                                              },
-                                                              child: Container(
-                                                                  decoration: BoxDecoration(
-                                                                      color: Colors.white,
-                                                                      shape: BoxShape.circle,
-                                                                      border: Border.all(color: AppColors.primaryColor)),
-                                                                  child: const Icon(
-                                                                    Icons.close,
-                                                                    color: AppColors.primaryColor,
-                                                                  )),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                              )),
-                                        ),
-                                    ),
-
-                                    Expanded(
-                                      flex: 2,
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          chatController.sendMessageWithImage(pickedImages.isNotEmpty ? pickedImages.first : null, '${Get.parameters['receiverId']}', '${Get.parameters['id']}');
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
                                         },
-                                        child: Container(
-                                          width: 30.w,
-                                            child: Icon(Icons.send)),
                                       ),
-                                    )
-                                  ],
+                                    ),
+                                  ),
                                 ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 8.w),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      chatController.sendMessageWithImage(
+                                          pickedImages.isNotEmpty ? pickedImages.first : null,
+                                          '${Get.parameters['receiverId']}',
+                                          '${Get.parameters['id']}');
+                                      pickedImages.clear();
+                                    },
+                                    child: Container(
+                                      width: 50.w,
+                                      height: 50.h,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.primaryColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.send,
+                                        color: Colors.white,
+                                        size: 24.w,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           )
                         : buildMessageInput()
                   ],
@@ -416,9 +436,17 @@ class _ChatScreenState extends State<ChatScreen> {
       BuildContext context, String message, String? profileImage, ChatModel chatModel) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
 
 
+        chatModel.content?.messageType == 'image' ?
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomNetworkImage(
+              borderRadius: BorderRadius.circular(12.r),
+              imageUrl: '${ApiConstants.imageBaseUrl}${chatModel.file?.publicFileUrl}', height: 200.h, width: 200.w),
+        ) :
         Expanded(
           child: ChatBubble(
             clipper: ChatBubbleClipper5(type: BubbleType.sendBubble),
@@ -451,7 +479,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         SizedBox(width: 4.w),
         CustomNetworkImage(
-          imageUrl: '${ApiConstants.imageBaseUrl}/$profileImage',
+          imageUrl: '${ApiConstants.imageBaseUrl}$profileImage',
           height: 35,
           width: 35,
           boxShape: BoxShape.circle,

@@ -46,15 +46,18 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
 
           Obx(() {
             return networkController.isConnection.value
-                ? SizedBox.shrink()
-                : Container(
-              color: Colors.red,
-              width: double.infinity,
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "No Internet Connection",
-                style: TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
+                ? const SizedBox.shrink()
+                : Padding(
+              padding:  EdgeInsets.all(8.r),
+              child: Container(
+                color: AppColors.primaryColor,
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  "🚫  No Internet Connection",
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
               ),
             );
           }),
