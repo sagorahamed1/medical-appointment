@@ -14,7 +14,9 @@ import 'Inner_Widgets/pin_code_field.dart';
 class VeryfyEmailScreen extends StatelessWidget {
   VeryfyEmailScreen({super.key});
 
-  final AuthController _authController = Get.put(AuthController());
+
+  final AuthController _authController = Get.find<AuthController>();
+
 
   @override
   Widget build(BuildContext context) {

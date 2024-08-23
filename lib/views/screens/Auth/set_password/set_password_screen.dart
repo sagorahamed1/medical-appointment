@@ -19,7 +19,7 @@ class SetPasswordScreen extends StatelessWidget {
 
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController confirmPasswordCtrl = TextEditingController();
-  final AuthController _authController = Get.put(AuthController());
+  final AuthController _authController = Get.find<AuthController>();
 
   RxBool isObscure = true.obs;
   RxBool isObscureConfirmPassword = true.obs;

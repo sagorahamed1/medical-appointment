@@ -31,7 +31,7 @@ class _ContinueDoctorDetailsScreenState
   TextEditingController priceForClinicCtrl = TextEditingController();
   TextEditingController priceForOnlineCtrl = TextEditingController();
   TextEditingController priceForEmargenceCtrl = TextEditingController();
-  final AuthController _authController = Get.put(AuthController());
+  final AuthController _authController = Get.find<AuthController>();
   final HomeController _homeController = Get.put(HomeController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

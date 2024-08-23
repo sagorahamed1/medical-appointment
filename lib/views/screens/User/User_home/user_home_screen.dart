@@ -27,7 +27,7 @@ class UserHomeScreen extends StatefulWidget {
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
   final HomeController _homeController = Get.put(HomeController());
-  final ProfileControler _profileControler = Get.put(ProfileControler());
+  final ProfileControler _profileControler = Get.find<ProfileControler>();
 
   int selectedIndex = 0;
   String categoryName = '';
@@ -229,9 +229,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 child: Image.asset(AppImages.noDataImage))
                             : ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: _homeController.emergencyDoctors.value.length,
+                                itemCount: _homeController.emergencyDoctors.length,
                                 itemBuilder: (context, index) {
-                                  var emergencyDoctors = _homeController.emergencyDoctors.value[index];
+                                  var emergencyDoctors = _homeController.emergencyDoctors[index];
                                   print('=====emergency doctors : $emergencyDoctors');
                                   return Padding(
                                     padding: EdgeInsets.only(

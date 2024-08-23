@@ -28,7 +28,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
   TextEditingController confirmPasswordCtrl = TextEditingController();
-  final AuthController _authController = Get.put(AuthController());
+  final AuthController _authController = Get.find<AuthController>();
+
 
 
 
