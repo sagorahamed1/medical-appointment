@@ -3,12 +3,8 @@ import 'package:doctor_appointment/models/user/cetegory_model.dart';
 import 'package:doctor_appointment/models/user/doctor_details_model.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
-import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-
 import '../../models/doctor/emergeny_doctor_model.dart';
 import '../../models/user/doctor_data_models.dart';
 
@@ -83,11 +79,30 @@ class HomeController extends GetxController{
 
 
   ///===========Get doctor by cetegory==============>
+
+  RxInt page = 1.obs;
+  var totalPage = (-1);
+  var currectPage = (-1);
+  var totalResult = (-1);
+
+
+  void loadMore() {
+    if (totalPage > page.value) {
+      page.value += 1;
+      update();
+      getEmergencyDoctor();
+    }
+  }
+
+
   RxList <EmergenyDoctorModel> emergencyDoctors =<EmergenyDoctorModel> [].obs;
   RxBool emergencyDoctorLoading = false.obs;
   getEmergencyDoctor()async{
-    emergencyDoctorLoading(true);
-    var response = await ApiClient.getData('${ApiConstants.emergencyDoctors}?page=1');
+    if (page.value == 1) {
+      emergencyDoctorLoading(true);
+    }
+
+    var response = await ApiClient.getData('${ApiConstants.emergencyDoctors}?page=${page.value}');
     if(response.statusCode == 200){
       var responseData = response.body;
       emergencyDoctors.value = List<EmergenyDoctorModel>.from(responseData['data']['attributes'].map((x)=> EmergenyDoctorModel.fromJson(x)));
