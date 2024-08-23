@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final chatModel = chatModelFromJson(jsonString);
 
-import 'dart:convert';
-
-List<ChatModel> chatModelFromJson(String str) => List<ChatModel>.from(json.decode(str).map((x) => ChatModel.fromJson(x)));
-
-String chatModelToJson(List<ChatModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ChatModel {
   final Content? content;
@@ -100,7 +92,7 @@ class ErId {
   final String? id;
   final String? firstName;
   final String? lastName;
-  final Email? email;
+  final String? email;
   final String? rating;
   final int? reviewCount;
   final bool? privacyPolicyAccepted;
@@ -119,7 +111,7 @@ class ErId {
   final int? v;
   final String? address;
   final String? dateOfBirth;
-  final Phone? phone;
+  final String? phone;
   final String? gender;
 
   ErId({
@@ -153,7 +145,7 @@ class ErId {
     id: json["_id"],
     firstName: json["firstName"],
     lastName: json["lastName"],
-    email: emailValues.map[json["email"]]!,
+    email: json["email"],
     rating: json["rating"],
     reviewCount: json["reviewCount"],
     privacyPolicyAccepted: json["privacyPolicyAccepted"],
@@ -163,7 +155,7 @@ class ErId {
     isVerified: json["isVerified"],
     isDeleted: json["isDeleted"],
     isBlocked: json["isBlocked"],
-    image: json["image"],
+    image: json["image"] == null ? null : FileClass.fromJson(json["image"]),
     insurance: json["insurance"],
     isInsurance: json["isInsurance"],
     role: json["role"],
@@ -172,7 +164,7 @@ class ErId {
     v: json["__v"],
     address: json["address"],
     dateOfBirth: json["dateOfBirth"],
-    phone: phoneValues.map[json["phone"]]!,
+    phone: json["phone"],
     gender: json["gender"],
   );
 
@@ -180,7 +172,7 @@ class ErId {
     "_id": id,
     "firstName": firstName,
     "lastName": lastName,
-    "email": emailValues.reverse[email],
+    "email": email,
     "rating": rating,
     "reviewCount": reviewCount,
     "privacyPolicyAccepted": privacyPolicyAccepted,
@@ -199,42 +191,7 @@ class ErId {
     "__v": v,
     "address": address,
     "dateOfBirth": dateOfBirth,
-    "phone": phoneValues.reverse[phone],
+    "phone": phone,
     "gender": gender,
   };
-}
-
-
-enum Email {
-  DOCTOR2_GMAIL_COM,
-  PATIENT_GMAIL_COM
-}
-
-final emailValues = EnumValues({
-  "doctor2@gmail.com": Email.DOCTOR2_GMAIL_COM,
-  "patient@gmail.com": Email.PATIENT_GMAIL_COM
-});
-
-
-enum Phone {
-  EMPTY,
-  THE_01533887945
-}
-
-final phoneValues = EnumValues({
-  "": Phone.EMPTY,
-  "01533887945": Phone.THE_01533887945
-});
-
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
