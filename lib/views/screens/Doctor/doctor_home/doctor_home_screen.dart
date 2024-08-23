@@ -20,7 +20,7 @@ class DoctorHomeScreen extends StatelessWidget {
    DoctorHomeScreen({super.key});
 
   final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
-   final ProfileControler _profileControler = Get.put(ProfileControler());
+   final ProfileControler _profileControler = Get.find<ProfileControler>();
 
   @override
   Widget build(BuildContext context) {
