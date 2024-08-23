@@ -2,7 +2,7 @@
 
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
-import '../helpers/binding/requester_binding.dart';
+import '../helpers/binding/dependancy_injaction.dart';
 import '../views/screens/Auth/ContinueDoctorDetails/continue_doctor_details_screen.dart';
 import '../views/screens/Auth/fill_profile/fill_profile_screen.dart';
 import '../views/screens/Auth/forgot_password/forgot_password_screen.dart';
@@ -105,7 +105,7 @@ class AppRoutes {
         GetPage(name: signInScreen, page: () => SignInScreen()),
         GetPage(name: forgotPasswordScreen, page: () => ForgotPasswordScreen()),
         GetPage(name: setPasswordScreen, page: () => SetPasswordScreen()),
-        GetPage(name: userHomeScreen, page: () => UserHomeScreen(),binding:InitialRequesterScreenBindings()),
+        GetPage(name: userHomeScreen, page: () => UserHomeScreen()),
         GetPage(name: userBottomNavBar, page: () => UserBottomNavBar()),
         GetPage(name: notificationScreen, page: () => NotificationScreen()),
         GetPage(name: userSearchScreen, page: () => UserSearchScreen()),
@@ -121,8 +121,8 @@ class AppRoutes {
         GetPage(name: chatScreen, page: () => ChatScreen()),
         GetPage(name: audioCallScreen, page: () => AudioCallScreen()),
         GetPage(name: videoCallScreen, page: () => VideoCallScreen()),
-        GetPage(name: personalInformationScreen, page: () => PersonalInformationScreen(),binding:InitialRequesterScreenBindings()),
-        GetPage(name: editProfileScreen, page: () => EditProfileScreen(),binding:InitialRequesterScreenBindings()),
+        GetPage(name: personalInformationScreen, page: () => PersonalInformationScreen()),
+        GetPage(name: editProfileScreen, page: () => EditProfileScreen()),
         GetPage(name: settingScreen, page: () => SettingScreen()),
         GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),
         GetPage(name: allPrivacyPolicyScreen, page: () => AllPrivacyPolicyScreen()),

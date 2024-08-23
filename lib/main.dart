@@ -11,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
+import 'helpers/binding/dependancy_injaction.dart';
+import 'helpers/device_utils.dart';
 import 'helpers/network_connection.dart';
 import 'helpers/prefs_helper.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -30,6 +32,9 @@ void main() async{
       [ZegoUIKitSignalingPlugin()],
     );
 
+    DeviceUtils.lockDevicePortrait();
+    DependencyInjection di = DependencyInjection();
+    di.dependencies();
     runApp(MyApp(
       navigatorKey: navigatorKey,
       isLogged: isLogged,

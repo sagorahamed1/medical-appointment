@@ -7,6 +7,7 @@ import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,11 +19,11 @@ import '../../../widgets/custom_text.dart';
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
-  TextEditingController emailCtrl = TextEditingController();
-  TextEditingController passwordCtrl = TextEditingController();
-  final AuthController _authController = Get.put(AuthController());
+ final TextEditingController emailCtrl = TextEditingController(text: kDebugMode ? 'patient@gmail.com' : '',);
+ final TextEditingController passwordCtrl = TextEditingController(text: kDebugMode ? '1qazxsw2' : '');
+  final AuthController _authController = Get.find<AuthController>();
 
-  RxBool isObscure = true.obs;
+ final RxBool isObscure = true.obs;
 
   toggleIsObscure() {
     isObscure.value = !isObscure.value;
