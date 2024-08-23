@@ -1,9 +1,12 @@
+import 'package:doctor_appointment/controllers/notification_controller.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as TimeAgo;
 
+import '../../../models/notification_model.dart';
 import '../../../utils/app_dimentions.dart';
 import '../../../utils/app_icons.dart';
 import '../../../utils/app_strings.dart';
@@ -20,30 +23,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
 
 
+
   final ScrollController _scrollController = ScrollController();
+  NotificationController notificationController = Get.put(NotificationController());
 
   // @override
-  // void initState() {
-  //   super.initState();
-  //   _addScrollListener();
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
-  //
-  // void _addScrollListener() {
-  //   _scrollController.addListener(() {
-  //     if (_scrollController.position.pixels ==
-  //         _scrollController.position.maxScrollExtent) {
-  //       _notificationController.loadMore();
-  //       print("load more true");
-  //     }
-  //   });
-  // }
-  //
+  void initState() {
+    super.initState();
+    _addScrollListener();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        notificationController.loadMore();
+        print("load more true");
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,17 +70,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
             ///-----------------------notification------------------------>
 
-            Expanded(
-              child:
-              ListView.builder(
-                itemCount: 10,
-                itemBuilder : (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: _Notification('Your booking request has approved.' , DateTime.now()),
-                  );
-                },
-              ),
+            Obx((){
+
+              return  Expanded(
+                child:
+                ListView.builder(
+                  itemCount: notificationController.notifications.value.length,
+                  itemBuilder : (context, index) {
+                    var notification = notificationController.notifications.value[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: _Notification('${notification.message}' , notification.createdAt!),
+                    );
+                  },
+                ),
+              );
+            }
+
             ),
 
           ],

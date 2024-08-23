@@ -27,7 +27,7 @@ class UserHomeScreen extends StatefulWidget {
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
   final HomeController _homeController = Get.put(HomeController());
-  final ProfileControler _profileControler = Get.find<ProfileControler>();
+  final ProfileControler _profileControler = Get.put(ProfileControler());
 
   int selectedIndex = 0;
   String categoryName = '';

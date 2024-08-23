@@ -16,6 +16,7 @@ class PersonalInformationScreen extends StatelessWidget {
    PersonalInformationScreen({super.key});
 
   final ProfileControler _profileControler = Get.find<ProfileControler>();
+
   @override
   Widget build(BuildContext context) {
     _profileControler.getProfile();
