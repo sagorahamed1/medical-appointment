@@ -3,9 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../controllers/user/home_controller.dart';
+import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_dimentions.dart';
+import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/available_doctors_card.dart';
+import '../../../widgets/custom_loader.dart';
 import '../../../widgets/custom_text.dart';
 
 class UserEmergencyDoctorsScreen extends StatelessWidget {
@@ -15,6 +18,7 @@ class UserEmergencyDoctorsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _homeController.getEmergencyDoctor();
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
@@ -33,25 +37,59 @@ class UserEmergencyDoctorsScreen extends StatelessWidget {
           child: Column(
             children: [
               Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: 20,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16.h),
-                      child: const AvailableDoctorsCard(
-                        rating: "4.0",
-                        doctorName: "Sagor Ahamed",
-                        specialist: "Cardiologist",
-                        onlineConsultation: r'$20',
-                        totalConsultaion: '12',
-                        imageHeight: 100,
-                        leftBtnText: AppString.message,
-                        rightBtnText: AppString.videoCall,
-                      ),
-                    );
-                  },
+                child: Obx(()=>
+
+                _homeController.emergencyDoctorLoading.value
+                    ? const Center(child: CustomLoader())
+                    : _homeController.emergencyDoctors.isEmpty
+                    ? SizedBox(
+                    height: 180.h,
+                    width: 200.w,
+                    child: Image.asset(AppImages.noDataImage))
+                    :
+                ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount:_homeController.emergencyDoctors.value.length,
+                    itemBuilder: (context, index) {
+                      var emergencyDoctors = _homeController.emergencyDoctors.value[index];
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 16.h),
+                        child:  AvailableDoctorsCard(
+                          image: '${emergencyDoctors.doctorId?.image?.publicFileUrl}',
+                          rating: "${emergencyDoctors.doctorId?.rating}",
+                          doctorName:
+                          "${emergencyDoctors.doctorId?.firstName} ${emergencyDoctors.doctorId?.lastName}",
+                          specialist:
+                          "${emergencyDoctors.specialist}",
+                          onlineConsultation:
+                          '${emergencyDoctors.onlineConsultationPrice}',
+                          totalConsultaion: '${emergencyDoctors.totalConsultation}',
+                          imageHeight: 100,
+                          leftBtnText: AppString.seeDetails,
+                          rightBtnText: AppString.bookAppointment,
+                          leftBtnOntap: () {
+                            Get.toNamed(
+                                AppRoutes.userDoctorDetailsScreen,
+                                arguments: emergencyDoctors,
+                                parameters: {
+                                  'id':
+                                  '${emergencyDoctors.doctorId?.id}'
+                                });
+                          },
+                          rightBtnOnTap: () {
+                            Get.toNamed(
+                                AppRoutes.userPatientDetailsScreen,
+                                arguments: emergencyDoctors,
+                                parameters: {
+                                  'id':
+                                  '${emergencyDoctors.doctorId?.id}'
+                                });
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],
