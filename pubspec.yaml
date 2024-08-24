@@ -46,6 +46,8 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   image_picker: ^1.1.2
   gallery_picker: ^0.5.1
+  syncfusion_flutter_pdfviewer:
+#  fl_downloader: ^2.0.2
 
 
   cached_network_image: ^3.3.1

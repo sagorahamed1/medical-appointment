@@ -1,19 +1,20 @@
-import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/models/user_records_models.dart';
+import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../../utils/app_colors.dart';
-import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
-import '../../../widgets/custom_select_package_card.dart';
 import '../../../widgets/custom_text.dart';
-import '../../../widgets/custom_two_button.dart';
 import '../User_doctor_details/Inner_widgets/top_doctor_box_card.dart';
 
 class PatientDetailsForRecordScreen extends StatelessWidget {
-  const PatientDetailsForRecordScreen({super.key});
+   PatientDetailsForRecordScreen({super.key});
+
+ final UserRecordsModel record = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -27,61 +28,56 @@ class PatientDetailsForRecordScreen extends StatelessWidget {
       ),
 
 
-      body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w, vertical: Dimensions.paddingSizeDefault.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TopDoctorBoxCard(
-              location: 'Christ Hospital in London, UK',
-              doctorName: "Sagor Ahamed",
-            ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding:  EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w, vertical: Dimensions.paddingSizeDefault.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TopDoctorBoxCard(
+                image: '${record.doctorId?.image?.publicFileUrl}',
+                specialist: '${record.doctorId?.id}',
+                location: '${record.doctorId?.address}',
+                doctorName: "${record.doctorId?.firstName} ${record.doctorId?.lastName}",
+              ),
 
 
-            ///===================Patient Information===================>
-            CustomText(
-                text: AppString.patientInformation,
-                fontWeight: FontWeight.w600,
-                fontsize: 18.h,
-                top: 20.h,
-                bottom: 16.h),
+              ///===================Patient Information===================>
+              CustomText(
+                  text: AppString.patientInformation,
+                  fontWeight: FontWeight.w600,
+                  fontsize: 18.h,
+                  top: 20.h,
+                  bottom: 16.h),
 
-            _leftAndRightText(AppString.fullName, "Sagor Ahamed"),
-            _leftAndRightText(AppString.gender, "Male"),
-            _leftAndRightText(AppString.age, "25"),
-            _leftAndRightText(AppString.problem,
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. "),
+              _leftAndRightText(AppString.fullName, "${record.patientDetailsId?.fullName}"),
+              _leftAndRightText(AppString.gender, "${record.patientDetailsId?.gender}"),
+              _leftAndRightText(AppString.age, "${record.patientDetailsId?.age}"),
+              _leftAndRightText(AppString.problem, "${record.patientDetailsId?.description}"),
 
-            SizedBox(height: 24.h),
-            ///======================================>
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: AppString.prescription,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryColor,
-                    fontsize: 18.h,
-                   ),
 
-                GestureDetector(
-                  onTap: (){
-                    Get.toNamed(AppRoutes.addRecordsScreen);
+              SizedBox(height: 10.h),
+              ///======================================>
+              Container(
+                color: Colors.black,
+                height: 500.h,
+                width: double.infinity,
+                child: SfPdfViewer.network(
+                  '${ApiConstants.imageBaseUrl}/${record.file?.publicFileUrl}',
+                  canShowPaginationDialog: true,
+                  canShowScrollHead: false,
+                  canShowScrollStatus: false,
+                  onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
+                    // Handle the error case with a fallback UI
+                     print("$details");
                   },
-                  child: CustomText(
-                      text: AppString.clickHere,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryColor,
-                      fontsize: 18.h,
-                      ),
                 ),
-              ],
-            ),
+              )
 
 
 
-
-          ],
+            ],
+          ),
         ),
       ),
     );

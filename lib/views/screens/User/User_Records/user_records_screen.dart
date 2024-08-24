@@ -1,8 +1,10 @@
 import 'package:doctor_appointment/controllers/user/user_records_controller.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
+import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
@@ -85,19 +87,18 @@ class UserRecordsScreen extends StatelessWidget {
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(8.r)),
-                                              child: Image.asset(
-                                                  AppImages.getStarted1,
+                                              child: CustomNetworkImage(
+                                                  imageUrl:  "${ApiConstants.imageBaseUrl}/${record.doctorId?.image?.publicFileUrl}",
                                                   height: 84.h,
-                                                  width: 84.w,
-                                                  fit: BoxFit.cover)),
+                                                  width: 84.w)),
                                           Expanded(
                                             child: Column(
                                               children: [
+                                                _CustomTwoText('Doctor Name :', "${record.doctorId?.firstName} ${record.doctorId?.lastName}"),
+                                                _CustomTwoText('Patient Name :', "${record.patientDetailsId?.fullName}"),
+                                                _CustomTwoText('Patient Age :', "${record.patientDetailsId?.age}"),
                                                 _CustomTwoText(
-                                                    'Name :', "${record.patientDetailsId?.fullName}"),
-                                                _CustomTwoText('Age :', "${record.patientDetailsId?.age}"),
-                                                _CustomTwoText(
-                                                    'Gender :', "${record.patientDetailsId?.gender}"),
+                                                    'Patient Gender :', "${record.patientDetailsId?.gender}"),
                                               ],
                                             ),
                                           )
@@ -106,7 +107,7 @@ class UserRecordsScreen extends StatelessWidget {
                                       SizedBox(height: 12.h),
                                       CustomButton(
                                           onpress: () {
-                                            Get.toNamed(AppRoutes.patientDetailsForRecordScreen);
+                                            Get.toNamed(AppRoutes.patientDetailsForRecordScreen, arguments: record);
                                           },
                                           title: 'See Record')
                                     ],
