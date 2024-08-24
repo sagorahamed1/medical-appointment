@@ -143,8 +143,8 @@ class UserDoctorDetailsScreen extends StatelessWidget {
                   ///===========================Button=============================>
                   SizedBox(height: 20.h),
                   CustomButton(onpress: () {
-
-                    if(doctorInfo.doctorId?.isEmergency == true){
+                    print("====================> ${doctorInfo.doctorId?.isEmergency}");
+                    if(doctorInfo.doctorId?.isEmergency == true && Get.parameters['emergencyDoctor'] == 'emergencyDoctor'){
                       Get.toNamed(
                           AppRoutes.userPatientDetailsScreen,
                           arguments: doctorInfo,
