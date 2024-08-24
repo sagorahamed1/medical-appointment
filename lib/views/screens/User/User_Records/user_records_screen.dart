@@ -1,8 +1,10 @@
+import 'package:doctor_appointment/controllers/user/user_records_controller.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +17,9 @@ import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_two_button.dart';
 
 class UserRecordsScreen extends StatelessWidget {
-  const UserRecordsScreen({super.key});
+  UserRecordsScreen({super.key});
+
+  UserRecordsController recordsController = Get.put(UserRecordsController());
 
   @override
   Widget build(BuildContext context) {
@@ -51,99 +55,66 @@ class UserRecordsScreen extends StatelessWidget {
                 color: AppColors.primaryColor,
                 bottom: 12.h),
 
-            ///===========================Date Time==================>
-            CustomText(
-                text: '15 May 2024 5:00 pm',
-                fontWeight: FontWeight.w600,
-                bottom: 16.h,
-                color: Colors.black),
-
-            DoctorsPrescriptionCard(
-              rating: "4.0",
-              doctorName: "Sagor Ahamed",
-              specialist: "Cardiologist",
-              onlineConsultation: r'$20',
-              totalConsultaion: '12',
-              imageHeight: 100,
-              clickHereOntap: () {},
-            ),
-
             SizedBox(height: 20.h),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: AppString.yourRecords,
-                    fontsize: 18.h,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryColor),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.add,
-                      color: AppColors.primaryColor,
-                      size: 23.r,
-                    ),
-                    CustomText(
-                        text: " ${AppString.addNew}",
-                        fontsize: 16.h,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primaryColor),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 20.h),
-
-            Expanded(
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 16.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r),
-                        color: AppColors.fillColorE8EBF0),
-                    child: Padding(
-                      padding: EdgeInsets.all(12.r),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.r)),
-                                  child: Image.asset(AppImages.getStarted1,
-                                      height: 84.h,
-                                      width: 84.w,
-                                      fit: BoxFit.cover)),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    _CustomTwoText('Name :', "Sagor Ahamed"),
-                                    _CustomTwoText('Age :', "25"),
-                                    _CustomTwoText('Gender :', "Male"),
-                                  ],
+            Obx(()=>
+               Expanded(
+                child: recordsController.recordsLoading.value
+                    ? const CustomLoader()
+                    : recordsController.records.isEmpty
+                        ? Image.asset(AppImages.noDataImage)
+                        : ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: recordsController.records.length,
+                            itemBuilder: (context, index) {
+                              var record = recordsController.records[index];
+                              return Container(
+                                margin: EdgeInsets.only(bottom: 16.h),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    color: AppColors.fillColorE8EBF0),
+                                child: Padding(
+                                  padding: EdgeInsets.all(12.r),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8.r)),
+                                              child: Image.asset(
+                                                  AppImages.getStarted1,
+                                                  height: 84.h,
+                                                  width: 84.w,
+                                                  fit: BoxFit.cover)),
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                _CustomTwoText(
+                                                    'Name :', "${record.patientDetailsId?.fullName}"),
+                                                _CustomTwoText('Age :', "${record.patientDetailsId?.age}"),
+                                                _CustomTwoText(
+                                                    'Gender :', "${record.patientDetailsId?.gender}"),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(height: 12.h),
+                                      CustomButton(
+                                          onpress: () {
+                                            Get.toNamed(AppRoutes.patientDetailsForRecordScreen);
+                                          },
+                                          title: 'See Record')
+                                    ],
+                                  ),
                                 ),
-                              )
-                            ],
+                              );
+                            },
                           ),
-                          SizedBox(height: 12.h),
-                          CustomButton(
-                              onpress: () {
-                                Get.toNamed(
-                                    AppRoutes.patientDetailsForRecordScreen);
-                              },
-                              title: AppString.seeDetails)
-                        ],
-                      ),
-                    ),
-                  );
-                },
               ),
             )
           ],

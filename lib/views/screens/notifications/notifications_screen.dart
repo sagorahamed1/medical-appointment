@@ -1,5 +1,6 @@
 import 'package:doctor_appointment/controllers/notification_controller.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,12 +21,9 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-
-
-
-
   final ScrollController _scrollController = ScrollController();
-  NotificationController notificationController = Get.put(NotificationController());
+  NotificationController notificationController =
+      Get.put(NotificationController());
 
   // @override
   void initState() {
@@ -49,7 +47,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,28 +64,29 @@ class _NotificationScreenState extends State<NotificationScreen> {
         padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 5),
         child: Column(
           children: [
-
             ///-----------------------notification------------------------>
 
-            Obx((){
-
-              return  Expanded(
-                child:
-                ListView.builder(
-                  itemCount: notificationController.notifications.value.length,
-                  itemBuilder : (context, index) {
-                    var notification = notificationController.notifications.value[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16.h),
-                      child: _Notification('${notification.message}' , notification.createdAt!),
-                    );
-                  },
-                ),
+            Obx(() {
+              return Expanded(
+                child: notificationController.notificationLoading.value
+                    ? CustomLoader()
+                    : notificationController.notifications.isEmpty
+                        ? CustomText(text: 'No notifications yet')
+                        : ListView.builder(
+                            itemCount:
+                                notificationController.notifications.length,
+                            itemBuilder: (context, index) {
+                              var notification =
+                                  notificationController.notifications[index];
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 16.h),
+                                child: _Notification('${notification.message}',
+                                    notification.createdAt!),
+                              );
+                            },
+                          ),
               );
-            }
-
-            ),
-
+            }),
           ],
         ),
       ),
@@ -97,11 +95,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   _Notification(String title, DateTime time) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.h,horizontal: 8.w),
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(4.r)
-      ),
+          color: Colors.white, borderRadius: BorderRadius.circular(4.r)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -110,7 +106,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               Container(
                 height: 10.h,
                 width: 10.w,
-                decoration:  const BoxDecoration(
+                decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: AppColors.primaryColor),
               ),
               Container(
@@ -140,12 +136,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       fontFamily: "Aldrich",
                       height: 1.5),
                 ),
-
                 Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     top: 2.h,
-
                     text: TimeAgo.format(time),
                     fontsize: Dimensions.fontSizeSmall.h,
                     fontWeight: FontWeight.w400,
