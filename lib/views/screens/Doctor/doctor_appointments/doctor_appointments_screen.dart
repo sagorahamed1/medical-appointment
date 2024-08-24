@@ -109,6 +109,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
             vertical: Dimensions.paddingSizeDefault.h),
         child: TabBarView(
           controller: _tabController,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             ///=======================Up Coming Lists====================>
             Obx(()=>
