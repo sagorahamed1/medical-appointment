@@ -18,6 +18,7 @@ class ApiConstants{
   static const String patientDetailsAdd = "/user/patient-details-for-doctor";
 
   static  String getDoctor(String cetegory) => "/doctor/get-doctors?specialist=$cetegory";
+  static  String getSearchDoctor(String searchText) => "/doctor/get-doctors?search=$searchText";
   static  String getAppointments(String status) => "/appointments/user-get-appointments?status=$status";
   static  String doctorDetailsHomeScreen(String id) => "/doctor/get-single-doctor?id=$id";
   static const String emergencyDoctors = "/user/get-emergency-doctor";

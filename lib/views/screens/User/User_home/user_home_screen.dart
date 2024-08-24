@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 import '../../../../controllers/profile_controler.dart';
 import '../../../../controllers/user/home_controller.dart';
+import '../../../../controllers/user/search_doctor_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
@@ -255,8 +256,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                             AppRoutes.userDoctorDetailsScreen,
                                             arguments: emergencyDoctors,
                                             parameters: {
-                                              'id':
-                                              '${emergencyDoctors.doctorId?.id}'
+                                              'id': '${emergencyDoctors.doctorId?.id}',
+                                              'emergencyDoctor' : 'emergencyDoctor'
                                             });
                                       },
                                       rightBtnOnTap: () {
