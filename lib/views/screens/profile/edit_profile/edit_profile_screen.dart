@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:doctor_appointment/controllers/profile_controler.dart';
+import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _textField("+ 8845632140", AppIcons.call, phoneCtrl,
                   TextInputType.number),
               _textField("Enter your date of birth", AppIcons.dateOfBirth,
-                  dateOfBirthCtrl, TextInputType.number),
+                  dateOfBirthCtrl, TextInputType.number, onTap: (){selectDate(context);}, readOnly: true),
               _textField("Address", AppIcons.location, addressCtrl,
                   TextInputType.text),
               SizedBox(height: 20.h),
@@ -149,10 +150,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _textField(String hinText, prefixIcon,
-      TextEditingController controller, TextInputType type) {
+      TextEditingController controller, TextInputType type , {VoidCallback? onTap, bool? readOnly}) {
     return Column(
       children: [
         TextFormField(
+          readOnly: readOnly ?? false,
+          onTap: onTap,
           keyboardType: type,
           controller: controller,
           decoration: InputDecoration(
@@ -269,7 +272,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (pickedDate != null && pickedDate != selectedDate) {
       selectedDate = pickedDate;
-      dateOfBirthCtrl.text = '$selectedDate';
+      dateOfBirthCtrl.text = TimeFormatHelper.formatDate(selectedDate);
       print('Selected date: ${dateOfBirthCtrl.text}');
     }
   }

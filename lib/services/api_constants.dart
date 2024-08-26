@@ -16,6 +16,7 @@ class ApiConstants{
   static const String getProfileEndPoint = "/user/login-user";
   static const String profileUpdate = "/user/update-profile";
   static const String patientDetailsAdd = "/user/patient-details-for-doctor";
+  static const String giveReviewEndPoint = "/user/post-review";
 
   static  String getDoctor(String cetegory) => "/doctor/get-doctors?specialist=$cetegory";
   static  String getSearchDoctor(String searchText) => "/doctor/get-doctors?search=$searchText";
