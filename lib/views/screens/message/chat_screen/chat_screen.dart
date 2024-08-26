@@ -21,6 +21,7 @@ import '../../../../utils/app_constant.dart';
 import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../widgets/cachanetwork_image.dart';
+import '../../../widgets/call_invitation.dart';
 import '../../../widgets/custom_text.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
@@ -78,146 +79,148 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: SafeArea(
-        child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20.h),
-              Expanded(child: buildMessageList()),
-              SizedBox(height: 10.h),
-              Obx(
-                () => Column(
-                  children: [
-                    pickedImages.isNotEmpty
-                        ? Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                border:
-                                    Border.all(color: AppColors.primaryColor)),
-                            child: pickedImages.isEmpty
-                                ? const SizedBox()
-                                : Row(
-                              children: [
-                                Expanded(
-                                  flex: 8,
-                                  child: Container(
-                                    margin: const EdgeInsets.all(8),
-                                    height: 100,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: pickedImages.length + 1,
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context, index) {
-                                          if (index == pickedImages.length) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                if (pickedImages.length <= 5) {
-                                                  showImagePickerOption(context);
-                                                } else {
-                                                  ToastMessageHelper.showToastMessage(
-                                                      'You cannot select more than four pictures');
-                                                }
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(right: 20.w),
-                                                width: 80.w,
-                                                height: 151.h,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey[200],
-                                                  borderRadius: BorderRadius.circular(12),
+      body: CallInvitation(
+        userName: 'sagor',
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20.h),
+                Expanded(child: buildMessageList()),
+                SizedBox(height: 10.h),
+                Obx(
+                  () => Column(
+                    children: [
+                      pickedImages.isNotEmpty
+                          ? Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border:
+                                      Border.all(color: AppColors.primaryColor)),
+                              child: pickedImages.isEmpty
+                                  ? const SizedBox()
+                                  : Row(
+                                children: [
+                                  Expanded(
+                                    flex: 8,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(8),
+                                      height: 100,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: pickedImages.length + 1,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) {
+                                            if (index == pickedImages.length) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  if (pickedImages.length <= 5) {
+                                                    showImagePickerOption(context);
+                                                  } else {
+                                                    ToastMessageHelper.showToastMessage(
+                                                        'You cannot select more than four pictures');
+                                                  }
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(right: 20.w),
+                                                  width: 80.w,
+                                                  height: 151.h,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[200],
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    size: 40.w,
+                                                    color: AppColors.primaryColor,
+                                                  ),
                                                 ),
-                                                child: Icon(
-                                                  Icons.add,
-                                                  size: 40.w,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          } else {
-                                            return Padding(
-                                              padding: EdgeInsets.only(right: 8.w),
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    width: 120.w,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(12),
-                                                      image: DecorationImage(
-                                                        image: FileImage(pickedImages[index]),
-                                                        fit: BoxFit.cover,
+                                              );
+                                            } else {
+                                              return Padding(
+                                                padding: EdgeInsets.only(right: 8.w),
+                                                child: Stack(
+                                                  children: [
+                                                    Container(
+                                                      width: 120.w,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(12),
+                                                        image: DecorationImage(
+                                                          image: FileImage(pickedImages[index]),
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Positioned(
-                                                    top: 8.h,
-                                                    right: 8.w,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        pickedImages.removeAt(index);
-                                                      },
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          shape: BoxShape.circle,
-                                                          border: Border.all(
+                                                    Positioned(
+                                                      top: 8.h,
+                                                      right: 8.w,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          pickedImages.removeAt(index);
+                                                        },
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            shape: BoxShape.circle,
+                                                            border: Border.all(
+                                                              color: AppColors.primaryColor,
+                                                            ),
+                                                          ),
+                                                          child: Icon(
+                                                            Icons.close,
                                                             color: AppColors.primaryColor,
+                                                            size: 18.w,
                                                           ),
                                                         ),
-                                                        child: Icon(
-                                                          Icons.close,
-                                                          color: AppColors.primaryColor,
-                                                          size: 18.w,
-                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                        },
+                                                  ],
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 8.w),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      chatController.sendMessageWithImage(
-                                          pickedImages.isNotEmpty ? pickedImages.first : null,
-                                          '${Get.parameters['receiverId']}',
-                                          '${Get.parameters['id']}');
-                                      pickedImages.clear();
-                                    },
-                                    child: Container(
-                                      width: 50.w,
-                                      height: 50.h,
-                                      decoration: const BoxDecoration(
-                                        color: AppColors.primaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.send,
-                                        color: Colors.white,
-                                        size: 24.w,
+                                  Container(
+                                    margin: EdgeInsets.only(left: 8.w),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        chatController.sendMessageWithImage(
+                                            pickedImages.isNotEmpty ? pickedImages.first : null,
+                                            '${Get.parameters['receiverId']}',
+                                            '${Get.parameters['id']}');
+                                        pickedImages.clear();
+                                      },
+                                      child: Container(
+                                        width: 50.w,
+                                        height: 50.h,
+                                        decoration: const BoxDecoration(
+                                          color: AppColors.primaryColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.send,
+                                          color: Colors.white,
+                                          size: 24.w,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : buildMessageInput()
-                  ],
-                ),
-              )
-            ],
+                                ],
+                              ),
+                            )
+                          : buildMessageInput()
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -232,27 +235,14 @@ class _ChatScreenState extends State<ChatScreen> {
         fontWeight: FontWeight.w600,
       ),
       actions: [
-        buildCallButton(isVideoCall: false),
+        actionButton(context, false),
         SizedBox(width: 24.w),
-        buildCallButton(isVideoCall: true),
+        actionButton(context, true),
         SizedBox(width: 20.w),
       ],
     );
   }
 
-  Widget buildCallButton({required bool isVideoCall}) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to call screen
-      },
-      child: SvgPicture.asset(
-        isVideoCall ? AppIcons.videoCallIcons : AppIcons.call,
-        height: 20.h,
-        width: 20.w,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
 
   Widget buildMessageList() {
     return Obx(
@@ -432,14 +422,13 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+
   Widget senderBubble(
       BuildContext context, String message, String? profileImage, ChatModel chatModel) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-
-
         chatModel.content?.messageType == 'image' ?
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -513,32 +502,8 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  sendCallButton({
-    required bool isVideoCall,
-    required String inviteUserId,
-    required String name,
-    void Function(String code, String message, List<String>)? onCallFinished,
-  }) {
-    return ZegoSendCallInvitationButton(
-      isVideoCall: isVideoCall,
-      invitees: [
-        ZegoUIKitUser(id: inviteUserId, name: name),
-      ],
-      resourceID: "zego_call",
-      icon: ButtonIcon(
-        icon: SvgPicture.asset(
-          isVideoCall ? AppIcons.videoCallIcons : AppIcons.call,
-          color: AppColors.gray767676,
-        ),
-      ),
-      iconSize: const Size(30, 30),
-      buttonSize: const Size(40, 40),
-      onPressed: onCallFinished,
-    );
-  }
 
   //==================================> ShowImagePickerOption Function <===============================
-
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
         backgroundColor: Colors.white,
@@ -613,12 +578,28 @@ class _ChatScreenState extends State<ChatScreen> {
     final XFile? returnImage =
     await ImagePicker().pickImage(source: ImageSource.camera);
     if (returnImage == null) return;
-
     File selectedImage = File(returnImage.path);
     pickedImages.add(selectedImage);
-
-    // Additional operations if needed
     _image = selectedImage.readAsBytesSync();
+  }
 
-    // Use pickedImages as needed
-  }}
+
+  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo) {
+    return ZegoSendCallInvitationButton(
+      invitees: [
+        ZegoUIKitUser(
+          id: "dafk",
+          name: "userModel.email",
+        )
+      ],
+      buttonSize: Size(30, 30),
+      iconSize: Size(30, 30),
+      unclickableBackgroundColor: AppColors.primaryColor,
+      clickableBackgroundColor: AppColors.primaryColor,
+
+      resourceID: 'zegouikit_call',
+      isVideoCall: isVideo,
+    );
+  }
+
+}

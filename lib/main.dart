@@ -13,45 +13,39 @@ import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 import 'helpers/binding/dependancy_injaction.dart';
 import 'helpers/device_utils.dart';
-import 'helpers/network_connection.dart';
 import 'helpers/prefs_helper.dart';
-final navigatorKey = GlobalKey<NavigatorState>();
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async{
+
+
+  ///=========zego setup====>
   WidgetsFlutterBinding.ensureInitialized();
-  bool isLogged = await PrefsHelper.getBool(AppConstants.isLogged);
-  // var role = await PrefsHelper.getString(AppConstants.role);
-  var userId = await PrefsHelper.getString(AppConstants.userId);
-  var userName = await PrefsHelper.getString(AppConstants.userName);
-  SocketServices.init();
-
-  // / 2/5: set navigator key to ZegoUIKitPrebuiltCallInvitationService
+  // await FirebaseServices.setUpFirebase();
   ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
-
   ZegoUIKit().initLog().then((value) {
     ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
       [ZegoUIKitSignalingPlugin()],
     );
 
+
+
     DeviceUtils.lockDevicePortrait();
     DependencyInjection di = DependencyInjection();
     di.dependencies();
     runApp(MyApp(
-      navigatorKey: navigatorKey,
-      isLogged: isLogged,
-      // role: role,
-      userId: userId,
-      userName: userName,
-    ));
+      navigatorKey: navigatorKey));
   });
 }
 
 class MyApp extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
-  final bool isLogged;
-  // final String role;
-  final String userId;
-  final String userName;
-  const MyApp({super.key, required this.navigatorKey, required this.isLogged, required this.userId, required this.userName});
+
+  const MyApp({
+    required this.navigatorKey,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -60,42 +54,29 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   @override
-  void initState() {
-    if(widget.userId.isNotEmpty&&widget.isLogged){
-      onUserLogin(widget.userId, widget.userName,  ApiConstants.imageBaseUrl+'');
-      debugPrint("User Main login");
-    }
-    super.initState();
-  }
-
-
-  @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         builder: (context, child) => GetMaterialApp(
           debugShowCheckedModeBanner: false,
+          navigatorKey: widget.navigatorKey,
           title: 'doctor appointment',
           theme: light(),
-          // initialBinding: BindingsBuilder(() {
-          //   Get.put(NetworkController());
-          // }),
           initialRoute: AppRoutes.splashScreen,
           getPages: AppRoutes.routes,
-          navigatorKey: widget.navigatorKey,
-          builder: (BuildContext context, Widget? child) {
-            return Stack(
-              children: [
-                child!,
-                //
-                // /// support minimizing
-                ZegoUIKitPrebuiltCallMiniOverlayPage(
-                  contextQuery: () {
-                    return widget.navigatorKey.currentState!.context;
-                  },
-                ),
-              ],
-            );
-          },
+          // builder: (BuildContext context, Widget? child) {
+          //   return Stack(
+          //     children: [
+          //       child!,
+          //       //
+          //       // /// support minimizing
+          //       ZegoUIKitPrebuiltCallMiniOverlayPage(
+          //         contextQuery: () {
+          //           return widget.navigatorKey.currentState!.context;
+          //         },
+          //       ),
+          //     ],
+          //   );
+          // },
           home: SplashScreen(),
         ),
         designSize: const Size(393, 852));
