@@ -227,7 +227,12 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                   date: appointments.date,
                                   time: '${appointments.timeSlot}',
                                   appointmentsType: '${appointments.status}',
-                                  btnName: 'See Details',
+                                  btnOntap: (){
+                                    Get.toNamed(AppRoutes.userGiveReviewScreen, parameters: {
+                                      'id' : '${appointments.doctorId?.id}'
+                                    });
+                                  },
+                                  btnName: 'Give Review',
                                 ),
                               );
                             } else if (index >= appointmentsController.totalResult) {

@@ -4,26 +4,22 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 class NetworkController extends GetxController {
   RxBool isConnection = false.obs;
-  StreamSubscription? interNetConnectionState;
+  StreamSubscription<InternetStatus>? interNetConnectionState;
 
   @override
   void onInit() {
-    interNetConnectionState =
-        InternetConnection().onStatusChange.listen((event) {
-          print("----------------internet : ${event}");
-      switch (event) {
-        case InternetStatus.connected:
-          isConnection(true);
-          break;
-        case InternetStatus.disconnected:
-          isConnection(false);
-          break;
-        default:
-          isConnection(false);
-          break;
-      }
-    });
     super.onInit();
+    checkInitialConnection(); // Check the initial connection state
+
+    // Listen to connection status changes
+    interNetConnectionState = InternetConnection().onStatusChange.listen((event) {
+      print("----------------internet : $event");
+      isConnection.value = event == InternetStatus.connected;
+    });
+  }
+
+  Future<void> checkInitialConnection() async {
+    isConnection.value = true;
   }
 
   @override

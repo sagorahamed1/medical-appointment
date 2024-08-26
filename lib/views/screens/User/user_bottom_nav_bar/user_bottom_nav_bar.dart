@@ -10,8 +10,6 @@ import '../../profile/profile/profile_screen.dart';
 import '../User_Appointments/user_appointments_screen.dart';
 import '../User_Home/user_home_screen.dart';
 
-
-
 class UserBottomNavBar extends StatefulWidget {
   const UserBottomNavBar({super.key});
 
@@ -23,14 +21,12 @@ class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
   final NetworkController networkController = Get.put(NetworkController());
   int _selectedIndex = 0;
 
-
-  static final List _widgetOptions = [
+  static final List<Widget> _widgetOptions = [
     UserHomeScreen(),
     UserAppointmentsScreen(),
     MessageScreen(),
     ProfileScreen(),
   ];
-
 
   void _onItemTapped(int index) {
     setState(() {
@@ -41,42 +37,40 @@ class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body:
-      Column(
+      body: Column(
         children: [
-          Expanded(child:  _widgetOptions.elementAt(_selectedIndex) ),
-
+          Expanded(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
           Obx(() {
             return networkController.isConnection.value
                 ? const SizedBox.shrink()
                 : Padding(
-                  padding:  EdgeInsets.all(8.r),
-                  child: Container(
-                                color: AppColors.primaryColor,
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(10),
-                                child: const Text(
+              padding: EdgeInsets.all(8.r),
+              child: Container(
+                color: AppColors.primaryColor,
+                width: double.infinity,
+                padding: EdgeInsets.all(10.r),
+                child: const Text(
                   "🚫  No Internet Connection",
                   style: TextStyle(color: Colors.white),
                   textAlign: TextAlign.center,
-                                ),
-                              ),
-                );
+                ),
+              ),
+            );
           }),
         ],
       ),
 
-
-      ///------------------------bottom nav bar----------------------------?>
+      ///------------------------bottom nav bar---------------------------->
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           ///---------------home---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                AppIcons.homeicon,
-                color: Colors.white
+              AppIcons.homeicon,
+              color: Colors.white,
             ),
             label: 'Home',
           ),
@@ -84,8 +78,8 @@ class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
           ///---------------Appointments---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                AppIcons.appointments,
-                color: Colors.white
+              AppIcons.appointments,
+              color: Colors.white,
             ),
             label: 'Appointments',
           ),
@@ -93,8 +87,8 @@ class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
           ///---------------Message---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                AppIcons.messageIcon,
-                color: Colors.white
+              AppIcons.messageIcon,
+              color: Colors.white,
             ),
             label: 'Message',
           ),
@@ -102,14 +96,13 @@ class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
           ///---------------Profile---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-                AppIcons.profileIcon,
-                color: Colors.white
+              AppIcons.profileIcon,
+              color: Colors.white,
             ),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-
         onTap: _onItemTapped,
         showUnselectedLabels: true,
         iconSize: 20.h,
@@ -117,7 +110,6 @@ class _BottomNavigationBarExampleState extends State<UserBottomNavBar> {
         selectedFontSize: 14.h,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
-
       ),
     );
   }
