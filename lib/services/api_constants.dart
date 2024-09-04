@@ -11,7 +11,7 @@ class ApiConstants{
   static const String forgotPasswordPoint = "/user/forgot-password";
   static const String setPasswordPoint = "/user/set-password";
   static const String changePasswordPoint = "/user/change-password";
-  static const String reSendOtpPoint = "/user/resendOpt";
+  static const String reSendOtpPoint = "/user/resend-otp";
   static const String continueDoctorPoint = "/doctor/create-details";
   static const String getProfileEndPoint = "/user/login-user";
   static const String profileUpdate = "/user/update-profile";

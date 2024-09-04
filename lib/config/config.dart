@@ -1,6 +1,6 @@
 class Config {
- static int _appId = 752493796;
- static String _appSign = '48658a3e1cc267916153e4fdb37fd6dfaf2b3ba78fd1f6e81b16b6b64ebde6f0';
+ static int _appId = 661542974;
+ static String _appSign = '0b4bafd12854c3c999dd6ca970889cee00221274aee7916755fee4d70f244aa8';
 
  static int get appId => _appId;
  static String get appSign => _appSign;
