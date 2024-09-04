@@ -1,5 +1,6 @@
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
+import 'package:doctor_appointment/services/firebase_services.dart';
 import 'package:doctor_appointment/services/socket_services.dart';
 import 'package:doctor_appointment/services/zego_could_services.dart';
 import 'package:doctor_appointment/themes/light_theme.dart';
@@ -22,7 +23,7 @@ void main() async{
 
   ///=========zego setup====>
   WidgetsFlutterBinding.ensureInitialized();
-  // await FirebaseServices.setUpFirebase();
+   await AuthService.setUpFirebase();
   ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
   ZegoUIKit().initLog().then((value) {
     ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(

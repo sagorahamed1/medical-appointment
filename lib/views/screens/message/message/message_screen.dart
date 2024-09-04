@@ -112,7 +112,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   Widget _messageCard(String image, name, lastMessage, time) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/models/chat_model.dart';
+import 'package:doctor_appointment/services/firebase_services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,6 +43,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Uint8List? _image;
   File? selectedIMage;
 
+  AuthService authService = AuthService();
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+
   Future<void> getUserId() async {
     var userId = await PrefsHelper.getString(AppConstants.userId);
     setState(() {
@@ -77,6 +81,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var data = authService.getUserDataById('${Get.parameters['receiverId']}');
+    print("===========firebase date $data");
     return Scaffold(
       appBar: buildAppBar(),
       body: CallInvitation(
@@ -325,7 +331,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  ///===========camara  voice button====>
+  ///===========camara button====>
   Row buildMediaButtons() {
     return Row(
       children: [
@@ -349,8 +355,14 @@ class _ChatScreenState extends State<ChatScreen> {
         SvgPicture.asset(AppIcons.attachFile,
             height: 20.h, width: 20.w, fit: BoxFit.cover),
         SizedBox(width: 20.w),
-        SvgPicture.asset(AppIcons.like,
-            height: 20.h, width: 20.w, fit: BoxFit.cover),
+        GestureDetector(
+          onTap: (){
+            messageController.text = '\u{1F602}';
+            sendMessage();
+          },
+          child: SvgPicture.asset(AppIcons.like,
+              height: 20.h, width: 20.w, fit: BoxFit.cover),
+        ),
       ],
     );
   }
@@ -434,7 +446,7 @@ class _ChatScreenState extends State<ChatScreen> {
           padding: const EdgeInsets.all(8.0),
           child: CustomNetworkImage(
               borderRadius: BorderRadius.circular(12.r),
-              imageUrl: '${ApiConstants.imageBaseUrl}${chatModel.file?.publicFileUrl}', height: 200.h, width: 200.w),
+              imageUrl: '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}', height: 200.h, width: 200.w),
         ) :
         Expanded(
           child: ChatBubble(
@@ -468,7 +480,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         SizedBox(width: 4.w),
         CustomNetworkImage(
-          imageUrl: '${ApiConstants.imageBaseUrl}$profileImage',
+          imageUrl: '${ApiConstants.imageBaseUrl}/$profileImage',
           height: 35,
           width: 35,
           boxShape: BoxShape.circle,

@@ -4,6 +4,7 @@ import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
+import 'package:doctor_appointment/services/firebase_services.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -48,9 +49,17 @@ class AuthController extends GetxController {
       headers: headers,
     );
 
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       var id = response.body['data']['attributes']['userId'];
       PrefsHelper.setString(AppConstants.userId, id);
+
+      ///***********firebase code*************///
+      AuthService authService = AuthService();
+      authService.signUp(firstName, lastName, email, password, role, userId: id);
+      ///***********firebase code*************///
+
+
       print('====> id $id');
       Get.toNamed(AppRoutes.veryfyEmailScreen,
           parameters: {'screenType': 'signUp', 'email': email});
@@ -59,6 +68,46 @@ class AuthController extends GetxController {
       signUpLoading(false);
     }
   }
+
+
+  ///===============Log in================<>
+  RxBool logInLoading = false.obs;
+
+  handleLogIn(String email, password) async {
+    logInLoading(true);
+    var headers = {'Content-Type': 'application/json'};
+    var body = {
+      "email": email,
+      "password": password,
+    };
+    var response = await ApiClient.postData(ApiConstants.signInEndPoint, jsonEncode(body),
+        headers: headers);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var data = response.body['data'];
+      await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
+      // await PrefsHelper.setString(AppConstants.token, data['token']);
+      await PrefsHelper.setString(AppConstants.bearerToken, data['token']);
+      await PrefsHelper.setString(AppConstants.email, email);
+      await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
+      await PrefsHelper.setBool(AppConstants.isLogged, true);
+      var role = data['attributes']['role'];
+      var isAdmin = data['attributes']['isAdmin'];
+
+      print("==============> ${data['attributes']['_id']}");
+      if (!isAdmin) {
+        if (role == "user") {
+          Get.toNamed(AppRoutes.userBottomNavBar);
+        } else {
+          Get.toNamed(AppRoutes.doctorBottomNavBar);
+        }
+        ToastMessageHelper.showToastMessage('Your are logged in!');
+      }
+      logInLoading(false);
+    }else{
+      ToastMessageHelper.showToastMessage(response.body['message']);
+    }
+  }
+
 
   ///===============Verify Email================<>
   RxBool verfyLoading = false.obs;
@@ -107,8 +156,9 @@ class AuthController extends GetxController {
         multipartBody: multipartBody, headers: headers);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var jsonResponse = jsonDecode(response.body);
+      var jsonResponse = response.body;
       var role = jsonResponse['data']['attributes']['role'];
+
       if (role == "doctor") {
         Get.toNamed(AppRoutes.continueDoctorDetailsScreen);
         ToastMessageHelper.showToastMessage('Account Create Successful \n Please give your information');
@@ -120,43 +170,6 @@ class AuthController extends GetxController {
     }
   }
 
-  ///===============Log in================<>
-  RxBool logInLoading = false.obs;
-
-  handleLogIn(String email, password) async {
-    logInLoading(true);
-    var headers = {'Content-Type': 'application/json'};
-    var body = {
-      "email": email,
-      "password": password,
-    };
-    var response = await ApiClient.postData(ApiConstants.signInEndPoint, jsonEncode(body),
-        headers: headers);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = response.body['data'];
-      await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
-      // await PrefsHelper.setString(AppConstants.token, data['token']);
-      await PrefsHelper.setString(AppConstants.bearerToken, data['token']);
-      await PrefsHelper.setString(AppConstants.email, email);
-      await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
-      await PrefsHelper.setBool(AppConstants.isLogged, true);
-      var role = data['attributes']['role'];
-      var isAdmin = data['attributes']['isAdmin'];
-
-      print("==============> ${data['attributes']['_id']}");
-      if (!isAdmin) {
-        if (role == "user") {
-           Get.toNamed(AppRoutes.userBottomNavBar);
-        } else {
-           Get.toNamed(AppRoutes.doctorBottomNavBar);
-        }
-        ToastMessageHelper.showToastMessage('Your are logged in!');
-      }
-      logInLoading(false);
-    }else{
-      ToastMessageHelper.showToastMessage(response.body['message']);
-    }
-  }
 
   ///===============Forgot Password================<>
   RxBool forgotLoading = false.obs;
@@ -207,8 +220,8 @@ class AuthController extends GetxController {
         await ApiClient.postData(ApiConstants.reSendOtpPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Get.offAllNamed(AppRoutes.signInScreen);
-      ToastMessageHelper.showToastMessage('You have got an one time code to your email');
+      // Get.offAllNamed(AppRoutes.signInScreen);
+      // ToastMessageHelper.showToastMessage('You have got an one time code to your email');
       print("======>>> successful");
       resendLoading(false);
     }
