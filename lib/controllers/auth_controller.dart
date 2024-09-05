@@ -74,6 +74,8 @@ class AuthController extends GetxController {
   RxBool logInLoading = false.obs;
 
   handleLogIn(String email, password) async {
+
+
     logInLoading(true);
     var headers = {'Content-Type': 'application/json'};
     var body = {
@@ -94,6 +96,10 @@ class AuthController extends GetxController {
       var isAdmin = data['attributes']['isAdmin'];
 
       print("==============> ${data['attributes']['_id']}");
+      ///***********firebase code*************///
+      AuthService authService = AuthService();
+      authService.login(email, password, data['attributes']['_id']);
+      ///***********firebase code*************///
       if (!isAdmin) {
         if (role == "user") {
           Get.toNamed(AppRoutes.userBottomNavBar);
