@@ -7,17 +7,25 @@ import '../../config/config.dart';
 class CallInvitation extends StatelessWidget {
   final Widget child;
   final String userName;
+
   CallInvitation({super.key, required this.child, required this.userName});
 
   @override
   Widget build(BuildContext context) {
-    ZegoUIKitPrebuiltCallInvitationService().init(
-      appID: Config.appId,
-      appSign: Config.appSign,
-      userID: userName,
-      userName: userName,
-      plugins: [ZegoUIKitSignalingPlugin()],
-    );
+    // Check if userName is not null or empty
+    if (userName.isNotEmpty) {
+      // Initialize ZegoUIKitPrebuiltCallInvitationService if not already initialized
+      ZegoUIKitPrebuiltCallInvitationService().init(
+        appID: 560511516,
+        appSign: "2bcde91d07632d0259f19a974e4f779f26137fca753d99634a559f51287f9706",
+        userID: userName,
+        userName: userName,
+        plugins: [ZegoUIKitSignalingPlugin()],
+      );
+    } else {
+      print('===============================================\n=======================================Error: userName is null or empty');
+    }
+
     return child;
   }
 }

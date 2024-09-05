@@ -5,6 +5,7 @@ import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/screens/Doctor/doctor_home/inner_widgets/doctor_top_app_bar.dart';
 import 'package:doctor_appointment/views/screens/User/User_Appointments/user_appointments_screen.dart';
+import 'package:doctor_appointment/views/widgets/call_invitation.dart';
 import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +14,43 @@ import 'package:get/get.dart';
 
 import '../../../../controllers/doctor/doctor_home_controller.dart';
 import '../../../../controllers/profile_controler.dart';
+import '../../../../helpers/prefs_helper.dart';
+import '../../../../models/firebase_user_model.dart';
 import '../../../../routes/app_routes.dart';
+import '../../../../services/firebase_services.dart';
+import '../../../../utils/app_constant.dart';
 import '../../../../utils/app_strings.dart';
 
-class DoctorHomeScreen extends StatelessWidget {
+class DoctorHomeScreen extends StatefulWidget {
    DoctorHomeScreen({super.key});
 
+  @override
+  State<DoctorHomeScreen> createState() => _DoctorHomeScreenState();
+}
+
+class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
+
    final ProfileControler _profileControler = Get.find<ProfileControler>();
+
+  @override
+  void initState() {
+    fetchFirebaseData2();
+    super.initState();
+  }
+
+  AuthService authService = AuthService();
+  FirebaseUserModel? firebaseData2;
+  fetchFirebaseData2() async {
+    var userId = await PrefsHelper.getString(AppConstants.userId);
+    var data = await authService.getUserDataById(userId);
+    if (data != null) {
+      setState(() {
+        firebaseData2 = data;
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,74 +58,77 @@ class DoctorHomeScreen extends StatelessWidget {
     _profileControler.getProfile();
     // _homeController.getAppointment(status: 'upcomming');
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding:
-          EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
-          child: Column(
-            children: [
+      body: CallInvitation(
+        userName: '${firebaseData2?.email}',
+        child: SafeArea(
+          child: Padding(
+            padding:
+            EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
+            child: Column(
+              children: [
 
-             Obx((){
-               var profileData = _profileControler.profileInfo.value;
-              return Column(
-                 children: [
-                    DoctorTopAppBar(
-                     image: profileData.image?.publicFileUrl,
-                      name: '${profileData.firstName} ${profileData.lastName}',
-                   ),
-                   SizedBox(height: 20.h),
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       _topCard("Total Appointments","${_homeController.status.value.totalAppointments}"),
-                       _topCard("Active", "${_homeController.status.value.activeAppointments}"),
-                       _topCard("Completed", "${_homeController.status.value.completedAppointments}"),
-                     ],
-                   ),
+               Obx((){
+                 var profileData = _profileControler.profileInfo.value;
+                return Column(
+                   children: [
+                      DoctorTopAppBar(
+                       image: profileData.image?.publicFileUrl,
+                        name: '${profileData.firstName} ${profileData.lastName}',
+                     ),
+                     SizedBox(height: 20.h),
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         _topCard("Total Appointments","${_homeController.status.value.totalAppointments}"),
+                         _topCard("Active", "${_homeController.status.value.activeAppointments}"),
+                         _topCard("Completed", "${_homeController.status.value.completedAppointments}"),
+                       ],
+                     ),
 
-                 ],
-               );
-             },
-             ) ,
-
-
-              ///=======================Recent Appointments and See All Text=============================>
-              _SeeAll(AppString.recentAppointments, AppString.seeAll, () {
-                 Get.toNamed(AppRoutes.seeAllAppintmentScreen);
-              }),
+                   ],
+                 );
+               },
+               ) ,
 
 
-              Expanded(
-                child: Obx(()=>
-                _homeController.appointmentLoading.value ? const CustomLoader() : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
-                  ListView.builder(
-                    itemCount: _homeController.appointmentsList.length,
-                    itemBuilder: (context, index) {
-                      var appointment = _homeController.appointmentsList[index];
-                      return Padding(
-                        padding:  EdgeInsets.only(bottom: 16.h),
-                        child: AppointmentsCard(
-                          btnOntap: () {
-                            Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
-                              'id' : '${appointment.id}',
-                              'type' : 'upcomming'
-                            });
-                          },
-                          btnName: 'See Details',
-                          leftBtnOnTap: () {},
-                          image: '${appointment.patientId?.image?.publicFileUrl}',
-                          name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
-                          appointmentsType: "${appointment.status}",
-                          date: appointment.date,
-                          time: '${appointment.timeSlot}',
-                        ),
-                      );
-                    },
+                ///=======================Recent Appointments and See All Text=============================>
+                _SeeAll(AppString.recentAppointments, AppString.seeAll, () {
+                   Get.toNamed(AppRoutes.seeAllAppintmentScreen);
+                }),
+
+
+                Expanded(
+                  child: Obx(()=>
+                  _homeController.appointmentLoading.value ? const CustomLoader() : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
+                    ListView.builder(
+                      itemCount: _homeController.appointmentsList.length,
+                      itemBuilder: (context, index) {
+                        var appointment = _homeController.appointmentsList[index];
+                        return Padding(
+                          padding:  EdgeInsets.only(bottom: 16.h),
+                          child: AppointmentsCard(
+                            btnOntap: () {
+                              Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
+                                'id' : '${appointment.id}',
+                                'type' : 'upcomming'
+                              });
+                            },
+                            btnName: 'See Details',
+                            leftBtnOnTap: () {},
+                            image: '${appointment.patientId?.image?.publicFileUrl}',
+                            name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                            appointmentsType: "${appointment.status}",
+                            date: appointment.date,
+                            time: '${appointment.timeSlot}',
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
 
-            ],
+              ],
+            ),
           ),
         ),
       ),

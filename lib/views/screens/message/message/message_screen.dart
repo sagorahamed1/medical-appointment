@@ -43,6 +43,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("======================current user id message screen $currentUserId");
     chatListController.onInit();
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
@@ -76,9 +77,10 @@ class _MessageScreenState extends State<MessageScreen> {
 
                               if(participants?[0].id != null || participants?[1].id != null){
                                 for(var x in participants!){
+                                  print("============= dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd==${x.id != currentUserId}");
                                   if(x.id != currentUserId){
                                     receiverId = '${x.id}';
-                                  }else{
+                                  }else if(x.id != currentUserId){
                                     receiverId = '${x.id}';
                                   }
                                 }

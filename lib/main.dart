@@ -18,26 +18,25 @@ import 'helpers/prefs_helper.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() async{
-
-
-  ///=========zego setup====>
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   await AuthService.setUpFirebase();
-  ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
-  ZegoUIKit().initLog().then((value) {
-    ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI(
-      [ZegoUIKitSignalingPlugin()],
-    );
 
-
+  try {
+    await AuthService.setUpFirebase();
+    ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
+    await ZegoUIKit().initLog();
+    ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI([ZegoUIKitSignalingPlugin()]);
 
     DeviceUtils.lockDevicePortrait();
+
     DependencyInjection di = DependencyInjection();
     di.dependencies();
-    runApp(MyApp(
-      navigatorKey: navigatorKey));
-  });
+
+    runApp(MyApp(navigatorKey: navigatorKey));
+  } catch (e) {
+    // Handle initialization errors
+    print(' =-----------------------Initialization error: -----------$e');
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -53,34 +52,32 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        builder: (context, child) => GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          navigatorKey: widget.navigatorKey,
-          title: 'doctor appointment',
-          theme: light(),
-          initialRoute: AppRoutes.splashScreen,
-          getPages: AppRoutes.routes,
-          // builder: (BuildContext context, Widget? child) {
-          //   return Stack(
-          //     children: [
-          //       child!,
-          //       //
-          //       // /// support minimizing
-          //       ZegoUIKitPrebuiltCallMiniOverlayPage(
-          //         contextQuery: () {
-          //           return widget.navigatorKey.currentState!.context;
-          //         },
-          //       ),
-          //     ],
-          //   );
-          // },
-          home: SplashScreen(),
-        ),
-        designSize: const Size(393, 852));
+      designSize: const Size(393, 852),
+      builder: (context, child) => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: widget.navigatorKey,
+        title: 'Doctor Appointment',
+        theme: light(),
+        initialRoute: AppRoutes.splashScreen,
+        getPages: AppRoutes.routes,
+        home: SplashScreen(),
+        // Uncomment and adjust if using overlay
+        // builder: (BuildContext context, Widget? child) {
+        //   return Stack(
+        //     children: [
+        //       child!,
+        //       ZegoUIKitPrebuiltCallMiniOverlayPage(
+        //         contextQuery: () {
+        //           return widget.navigatorKey.currentState!.context;
+        //         },
+        //       ),
+        //     ],
+        //   );
+        // },
+      ),
+    );
   }
 }
-

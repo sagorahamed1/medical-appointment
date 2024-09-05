@@ -3,10 +3,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import '../firebase_options.dart';
+import '../models/firebase_user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+
+  static FirebaseUserModel? _currentUser;
+
+  static FirebaseUserModel? get currentUser {
+    if (_currentUser == null) {
+      return null;
+      print("_current user model must not be null when calling this getter");
+      // throw Exception('_current user model must not be null when calling this getter');
+    }
+    return _currentUser!;
+  }
 
   static Future<void> setUpFirebase() async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -38,12 +51,17 @@ class AuthService {
     }
   }
 
-  Future<User?> login(String email, String password) async {
+  Future<User?> login(String email, String password, String userId) async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password,);
+
+      final docRef = _firestore.collection('user').doc(userId);
+      final doc = await docRef.get();
+
+
+      if (doc.exists) {
+        _currentUser = FirebaseUserModel.fromJson(doc.data()!);
+      }
 
       return userCredential.user;
     } catch (e) {
@@ -53,13 +71,13 @@ class AuthService {
   }
 
 
-  // Function to get Firestore collection data by userId
-  Future<Map<String, dynamic>?> getUserDataById(String userId) async {
+// Firestore service function
+  Future<FirebaseUserModel?> getUserDataById(String userId) async {
     try {
       DocumentSnapshot doc = await _firestore.collection('users').doc(userId).get();
 
       if (doc.exists) {
-        return doc.data() as Map<String, dynamic>;
+        return FirebaseUserModel.fromJson(doc.data() as Map<String, dynamic>);
       } else {
         print('No such document!');
         return null;
@@ -69,4 +87,5 @@ class AuthService {
       return null;
     }
   }
+
 }
