@@ -75,17 +75,39 @@ class _MessageScreenState extends State<MessageScreen> {
                               var users = chatListController.chatUsers[index];
                               var participants = chatListController.chatUsers[index].participants;
 
-                              if(participants?[0].id != null || participants?[1].id != null){
-                                for(var x in participants!){
-                                  print("============= dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd==${x.id != currentUserId}");
-                                  if(x.id != currentUserId){
-                                    receiverId = '${x.id}';
-                                  }else if(x.id != currentUserId){
-                                    receiverId = '${x.id}';
+                              // // print('===================------------dddddddddddddddd     ${participants?[index].id}   \n ${participants?[index].firstName}');
+                              //
+                              // if(participants?[0].id != null || participants?[1].id != null){
+                              //   for(var x in participants!){
+                              //      print("============= ddddddddddddddddddddddddddddddddddd    ${x.id}     ddddddddddddddddddddddddddddddddddddddd==${x.id != currentUserId}");
+                              //     if(x.id != currentUserId){
+                              //       receiverId = '${x.id}';
+                              //     }else if(x.id != currentUserId){
+                              //       receiverId = '${x.id}';
+                              //     }
+                              //   }
+                              // }
+                              //
+
+
+                              String? receiverId;
+                              String? userName;
+
+
+                              /// Ensure there are participants
+                              if (participants != null && participants.isNotEmpty) {
+                                /// Loop through the participants to find the one that is not the current user
+                                for (var participant in participants) {
+                                  /// Check if the participant's ID is not equal to the current user's ID
+                                  if (participant.id != currentUserId) {
+                                    receiverId = participant.id;
+                                    userName = "${participant.firstName} ${participant.lastName}";
+                                    break;  // Once found, we can stop the loop
                                   }
                                 }
-
                               }
+
+                              print("==========recever id ============ $receiverId");
 
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 16.h),
@@ -93,14 +115,15 @@ class _MessageScreenState extends State<MessageScreen> {
                                     onTap: () {
                                       Get.toNamed(AppRoutes.chatScreen, parameters: {
                                         'id' : '${users.id}',
-                                        'receiverId' : receiverId,
+                                        'receiverId' : '$receiverId',
+                                        'userName' : '$userName'
                                       });
                                     },
                                     child: _messageCard(
                                         '${users.participants?[0].image?.publicFileUrl}',
-                                        "${users.participants?[0].firstName} ${users.participants?[0].lastName} (${users.appointmentId?.patientDetailsId?.fullName})",
+                                        "$userName (${users.appointmentId?.patientDetailsId?.fullName})",
                                          users.lastMessage?.content?.message ?? '',
-                                        "${users.createdAt}")),
+                                        "${users.updatedAt}")),
                               );
                             },
                           ),

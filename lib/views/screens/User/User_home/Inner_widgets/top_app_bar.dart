@@ -44,7 +44,7 @@ class TopAppBar extends StatelessWidget {
                 color: AppColors.textColor5C5C5C,
               ),
               CustomText(
-                text: "Sagor ahamed",
+                text: "$name",
                 fontsize: 16.h,
                 fontWeight: FontWeight.w600,
                 top: 4.h,

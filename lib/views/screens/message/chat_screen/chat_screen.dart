@@ -250,12 +250,12 @@ class _ChatScreenState extends State<ChatScreen> {
   AppBar buildAppBar() {
     return AppBar(
       title: CustomText(
-        text: '${firebaseData?.firstName} ${firebaseData?.lastName}',
+        text: '${Get.parameters["userName"]}',
         fontsize: 18.h,
         fontWeight: FontWeight.w600,
       ),
       actions: [
-        actionButton(context, false, email: "${firebaseData?.email}", name: "${firebaseData?.firstName}"),
+        actionButton(context, false, email: "${firebaseData?.email}", name: "${Get.parameters['userName']}"),
         SizedBox(width: 24.w),
         actionButton(context, true, email: "${firebaseData?.email}", name: "${firebaseData?.firstName}"),
         SizedBox(width: 20.w),
@@ -610,13 +610,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
 
-  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo, {String name = '', String email = ''}) {
+  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo, {required String name, required String email}) {
     print('================final paramiter ${email} \n $name');
     return ZegoSendCallInvitationButton(
       invitees: [
         ZegoUIKitUser(
-          id: "$email",
-          name: "$email",
+          id: email,
+          name: name,
         )
       ],
       buttonSize: const Size(30, 30),

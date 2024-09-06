@@ -128,8 +128,7 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                       ///===============Completed Button=================>
                       data.prescription?.publicFileUrl != null || data.prescription?.publicFileUrl == ''
                           ? CustomButton(onpress: () {
-                        _completeAppointmentController
-                            .completeAppointment('${data.id}');
+                        _completeAppointmentController.completeAppointment('${data.id}');
                       }, title: 'Completed')
                           : const SizedBox(),
 

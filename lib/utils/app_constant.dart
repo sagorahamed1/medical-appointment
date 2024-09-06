@@ -5,6 +5,7 @@ class AppConstants{
   // static const String token = "token";
   static const String userId = "userId";
  static const String isLogged = "isLogged";
+ static const String pas = "pas";
  static const String bearerToken = "bearerToken";
  static const String email = "email";
  static const String userName = "userName";

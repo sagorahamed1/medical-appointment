@@ -74,8 +74,6 @@ class AuthController extends GetxController {
   RxBool logInLoading = false.obs;
 
   handleLogIn(String email, password) async {
-
-
     logInLoading(true);
     var headers = {'Content-Type': 'application/json'};
     var body = {
@@ -92,6 +90,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.email, email);
       await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
+      await PrefsHelper.setString(AppConstants.pas, password);
       var role = data['attributes']['role'];
       var isAdmin = data['attributes']['isAdmin'];
 

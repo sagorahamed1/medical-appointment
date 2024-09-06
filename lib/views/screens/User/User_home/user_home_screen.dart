@@ -58,15 +58,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('firebase data ========> ---------------------------------------${firebaseData2?.email}');
+    print('firebase data ========> ---------------------------------dddddddddddddddddddddddddddffffffff-----\n-${firebaseData2?.email}');
     // _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
 
     _profileControler.getProfile();
     _homeController.getCetegory();
     _homeController.getEmergencyDoctor();
     return Scaffold(
-      body:  CallInvitation(
-        userName: '${firebaseData2?.email}',
+      body:  firebaseData2?.email == null ? const SizedBox() :  CallInvitation(
+        id: "${firebaseData2?.email}",
+        name: '${firebaseData2?.firstName} ${firebaseData2?.lastName}',
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -86,8 +87,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           var profileData = _profileControler.profileInfo.value;
                           return TopAppBar(
                             image: profileData.image?.publicFileUrl,
-                            name:
-                                '${profileData.firstName} ${profileData.lastName}',
+                            name: '${profileData.firstName} ${profileData.lastName}',
                           );
                         }),
 
