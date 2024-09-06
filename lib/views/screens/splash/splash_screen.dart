@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../services/firebase_services.dart';
 import '../../../utils/app_images.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +30,18 @@ class _SplashScreenState extends State<SplashScreen> {
     var  islogged = await PrefsHelper.getBool(AppConstants.isLogged);
     var  token = await PrefsHelper.getString(AppConstants.bearerToken);
     var  role = await PrefsHelper.getString(AppConstants.role);
+    var  email = await PrefsHelper.getString(AppConstants.email);
+    var  pas = await PrefsHelper.getString(AppConstants.pas);
+    var  userId = await PrefsHelper.getString(AppConstants.userId);
     print("===========is logged $islogged token $token role $role");
+
+
+    ///***********firebase code*************///
+    AuthService authService = AuthService();
+    authService.login(email, pas, userId);
+    ///***********firebase code*************///
+
+
     if(islogged){
       if(token != null){
         if(role == 'user'){

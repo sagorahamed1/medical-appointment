@@ -58,8 +58,9 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     _profileControler.getProfile();
     // _homeController.getAppointment(status: 'upcomming');
     return Scaffold(
-      body: CallInvitation(
-        userName: '${firebaseData2?.email}',
+      body: firebaseData2?.email == null ? SizedBox() :  CallInvitation(
+        id: "${firebaseData2?.email}",
+        name: '${firebaseData2?.firstName} ${firebaseData2?.lastName}',
         child: SafeArea(
           child: Padding(
             padding:

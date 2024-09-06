@@ -106,8 +106,8 @@ class UserAppointmentsDetailsScreen extends StatelessWidget {
 
                       SizedBox(height: 20.h),
 
-                      CustomButton(
-                          onpress: () {}, title: AppString.completeAppointment)
+                      // CustomButton(
+                      //     onpress: () {}, title: AppString.completeAppointment)
                     ],
                   );
           }),
