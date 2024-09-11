@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/helpers/toast_message_helper.dart';
+import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,7 @@ class UserPatientDetailsController extends GetxController{
     
     var response = await ApiClient.testPostData(ApiConstants.patientDetailsAdd, jsonEncode(body));
 
+    print("===================================response status code = ${response.statusCode}");
     if(response.statusCode == 200 || response.statusCode == 201){
       var patientDetailsId = response.body['data']['attributes']['_id'];
       print("----------patientDetailsId : $patientDetailsId and type ${patientDetailsId.runtimeType}");
@@ -66,9 +68,7 @@ class UserPatientDetailsController extends GetxController{
 
     if(response.statusCode == 200 || response.statusCode == 201){
       patientDetailsLoading(false);
-      Get.back();
-      Get.back();
-      Get.back();
+      Get.offAndToNamed(AppRoutes.userBottomNavBar);
       ToastMessageHelper.showToastMessage('Doctor book successful');
     }else{
       ToastMessageHelper.showToastMessage(response.body['message']);

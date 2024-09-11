@@ -140,8 +140,10 @@ class _UserBookScheduleScreenState extends State<UserBookScheduleScreen> {
                       'price' : '${Get.parameters['price']}',
                       'packageName' : '${Get.parameters['packageName']}',
                       'timeSlot' : selectedTime,
-                      'date' : '$selectedDate'
-                    });
+                      'date' : '$selectedDate',
+                      'isEmergency' : "false",
+                      "doctorId" : "${homeController.doctorDetails.value.doctorId?.id}",
+                    }, arguments: homeController.doctorDetails.value);
                   }
 
 

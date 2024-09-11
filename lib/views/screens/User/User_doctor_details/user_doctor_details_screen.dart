@@ -150,7 +150,8 @@ class UserDoctorDetailsScreen extends StatelessWidget {
                           arguments: doctorInfo,
                           parameters: {
                             'id':
-                            '${doctorInfo.doctorId?.id}'
+                            '${doctorInfo.doctorId?.id}',
+                            'isEmergency' : 'true'
                           });
                     }else{
                       Get.toNamed(AppRoutes.userSelectPackageScreen, arguments: doctorInfo, parameters: {

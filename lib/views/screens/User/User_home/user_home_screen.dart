@@ -280,11 +280,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                         leftBtnOntap: () {
                                           Get.toNamed(
                                               AppRoutes.userDoctorDetailsScreen,
-                                              arguments: emergencyDoctors,
                                               parameters: {
                                                 'id': '${emergencyDoctors.doctorId?.id}',
-                                                'emergencyDoctor' : 'emergencyDoctor'
-                                              });
+                                                'emergencyDoctor' : 'emergencyDoctor',
+                                              },arguments: emergencyDoctors);
                                         },
                                         rightBtnOnTap: () {
                                           Get.toNamed(
@@ -292,7 +291,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                               arguments: emergencyDoctors,
                                               parameters: {
                                                 'id':
-                                                '${emergencyDoctors.doctorId?.id}'
+                                                '${emergencyDoctors.doctorId?.id}',
+                                                'isEmergency' : 'true'
                                               });
                                         },
                                       ),
