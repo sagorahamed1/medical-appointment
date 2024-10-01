@@ -129,17 +129,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   TextInputType.text),
               SizedBox(height: 20.h),
               // const Spacer(),
-              CustomButton(
-                  onpress: () {
-                    _profileControler.profileUpdate(
-                        image: selectedIMage,
-                        firstName: firstNameCtrl.text,
-                        lastName: lastNameCtrl.text,
-                        phone: phoneCtrl.text,
-                        address: addressCtrl.text,
-                        dateOfBirth: dateOfBirthCtrl.text);
-                  },
-                  title: AppString.continues),
+              Obx(()=>
+                 CustomButton(
+                   loading: _profileControler.updateProfileLoading.value,
+                    onpress: () {
+                      _profileControler.profileUpdate(
+                          image: selectedIMage,
+                          firstName: firstNameCtrl.text,
+                          lastName: lastNameCtrl.text,
+                          phone: phoneCtrl.text,
+                          address: addressCtrl.text,
+                          dateOfBirth: dateOfBirthCtrl.text);
+                    },
+                    title: AppString.continues),
+              ),
 
               SizedBox(height: 250.h)
             ],

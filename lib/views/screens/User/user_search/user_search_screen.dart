@@ -66,7 +66,10 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
           child: Column(
             children: [
               Obx(() => searchController.doctorLoading.value
-                  ? const Center(child: CustomLoader())
+                  ? Padding(
+                    padding:  EdgeInsets.only(top: 250.h),
+                    child: const Center(child: CustomLoader()),
+                  )
                   : searchController.doctorLists.isEmpty
                   ? Padding(
                 padding: EdgeInsets.only(top: 200.h),

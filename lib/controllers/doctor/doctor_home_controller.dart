@@ -29,8 +29,7 @@ class DoctorHomeControllerDoctorPart extends GetxController {
   }
 
   RxBool appointmentLoading = false.obs;
-  RxList<DoctorAppointmentModelDoctorPart> appointmentsList =
-      <DoctorAppointmentModelDoctorPart>[].obs;
+  RxList<DoctorAppointmentModelDoctorPart> appointmentsList = <DoctorAppointmentModelDoctorPart>[].obs;
   String currentStatus = '';
   getAppointment({String status = ''}) async {
     if(status != ''){

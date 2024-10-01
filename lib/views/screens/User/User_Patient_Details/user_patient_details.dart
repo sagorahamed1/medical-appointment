@@ -159,33 +159,47 @@ class UserPatientDetailsScreen extends StatelessWidget {
                           loading: _patientDetailsController
                               .patientDetailsLoading.value,
                           onpress: () {
-                            if (_formKey.currentState!.validate()) {
-                              if (data.doctorId?.isEmergency ==  true) {
-                                _patientDetailsController.patienDetailsAdd(
-                                    fullName: fullNameCtrl.text,
-                                    age: ageCtrl.text,
-                                    gender: genderCtrl.text,
-                                    description: problemCtrl.text,
-                                    doctorId: "${data.doctorId?.id}",
-                                    price: "${data.emergencyPrice}",
-                                    packName: "Emergency Price",
-                                    timeSlot: "${TimeFormatHelper.timeFormat(DateTime.now())}",
-                                    date: '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}');
+                            print("=============================emergency doctor : ${data.doctorId?.id}");
+                            print("=====================Doctor Type ${Get.parameters['isEmergency']}");
 
-                              } else {
-                                _patientDetailsController.patienDetailsAdd(
-                                    fullName: fullNameCtrl.text,
-                                    age: ageCtrl.text,
-                                    gender: genderCtrl.text,
-                                    description: problemCtrl.text,
-                                    doctorId: "${Get.parameters['id']}",
-                                    price: "${Get.parameters['price']}",
-                                    packName: "${Get
-                                        .parameters['packageName']}",
-                                    timeSlot: "${Get.parameters['timeSlot']}",
-                                    date: '${Get.parameters['date']}');
+                            try{
+                              if (_formKey.currentState!.validate()) {
+                                if (Get.parameters['isEmergency'] ==  "false") {
+                                  print("===============This is available doctor booking");
+                                  _patientDetailsController.patienDetailsAdd(
+                                      fullName: fullNameCtrl.text,
+                                      age: ageCtrl.text,
+                                      gender: genderCtrl.text,
+                                      description: problemCtrl.text,
+                                      doctorId: "${Get.parameters['id']}",
+                                      price: "${Get.parameters['price']}",
+                                      packName: "${Get
+                                          .parameters['packageName']}",
+                                      timeSlot: "${Get.parameters['timeSlot']}",
+                                      date: '${Get.parameters['date']}');
+
+                                } else if(Get.parameters['isEmergency'] ==  "true"){
+                                  print("===============This is Emergency doctor booking");
+                                  _patientDetailsController.patienDetailsAdd(
+                                      fullName: fullNameCtrl.text,
+                                      age: ageCtrl.text,
+                                      gender: genderCtrl.text,
+                                      description: problemCtrl.text,
+                                      doctorId: "${data.doctorId?.id}",
+                                      price: "${data.emergencyPrice}",
+                                      packName: "Emergency Price",
+                                      timeSlot: "${TimeFormatHelper.timeFormat(DateTime.now())}",
+                                      date: '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}');
+
+                                }
                               }
+
+                            }catch(e,s){
+                              print("==========e :| $e");
+                              print("==========s :| $s");
                             }
+
+
                           },
                           title: AppString.continues),
                       SizedBox(height: 20.h),

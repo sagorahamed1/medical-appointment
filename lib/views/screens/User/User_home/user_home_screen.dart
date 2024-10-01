@@ -37,9 +37,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   int selectedIndex = 0;
   String categoryName = '';
+  String? userName;
 
   @override
   void initState() {
+    _profileControler.getProfile();
     fetchFirebaseData2();
     super.initState();
   }
@@ -49,8 +51,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   fetchFirebaseData2() async {
     var userId = await PrefsHelper.getString(AppConstants.userId);
     var data = await authService.getUserDataById(userId);
+    var name = await PrefsHelper.getString(AppConstants.userName);
     if (data != null) {
       setState(() {
+        userName = name;
         firebaseData2 = data;
       });
     }
@@ -65,9 +69,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     _homeController.getCetegory();
     _homeController.getEmergencyDoctor();
     return Scaffold(
-      body:  firebaseData2?.email == null ? const SizedBox() :  CallInvitation(
+      body:  firebaseData2?.email == null ? const SizedBox() :
+      CallInvitation(
         id: "${firebaseData2?.email}",
-        name: '${firebaseData2?.firstName} ${firebaseData2?.lastName}',
+        name: '$userName',
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -87,7 +92,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           var profileData = _profileControler.profileInfo.value;
                           return TopAppBar(
                             image: profileData.image?.publicFileUrl,
-                            name: '${profileData.firstName} ${profileData.lastName}',
+                            name: '${userName}',
                           );
                         }),
 
@@ -280,11 +285,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                         leftBtnOntap: () {
                                           Get.toNamed(
                                               AppRoutes.userDoctorDetailsScreen,
-                                              arguments: emergencyDoctors,
                                               parameters: {
                                                 'id': '${emergencyDoctors.doctorId?.id}',
-                                                'emergencyDoctor' : 'emergencyDoctor'
-                                              });
+                                                'emergencyDoctor' : 'emergencyDoctor',
+                                              },arguments: emergencyDoctors);
                                         },
                                         rightBtnOnTap: () {
                                           Get.toNamed(
@@ -292,7 +296,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                               arguments: emergencyDoctors,
                                               parameters: {
                                                 'id':
-                                                '${emergencyDoctors.doctorId?.id}'
+                                                '${emergencyDoctors.doctorId?.id}',
+                                                'isEmergency' : 'true'
                                               });
                                         },
                                       ),

@@ -284,7 +284,7 @@ class Participant {
   final String? dateOfBirth;
   final String? rating;
   final int? reviewCount;
-  final int? earningAmount;
+  final num? earningAmount;
 
   Participant({
     this.id,

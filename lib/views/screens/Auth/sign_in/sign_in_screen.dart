@@ -19,7 +19,7 @@ import '../../../widgets/custom_text.dart';
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
- final TextEditingController emailCtrl = TextEditingController(text: kDebugMode ? 'patient@gmail.com' : '',);
+ final TextEditingController emailCtrl = TextEditingController(text: kDebugMode ? 'sss@gmail.com' : '',);
  final TextEditingController passwordCtrl = TextEditingController(text: kDebugMode ? '1qazxsw2' : '');
   final AuthController _authController = Get.find<AuthController>();
 
@@ -32,6 +32,7 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: CustomText(
           text: AppString.signIn,

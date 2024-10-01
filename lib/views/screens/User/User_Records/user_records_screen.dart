@@ -109,7 +109,7 @@ class UserRecordsScreen extends StatelessWidget {
                                           onpress: () {
                                             Get.toNamed(AppRoutes.patientDetailsForRecordScreen, arguments: record);
                                           },
-                                          title: 'See Record')
+                                          title: 'View Medical Record')
                                     ],
                                   ),
                                 ),

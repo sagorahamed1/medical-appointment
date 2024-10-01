@@ -69,7 +69,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             Obx(() {
               return Expanded(
                 child: notificationController.notificationLoading.value
-                    ? CustomLoader()
+                    ? const CustomLoader()
                     : notificationController.notifications.isEmpty
                         ? CustomText(text: 'No notifications yet')
                         : ListView.builder(
