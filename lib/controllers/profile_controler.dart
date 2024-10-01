@@ -28,7 +28,7 @@ class ProfileControler extends GetxController{
     if(response.statusCode == 200){
       var responseData = response.body;
       profileInfo.value = ProfileModel.fromJson(responseData['data']['attributes']);
-      await PrefsHelper.setString(AppConstants.userName, "${responseData['data']['attributes']['firstName']} responseData['data']['attributes']['lastName']");
+      await PrefsHelper.setString(AppConstants.userName, "${responseData['data']['attributes']['firstName']} ${responseData['data']['attributes']['lastName']}");
       print("get succussful");
       profileLoading(false);
       setRxRequestStatus(Status.completed);
@@ -50,15 +50,15 @@ class ProfileControler extends GetxController{
 
   ///===============profile update================<>
   RxBool updateProfileLoading = false.obs;
-
   profileUpdate({
     File? image,
     String? firstName, lastName, dateOfBirth, phone, address
   }) async {
+
+    print("****************************image path : ${image}");
     updateProfileLoading(true);
     String token = await PrefsHelper.getString(AppConstants.bearerToken);
-    List<MultipartBody> multipartBody =
-    image == null ? [] : [MultipartBody("image", image)];
+    List<MultipartBody> multipartBody = image == null ? [] : [MultipartBody("image", image)];
 
     var headers = {
       'Authorization': 'Bearer $token'
@@ -80,6 +80,8 @@ class ProfileControler extends GetxController{
       Get.back();
       Get.back();
       ToastMessageHelper.showToastMessage('Profile Updated Successful');
+      updateProfileLoading(false);
+    }else {
       updateProfileLoading(false);
     }
   }

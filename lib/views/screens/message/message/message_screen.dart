@@ -123,7 +123,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                         '${users.participants?[0].image?.publicFileUrl}',
                                         "$userName (${users.appointmentId?.patientDetailsId?.fullName})",
                                          users.lastMessage?.content?.message ?? '',
-                                        "${users.updatedAt}")),
+                                        "${users.lastMessage?.createdAt ?? DateTime.now()}")),
                               );
                             },
                           ),

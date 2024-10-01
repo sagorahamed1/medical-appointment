@@ -93,16 +93,16 @@ class ProfileScreen extends StatelessWidget {
                             })
                                 : const SizedBox(),
 
-                            ///=========================Appointment Requests=========================>
-                            profileData.role == "doctor"
-                                ? ListTileWidget(
-                                AppString.appointmentRequests,
-                                AppIcons.medicalRecord,
-                                AppColors.primaryColor, () {
-                              Get.toNamed(AppRoutes
-                                  .doctorAppointmentRequestScreen);
-                            })
-                                : const SizedBox(),
+                            // ///=========================Appointment Requests=========================>
+                            // profileData.role == "doctor"
+                            //     ? ListTileWidget(
+                            //     AppString.appointmentRequests,
+                            //     AppIcons.medicalRecord,
+                            //     AppColors.primaryColor, () {
+                            //   Get.toNamed(AppRoutes
+                            //       .doctorAppointmentRequestScreen);
+                            // })
+                            //     : const SizedBox(),
 
                             ///=========================Earning=========================>
                             profileData.role == "doctor"

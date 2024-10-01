@@ -293,7 +293,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ? senderBubble(
             context,
             "${message.content?.message}",
-            message.receiverId?.image?.publicFileUrl,
+            message.senderId?.image?.publicFileUrl,
             message,
           )
               : receiverBubble(
@@ -365,13 +365,13 @@ class _ChatScreenState extends State<ChatScreen> {
   Row buildActionButtons() {
     return Row(
       children: [
-        SizedBox(width: 14.w),
-        SvgPicture.asset(AppIcons.attachFile,
-            height: 20.h, width: 20.w, fit: BoxFit.cover),
+        // SizedBox(width: 14.w),
+        // SvgPicture.asset(AppIcons.attachFile,
+        //     height: 20.h, width: 20.w, fit: BoxFit.cover),
         SizedBox(width: 20.w),
         GestureDetector(
           onTap: (){
-            messageController.text = '\u{1F602}';
+            messageController.text = '\u{1F44D}';
             sendMessage();
           },
           child: SvgPicture.asset(AppIcons.like,
@@ -394,17 +394,30 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget receiverBubble(
       BuildContext context, String message, String? profileImage, ChatModel chatModel) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        CustomNetworkImage(
-          imageUrl: "${ApiConstants.imageBaseUrl}/$profileImage",
-          height: 35,
-          width: 35,
-          boxShape: BoxShape.circle,
-          border: Border.all(color: AppColors.gray767676, width: 1),
+        Padding(
+          padding:  EdgeInsets.only(top: 10.h),
+          child: CustomNetworkImage(
+            imageUrl: "${ApiConstants.imageBaseUrl}/$profileImage",
+            height: 25,
+            width: 25,
+            boxShape: BoxShape.circle,
+            border: Border.all(color: AppColors.gray767676, width: 1),
+          ),
         ),
         SizedBox(width: 5.w),
+
+
+        chatModel.content?.messageType == 'image' ?
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomNetworkImage(
+              borderRadius: BorderRadius.circular(12.r),
+              imageUrl: '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}', height: 200.h, width: 200.w),
+        ) : message == "\u{1F44D}" ? CustomText(text: "$message", textAlign: TextAlign.start, fontsize: 25):
+
 
         Expanded(
           child: ChatBubble(
@@ -461,7 +474,7 @@ class _ChatScreenState extends State<ChatScreen> {
           child: CustomNetworkImage(
               borderRadius: BorderRadius.circular(12.r),
               imageUrl: '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}', height: 200.h, width: 200.w),
-        ) :
+        ) : message == "\u{1F44D}" ? Text("$message", style: TextStyle(fontSize: 25),):
         Expanded(
           child: ChatBubble(
             clipper: ChatBubbleClipper5(type: BubbleType.sendBubble),
@@ -482,7 +495,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      TimeFormatHelper.timeFormat(chatModel.createdAt!),
+                      TimeFormatHelper.timeFormat(chatModel.createdAt ?? DateTime.now()),
                       textAlign: TextAlign.end,
                       style: TextStyle(color: Colors.white, fontSize: 12.sp),
                     ),
@@ -493,12 +506,15 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         SizedBox(width: 4.w),
-        CustomNetworkImage(
-          imageUrl: '${ApiConstants.imageBaseUrl}/$profileImage',
-          height: 35,
-          width: 35,
-          boxShape: BoxShape.circle,
-          border: Border.all(color: AppColors.gray767676, width: 1),
+        Padding(
+          padding:  EdgeInsets.only(top: 10.h),
+          child: CustomNetworkImage(
+            imageUrl: '${ApiConstants.imageBaseUrl}/$profileImage',
+            height: 25,
+            width: 25,
+            boxShape: BoxShape.circle,
+            border: Border.all(color: AppColors.gray767676, width: 1),
+          ),
         ),
       ],
     );

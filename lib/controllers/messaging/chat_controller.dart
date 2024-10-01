@@ -104,48 +104,25 @@ class ChatController extends GetxController {
     SocketServices.emit('send-message', body);
   }
 
-
-
-
-  // ///  scroll bottom and end
-  // scrollToEnd() {
-  //   Timer(const Duration(milliseconds: 100), () {
-  //     if (scrollController.hasClients) {
-  //       scrollController.animateTo(scrollController.position.minScrollExtent,
-  //           duration: Duration(milliseconds: 100), curve: Curves.decelerate);
-  //     }
-  //   });
-  // }
-  //
-  // ///  scroll fast time
-  // scrollTime() async {
-  //   SchedulerBinding.instance.addPostFrameCallback((_) async {
-  //     scrollController.jumpTo(
-  //       scrollController.position.minScrollExtent,
-  //     );
-  //   });
-  // }
-
   sendMessageWithImage(File? image, String receiverId, String chatId)async{
     String token = await PrefsHelper.getString(AppConstants.bearerToken);
-    List<MultipartBody> multipartBody =
-    image == null ? [] : [MultipartBody("image", image)];
+    List<MultipartBody> multipartBody = image == null ? [] : [MultipartBody("image", image)];
     var body = {
       'messageType' : 'image',
       'message' : 'image',
       'receiverId' : '$receiverId',
       'chatId' : '$chatId',
     };
+
     var headers = {
       'Authorization': 'Bearer $token'
     };
-
-
     var response = await ApiClient.postMultipartData(
         ApiConstants.senMessageWithFileEndPoint, body,
         multipartBody: multipartBody, headers: headers);
 
     if(response.statusCode == 200 || response.statusCode == 201){
+      SocketServices.emitWithAck('send-message', body);
       print("=================message send successful");
     }
   }

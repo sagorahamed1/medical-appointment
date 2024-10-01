@@ -32,9 +32,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
 
    final ProfileControler _profileControler = Get.find<ProfileControler>();
+   String? userName;
 
   @override
   void initState() {
+    _profileControler.getProfile();
     fetchFirebaseData2();
     super.initState();
   }
@@ -44,8 +46,10 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   fetchFirebaseData2() async {
     var userId = await PrefsHelper.getString(AppConstants.userId);
     var data = await authService.getUserDataById(userId);
+    var name = await PrefsHelper.getString(AppConstants.userName);
     if (data != null) {
       setState(() {
+        userName = name;
         firebaseData2 = data;
       });
     }
@@ -60,7 +64,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     return Scaffold(
       body: firebaseData2?.email == null ? SizedBox() :  CallInvitation(
         id: "${firebaseData2?.email}",
-        name: '${firebaseData2?.firstName} ${firebaseData2?.lastName}',
+        name: '${userName}',
         child: SafeArea(
           child: Padding(
             padding:
@@ -74,7 +78,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                    children: [
                       DoctorTopAppBar(
                        image: profileData.image?.publicFileUrl,
-                        name: '${profileData.firstName} ${profileData.lastName}',
+                        name: '${userName}',
                      ),
                      SizedBox(height: 20.h),
                      Row(

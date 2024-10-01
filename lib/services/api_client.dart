@@ -269,49 +269,122 @@ class ApiClient extends GetxService {
   }
 
   //==========================================> Put Multipart Data <======================================
-  static Future<Response> putMultipartData(String uri, Map<String, String> body,
-      {List<MultipartBody>? multipartBody,
+  // static Future<Response> putMultipartData(String uri, Map<String, String> body,
+  //     {List<MultipartBody>? multipartBody,
+  //       List<MultipartListBody>? multipartListBody,
+  //       Map<String, String>? headers}) async {
+  //   try {
+  //     bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+  //
+  //     var mainHeaders = {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer $bearerToken'
+  //     };
+  //
+  //     debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+  //     debugPrint('====> API Body: $body with ${multipartBody?.length} picture');
+  //
+  //     var request =
+  //     http.MultipartRequest('PUT', Uri.parse(ApiConstants.baseUrl + uri));
+  //     request.fields.addAll(body);
+  //
+  //     if (multipartBody!.isNotEmpty) {
+  //       multipartBody.forEach((element) async {
+  //         debugPrint("path : ${element.file.path}");
+  //         String? mimeType = mime(element.file.path);
+  //         request.files.add(http.MultipartFile(
+  //           element.key,
+  //           element.file.readAsBytes().asStream(),
+  //           element.file.lengthSync(),
+  //           contentType: MediaType.parse(mimeType!),
+  //         ));
+  //       });
+  //     }
+  //     request.headers.addAll(mainHeaders);
+  //     http.StreamedResponse response = await request.send();
+  //     final content = await response.stream.bytesToString();
+  //     debugPrint(
+  //         '====> API Response: [${response.statusCode}}] $uri\n$content');
+  //
+  //     return Response(
+  //         statusCode: response.statusCode,
+  //         statusText: noInternetMessage,
+  //         body: json.decode(content));
+  //   } catch (e,s) {
+  //     print("====================================e $e");
+  //     print("====================================s $s");
+  //     return const Response(statusCode: 1, statusText: noInternetMessage);
+  //   }
+  // }
+
+
+  static Future<Response> putMultipartData(
+      String uri,
+      Map<String, String> body,
+      {
+        List<MultipartBody>? multipartBody,
         List<MultipartListBody>? multipartListBody,
-        Map<String, String>? headers}) async {
+        Map<String, String>? headers
+      }
+      ) async {
     try {
+      // Fetch bearer token from preferences
       bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
 
+      // Set up main headers with Authorization and Content-Type for multipart data
       var mainHeaders = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data', // Change to multipart form-data
         'Authorization': 'Bearer $bearerToken'
       };
 
+      // Log API Call details for debugging
       debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
-      debugPrint('====> API Body: $body with ${multipartBody?.length} picture');
+      debugPrint('====> API Body: $body with ${multipartBody?.length ?? 0} picture');
 
-      var request =
-      http.MultipartRequest('PUT', Uri.parse(ApiConstants.baseUrl + uri));
-      request.fields.addAll(body);
+      // Create a MultipartRequest for PUT
+      var request = http.MultipartRequest('PUT', Uri.parse(ApiConstants.baseUrl + uri));
+      request.fields.addAll(body); // Add fields to request
 
-      if (multipartBody!.isNotEmpty) {
-        multipartBody.forEach((element) async {
+      // Check if multipartBody exists and is not empty
+      if (multipartBody != null && multipartBody.isNotEmpty) {
+        for (var element in multipartBody) {
           debugPrint("path : ${element.file.path}");
-          String? mimeType = mime(element.file.path);
-          request.files.add(http.MultipartFile(
-            element.key,
-            element.file.readAsBytes().asStream(),
-            element.file.lengthSync(),
-            contentType: MediaType.parse(mimeType!),
-          ));
-        });
+          // Check if the file exists
+          if (element.file.existsSync()) {
+            String? mimeType = mime(element.file.path);
+            // Add file to the multipart request
+            request.files.add(await http.MultipartFile.fromPath(
+              element.key,
+              element.file.path,
+              contentType: MediaType.parse(mimeType!),
+            ));
+          } else {
+            debugPrint("File does not exist: ${element.file.path}");
+          }
+        }
       }
-      request.headers.addAll(mainHeaders);
-      http.StreamedResponse response = await request.send();
-      final content = await response.stream.bytesToString();
-      debugPrint(
-          '====> API Response: [${response.statusCode}}] $uri\n$content');
 
+      // Add headers to the request
+      request.headers.addAll(mainHeaders);
+
+      // Send the request and get the streamed response
+      http.StreamedResponse response = await request.send();
+      // Convert streamed response to a string
+      final content = await response.stream.bytesToString();
+
+      // Log API response details
+      debugPrint('====> API Response: [${response.statusCode}] $uri\n$content');
+
+      // Return response with status code, body, and other details
       return Response(
-          statusCode: response.statusCode,
-          statusText: noInternetMessage,
-          body: json.decode(content));
-    } catch (e) {
-      print("====================================e $e");
+        statusCode: response.statusCode,
+        statusText: response.statusCode == 200 ? 'Success' : noInternetMessage,
+        body: json.decode(content),
+      );
+    } catch (e, s) {
+      // Handle any exceptions and print error details
+      print("==================================== Error: $e");
+      print("==================================== Stacktrace: $s");
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
