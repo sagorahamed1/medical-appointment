@@ -31,12 +31,12 @@ class DoctorHomeScreen extends StatefulWidget {
 class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
 
-   final ProfileControler _profileControler = Get.find<ProfileControler>();
+
    String? userName;
+   String? image;
 
   @override
   void initState() {
-    _profileControler.getProfile();
     fetchFirebaseData2();
     super.initState();
   }
@@ -47,9 +47,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     var userId = await PrefsHelper.getString(AppConstants.userId);
     var data = await authService.getUserDataById(userId);
     var name = await PrefsHelper.getString(AppConstants.userName);
+    var demoImage = await PrefsHelper.getString(AppConstants.image);
     if (data != null) {
       setState(() {
         userName = name;
+        image = demoImage;
         firebaseData2 = data;
       });
     }
@@ -59,7 +61,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   @override
   Widget build(BuildContext context) {
     _homeController.getDoctorStatus();
-    _profileControler.getProfile();
+    // _profileControler.getProfile();
     // _homeController.getAppointment(status: 'upcomming');
     return Scaffold(
       body: firebaseData2?.email == null ? SizedBox() :  CallInvitation(
@@ -73,11 +75,11 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
               children: [
 
                Obx((){
-                 var profileData = _profileControler.profileInfo.value;
+                 _homeController.status.value;
                 return Column(
                    children: [
                       DoctorTopAppBar(
-                       image: profileData.image?.publicFileUrl,
+                       image: "$image",
                         name: '${userName}',
                      ),
                      SizedBox(height: 20.h),

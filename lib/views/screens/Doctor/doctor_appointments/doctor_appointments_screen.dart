@@ -22,14 +22,16 @@ class DoctorAppointmentsScreen extends StatefulWidget {
   const DoctorAppointmentsScreen({super.key});
 
   @override
-  State<DoctorAppointmentsScreen> createState() => _UserAppointmentsScreenState();
+  State<DoctorAppointmentsScreen> createState() =>
+      _UserAppointmentsScreenState();
 }
 
 class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
-  final DoctorHomeControllerDoctorPart _homeController = Get.put(DoctorHomeControllerDoctorPart());
+  final DoctorHomeControllerDoctorPart _homeController =
+      Get.put(DoctorHomeControllerDoctorPart());
   final NetworkController networkController = Get.put(NetworkController());
   final ChatListController chatController = Get.put(ChatListController());
   final ScrollController _scrollController = ScrollController();
@@ -51,15 +53,12 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
     });
   }
 
-
   @override
   void dispose() {
     _scrollController.dispose();
     _tabController?.dispose();
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,126 +111,151 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
           physics: const NeverScrollableScrollPhysics(),
           children: [
             ///=======================Up Coming Lists====================>
-            Obx(()=>
-            _homeController.appointmentLoading.value ? Center(child: Padding(
-              padding:  EdgeInsets.only(top: 100.h),
-              child: const CustomLoader(),
-            )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
-               ListView.builder(
-                 controller: _scrollController,
-                itemCount: _homeController.appointmentsList.length+1,
-                itemBuilder: (context, index) {
-
-                  if(index < _homeController.appointmentsList.length){
-                    var appointment = _homeController.appointmentsList[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16.h),
-                      child: AppointmentsCard(
-                        image: AppImages.getStarted1,
-                        name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
-                        appointmentsType: "${appointment.status}",
-                        date: appointment.createdAt,
-                        time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
-                        btnText: 'See Details',
-                        btnOnTap: () {
-                          Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
-                            'id' : '${appointment.id}',
-                            'type' : 'upcomming'
-                          });
-                        },
-                      ),
-                    );
-                  }else if (index >=
-                      _homeController.totalResult) {
-                    return null;
-                  } else {
-                    return const CustomLoader();
-                  }
-
-                },
-              ),
+            Obx(
+              () => _homeController.appointmentLoading.value
+                  ? Center(
+                      child: Padding(
+                      padding: EdgeInsets.only(top: 100.h),
+                      child: const CustomLoader(),
+                    ))
+                  : _homeController.appointmentsList.isEmpty
+                      ? Image.asset(AppImages.noDataImage)
+                      : ListView.builder(
+                          controller: _scrollController,
+                          itemCount:
+                              _homeController.appointmentsList.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index < _homeController.appointmentsList.length) {
+                              var appointment =
+                                  _homeController.appointmentsList[index];
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 16.h),
+                                child: AppointmentsCard(
+                                  image: AppImages.getStarted1,
+                                  name:
+                                      "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                                  appointmentsType: "${appointment.status}",
+                                  date: appointment.createdAt,
+                                  time: TimeFormatHelper.timeFormat(
+                                      appointment.createdAt!),
+                                  btnText: 'See Details',
+                                  btnOnTap: () {
+                                    Get.toNamed(
+                                        AppRoutes
+                                            .dcotorAppointmentsDetailsScreen,
+                                        parameters: {
+                                          'id': '${appointment.id}',
+                                          'type': 'upcomming'
+                                        });
+                                  },
+                                ),
+                              );
+                            } else if (index >= _homeController.totalResult) {
+                              return null;
+                            } else {
+                              return const CustomLoader();
+                            }
+                          },
+                        ),
             ),
 
             ///=======================Active Lists====================>
-            Obx(()=>
-               _homeController.appointmentLoading.value ? Center(child: Padding(
-                 padding:  EdgeInsets.only(top: 100.h),
-                 child: const CustomLoader(),
-               )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
-               ListView.builder(
-                 controller: _scrollController,
-                itemCount: _homeController.appointmentsList.length+1,
-                itemBuilder: (context, index) {
-                  if(index < _homeController.appointmentsList.length){
-                    var appointment = _homeController.appointmentsList[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16.h),
-                      child: AppointmentsCard(
-                        image: AppImages.getStarted1,
-                        name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
-                        leftBtnName: 'See Details',
-                        rightBtnName: 'Message',
-                        appointmentsType:  "${appointment.status}",
-                        date: appointment.createdAt,
-                        time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
-                        leftBtnOnTap: () {
-                          Get.toNamed(AppRoutes.dcotorAppointmentsDetailsScreen, parameters: {
-                            'id' : "${appointment.id}"
-                          });
-                        },
-                        ///============Create Chat=======>
-                        rightBtnOnTap: () {
-                           chatController.createChat(
-                             receiverId: appointment.patientId?.id,
-                             appointmentId: appointment.id
-                           );
-                        },
+            Obx(
+              () => _homeController.appointmentLoading.value
+                  ? Center(
+                      child: Padding(
+                      padding: EdgeInsets.only(top: 100.h),
+                      child: const CustomLoader(),
+                    ))
+                  : _homeController.appointmentsList.isEmpty
+                      ? Image.asset(AppImages.noDataImage)
+                      : ListView.builder(
+                          controller: _scrollController,
+                          itemCount:
+                              _homeController.appointmentsList.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index <
+                                _homeController.appointmentsList.length) {
+                              var appointment =
+                                  _homeController.appointmentsList[index];
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 16.h),
+                                child: AppointmentsCard(
+                                  image: AppImages.getStarted1,
+                                  name:
+                                      "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                                  leftBtnName: 'See Details',
+                                  rightBtnName: 'Message',
+                                  appointmentsType: "${appointment.status}",
+                                  date: appointment.createdAt,
+                                  time: TimeFormatHelper.timeFormat(
+                                      appointment.createdAt!),
+                                  leftBtnOnTap: () {
+                                    Get.toNamed(
+                                        AppRoutes
+                                            .dcotorAppointmentsDetailsScreen,
+                                        parameters: {
+                                          'id': "${appointment.id}"
+                                        });
+                                  },
 
-                      ),
-                    );
-                  }else if (index >=
-                      _homeController.totalResult) {
-                    return null;
-                  } else {
-                    return const CustomLoader();
-                  }
-
-                },
-              ),
+                                  ///============Create Chat=======>
+                                  rightBtnOnTap: () {
+                                    chatController.createChat(
+                                        receiverId: appointment.patientId?.id,
+                                        appointmentId: appointment.id);
+                                  },
+                                ),
+                              );
+                            } else if (index >= _homeController.totalResult) {
+                              return null;
+                            } else {
+                              return const CustomLoader();
+                            }
+                          },
+                        ),
             ),
 
             ///=======================completed Lists====================>
-            Obx(()=>
-            _homeController.appointmentLoading.value ? Center(child: Padding(
-              padding:  EdgeInsets.only(top: 100.h),
-              child: const CustomLoader(),
-            )) : _homeController.appointmentsList.isEmpty ? Image.asset(AppImages.noDataImage) :
-               ListView.builder(
-                 controller: _scrollController,
-                itemCount: _homeController.appointmentsList.length+1,
-                itemBuilder: (context, index) {
-                  if(index < _homeController.appointmentsList.length){
-                    var appointment = _homeController.appointmentsList[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 16.h),
-                      child: AppointmentsCard(
-                        image: AppImages.getStarted1,
-                        name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
-                        appointmentsType:  "${appointment.status}",
-                        date: appointment.createdAt,
-                        time:  TimeFormatHelper.timeFormat(appointment.createdAt!),
-                        leftBtnName: 'See Details',
-                        rightBtnName: 'Send Prescription',
-                      ),
-                    );
-                  }else if (index >= _homeController.totalResult) {
-                    return null;
-                  } else {
-                    return const CustomLoader();
-                  }
-
-                },
-              ),
+            Obx(
+              () => _homeController.appointmentLoading.value
+                  ? Center(
+                      child: Padding(
+                      padding: EdgeInsets.only(top: 100.h),
+                      child: const CustomLoader(),
+                    ))
+                  : _homeController.appointmentsList.isEmpty
+                      ? Image.asset(AppImages.noDataImage)
+                      : ListView.builder(
+                          controller: _scrollController,
+                          itemCount:
+                              _homeController.appointmentsList.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index <
+                                _homeController.appointmentsList.length) {
+                              var appointment =
+                                  _homeController.appointmentsList[index];
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: 16.h),
+                                child: AppointmentsCard(
+                                  image: AppImages.getStarted1,
+                                  name:
+                                      "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                                  appointmentsType: "${appointment.status}",
+                                  date: appointment.createdAt,
+                                  time: TimeFormatHelper.timeFormat(
+                                      appointment.createdAt!),
+                                  leftBtnName: 'See Details',
+                                  rightBtnName: 'Send Prescription',
+                                ),
+                              );
+                            } else if (index >= _homeController.totalResult) {
+                              return null;
+                            } else {
+                              return const CustomLoader();
+                            }
+                          },
+                        ),
             ),
           ],
         ),
@@ -239,8 +263,6 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
     );
   }
 }
-
-
 
 class AppointmentsCard extends StatelessWidget {
   final String? image;
@@ -258,16 +280,18 @@ class AppointmentsCard extends StatelessWidget {
 
   const AppointmentsCard(
       {super.key,
-        this.image,
-        this.name,
-        this.messageIcon,
-        this.appointmentsType,
-        this.date,
-        this.time,
-        this.leftBtnName,
-        this.leftBtnOnTap,
-        this.rightBtnName,
-        this.rightBtnOnTap, this.btnText, this.btnOnTap});
+      this.image,
+      this.name,
+      this.messageIcon,
+      this.appointmentsType,
+      this.date,
+      this.time,
+      this.leftBtnName,
+      this.leftBtnOnTap,
+      this.rightBtnName,
+      this.rightBtnOnTap,
+      this.btnText,
+      this.btnOnTap});
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +310,7 @@ class AppointmentsCard extends StatelessWidget {
                 Container(
                     clipBehavior: Clip.antiAlias,
                     decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
+                        BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
                     child: Image.asset(
                       "$image",
                       height: 120,
@@ -318,13 +342,13 @@ class AppointmentsCard extends StatelessWidget {
                               messageIcon == null
                                   ? const SizedBox()
                                   : Container(
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xffB8C1CF)),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(6.r),
-                                    child: SvgPicture.asset("$messageIcon"),
-                                  )),
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xffB8C1CF)),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(6.r),
+                                        child: SvgPicture.asset("$messageIcon"),
+                                      )),
                             ],
                           ),
                           SizedBox(height: 14.h),
@@ -357,7 +381,7 @@ class AppointmentsCard extends StatelessWidget {
                           ),
                           CustomText(
                             text:
-                            "${TimeFormatHelper.formatDate(date!)} | $time",
+                                "${TimeFormatHelper.formatDate(date!)} | $time",
                             color: Colors.black,
                             maxline: 2,
                             fontsize: 12.h,
@@ -371,43 +395,45 @@ class AppointmentsCard extends StatelessWidget {
                 )
               ],
             ),
-
-            leftBtnName == null ? Column(
-              children: [
-                SizedBox(height: 14.h),
-                GestureDetector(
-                  onTap: btnOnTap,
-                  child: Container(
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.r),
-                        color: AppColors.primaryColor
-                    ),
-                    child: Center(
-                      child: CustomText(text: '$btnText', color: Colors.white),
-                    ),
-                  ),
-                )
-              ],
-            )
-                :
-
-            Column(
-              children: [
-                SizedBox(height: 14.h),
-                const Divider(),
-                SizedBox(height: 14.h),
-                leftBtnName == null ? CustomButton(onpress: (){btnOnTap;}, title: '$btnText') :
-                CustomTwoButon(
-                  btnRadius: 100,
-                    width: 154.w,
-                    btnNameList: ["$leftBtnName", '$rightBtnName'],
-                    rightBtnOnTap: rightBtnOnTap,
-                    leftBtnOnTap: leftBtnOnTap,
-                    initialSeclected: 0)
-              ],
-            )
-
+            leftBtnName == null
+                ? Column(
+                    children: [
+                      SizedBox(height: 14.h),
+                      GestureDetector(
+                        onTap: btnOnTap,
+                        child: Container(
+                          height: 40.h,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24.r),
+                              color: AppColors.primaryColor),
+                          child: Center(
+                            child: CustomText(
+                                text: '$btnText', color: Colors.white),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                : Column(
+                    children: [
+                      SizedBox(height: 14.h),
+                      const Divider(),
+                      SizedBox(height: 14.h),
+                      leftBtnName == null
+                          ? CustomButton(
+                              onpress: () {
+                                btnOnTap;
+                              },
+                              title: '$btnText')
+                          : CustomTwoButon(
+                              btnRadius: 100,
+                              width: 154.w,
+                              btnNameList: ["$leftBtnName", '$rightBtnName'],
+                              rightBtnOnTap: rightBtnOnTap,
+                              leftBtnOnTap: leftBtnOnTap,
+                              initialSeclected: 0)
+                    ],
+                  )
           ],
         ),
       ),

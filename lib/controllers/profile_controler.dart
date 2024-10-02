@@ -4,13 +4,27 @@ import 'dart:io';
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/models/profile_model.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 import '../helpers/toast_message_helper.dart';
 import '../services/api_client.dart';
 import '../services/api_constants.dart';
 import '../utils/app_constant.dart';
+import '../views/screens/profile/profile/profile_screen.dart';
 
 class ProfileControler extends GetxController{
+
+  RxString? userName = "".obs;
+  RxString? image = ''.obs;
+
+
+  fetchData() async {
+    refresh();
+     userName?.value = await PrefsHelper.getString(AppConstants.userName);
+     image?.value = await PrefsHelper.getString(AppConstants.image);
+     update();
+  }
 
   @override
   void onInit() {
@@ -29,6 +43,9 @@ class ProfileControler extends GetxController{
       var responseData = response.body;
       profileInfo.value = ProfileModel.fromJson(responseData['data']['attributes']);
       await PrefsHelper.setString(AppConstants.userName, "${responseData['data']['attributes']['firstName']} ${responseData['data']['attributes']['lastName']}");
+      await PrefsHelper.setString(AppConstants.image, "${responseData['data']['attributes']['image']["publicFileURL"]}");
+
+
       print("get succussful");
       profileLoading(false);
       setRxRequestStatus(Status.completed);
@@ -77,9 +94,14 @@ class ProfileControler extends GetxController{
 
     print("=======> ${response.body}");
     if (response.statusCode == 200 || response.statusCode == 201) {
+      await PrefsHelper.setString(AppConstants.image, response.body["data"]["attributes"]["image"]["publicFileURL"]);
       Get.back();
       Get.back();
-      ToastMessageHelper.showToastMessage('Profile Updated Successful');
+
+      fetchData();
+      update();
+
+      ToastMessageHelper.showToastMessage('${response.body["message"]}');
       updateProfileLoading(false);
     }else {
       updateProfileLoading(false);

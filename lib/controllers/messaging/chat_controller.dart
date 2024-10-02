@@ -25,8 +25,13 @@ class ChatController extends GetxController {
 
 
   void loadMore() {
+    print("****************************Total page : $page");
+    print("****************************Total page : $totalPage");
+    print("****************************Total currectPage : $currectPage");
+    print("****************************Total result : $totalResult");
     if (totalPage > page.value) {
       page.value += 1;
+      getChatList();
       update();
     }
   }
@@ -49,7 +54,7 @@ class ChatController extends GetxController {
           ChatModel demoData = ChatModel.fromJson(data);
           // print("---------------demoData: ${demoData.senderId} \n ${demoData.runtimeType}");
           chatMessages.insert(0, demoData);
-          // chatMessages.add(demoData);
+          //  chatMessages.add(demoData);
           chatMessages.refresh();
           update();
           print('Message added to chatMessages list');
@@ -72,18 +77,20 @@ class ChatController extends GetxController {
   }
 
 
+
   getChatList({String id = ''}) async {
     getChatLoading(true);
     if (id != '') {
       chatId = id;
     }
-    var response =
-        await ApiClient.getData(ApiConstants.getChatEndPoint(chatId));
-
+    var response = await ApiClient.getData(ApiConstants.getChatEndPoint(chatId, page.value));
     if (response.statusCode == 200) {
-      chatMessages.value = List<ChatModel>.from(response.body['data']
-              ['attributes']
-          .map((x) => ChatModel.fromJson(x)));
+      totalPage = jsonDecode(response.body['pagination']['totalPages'].toString());
+      currectPage = jsonDecode(response.body['pagination']['currentPage'].toString());
+      totalResult = jsonDecode(response.body['pagination']['totalUsers'].toString()) ?? 0;
+
+      var data = List<ChatModel>.from(response.body['data']['attributes'].map((x) => ChatModel.fromJson(x)));
+      chatMessages.addAll(data);
       chatMessages.refresh();
       update();
       getChatLoading(false);
@@ -123,6 +130,9 @@ class ChatController extends GetxController {
 
     if(response.statusCode == 200 || response.statusCode == 201){
       SocketServices.emitWithAck('send-message', body);
+      getChatList();
+      chatMessages;
+      update();
       print("=================message send successful");
     }
   }

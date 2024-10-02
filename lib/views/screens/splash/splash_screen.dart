@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/profile_controler.dart';
 import '../../../services/firebase_services.dart';
 import '../../../utils/app_images.dart';
 
@@ -21,12 +22,14 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
+  final ProfileControler _profileControler = Get.find<ProfileControler>();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 3), () async{
+
+    Timer(const Duration(seconds: 3), () async{
+      _profileControler.getProfile();
     var  islogged = await PrefsHelper.getBool(AppConstants.isLogged);
     var  token = await PrefsHelper.getString(AppConstants.bearerToken);
     var  role = await PrefsHelper.getString(AppConstants.role);

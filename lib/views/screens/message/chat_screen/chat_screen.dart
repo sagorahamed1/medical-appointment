@@ -5,10 +5,10 @@ import 'dart:typed_data';
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/models/chat_model.dart';
 import 'package:doctor_appointment/services/firebase_services.dart';
+import 'package:fl_downloader/fl_downloader.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gallery_picker/gallery_picker.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -23,9 +23,11 @@ import '../../../../utils/app_constant.dart';
 import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../widgets/cachanetwork_image.dart';
-import '../../../widgets/call_invitation.dart';
+import '../../../widgets/custom_loader.dart';
 import '../../../widgets/custom_text.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+
+
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -39,6 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController messageController = TextEditingController();
   final ChatController chatController = Get.put(ChatController());
   int maxLine = 1;
+  RxString? values;
   String? selectedImage;
   String currentUserId = '';
   Uint8List? _image;
@@ -46,6 +49,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   AuthService authService = AuthService();
 
+
+
+  int progress = 0;
+  dynamic downloadId;
+  String? status;
+  late StreamSubscription progressStream;
 
   @override
   void initState() {
@@ -61,14 +70,50 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.atEdge) {
         if (_scrollController.position.pixels == 0) {
-          // Reached top
         } else {
+          chatController.loadMore();
           print("====> scroll bottom");
         }
       }
     });
+
+
+
+
+
+    FlDownloader.initialize();
+    progressStream = FlDownloader.progressStream.listen((event) {
+      setState(() {
+        progress = event.progress;
+        downloadId = event.downloadId;
+        status = event.status.name;
+      });
+
+      if (event.status == DownloadStatus.successful) {
+        debugPrint('Download successful: ${event.progress}');
+        FlDownloader.openFile(filePath: event.filePath);
+      } else if (event.status == DownloadStatus.running) {
+        debugPrint('Downloading... ${event.progress}');
+      } else if (event.status == DownloadStatus.failed) {
+        debugPrint('Download failed: $event');
+      } else if (event.status == DownloadStatus.paused) {
+        debugPrint('Download paused');
+        Future.delayed(
+          const Duration(milliseconds: 250),
+              () => FlDownloader.attachDownloadProgress(event.downloadId),
+        );
+      } else if (event.status == DownloadStatus.pending) {
+        debugPrint('Download pending');
+      }
+    });
   }
 
+  void startDownload(String url) {
+    final TextEditingController urlController = TextEditingController(
+      text: '$url',
+    );
+    FlDownloader.download(urlController.text, fileName: '/your/local/path$url');
+  }
 
   Future<void> getUserId() async {
     var userId = await PrefsHelper.getString(AppConstants.userId);
@@ -77,13 +122,12 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-
-
-
   FirebaseUserModel? firebaseData;
+
   fetchFirebaseData() async {
-    var userId = '${Get.parameters['receiverId']}'; // Replace with your actual userId fetching logic
-    var data = await authService. getUserDataById(userId);
+    var userId =
+        '${Get.parameters['receiverId']}'; // Replace with your actual userId fetching logic
+    var data = await authService.getUserDataById(userId);
     if (data != null) {
       setState(() {
         firebaseData = data;
@@ -93,6 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     chatController.offSocket('${Get.parameters['id']}');
     super.dispose();
   }
@@ -104,7 +149,8 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: buildAppBar(),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
+          padding:
+              EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -123,118 +169,147 @@ class _ChatScreenState extends State<ChatScreen> {
                             child: pickedImages.isEmpty
                                 ? const SizedBox()
                                 : Row(
-                              children: [
-                                Expanded(
-                                  flex: 8,
-                                  child: Container(
-                                    margin: const EdgeInsets.all(8),
-                                    height: 100,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: pickedImages.length + 1,
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder: (context, index) {
-                                          if (index == pickedImages.length) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                if (pickedImages.length <= 5) {
-                                                  showImagePickerOption(context);
-                                                } else {
-                                                  ToastMessageHelper.showToastMessage(
-                                                      'You cannot select more than four pictures');
-                                                }
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(right: 20.w),
-                                                width: 80.w,
-                                                height: 151.h,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey[200],
-                                                  borderRadius: BorderRadius.circular(12),
-                                                ),
-                                                child: Icon(
-                                                  Icons.add,
-                                                  size: 40.w,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          } else {
-                                            return Padding(
-                                              padding: EdgeInsets.only(right: 8.w),
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    width: 120.w,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(12),
-                                                      image: DecorationImage(
-                                                        image: FileImage(pickedImages[index]),
-                                                        fit: BoxFit.cover,
+                                    children: [
+                                      Expanded(
+                                        flex: 8,
+                                        child: Container(
+                                          margin: const EdgeInsets.all(8),
+                                          height: 100,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount:
+                                                  pickedImages.length + 1,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) {
+                                                if (index ==
+                                                    pickedImages.length) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      if (pickedImages.length <=
+                                                          5) {
+                                                        showImagePickerOption(
+                                                            context);
+                                                      } else {
+                                                        ToastMessageHelper
+                                                            .showToastMessage(
+                                                                'You cannot select more than four pictures');
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 20.w),
+                                                      width: 80.w,
+                                                      height: 151.h,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey[200],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        size: 40.w,
+                                                        color: AppColors
+                                                            .primaryColor,
                                                       ),
                                                     ),
-                                                  ),
-                                                  Positioned(
-                                                    top: 8.h,
-                                                    right: 8.w,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        pickedImages.removeAt(index);
-                                                      },
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          shape: BoxShape.circle,
-                                                          border: Border.all(
-                                                            color: AppColors.primaryColor,
+                                                  );
+                                                } else {
+                                                  return Padding(
+                                                    padding: EdgeInsets.only(
+                                                        right: 8.w),
+                                                    child: Stack(
+                                                      children: [
+                                                        Container(
+                                                          width: 120.w,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                            image:
+                                                                DecorationImage(
+                                                              image: FileImage(
+                                                                  pickedImages[
+                                                                      index]),
+                                                              fit: BoxFit.cover,
+                                                            ),
                                                           ),
                                                         ),
-                                                        child: Icon(
-                                                          Icons.close,
-                                                          color: AppColors.primaryColor,
-                                                          size: 18.w,
+                                                        Positioned(
+                                                          top: 8.h,
+                                                          right: 8.w,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              pickedImages
+                                                                  .removeAt(
+                                                                      index);
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                border:
+                                                                    Border.all(
+                                                                  color: AppColors
+                                                                      .primaryColor,
+                                                                ),
+                                                              ),
+                                                              child: Icon(
+                                                                Icons.close,
+                                                                color: AppColors
+                                                                    .primaryColor,
+                                                                size: 18.w,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                        },
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 8.w),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            chatController.sendMessageWithImage(
+                                                pickedImages.isNotEmpty
+                                                    ? pickedImages.first
+                                                    : null,
+                                                '${Get.parameters['receiverId']}',
+                                                '${Get.parameters['id']}');
+                                            pickedImages.clear();
+                                          },
+                                          child: Container(
+                                            width: 50.w,
+                                            height: 50.h,
+                                            decoration: const BoxDecoration(
+                                              color: AppColors.primaryColor,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Icon(
+                                              Icons.send,
+                                              color: Colors.white,
+                                              size: 24.w,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 8.w),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      chatController.sendMessageWithImage(
-                                          pickedImages.isNotEmpty ? pickedImages.first : null,
-                                          '${Get.parameters['receiverId']}',
-                                          '${Get.parameters['id']}');
-                                      pickedImages.clear();
-                                    },
-                                    child: Container(
-                                      width: 50.w,
-                                      height: 50.h,
-                                      decoration: const BoxDecoration(
-                                        color: AppColors.primaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.send,
-                                        color: Colors.white,
-                                        size: 24.w,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           )
                         : buildMessageInput()
                   ],
@@ -255,14 +330,17 @@ class _ChatScreenState extends State<ChatScreen> {
         fontWeight: FontWeight.w600,
       ),
       actions: [
-        actionButton(context, false, email: "${firebaseData?.email}", name: "${Get.parameters['userName']}"),
+        actionButton(context, false,
+            email: "${firebaseData?.email}",
+            name: "${Get.parameters['userName']}"),
         SizedBox(width: 24.w),
-        actionButton(context, true, email: "${firebaseData?.email}", name: "${firebaseData?.firstName}"),
+        actionButton(context, true,
+            email: "${firebaseData?.email}",
+            name: "${firebaseData?.firstName}"),
         SizedBox(width: 20.w),
       ],
     );
   }
-
 
   Widget buildMessageList() {
     return Obx(
@@ -272,38 +350,44 @@ class _ChatScreenState extends State<ChatScreen> {
         dragStartBehavior: DragStartBehavior.down,
         itemCount: chatController.chatMessages.value.length,
         itemBuilder: (context, index) {
-          var message = chatController.chatMessages[index];
-          var isFirstMessage = message.content?.message == 'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl';
-          var isCurrentUser = message.senderId?.id == currentUserId;
+          if (index < chatController.chatMessages.length) {
+            var message = chatController.chatMessages[index];
+            var isFirstMessage = message.content?.message ==
+                'fistMessage_klfdpk41324/kd2@367687jkdkjhjhjlajlfjdjdjjdlllncnjdjhfhdhfaiuhajfkajflajkfaahflkhafl';
+            var isCurrentUser = message.senderId?.id == currentUserId;
 
-          print("=====> ${message.senderId?.id}  $currentUserId");
+            print("=====> ${message.senderId?.id}  $currentUserId");
 
-          // Display the special first message if applicable
-          if (isFirstMessage) {
-            return firstMessage(
-              '${message.senderId?.image?.publicFileUrl}',
-              isCurrentUser
-                  ? "${message.receiverId?.firstName} ${message.receiverId?.lastName}"
-                  : "${message.senderId?.firstName} ${message.senderId?.lastName}",
-            );
+            // Display the special first message if applicable
+            if (isFirstMessage) {
+              return firstMessage(
+                '${message.senderId?.image?.publicFileUrl}',
+                isCurrentUser
+                    ? "${message.receiverId?.firstName} ${message.receiverId?.lastName}"
+                    : "${message.senderId?.firstName} ${message.senderId?.lastName}",
+              );
+            }
+
+            // Display chat bubbles for regular messages
+            return isCurrentUser
+                ? senderBubble(
+                    context,
+                    "${message.content?.message}",
+                    message.senderId?.image?.publicFileUrl,
+                    message,
+                  )
+                : receiverBubble(
+                    context,
+                    "${message.content?.message}",
+                    message.senderId?.image?.publicFileUrl,
+                    message,
+                  );
+          } else if (index >= chatController.totalResult) {
+            return null;
+          } else {
+            return const CustomLoader();
           }
-
-          // Display chat bubbles for regular messages
-          return isCurrentUser
-              ? senderBubble(
-            context,
-            "${message.content?.message}",
-            message.senderId?.image?.publicFileUrl,
-            message,
-          )
-              : receiverBubble(
-            context,
-            "${message.content?.message}",
-            message.senderId?.image?.publicFileUrl,
-            message,
-          );
         },
-
       ),
     );
   }
@@ -317,27 +401,26 @@ class _ChatScreenState extends State<ChatScreen> {
 
         ///input field===>
         SizedBox(
-          width: 220.w,
-          child: TextFormField(
-            maxLines: maxLine,
-            controller: messageController,
-            decoration: InputDecoration(
-              hintText: 'Send Messages',
-              suffixIcon: GestureDetector(
-                onTap: sendMessage,
-                child: const Icon(Icons.send),
+            width: 220.w,
+            child: TextFormField(
+              maxLines: maxLine,
+              controller: messageController,
+              decoration: InputDecoration(
+                hintText: 'Send Messages',
+                suffixIcon: GestureDetector(
+                  onTap: sendMessage,
+                  child: const Icon(Icons.send),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: AppColors.primaryColor),
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: AppColors.primaryColor),
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-            ),
-          ),
-        ),
+            )),
 
         ///like button====>
         buildActionButtons(),
@@ -370,7 +453,7 @@ class _ChatScreenState extends State<ChatScreen> {
         //     height: 20.h, width: 20.w, fit: BoxFit.cover),
         SizedBox(width: 20.w),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             messageController.text = '\u{1F44D}';
             sendMessage();
           },
@@ -382,23 +465,27 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void sendMessage() {
-    chatController.sendMessage(
-      messageController.text,
-      '${Get.parameters['receiverId']}',
-      currentUserId,
-      '${Get.parameters['id']}',
-    );
+    if (messageController.text.isEmpty) {
+      ToastMessageHelper.showToastMessage("type some think");
+    } else {
+      chatController.sendMessage(
+        messageController.text,
+        '${Get.parameters['receiverId']}',
+        currentUserId,
+        '${Get.parameters['id']}',
+      );
+    }
     messageController.clear();
   }
 
-  Widget receiverBubble(
-      BuildContext context, String message, String? profileImage, ChatModel chatModel) {
+  Widget receiverBubble(BuildContext context, String message,
+      String? profileImage, ChatModel chatModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Padding(
-          padding:  EdgeInsets.only(top: 10.h),
+          padding: EdgeInsets.only(top: 10.h),
           child: CustomNetworkImage(
             imageUrl: "${ApiConstants.imageBaseUrl}/$profileImage",
             height: 25,
@@ -408,106 +495,217 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         SizedBox(width: 5.w),
+        chatModel.content?.messageType == 'image'
+            ? GestureDetector(
+                onTap: () {
+
+                  print("===================================================================== dialog");
 
 
-        chatModel.content?.messageType == 'image' ?
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CustomNetworkImage(
-              borderRadius: BorderRadius.circular(12.r),
-              imageUrl: '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}', height: 200.h, width: 200.w),
-        ) : message == "\u{1F44D}" ? CustomText(text: "$message", textAlign: TextAlign.start, fontsize: 25):
+
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 24.w, vertical: 26.h),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+
+                                CustomNetworkImage(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    imageUrl:
+                                    '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}',
+                                    height: 500.h,
+                                    width: 300.w)
+
+                              ],
+                            ),
+                            elevation: 12.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.r),
+                                side: BorderSide(
+                                    width: 1.w, color: AppColors.primaryColor)));
+                      });
 
 
-        Expanded(
-          child: ChatBubble(
-            clipper: ChatBubbleClipper5(type: BubbleType.receiverBubble),
-            backGroundColor: Colors.white,
-            margin: const EdgeInsets.only(top: 8, bottom: 8),
-            child: Container(
-              constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.57),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    message ?? "",
-                    style: const TextStyle(
-                        color: AppColors.textColor5C5C5C, fontSize: 14),
-                    textAlign: TextAlign.start,
-                  ),
-                  SizedBox(height: 5.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          TimeFormatHelper.timeFormat(chatModel.createdAt!),
-                          style: TextStyle(
-                              color: AppColors.textColor5C5C5C,
-                              fontSize: 12.sp),
-                          textAlign: TextAlign.end,
+
+
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomNetworkImage(
+                      borderRadius: BorderRadius.circular(12.r),
+                      imageUrl:
+                          '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}',
+                      height: 200.h,
+                      width: 200.w),
+                ),
+              )
+            : message == "\u{1F44D}"
+                ? CustomText(
+                    text: "$message", textAlign: TextAlign.start, fontsize: 25)
+                : Expanded(
+                    child: ChatBubble(
+                      clipper:
+                          ChatBubbleClipper5(type: BubbleType.receiverBubble),
+                      backGroundColor: Colors.white,
+                      margin: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: Container(
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.57),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              message ?? "",
+                              style: const TextStyle(
+                                  color: AppColors.textColor5C5C5C,
+                                  fontSize: 14),
+                              textAlign: TextAlign.start,
+                            ),
+                            SizedBox(height: 5.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    TimeFormatHelper.timeFormat(
+                                        chatModel.createdAt!),
+                                    style: TextStyle(
+                                        color: AppColors.textColor5C5C5C,
+                                        fontSize: 12.sp),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
 
-
-  Widget senderBubble(
-      BuildContext context, String message, String? profileImage, ChatModel chatModel) {
+  Widget senderBubble(BuildContext context, String message,
+      String? profileImage, ChatModel chatModel) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        chatModel.content?.messageType == 'image' ?
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CustomNetworkImage(
-              borderRadius: BorderRadius.circular(12.r),
-              imageUrl: '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}', height: 200.h, width: 200.w),
-        ) : message == "\u{1F44D}" ? Text("$message", style: TextStyle(fontSize: 25),):
-        Expanded(
-          child: ChatBubble(
-            clipper: ChatBubbleClipper5(type: BubbleType.sendBubble),
-            alignment: Alignment.topRight,
-            margin: const EdgeInsets.only(top: 8, bottom: 8),
-            backGroundColor: AppColors.primaryColor,
-            child: Container(
-              constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.57),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message,
-                    style: const TextStyle(color: Colors.white),
-                    textAlign: TextAlign.start,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      TimeFormatHelper.timeFormat(chatModel.createdAt ?? DateTime.now()),
-                      textAlign: TextAlign.end,
-                      style: TextStyle(color: Colors.white, fontSize: 12.sp),
+        chatModel.content?.messageType == 'image'
+            ? GestureDetector(
+          onTap: (){
+
+            print("===================================================================== dialog");
+
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 10.w, vertical: 12.h),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 10.h),
+
+
+                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                  onTap: (){Get.back();},
+                                  child: Icon(Icons.close, color: AppColors.primaryColor)),
+
+                               GestureDetector(
+                                   onTap: ()async{
+
+                                     var permission =
+                                     await FlDownloader.requestPermission();
+                                     if(permission == StoragePermissionStatus.granted){
+                                       startDownload('${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}');
+
+                                     }
+                                   },
+                                   child: Icon(Icons.arrow_circle_down_sharp, color: AppColors.primaryColor)),
+
+                            ],
+                          ),
+
+                          SizedBox(height: 30.h),
+
+                          CustomNetworkImage(
+                              borderRadius: BorderRadius.circular(8.r),
+                              imageUrl:
+                              '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}',
+                              height: 400.h,
+                              width: double.infinity)
+                        ],
+                      ),
+                      elevation: 12.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          side: BorderSide(
+                              width: 1.w, color: AppColors.primaryColor)));
+                });
+
+
+          },
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomNetworkImage(
+                      borderRadius: BorderRadius.circular(12.r),
+                      imageUrl:
+                          '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}',
+                      height: 200.h,
+                      width: 200.w),
+                ),
+            )
+            : message == "\u{1F44D}"
+                ? Text(
+                    "$message",
+                    style: TextStyle(fontSize: 25),
+                  )
+                : Expanded(
+                    child: ChatBubble(
+                      clipper: ChatBubbleClipper5(type: BubbleType.sendBubble),
+                      alignment: Alignment.topRight,
+                      margin: const EdgeInsets.only(top: 8, bottom: 8),
+                      backGroundColor: AppColors.primaryColor,
+                      child: Container(
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.57),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              message,
+                              style: const TextStyle(color: Colors.white),
+                              textAlign: TextAlign.start,
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                TimeFormatHelper.timeFormat(
+                                    chatModel.createdAt ?? DateTime.now()),
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12.sp),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
         SizedBox(width: 4.w),
         Padding(
-          padding:  EdgeInsets.only(top: 10.h),
+          padding: EdgeInsets.only(top: 10.h),
           child: CustomNetworkImage(
             imageUrl: '${ApiConstants.imageBaseUrl}/$profileImage',
             height: 25,
@@ -543,7 +741,6 @@ class _ChatScreenState extends State<ChatScreen> {
       ],
     );
   }
-
 
   //==================================> ShowImagePickerOption Function <===============================
   void showImagePickerOption(BuildContext context) {
@@ -602,6 +799,7 @@ class _ChatScreenState extends State<ChatScreen> {
           );
         });
   }
+
   final ImagePicker picker = ImagePicker();
   RxList<File> pickedImages = <File>[].obs;
 
@@ -618,15 +816,15 @@ class _ChatScreenState extends State<ChatScreen> {
 //==================================> Camera <===============================
   Future<void> _pickImageFromCamera() async {
     final XFile? returnImage =
-    await ImagePicker().pickImage(source: ImageSource.camera);
+        await ImagePicker().pickImage(source: ImageSource.camera);
     if (returnImage == null) return;
     File selectedImage = File(returnImage.path);
     pickedImages.add(selectedImage);
     _image = selectedImage.readAsBytesSync();
   }
 
-
-  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo, {required String name, required String email}) {
+  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo,
+      {required String name, required String email}) {
     print('================final paramiter ${email} \n $name');
     return ZegoSendCallInvitationButton(
       invitees: [
@@ -639,10 +837,8 @@ class _ChatScreenState extends State<ChatScreen> {
       iconSize: const Size(30, 30),
       unclickableBackgroundColor: AppColors.primaryColor,
       clickableBackgroundColor: AppColors.primaryColor,
-
       resourceID: 'zegouikit_call',
       isVideoCall: isVideo,
     );
   }
-
 }

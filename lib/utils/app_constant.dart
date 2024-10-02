@@ -9,6 +9,7 @@ class AppConstants{
  static const String bearerToken = "bearerToken";
  static const String email = "email";
  static const String userName = "userName";
+ static const String image = "image";
  static const String isPrescription = "isPrescription";
  static String roleMock = '';
 

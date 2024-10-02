@@ -1,7 +1,10 @@
+import 'package:doctor_appointment/controllers/user/give_review_controller.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
+import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_dimentions.dart';
@@ -9,13 +12,18 @@ import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 import 'Inner_widgets/progress_ratingIndicator.dart';
+import 'package:timeago/timeago.dart' as TimeAgo;
+
 
 
 class ReviewScreen extends StatelessWidget {
-  const ReviewScreen({super.key});
+   ReviewScreen({super.key});
+
+  GiveReviewController giveReviewController = Get.put(GiveReviewController());
 
   @override
   Widget build(BuildContext context) {
+    giveReviewController.getReviews();
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
@@ -38,22 +46,30 @@ class ReviewScreen extends StatelessWidget {
                   const progressRatingIndicator(),
                   SizedBox(height: 24.h),
 
-                  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 14.h),
-                        child: const TopReviewsCardForProfile(
-                          image: AppImages.getStarted1,
-                          description: "Dr. Jenny is very professional in her work and responsive. I have consulted and my problem is solved. 😍😍",
-                          rathing: "4.5",
-                          reviewName: "Swapon",
-                          timeAgo: "1 month ago",
-                        ),
-                      );
-                    },
+                  Obx(()=>
+                      giveReviewController.getReviewLoading.value ? Padding(
+                        padding:  EdgeInsets.only(top: 200.h),
+                        child: const CustomLoader(),
+                      ) :
+                      giveReviewController.reviews.isEmpty ? CustomText(text: "No Review Yet!", top: 200) :
+                      ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: giveReviewController.reviews.length,
+                      itemBuilder: (context, index) {
+                        var review = giveReviewController.reviews[index];
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 14.h),
+                          child:  TopReviewsCardForProfile(
+                            image: AppImages.getStarted1,
+                            description: "${review.comment}",
+                            rathing: "${review.rating}",
+                            reviewName: "${review.patientId?.firstName} ${review.patientId?.lastName}",
+                            timeAgo: TimeAgo.format(review.createdAt ?? DateTime.now()),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
