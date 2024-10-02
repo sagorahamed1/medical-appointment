@@ -23,6 +23,7 @@ class ApiConstants{
   static  String getAppointments(String status) => "/appointments/user-get-appointments?status=$status";
   static  String doctorDetailsHomeScreen(String id) => "/doctor/get-single-doctor?id=$id";
   static const String emergencyDoctors = "/user/get-emergency-doctor";
+  static const String doctorGetReview = "/doctor/get-doctor-review";
   static const String category = "/category/get-category";
   static const String notificationEndPoint = "/notification";
   static const String userRecordsEndPoint = "/user/get-user-prescription";
@@ -47,7 +48,7 @@ class ApiConstants{
   ///Chats
   static const String createChatList = "/chat/create-chat";
   static const String getUserListEndPoint = "/chat/get-chat";
-  static  String getChatEndPoint(String id) => "/message/get-message/$id?limit=100";
+  static  String getChatEndPoint(String id, page) => "/message/get-message/$id?limit=100&page=$page";
   static  String senMessageWithFileEndPoint = "/message/create-message-with-file";
 
 

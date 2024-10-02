@@ -1,78 +1,50 @@
 
 
-class EmergenyDoctorModel {
+class GetReviewModel {
   final String? id;
-  final String? specialist;
-  final String? experience;
-  final String? clinicAddress;
-  final String? about;
-  final DoctorId? doctorId;
-  final String? clinicPrice;
-  final String? onlineConsultationPrice;
-  final String? emergencyPrice;
-  final List<Schedule>? schedule;
-  final List<Package>? packages;
+  final String? comment;
+  final int? rating;
+  final String? doctorId;
+  final PatientId? patientId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
-  final int? totalConsultation;
 
-  EmergenyDoctorModel({
+  GetReviewModel({
     this.id,
-    this.specialist,
-    this.experience,
-    this.clinicAddress,
-    this.about,
+    this.comment,
+    this.rating,
     this.doctorId,
-    this.clinicPrice,
-    this.onlineConsultationPrice,
-    this.emergencyPrice,
-    this.schedule,
-    this.packages,
+    this.patientId,
     this.createdAt,
     this.updatedAt,
     this.v,
-    this.totalConsultation,
   });
 
-  factory EmergenyDoctorModel.fromJson(Map<String, dynamic> json) => EmergenyDoctorModel(
+  factory GetReviewModel.fromJson(Map<String, dynamic> json) => GetReviewModel(
     id: json["_id"],
-    specialist: json["specialist"],
-    experience: json["experience"],
-    clinicAddress: json["clinicAddress"],
-    about: json["about"],
-    doctorId: json["doctorId"] == null ? null : DoctorId.fromJson(json["doctorId"]),
-    clinicPrice: json["clinicPrice"],
-    onlineConsultationPrice: json["onlineConsultationPrice"],
-    emergencyPrice: json["emergencyPrice"],
-    schedule: json["schedule"] == null ? [] : List<Schedule>.from(json["schedule"]!.map((x) => Schedule.fromJson(x))),
-    packages: json["packages"] == null ? [] : List<Package>.from(json["packages"]!.map((x) => Package.fromJson(x))),
+    comment: json["comment"],
+    rating: json["rating"],
+    doctorId: json["doctorId"],
+    patientId: json["patientId"] == null ? null : PatientId.fromJson(json["patientId"]),
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
-    totalConsultation: json["totalConsultation"],
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "specialist": specialist,
-    "experience": experience,
-    "clinicAddress": clinicAddress,
-    "about": about,
-    "doctorId": doctorId?.toJson(),
-    "clinicPrice": clinicPrice,
-    "onlineConsultationPrice": onlineConsultationPrice,
-    "emergencyPrice": emergencyPrice,
-    "schedule": schedule == null ? [] : List<dynamic>.from(schedule!.map((x) => x.toJson())),
-    "packages": packages == null ? [] : List<dynamic>.from(packages!.map((x) => x.toJson())),
+    "comment": comment,
+    "rating": rating,
+    "doctorId": doctorId,
+    "patientId": patientId?.toJson(),
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
-    "totalConsultation": totalConsultation,
   };
 }
 
-class DoctorId {
+class PatientId {
   final String? id;
   final String? firstName;
   final String? lastName;
@@ -91,13 +63,14 @@ class DoctorId {
   final bool? isInsurance;
   final String? role;
   final dynamic oneTimeCode;
-  final num? earningAmount;
+  final int? earningAmount;
   final int? v;
   final String? address;
   final String? gender;
   final String? phone;
+  final String? dateOfBirth;
 
-  DoctorId({
+  PatientId({
     this.id,
     this.firstName,
     this.lastName,
@@ -121,9 +94,10 @@ class DoctorId {
     this.address,
     this.gender,
     this.phone,
+    this.dateOfBirth,
   });
 
-  factory DoctorId.fromJson(Map<String, dynamic> json) => DoctorId(
+  factory PatientId.fromJson(Map<String, dynamic> json) => PatientId(
     id: json["_id"],
     firstName: json["firstName"],
     lastName: json["lastName"],
@@ -147,6 +121,7 @@ class DoctorId {
     address: json["address"],
     gender: json["gender"],
     phone: json["phone"],
+    dateOfBirth: json["dateOfBirth"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -173,6 +148,7 @@ class DoctorId {
     "address": address,
     "gender": gender,
     "phone": phone,
+    "dateOfBirth": dateOfBirth,
   };
 }
 
@@ -193,49 +169,5 @@ class Image {
   Map<String, dynamic> toJson() => {
     "publicFileURL": publicFileUrl,
     "path": path,
-  };
-}
-
-class Package {
-  final String? packageName;
-  final String? packagePrice;
-
-  Package({
-    this.packageName,
-    this.packagePrice,
-  });
-
-  factory Package.fromJson(Map<String, dynamic> json) => Package(
-    packageName: json["packageName"],
-    packagePrice: json["packagePrice"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "packageName": packageName,
-    "packagePrice": packagePrice,
-  };
-}
-
-class Schedule {
-  final String? day;
-  final String? startTime;
-  final String? endTime;
-
-  Schedule({
-    this.day,
-    this.startTime,
-    this.endTime,
-  });
-
-  factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
-    day: json["day"],
-    startTime: json["startTime"],
-    endTime: json["endTime"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "day": day,
-    "startTime": startTime,
-    "endTime": endTime,
   };
 }

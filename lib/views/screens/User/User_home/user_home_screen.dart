@@ -33,15 +33,14 @@ class UserHomeScreen extends StatefulWidget {
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
   final HomeController _homeController = Get.put(HomeController());
-  final ProfileControler _profileControler = Get.find<ProfileControler>();
 
   int selectedIndex = 0;
   String categoryName = '';
   String? userName;
+  String? image;
 
   @override
   void initState() {
-    _profileControler.getProfile();
     fetchFirebaseData2();
     super.initState();
   }
@@ -52,9 +51,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     var userId = await PrefsHelper.getString(AppConstants.userId);
     var data = await authService.getUserDataById(userId);
     var name = await PrefsHelper.getString(AppConstants.userName);
+    var demoImage = await PrefsHelper.getString(AppConstants.image);
     if (data != null) {
       setState(() {
         userName = name;
+        image = demoImage;
         firebaseData2 = data;
       });
     }
@@ -62,10 +63,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('firebase data ========> ---------------------------------dddddddddddddddddddddddddddffffffff-----\n-${firebaseData2?.email}');
-    // _homeController.getDoctorByCetegory(cetegory: 'Cardiologists');
-
-    _profileControler.getProfile();
     _homeController.getCetegory();
     _homeController.getEmergencyDoctor();
     return Scaffold(
@@ -88,13 +85,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Obx(() {
-                          var profileData = _profileControler.profileInfo.value;
-                          return TopAppBar(
-                            image: profileData.image?.publicFileUrl,
-                            name: '${userName}',
-                          );
-                        }),
+
+                           TopAppBar(
+                            image: "$image",
+                            name: userName.toString(),
+                          ),
+
 
                         CustomText(
                             text: AppString.enhancingTheHealthcareExperience,

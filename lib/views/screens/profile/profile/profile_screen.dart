@@ -17,14 +17,25 @@ import '../../../widgets/genaral_error_screen.dart';
 import '../../../widgets/no_internet_screen.dart';
 import 'inner_widgets/top_profile_card.dart';
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
 
+class _ProfileScreenState extends State<ProfileScreen> {
   final ProfileControler _profileControler = Get.find<ProfileControler>();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    _profileControler.fetchData();
     _profileControler.getProfile();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("===================${_profileControler.image} image");
     return Scaffold(
       body: SingleChildScrollView(
         child: Obx(() {
@@ -47,12 +58,13 @@ class ProfileScreen extends StatelessWidget {
             case Status.completed:
               return Column(
                 children: [
-                   TopProfileCard(
-                    appBarText: AppString.profile,
-                    name: '${profileData.firstName} ${profileData.lastName}',
-                    height: 341,
-                    image:
-                    "${profileData.image?.publicFileUrl}",
+                  Obx(()=>
+                     TopProfileCard(
+                      appBarText: AppString.profile,
+                      name: _profileControler.userName?.value.toString(),
+                      height: 341,
+                      image: _profileControler.image?.value.toString() ?? "",
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(20.r),

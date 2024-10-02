@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:doctor_appointment/controllers/profile_controler.dart';
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/services/api_client.dart';
@@ -74,6 +75,8 @@ class AuthController extends GetxController {
   RxBool logInLoading = false.obs;
 
   handleLogIn(String email, password) async {
+    final ProfileControler _profileControler = Get.find<ProfileControler>();
+    _profileControler.getProfile();
     logInLoading(true);
     var headers = {'Content-Type': 'application/json'};
     var body = {
