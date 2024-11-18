@@ -5,14 +5,16 @@ import 'dart:typed_data';
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/models/chat_model.dart';
 import 'package:doctor_appointment/services/firebase_services.dart';
-import 'package:fl_downloader/fl_downloader.dart';
+// import 'package:fl_downloader/fl_downloader.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../../../controllers/messaging/chat_controller.dart';
 import '../../../../helpers/prefs_helper.dart';
 import '../../../../helpers/toast_message_helper.dart';
@@ -26,6 +28,7 @@ import '../../../widgets/cachanetwork_image.dart';
 import '../../../widgets/custom_loader.dart';
 import '../../../widgets/custom_text.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:http/http.dart' as http;
 
 
 
@@ -76,44 +79,8 @@ class _ChatScreenState extends State<ChatScreen> {
         }
       }
     });
-
-
-
-
-
-    FlDownloader.initialize();
-    progressStream = FlDownloader.progressStream.listen((event) {
-      setState(() {
-        progress = event.progress;
-        downloadId = event.downloadId;
-        status = event.status.name;
-      });
-
-      if (event.status == DownloadStatus.successful) {
-        debugPrint('Download successful: ${event.progress}');
-        FlDownloader.openFile(filePath: event.filePath);
-      } else if (event.status == DownloadStatus.running) {
-        debugPrint('Downloading... ${event.progress}');
-      } else if (event.status == DownloadStatus.failed) {
-        debugPrint('Download failed: $event');
-      } else if (event.status == DownloadStatus.paused) {
-        debugPrint('Download paused');
-        Future.delayed(
-          const Duration(milliseconds: 250),
-              () => FlDownloader.attachDownloadProgress(event.downloadId),
-        );
-      } else if (event.status == DownloadStatus.pending) {
-        debugPrint('Download pending');
-      }
-    });
   }
 
-  void startDownload(String url) {
-    final TextEditingController urlController = TextEditingController(
-      text: '$url',
-    );
-    FlDownloader.download(urlController.text, fileName: '/your/local/path$url');
-  }
 
   Future<void> getUserId() async {
     var userId = await PrefsHelper.getString(AppConstants.userId);
@@ -620,19 +587,13 @@ class _ChatScreenState extends State<ChatScreen> {
                             children: [
                               GestureDetector(
                                   onTap: (){Get.back();},
-                                  child: Icon(Icons.close, color: AppColors.primaryColor)),
+                                  child: const Icon(Icons.close, color: AppColors.primaryColor)),
 
                                GestureDetector(
-                                   onTap: ()async{
-
-                                     var permission =
-                                     await FlDownloader.requestPermission();
-                                     if(permission == StoragePermissionStatus.granted){
-                                       startDownload('${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}');
-
-                                     }
+                                   onTap: (){
+                                     downloadImage(imageUrl: "${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}");
                                    },
-                                   child: Icon(Icons.arrow_circle_down_sharp, color: AppColors.primaryColor)),
+                                   child: const Icon(Icons.arrow_circle_down_sharp, color: AppColors.primaryColor)),
 
                             ],
                           ),
@@ -669,7 +630,7 @@ class _ChatScreenState extends State<ChatScreen> {
             : message == "\u{1F44D}"
                 ? Text(
                     "$message",
-                    style: TextStyle(fontSize: 25),
+                    style: const TextStyle(fontSize: 25),
                   )
                 : Expanded(
                     child: ChatBubble(
@@ -840,5 +801,35 @@ class _ChatScreenState extends State<ChatScreen> {
       resourceID: 'zegouikit_call',
       isVideoCall: isVideo,
     );
+  }
+
+
+
+  Future<void> downloadImage({required String imageUrl}) async {
+    try{
+      String  devicePathToSaveImage= "";
+      var time = DateTime.now().microsecondsSinceEpoch;
+      if(Platform.isAndroid){
+        devicePathToSaveImage = "/storage/emulated/0/Pictures/PmojiGallery$time.svg";
+      }else{
+        var downloadDirectoryPath = await getApplicationCacheDirectory();
+        devicePathToSaveImage = "${downloadDirectoryPath}/PmojiGallery$time.svg";
+      }
+
+      File file  = File(devicePathToSaveImage);
+      print(file);
+      print("***************${imageUrl}");
+
+      var res = await http.get(Uri.parse("$imageUrl"));
+      print(res.body);
+      if(res.statusCode == 200){
+        await file.writeAsBytes(res.bodyBytes);
+        await ImageGallerySaverPlus.saveFile(devicePathToSaveImage);
+        ToastMessageHelper.showToastMessage("Download Done");
+      }
+    }catch(e, s){
+      print("${e}");
+      print("${s}");
+    }
   }
 }
