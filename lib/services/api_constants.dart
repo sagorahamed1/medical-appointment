@@ -1,6 +1,6 @@
 class ApiConstants{
-  static const String baseUrl = "http://192.168.10.149:3000/api/v1";
-  static const String imageBaseUrl = "http://192.168.10.149:3000";
+  static const String baseUrl = "https://api.medroofurgentcare.com/api/v1";
+  static const String imageBaseUrl = "https://api.medroofurgentcare.com";
 
 
 

@@ -67,6 +67,9 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage(
           'Signup successful! Check your email for the OTP.');
       signUpLoading(false);
+    }else{
+      signUpLoading(false);
+      ToastMessageHelper.showToastMessage(response.body["message"].toString());
     }
   }
 
@@ -142,6 +145,9 @@ class AuthController extends GetxController {
             'OTP verified successfully! Your account is now active.');
       }
       verfyLoading(false);
+    }else{
+      verfyLoading(false);
+      ToastMessageHelper.showToastMessage(response.body["message"].toString());
     }
   }
 
@@ -239,6 +245,7 @@ class AuthController extends GetxController {
     }
   }
 
+  RxBool continueDoctorDetailLoading = false.obs;
   ///===============Resend================<>
   continueDoctorDetails(
       {String? specialist,
@@ -262,7 +269,7 @@ class AuthController extends GetxController {
       saturdayEnd,
       sundayStart,
       sundayEnd}) async {
-    resendLoading(true);
+    continueDoctorDetailLoading(true);
     var id = await PrefsHelper.getString(AppConstants.userId);
     var body = {
       "specialist": specialist,
@@ -290,7 +297,9 @@ class AuthController extends GetxController {
        Get.toNamed(AppRoutes.signInScreen);
       ToastMessageHelper.showToastMessage('Your account create successful! \n please Sign In');
       print("======>>> successful");
-      resendLoading(false);
+       continueDoctorDetailLoading(false);
+    }else{
+      continueDoctorDetailLoading(false);
     }
   }
 

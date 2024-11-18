@@ -1,10 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
-import 'package:doctor_appointment/routes/app_routes.dart';
-import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
@@ -15,7 +11,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/auth_controller.dart';
-import '../../../../helpers/image_pic_helper.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_dimentions.dart';
 import '../../../../utils/app_strings.dart';
@@ -241,14 +236,16 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
 
                 SizedBox(height: 48.h),
                 // const Spacer(),
-                CustomButton(
-                   // loading: _authController.fillProfileLoading.value,
-                    onpress: () {
-                     if(_formKey.currentState!.validate()){
-                       _authController.fillProfileOrUpDate(selectedIMage);
-                     }
-                    },
-                    title: AppString.continues),
+                Obx(()=>
+                   CustomButton(
+                     loading: _authController.fillProfileLoading.value,
+                      onpress: () {
+                       if(_formKey.currentState!.validate()){
+                         _authController.fillProfileOrUpDate(selectedIMage);
+                       }
+                      },
+                      title: AppString.continues),
+                ),
 
                 SizedBox(height: 200.h),
               ],

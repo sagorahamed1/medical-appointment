@@ -198,20 +198,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     loading: _authController.signUpLoading.value,
                     onpress: ()  {
 
-                  // if (_formKey.currentState!.validate()) {
-                    // if (_authController.isChecked) {
+                  if (_formKey.currentState!.validate()) {
+                    if (_authController.isChecked) {
                       _authController.handleSignUp(
                         firstNameCtrl.text,
                         lastNameCtrl.text,
                         emailCtrl.text,
                         passwordCtrl.text.trim(),
                       );
-                    // } else {
-                    //   setState(() {
-                    //     _authController.isCheckboxError = true;
-                    //   });
-                    // }
-                  // }
+                    } else {
+                      setState(() {
+                        _authController.isCheckboxError = true;
+                      });
+                    }
+                  }
                 }, title: AppString.signUp),
                 SizedBox(height: 24.h),
                 Row(
@@ -284,7 +284,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         //==========================> on tap here <==========================
-                        // Get.toNamed(AppRoutes.termsConditionScreen);
+                        Get.toNamed(AppRoutes.allPrivacyPolicyScreen,
+                            parameters: {"screenType": AppString.termsOfServices});
                       }),
                 const TextSpan(
                   text: ' & ',
@@ -306,7 +307,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         //==========================> on tap here <==========================
-                        // Get.toNamed(AppRoutes.privacyPolicyScreen);
+                         Get.toNamed(AppRoutes.allPrivacyPolicyScreen,
+                             parameters: {"screenType": AppString.privacyPolicys});
                       }),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/services/firebase_services.dart';
@@ -79,5 +80,32 @@ class _MyAppState extends State<MyApp> {
         // },
       ),
     );
+  }
+}
+
+
+
+class ConnectivityService extends GetxController {
+  final Connectivity _connectivity = Connectivity();
+  final RxBool isConnected = true.obs;
+
+  ConnectivityService() {
+    // Initialize connectivity status and set up a listener for connectivity changes.
+    _initializeConnectivity();
+    _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+      print("================change connection ${result}");
+      _updateConnectionStatus(result);
+    });
+  }
+
+  Future<void> _initializeConnectivity() async {
+    // Check the initial connectivity status
+    final status = await _connectivity.checkConnectivity();
+    isConnected.value = status != ConnectivityResult.none;
+  }
+
+  void _updateConnectionStatus(ConnectivityResult result) {
+    // Update the connectivity status based on the result
+    isConnected.value = result != ConnectivityResult.none;
   }
 }

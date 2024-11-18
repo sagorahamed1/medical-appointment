@@ -58,11 +58,13 @@ class ForgotPasswordScreen extends StatelessWidget {
               hintText: AppString.email,
             ),
             const Spacer(),
-            CustomButton(
-              loading: _authController.forgotLoading.value,
-                onpress: () {
-             _authController.handleForgot(emailCtrl.text, 'forgotPassword');
-            }, title: AppString.sendOTP),
+            Obx(()=>
+               CustomButton(
+                loading: _authController.forgotLoading.value,
+                  onpress: () {
+               _authController.handleForgot(emailCtrl.text, 'forgotPassword');
+              }, title: AppString.sendOTP),
+            ),
             SizedBox(height: 72.h)
           ],
         ),

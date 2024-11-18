@@ -141,12 +141,15 @@ class SetPasswordScreen extends StatelessWidget {
             ),
 
             const Spacer(),
-            CustomButton(
-                onpress: () {
-                  _authController.setPassword('${Get.parameters['email']}', passwordCtrl.text);
-                  // Get.toNamed(AppRoutes.signInScreen);
-                },
-                title: AppString.setNewPassword),
+            Obx(()=>
+               CustomButton(
+                 loading: _authController.setPasswordLoading.value,
+                  onpress: () {
+                    _authController.setPassword('${Get.parameters['email']}', passwordCtrl.text);
+                    // Get.toNamed(AppRoutes.signInScreen);
+                  },
+                  title: AppString.setNewPassword),
+            ),
             SizedBox(height: 72.h)
           ],
         ),
