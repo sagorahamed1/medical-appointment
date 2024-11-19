@@ -194,25 +194,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 SizedBox(height: 104.h),
 
-                CustomButton(
-                    loading: _authController.signUpLoading.value,
-                    onpress: ()  {
-
-                  if (_formKey.currentState!.validate()) {
-                    if (_authController.isChecked) {
-                      _authController.handleSignUp(
-                        firstNameCtrl.text,
-                        lastNameCtrl.text,
-                        emailCtrl.text,
-                        passwordCtrl.text.trim(),
-                      );
-                    } else {
-                      setState(() {
-                        _authController.isCheckboxError = true;
-                      });
+                Obx(()=>
+                   CustomButton(
+                      loading: _authController.signUpLoading.value,
+                      onpress: ()  {
+                    if (_formKey.currentState!.validate()) {
+                      if (_authController.isChecked) {
+                        _authController.handleSignUp(
+                          firstNameCtrl.text,
+                          lastNameCtrl.text,
+                          emailCtrl.text,
+                          passwordCtrl.text.trim(),
+                        );
+                      } else {
+                        setState(() {
+                          _authController.isCheckboxError = true;
+                        });
+                      }
                     }
-                  }
-                }, title: AppString.signUp),
+                  }, title: AppString.signUp),
+                ),
                 SizedBox(height: 24.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

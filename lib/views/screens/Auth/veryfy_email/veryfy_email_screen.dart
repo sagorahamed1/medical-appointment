@@ -67,10 +67,10 @@ class VeryfyEmailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const Spacer(),
+             const Spacer(),
             Obx(()=>
                CustomButton(
-                   // loading: _authController.verfyLoading.value,
+                   loading: _authController.verfyLoading.value,
                   onpress: () {
                     if (Get.parameters['screenType'] == 'forgotPassword') {
                       _authController.verfyEmail(_authController.otpCtrl.text,Get.parameters['email'], 'forgotPassword');

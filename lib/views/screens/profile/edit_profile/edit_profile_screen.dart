@@ -121,7 +121,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   firstNameCtrl, TextInputType.text),
               _textField("Enter your last name", AppIcons.person, lastNameCtrl,
                   TextInputType.text),
-              _textField("+ 8845632140", AppIcons.call, phoneCtrl,
+              _textField("Enter your phone", AppIcons.call, phoneCtrl,
                   TextInputType.number),
               _textField("Enter your date of birth", AppIcons.dateOfBirth,
                   dateOfBirthCtrl, TextInputType.number, onTap: (){selectDate(context);}, readOnly: true),

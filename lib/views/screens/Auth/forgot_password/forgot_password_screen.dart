@@ -1,5 +1,4 @@
 import 'package:doctor_appointment/controllers/auth_controller.dart';
-import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
