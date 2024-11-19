@@ -145,6 +145,9 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
 
                 ///=====================Date of birth ======================>
                 CustomTextFieldWithoutBorder(
+                  onTap: (){
+                    selectDate(context);
+                  },
                   contenpaddingHorizontal: 20.w,
                   contenpaddingVertical: 0.h,
                   controller: _authController.dateOfBirthCtrl,
@@ -155,17 +158,12 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                     }
                     return null;
                   },
-                  sufixicons: GestureDetector(
-                    onTap: (){
-                      selectDate(context);
-                    },
-                    child: Padding(
-                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                        child: SvgPicture.asset(
-                          AppIcons.calendar,
-                          color: AppColors.gray767676,
-                        )),
-                  ),
+                  sufixicons: Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: SvgPicture.asset(
+                        AppIcons.calendar,
+                        color: AppColors.gray767676,
+                      )),
                 ),
 
                 SizedBox(height: 16.h),
@@ -238,7 +236,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                 // const Spacer(),
                 Obx(()=>
                    CustomButton(
-                     loading: _authController.fillProfileLoading.value,
+                      loading: _authController.fillProfileLoading.value,
                       onpress: () {
                        if(_formKey.currentState!.validate()){
                          _authController.fillProfileOrUpDate(selectedIMage);

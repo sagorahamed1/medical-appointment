@@ -115,8 +115,7 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                       ? Image.asset(AppImages.noDataImage)
                       : ListView.builder(
                           controller: _scrollController,
-                          itemCount:
-                              appointmentsController.appointmentList.length + 1,
+                          itemCount: appointmentsController.appointmentList.length + 1,
                           itemBuilder: (context, index) {
                             if(index < appointmentsController.appointmentList.length){
                               var appointments =
