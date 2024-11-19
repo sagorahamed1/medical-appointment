@@ -42,7 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           var profileData = _profileControler.profileInfo.value;
           switch (_profileControler.rxRequestStatus.value) {
             case Status.loading:
-              return const CustomLoader();
+              return Padding(
+                  padding: EdgeInsets.only(top: 200.h),
+                  child: const CustomLoader());
             case Status.internetError:
               return NoInternetScreen(
                 onTap: () {
