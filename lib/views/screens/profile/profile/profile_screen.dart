@@ -271,7 +271,7 @@ class TwoBottonBottomSheet extends StatelessWidget {
             await PrefsHelper.remove(AppConstants.bearerToken);
             await PrefsHelper.remove(AppConstants.mockRole);
             await PrefsHelper.remove(AppConstants.isLogged);
-            Get.toNamed(AppRoutes.roleScreen);
+            Get.offAllNamed(AppRoutes.roleScreen);
           },
           child: Container(
             width: 166.w,

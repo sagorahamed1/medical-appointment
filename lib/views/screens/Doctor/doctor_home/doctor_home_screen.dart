@@ -38,6 +38,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   @override
   void initState() {
     fetchFirebaseData2();
+
+    _homeController.getAppointment(status: 'upcomming');
     super.initState();
   }
 
@@ -55,6 +57,12 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
         firebaseData2 = data;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _homeController. appointmentsList.clear();
+    super.dispose();
   }
 
 

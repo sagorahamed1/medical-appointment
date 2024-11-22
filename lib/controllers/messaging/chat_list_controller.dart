@@ -55,7 +55,7 @@ class ChatListController extends GetxController {
   }
 
   ///====Create Chat list=====>
-  createChat({String? receiverId, appointmentId}) async {
+  createChat({String? receiverId, appointmentId, name}) async {
 
     var body = {"receiverId": "$receiverId", "appointmentId": "$appointmentId"};
     var currentUserId = await PrefsHelper.getString(AppConstants.userId);
@@ -68,6 +68,8 @@ class ChatListController extends GetxController {
       Get.toNamed(AppRoutes.chatScreen, parameters: {
         'id': '$chatId',
         'receiverId': '$receiverId',
+        'userName' : '$name'
+
       });
 
       var chatCtrl = Get.put(ChatController());

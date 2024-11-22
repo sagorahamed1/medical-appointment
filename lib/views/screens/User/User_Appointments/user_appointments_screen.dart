@@ -185,7 +185,8 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
                                   rightBtnOnTap: () {
                                     chatController.createChat(
                                         receiverId: appointments.doctorId?.id,
-                                        appointmentId: appointments.id
+                                        appointmentId: appointments.id,
+                                      name: "${appointments.doctorId?.firstName} ${appointments.doctorId?.lastName}"
                                     );
                                   },
                                 ),

@@ -11,10 +11,34 @@ import '../../../../utils/app_strings.dart';
 import '../../../widgets/available_doctors_card.dart';
 import '../../../widgets/custom_text.dart';
 
-class UserAvailablleDoctorsScreen extends StatelessWidget {
+class UserAvailablleDoctorsScreen extends StatefulWidget {
   UserAvailablleDoctorsScreen({super.key});
 
+  @override
+  State<UserAvailablleDoctorsScreen> createState() => _UserAvailablleDoctorsScreenState();
+}
+
+class _UserAvailablleDoctorsScreenState extends State<UserAvailablleDoctorsScreen> {
+
+  final ScrollController _scrollController = ScrollController();
   final HomeController _homeController = Get.put(HomeController());
+
+
+  @override
+  void initState() {
+    super.initState();
+    _addScrollListener();
+  }
+
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _homeController.loadMoreGetDoctors();
+        print("load more true");
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
