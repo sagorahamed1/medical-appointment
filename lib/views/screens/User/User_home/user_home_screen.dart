@@ -251,10 +251,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       child: _homeController.emergencyDoctorLoading.value
                           ? const Center(child: CustomLoader())
                           : _homeController.emergencyDoctors.isEmpty
-                              ? SizedBox(
-                                  height: 180.h,
-                                  width: 200.w,
-                                  child: Image.asset(AppImages.noDataImage))
+                              ? Center(
+                                child: SizedBox(
+                                    height: 180.h,
+                                    width: 200.w,
+                                    child: Image.asset(AppImages.noDataImage)),
+                              )
                               : ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: _homeController.emergencyDoctors.length,

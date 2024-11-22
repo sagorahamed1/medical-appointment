@@ -71,6 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               SizedBox(height: 191.h),
 
               CustomButton(
+                isNetworkNeed: false,
                 onpress: () {
                   if (inticatorIndex.value < 3) {
                     inticatorIndex.value++;

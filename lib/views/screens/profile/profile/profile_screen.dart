@@ -1,3 +1,4 @@
+import 'package:ansicolor/ansicolor.dart';
 import 'package:doctor_appointment/controllers/profile_controler.dart';
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
@@ -35,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(success("Sagor ahamed this is Profile screen Doctor appointment"));
     print("===================${_profileControler.image} image");
     return Scaffold(
       body: SingleChildScrollView(
@@ -42,7 +44,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           var profileData = _profileControler.profileInfo.value;
           switch (_profileControler.rxRequestStatus.value) {
             case Status.loading:
-              return const CustomLoader();
+              return Padding(
+                  padding: EdgeInsets.only(top: 200.h),
+                  child: const CustomLoader());
             case Status.internetError:
               return NoInternetScreen(
                 onTap: () {
@@ -267,7 +271,7 @@ class TwoBottonBottomSheet extends StatelessWidget {
             await PrefsHelper.remove(AppConstants.bearerToken);
             await PrefsHelper.remove(AppConstants.mockRole);
             await PrefsHelper.remove(AppConstants.isLogged);
-            Get.toNamed(AppRoutes.roleScreen);
+            Get.offAllNamed(AppRoutes.roleScreen);
           },
           child: Container(
             width: 166.w,
@@ -290,3 +294,9 @@ class TwoBottonBottomSheet extends StatelessWidget {
     );
   }
 }
+
+
+AnsiPen info = AnsiPen()..blue(bold: true);
+AnsiPen success = AnsiPen()..green(bold: true);
+AnsiPen warning = AnsiPen()..yellow(bold: true);
+AnsiPen error = AnsiPen()..red(bold: true);

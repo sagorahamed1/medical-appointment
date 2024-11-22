@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:doctor_appointment/controllers/profile_controler.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
+import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../helpers/file_size_checker.dart';
 import '../../../../helpers/image_pic_helper.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
@@ -52,6 +54,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       addressCtrl.text = profileData.address ?? '';
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   firstNameCtrl, TextInputType.text),
               _textField("Enter your last name", AppIcons.person, lastNameCtrl,
                   TextInputType.text),
-              _textField("+ 8845632140", AppIcons.call, phoneCtrl,
+              _textField("Enter your phone", AppIcons.call, phoneCtrl,
                   TextInputType.number),
               _textField("Enter your date of birth", AppIcons.dateOfBirth,
                   dateOfBirthCtrl, TextInputType.number, onTap: (){selectDate(context);}, readOnly: true),
@@ -133,6 +136,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                  CustomButton(
                    loading: _profileControler.updateProfileLoading.value,
                     onpress: () {
+                      FileSizeChecker.checkFileSize(selectedIMage);
                       _profileControler.profileUpdate(
                           image: selectedIMage,
                           firstName: firstNameCtrl.text,

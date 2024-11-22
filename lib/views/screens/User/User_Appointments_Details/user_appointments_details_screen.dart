@@ -53,7 +53,7 @@ class UserAppointmentsDetailsScreen extends StatelessWidget {
                         image: "${data.doctorId?.image?.publicFileUrl}",
                         doctorName: "${data.doctorId?.firstName} ${data.doctorId?.lastName}",
                         rating: '${data.doctorId?.rating}',
-                        specialist: '${data.doctorId}',
+                        specialist: '${data.doctorId?.phone}',
                         location: '${data.doctorId?.address}',
                       ),
 

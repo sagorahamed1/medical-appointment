@@ -58,6 +58,7 @@ class VeryfyEmailScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: (){
                     _authController.reSendOtp('${Get.parameters['email']}');
+                    _authController.otpCtrl.clear();
                   },
                   child: CustomText(
                       text: AppString.resend,
@@ -66,22 +67,26 @@ class VeryfyEmailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const Spacer(),
-            CustomButton(
-                  // loading: _authController.verfyLoading.value,
-                onpress: () {
-                  if (Get.parameters['screenType'] == 'forgotPassword') {
-                    _authController.verfyEmail(_authController.otpCtrl.text,Get.parameters['email'], 'forgotPassword');
-                  } else {
-                    _authController.verfyEmail(_authController.otpCtrl.text, Get.parameters['email'], 'signUp');
-                  }
+             const Spacer(),
+            Obx(()=>
+               CustomButton(
+                   loading: _authController.verfyLoading.value,
+                  onpress: () {
+                    if (Get.parameters['screenType'] == 'forgotPassword') {
+                      _authController.verfyEmail(_authController.otpCtrl.text,Get.parameters['email'], 'forgotPassword');
+                      _authController.otpCtrl.clear();
+                    } else {
+                      _authController.verfyEmail(_authController.otpCtrl.text, Get.parameters['email'], 'signUp');
+                      _authController.otpCtrl.clear();
+                    }
 
-                  // Get.parameters['screenType'] == 'forgotPassword' ? Get.toNamed(AppRoutes.setPasswordScreen) :
-                  // Get.toNamed(AppRoutes.fillProfileScreen,
-                  //
-                  // );
-                },
-                title: AppString.verifyEmail),
+                    // Get.parameters['screenType'] == 'forgotPassword' ? Get.toNamed(AppRoutes.setPasswordScreen) :
+                    // Get.toNamed(AppRoutes.fillProfileScreen,
+                    //
+                    // );
+                  },
+                  title: AppString.verifyEmail),
+            ),
             SizedBox(height: 98.h)
           ],
         ),

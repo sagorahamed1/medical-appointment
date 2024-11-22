@@ -23,8 +23,8 @@ class DoctorHomeControllerDoctorPart extends GetxController {
 
   @override
   void onInit() {
-    appointmentsList.clear();
-    getAppointment(status: 'upcomming');
+    // appointmentsList.clear();
+    // getAppointment(status: 'upcomming');
     super.onInit();
   }
 

@@ -68,31 +68,15 @@ class _MessageScreenState extends State<MessageScreen> {
                 () => chatListController.getChatUserLoading.value
                     ? const CustomLoader()
                     : chatListController.chatUsers.isEmpty
-                        ? CustomText(text: "No user")
+                        ? CustomText(text: "No user found!")
                         : ListView.builder(
                             itemCount: chatListController.chatUsers.length,
                             itemBuilder: (context, index) {
                               var users = chatListController.chatUsers[index];
                               var participants = chatListController.chatUsers[index].participants;
 
-                              // // print('===================------------dddddddddddddddd     ${participants?[index].id}   \n ${participants?[index].firstName}');
-                              //
-                              // if(participants?[0].id != null || participants?[1].id != null){
-                              //   for(var x in participants!){
-                              //      print("============= ddddddddddddddddddddddddddddddddddd    ${x.id}     ddddddddddddddddddddddddddddddddddddddd==${x.id != currentUserId}");
-                              //     if(x.id != currentUserId){
-                              //       receiverId = '${x.id}';
-                              //     }else if(x.id != currentUserId){
-                              //       receiverId = '${x.id}';
-                              //     }
-                              //   }
-                              // }
-                              //
-
-
                               String? receiverId;
                               String? userName;
-
 
                               /// Ensure there are participants
                               if (participants != null && participants.isNotEmpty) {
@@ -119,11 +103,14 @@ class _MessageScreenState extends State<MessageScreen> {
                                         'userName' : '$userName'
                                       });
                                     },
-                                    child: _messageCard(
-                                        '${users.participants?[0].image?.publicFileUrl}',
-                                        "$userName (${users.appointmentId?.patientDetailsId?.fullName})",
-                                         users.lastMessage?.content?.message ?? '',
-                                        "${users.lastMessage?.createdAt ?? DateTime.now()}")),
+                                    child: Container(
+                                      color: Colors.transparent,
+                                      child: _messageCard(
+                                          '${users.participants?[0].image?.publicFileUrl}',
+                                          "$userName (${users.appointmentId?.patientDetailsId?.fullName})",
+                                           users.lastMessage?.content?.message ?? '',
+                                          "${users.lastMessage?.createdAt ?? DateTime.now()}"),
+                                    )),
                               );
                             },
                           ),

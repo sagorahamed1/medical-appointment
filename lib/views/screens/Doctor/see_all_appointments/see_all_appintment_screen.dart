@@ -32,7 +32,9 @@ class _UserAppointmentsScreenState extends State<SeeAllAppintmentScreen> {
   void initState() {
     super.initState();
     _addScrollListener();
+    // _homeController.onInit();
 
+    _homeController.getAppointment(status: 'upcomming');
   }
 
   void _addScrollListener() {
@@ -46,8 +48,17 @@ class _UserAppointmentsScreenState extends State<SeeAllAppintmentScreen> {
   }
 
   @override
+  void dispose() {
+    _homeController. appointmentsList.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _homeController.onInit();
+
+
+
+
     return Scaffold(
       appBar: AppBar(
         title: CustomText(

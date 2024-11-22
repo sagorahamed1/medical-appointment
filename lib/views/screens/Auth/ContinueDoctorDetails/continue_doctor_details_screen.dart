@@ -373,35 +373,38 @@ class _ContinueDoctorDetailsScreenState
 
                 SizedBox(height: 20.h),
 
-                CustomButton(
-                    onpress: () {
-                      if (_formKey.currentState!.validate()) {
-                        _authController.continueDoctorDetails(
-                          specialist: specialistCtrl.text,
-                          experience: experienceCtrl.text,
-                          clinicAddress: addressCtrl.text,
-                          about: aboutDoctorCtrl.text,
-                          clinicPrice: priceForClinicCtrl.text,
-                          onlineConsultationPrice: priceForOnlineCtrl.text,
-                          emergencyPrice: priceForEmargenceCtrl.text,
-                          mondayStart: mondayStart,
-                          mondayEnd: mondayEnd,
-                          tuesdayStart: tuesDayStart,
-                          tuesdayEnd: tuesDayEnd,
-                          wednesdayStart: wednesdayStart,
-                          wednesdayEnd: wednesdayEnd,
-                          thursdayStart: thursdayStart,
-                          thursdayEnd: thursdayEnd,
-                          fridayStart: fridayStart,
-                          fridayEnd: fridayEnd,
-                          saturdayStart: saturdayStart,
-                          saturdayEnd: saturdayEnd,
-                          sundayStart: sundayStart,
-                          sundayEnd: sundayEnd,
-                        );
-                      }
-                    },
-                    title: AppString.continues),
+                Obx(()=>
+                   CustomButton(
+                    loading: _authController.continueDoctorDetailLoading.value,
+                      onpress: () {
+                        if (_formKey.currentState!.validate()) {
+                          _authController.continueDoctorDetails(
+                            specialist: specialistCtrl.text,
+                            experience: experienceCtrl.text,
+                            clinicAddress: addressCtrl.text,
+                            about: aboutDoctorCtrl.text,
+                            clinicPrice: priceForClinicCtrl.text,
+                            onlineConsultationPrice: priceForOnlineCtrl.text,
+                            emergencyPrice: priceForEmargenceCtrl.text,
+                            mondayStart: mondayStart,
+                            mondayEnd: mondayEnd,
+                            tuesdayStart: tuesDayStart,
+                            tuesdayEnd: tuesDayEnd,
+                            wednesdayStart: wednesdayStart,
+                            wednesdayEnd: wednesdayEnd,
+                            thursdayStart: thursdayStart,
+                            thursdayEnd: thursdayEnd,
+                            fridayStart: fridayStart,
+                            fridayEnd: fridayEnd,
+                            saturdayStart: saturdayStart,
+                            saturdayEnd: saturdayEnd,
+                            sundayStart: sundayStart,
+                            sundayEnd: sundayEnd,
+                          );
+                        }
+                      },
+                      title: AppString.continues),
+                ),
 
                 SizedBox(height: 35.h)
               ],

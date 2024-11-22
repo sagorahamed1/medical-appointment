@@ -94,13 +94,11 @@ class ProfileControler extends GetxController{
 
     print("=======> ${response.body}");
     if (response.statusCode == 200 || response.statusCode == 201) {
+      Get.back();
+      Get.back();
       await PrefsHelper.setString(AppConstants.image, response.body["data"]["attributes"]["image"]["publicFileURL"]);
-      Get.back();
-      Get.back();
-
       fetchData();
       update();
-
       ToastMessageHelper.showToastMessage('${response.body["message"]}');
       updateProfileLoading(false);
     }else {

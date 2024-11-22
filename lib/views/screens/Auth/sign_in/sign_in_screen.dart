@@ -19,7 +19,7 @@ import '../../../widgets/custom_text.dart';
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
- final TextEditingController emailCtrl = TextEditingController(text: kDebugMode ? 'sss@gmail.com' : '',);
+ final TextEditingController emailCtrl = TextEditingController(text: kDebugMode ? 'sagoramammed50@gmail.com' : '',);
  final TextEditingController passwordCtrl = TextEditingController(text: kDebugMode ? '1qazxsw2' : '');
   final AuthController _authController = Get.find<AuthController>();
 
@@ -111,14 +111,16 @@ class SignInScreen extends StatelessWidget {
                     top: 16.h)),
             const Spacer(),
             ///=====================sign in button==============>
-            CustomButton(
-                // loading: _authController.logInLoading.value,
-                onpress: () async {
-                  _authController.handleLogIn(
-                    emailCtrl.text, passwordCtrl.text
-                  );
-                },
-                title: AppString.signIn),
+            Obx(()=>
+               CustomButton(
+                   loading: _authController.logInLoading.value,
+                  onpress: () async {
+                    _authController.handleLogIn(
+                      emailCtrl.text, passwordCtrl.text
+                    );
+                  },
+                  title: AppString.signIn),
+            ),
             SizedBox(height: 26.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

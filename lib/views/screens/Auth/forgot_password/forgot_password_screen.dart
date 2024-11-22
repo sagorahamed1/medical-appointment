@@ -1,5 +1,4 @@
 import 'package:doctor_appointment/controllers/auth_controller.dart';
-import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,11 +57,13 @@ class ForgotPasswordScreen extends StatelessWidget {
               hintText: AppString.email,
             ),
             const Spacer(),
-            CustomButton(
-              loading: _authController.forgotLoading.value,
-                onpress: () {
-             _authController.handleForgot(emailCtrl.text, 'forgotPassword');
-            }, title: AppString.sendOTP),
+            Obx(()=>
+               CustomButton(
+                loading: _authController.forgotLoading.value,
+                  onpress: () {
+               _authController.handleForgot(emailCtrl.text, 'forgotPassword');
+              }, title: AppString.sendOTP),
+            ),
             SizedBox(height: 72.h)
           ],
         ),

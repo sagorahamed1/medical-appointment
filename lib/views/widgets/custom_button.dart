@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../helpers/toast_message_helper.dart';
+import '../../main.dart';
 import '../../utils/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton(
+   CustomButton(
       {super.key,
       this.color,
       this.textStyle,
@@ -14,23 +16,34 @@ class CustomButton extends StatelessWidget {
       required this.title,
       this.loading = false,
       this.width,
-      this.height});
+      this.height, this.isNetworkNeed = true});
 
   final Function() onpress;
   final String title;
   final bool loading;
+  final bool? isNetworkNeed;
   final double? height;
   final double? width;
   final Color? color;
   final EdgeInsetsGeometry padding;
   final TextStyle? textStyle;
 
+  final ConnectivityService connectivityService = Get.put(ConnectivityService());
+  // A helper method to handle the button's onPressed logic
+  void _handleOnPressed() {
+    if (!connectivityService.isConnected.value) {
+      ToastMessageHelper.showToastMessage("Please Connect your internet");
+    } else if (!loading) {
+      onpress();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
       child: ElevatedButton(
-          onPressed: loading ? () {} : onpress,
+          onPressed: isNetworkNeed == true ? _handleOnPressed : onpress,
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r)),
