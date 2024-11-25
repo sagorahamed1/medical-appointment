@@ -6,7 +6,7 @@
 
 
     <application
-        android:label="doctor_appointment"
+        android:label="Medroof UC &amp; SPA"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
