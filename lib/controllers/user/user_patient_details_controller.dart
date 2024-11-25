@@ -68,7 +68,7 @@ class UserPatientDetailsController extends GetxController{
 
     if(response.statusCode == 200 || response.statusCode == 201){
       patientDetailsLoading(false);
-      Get.offAndToNamed(AppRoutes.userBottomNavBar);
+      Get.toNamed(AppRoutes.successPayment);
       ToastMessageHelper.showToastMessage('Doctor book successful');
     }else{
       ToastMessageHelper.showToastMessage(response.body['message']);

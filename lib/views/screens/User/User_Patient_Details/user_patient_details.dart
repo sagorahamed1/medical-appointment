@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/controllers/payment_controller.dart';
 import 'package:doctor_appointment/controllers/user/user_patient_details_controller.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
@@ -18,13 +19,14 @@ import '../../../widgets/custom_text.dart';
 class UserPatientDetailsScreen extends StatelessWidget {
   UserPatientDetailsScreen({super.key});
 
-  final UserPatientDetailsController _patientDetailsController =
-  Get.put(UserPatientDetailsController());
+  final UserPatientDetailsController _patientDetailsController = Get.put(UserPatientDetailsController());
   TextEditingController fullNameCtrl = TextEditingController();
   TextEditingController ageCtrl = TextEditingController();
   TextEditingController problemCtrl = TextEditingController();
   TextEditingController genderCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  PaymentController paymentController = PaymentController();
 
   ///data is doctor info==>
   var data = Get.arguments;
@@ -156,8 +158,7 @@ class UserPatientDetailsScreen extends StatelessWidget {
                           'Please write your problems'),
                       SizedBox(height: 20.h),
                       CustomButton(
-                          loading: _patientDetailsController
-                              .patientDetailsLoading.value,
+                          loading: _patientDetailsController.patientDetailsLoading.value,
                           onpress: () {
                             print("=============================emergency doctor : ${data.doctorId?.id}");
                             print("=====================Doctor Type ${Get.parameters['isEmergency']}");
@@ -166,30 +167,64 @@ class UserPatientDetailsScreen extends StatelessWidget {
                               if (_formKey.currentState!.validate()) {
                                 if (Get.parameters['isEmergency'] ==  "false") {
                                   print("===============This is available doctor booking");
-                                  _patientDetailsController.patienDetailsAdd(
-                                      fullName: fullNameCtrl.text,
-                                      age: ageCtrl.text,
-                                      gender: genderCtrl.text,
-                                      description: problemCtrl.text,
-                                      doctorId: "${Get.parameters['id']}",
-                                      price: "${Get.parameters['price']}",
-                                      packName: "${Get
-                                          .parameters['packageName']}",
-                                      timeSlot: "${Get.parameters['timeSlot']}",
-                                      date: '${Get.parameters['date']}');
+
+
+                                  Map<String, dynamic> paymentData = {
+                                    'fullName': fullNameCtrl.text,
+                                    'age': ageCtrl.text,
+                                    'gender': genderCtrl.text,
+                                    'description': problemCtrl.text,
+                                    'doctorId': "${Get.parameters['id']}",
+                                    'price': "${Get.parameters['price']}",
+                                    'packName': "${Get.parameters['packageName']}",
+                                    'timeSlot': "${Get.parameters['timeSlot']}",
+                                    'date': '${Get.parameters['date']}'
+                                  };
+
+
+                                  paymentController.makePayment(amount: "${Get.parameters['price']}", data: paymentData);
+
+                                  // _patientDetailsController.patienDetailsAdd(
+                                  //     fullName: fullNameCtrl.text,
+                                  //     age: ageCtrl.text,
+                                  //     gender: genderCtrl.text,
+                                  //     description: problemCtrl.text,
+                                  //     doctorId: "${Get.parameters['id']}",
+                                  //     price: "${Get.parameters['price']}",
+                                  //     packName: "${Get.parameters['packageName']}",
+                                  //     timeSlot: "${Get.parameters['timeSlot']}",
+                                  //     date: '${Get.parameters['date']}'
+                                  // );
 
                                 } else if(Get.parameters['isEmergency'] ==  "true"){
                                   print("===============This is Emergency doctor booking");
-                                  _patientDetailsController.patienDetailsAdd(
-                                      fullName: fullNameCtrl.text,
-                                      age: ageCtrl.text,
-                                      gender: genderCtrl.text,
-                                      description: problemCtrl.text,
-                                      doctorId: "${data.doctorId?.id}",
-                                      price: "${data.emergencyPrice}",
-                                      packName: "Emergency Price",
-                                      timeSlot: "${TimeFormatHelper.timeFormat(DateTime.now())}",
-                                      date: '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}');
+
+                                  // _patientDetailsController.patienDetailsAdd(
+                                  //     fullName: fullNameCtrl.text,
+                                  //     age: ageCtrl.text,
+                                  //     gender: genderCtrl.text,
+                                  //     description: problemCtrl.text,
+                                  //     doctorId: "${data.doctorId?.id}",
+                                  //     price: "${data.emergencyPrice}",
+                                  //     packName: "Emergency Price",
+                                  //     timeSlot: "${TimeFormatHelper.timeFormat(DateTime.now())}",
+                                  //     date: '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}'
+                                  //     );
+
+                                  Map<String, dynamic> paymentData2 = {
+                                    'fullName': fullNameCtrl.text,
+                                    'age': ageCtrl.text,
+                                    'gender': genderCtrl.text,
+                                    'description': problemCtrl.text,
+                                    'doctorId': "${data.doctorId?.id}",
+                                    'price': "${data.emergencyPrice}",
+                                    'packName': "Emergency Price",
+                                    'timeSlot': "${TimeFormatHelper.timeFormat(DateTime.now())}",
+                                    'date': '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}'
+                                  };
+
+
+                                  paymentController.makePayment(amount: "${data.emergencyPrice}", data: paymentData2);
 
                                 }
                               }

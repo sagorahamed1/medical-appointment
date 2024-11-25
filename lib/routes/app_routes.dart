@@ -47,6 +47,9 @@ import '../views/screens/setting/All_Privacy_Policy/all_privacy_policy_screen.da
 import '../views/screens/setting/change_password/change_password_screen.dart';
 import '../views/screens/setting/setting/setting_screen.dart';
 import '../views/screens/splash/splash_screen.dart';
+import '../views/widgets/cencel_payment.dart';
+import '../views/widgets/fail_payment.dart';
+import '../views/widgets/success_payment.dart';
 
 class AppRoutes {
   static const String splashScreen = "/SplashScreen.dart";
@@ -93,6 +96,9 @@ class AppRoutes {
   static const String addRecordsScreen = "/AddRecordsScreen.dart";
   static const String prescriptionFormScreen = "/PrescriptionFormScreen.dart";
   static const String seeAllAppintmentScreen = "/SeeAllAppintmentScreen.dart";
+  static const String failedPayment = "/FailedPayment.dart";
+  static const String successPayment = "/SuccessPayment.dart";
+  static const String cancelPayment = "/CancelPayment.dart";
 
 
   static List<GetPage> get routes => [
@@ -140,5 +146,8 @@ class AppRoutes {
         GetPage(name: addRecordsScreen, page: () => AddRecordsScreen()),
         GetPage(name: prescriptionFormScreen, page: () => PrescriptionFormScreen()),
         GetPage(name: seeAllAppintmentScreen, page: () => SeeAllAppintmentScreen()),
+        GetPage(name: failedPayment, page: () => FailedPayment()),
+        GetPage(name: successPayment, page: () => SuccessPayment()),
+        GetPage(name: cancelPayment, page: () => CancelPayment()),
   ];
 }

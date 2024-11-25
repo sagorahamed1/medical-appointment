@@ -6,9 +6,11 @@ import 'package:doctor_appointment/services/socket_services.dart';
 import 'package:doctor_appointment/services/zego_could_services.dart';
 import 'package:doctor_appointment/themes/light_theme.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
+import 'package:doctor_appointment/utils/constants.dart';
 import 'package:doctor_appointment/views/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
@@ -21,7 +23,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  Stripe.publishableKey = Constants.publishAbleKey;
   try {
     await AuthService.setUpFirebase();
     ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);

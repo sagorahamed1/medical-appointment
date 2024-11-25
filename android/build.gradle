@@ -1,3 +1,16 @@
+buildscript {
+    ext.kotlin_version = '1.7.20'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'  // বা আপনার ব্যবহৃত গ্র্যাডলের ভার্সন
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
+    }
+}
+
+
 allprojects {
     repositories {
         google()
