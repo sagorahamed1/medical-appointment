@@ -62,10 +62,8 @@ class AuthController extends GetxController {
 
 
       print('====> id $id');
-      Get.toNamed(AppRoutes.veryfyEmailScreen,
-          parameters: {'screenType': 'signUp', 'email': email});
-      ToastMessageHelper.showToastMessage(
-          'Signup successful! Check your email for the OTP.');
+      Get.toNamed(AppRoutes.veryfyEmailScreen, parameters: {'screenType': 'signUp', 'email': email});
+      ToastMessageHelper.showToastMessage('Signup successful! Check your email for the OTP.');
       signUpLoading(false);
     }else{
       signUpLoading(false);
@@ -119,6 +117,10 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage("Some thing want wrong try again!");
     }else{
       logInLoading(false);
+      print("*****************************${response.body['message']}");
+      if(response.body['message'] == "you are not veryfied"){
+        Get.toNamed(AppRoutes.veryfyEmailScreen, parameters: {'screenType': 'signUp', 'email': email});
+      }
       ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }
@@ -141,8 +143,7 @@ class AuthController extends GetxController {
             parameters: {'email': "${Get.parameters['email']}"});
       } else if (type == 'signUp') {
         Get.toNamed(AppRoutes.fillProfileScreen);
-        ToastMessageHelper.showToastMessage(
-            'OTP verified successfully! Your account is now active.');
+        ToastMessageHelper.showToastMessage('OTP verified successfully! Your account is now active.');
       }
       verfyLoading(false);
     }else{

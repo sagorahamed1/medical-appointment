@@ -12,6 +12,7 @@ class AppConstants{
  static const String image = "image";
  static const String isPrescription = "isPrescription";
  static String roleMock = '';
+ static String isEmargency = 'isEmargency';
 
   static RegExp emailValidate = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");

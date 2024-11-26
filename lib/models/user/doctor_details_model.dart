@@ -137,7 +137,7 @@ class DoctorId {
   final String? gender;
   final String? phone;
   final String? dateOfBirth;
-  final int? earningAmount;
+  final num? earningAmount;
 
   DoctorId({
     this.id,

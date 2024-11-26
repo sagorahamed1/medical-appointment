@@ -1,4 +1,6 @@
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/views/widgets/toggle_radio_button.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../controllers/doctor/emergency_toggle_controller.dart';
 import '../../../../utils/app_colors.dart';
@@ -22,12 +25,12 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
 
   final EmergencyToggleController _emergencyToggleController = Get.put(EmergencyToggleController());
+
   bool _toggleValue = false;
 
   @override
   void initState() {
     super.initState();
-    // Convert the string parameter to a boolean
     String? emergencyParam = Get.parameters['emergency'];
     if (emergencyParam != null) {
       _toggleValue = emergencyParam.toLowerCase() == 'true';
@@ -41,6 +44,9 @@ class _SettingScreenState extends State<SettingScreen> {
       _toggleValue = !_toggleValue;
     });
   }
+
+
+
 
 
 

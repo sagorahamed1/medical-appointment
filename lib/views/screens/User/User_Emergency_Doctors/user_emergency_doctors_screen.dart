@@ -11,14 +11,26 @@ import '../../../widgets/available_doctors_card.dart';
 import '../../../widgets/custom_loader.dart';
 import '../../../widgets/custom_text.dart';
 
-class UserEmergencyDoctorsScreen extends StatelessWidget {
+class UserEmergencyDoctorsScreen extends StatefulWidget {
   UserEmergencyDoctorsScreen({super.key});
 
+  @override
+  State<UserEmergencyDoctorsScreen> createState() => _UserEmergencyDoctorsScreenState();
+}
+
+class _UserEmergencyDoctorsScreenState extends State<UserEmergencyDoctorsScreen> {
   final HomeController _homeController = Get.put(HomeController());
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     _homeController.getEmergencyDoctor();
+    super.initState();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
