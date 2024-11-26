@@ -13,15 +13,23 @@ class CallInvitation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("============================================================================ ${name}  \n $id");
     // Check if userName is not null or empty
     if (id.isNotEmpty) {
       // Initialize ZegoUIKitPrebuiltCallInvitationService if not already initialized
       ZegoUIKitPrebuiltCallInvitationService().init(
-        appID: 560511516,
-        appSign: "2bcde91d07632d0259f19a974e4f779f26137fca753d99634a559f51287f9706",
+        // appID: 560511516, /// this is client app id
+        // appSign: "2bcde91d07632d0259f19a974e4f779f26137fca753d99634a559f51287f9706", /// this is client app sign
+
+        appID: 809641208,
+        appSign: "cac42693150c7bc55464094a5c76a180d4f4448a7bfb0febf33faa22a43e41e8",
+
         userID: id,
         userName: name,
         plugins: [ZegoUIKitSignalingPlugin()],
+
+
+
       );
     } else {
       print('===============================================\n=======================================Error: userName is null or empty');

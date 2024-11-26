@@ -754,8 +754,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _image = selectedImage.readAsBytesSync();
   }
 
-  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo,
-      {required String name, required String email}) {
+  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo, {required String name, required String email}) {
     print('================final paramiter ${email} \n $name');
     return ZegoSendCallInvitationButton(
       invitees: [
