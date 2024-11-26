@@ -107,9 +107,9 @@ class AuthController extends GetxController {
       ///***********firebase code*************///
       if (!isAdmin) {
         if (role == "user") {
-          Get.toNamed(AppRoutes.userBottomNavBar);
+          Get.offAllNamed(AppRoutes.userBottomNavBar);
         } else {
-          Get.toNamed(AppRoutes.doctorBottomNavBar);
+          Get.offAllNamed(AppRoutes.doctorBottomNavBar);
         }
         ToastMessageHelper.showToastMessage('Your are logged in!');
       }

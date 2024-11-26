@@ -131,8 +131,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ? Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                border:
-                                    Border.all(color: AppColors.primaryColor)),
+                                border: Border.all(color: AppColors.primaryColor)),
                             child: pickedImages.isEmpty
                                 ? const SizedBox()
                                 : Row(
@@ -143,66 +142,47 @@ class _ChatScreenState extends State<ChatScreen> {
                                           margin: const EdgeInsets.all(8),
                                           height: 100,
                                           child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                            borderRadius: BorderRadius.circular(20),
                                             child: ListView.builder(
                                               shrinkWrap: true,
-                                              itemCount:
-                                                  pickedImages.length + 1,
+                                              itemCount: pickedImages.length + 1,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (context, index) {
-                                                if (index ==
-                                                    pickedImages.length) {
+                                                if (index == pickedImages.length) {
                                                   return GestureDetector(
                                                     onTap: () {
-                                                      if (pickedImages.length <=
-                                                          5) {
-                                                        showImagePickerOption(
-                                                            context);
+                                                      if (pickedImages.length <= 5) {
+                                                        showImagePickerOption(context);
                                                       } else {
-                                                        ToastMessageHelper
-                                                            .showToastMessage(
-                                                                'You cannot select more than four pictures');
+                                                        ToastMessageHelper.showToastMessage('You cannot select more than four pictures');
                                                       }
                                                     },
                                                     child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          right: 20.w),
+                                                      margin: EdgeInsets.only(right: 20.w),
                                                       width: 80.w,
                                                       height: 151.h,
                                                       decoration: BoxDecoration(
                                                         color: Colors.grey[200],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
+                                                        borderRadius: BorderRadius.circular(12),
                                                       ),
                                                       child: Icon(
                                                         Icons.add,
                                                         size: 40.w,
-                                                        color: AppColors
-                                                            .primaryColor,
+                                                        color: AppColors.primaryColor,
                                                       ),
                                                     ),
                                                   );
                                                 } else {
                                                   return Padding(
-                                                    padding: EdgeInsets.only(
-                                                        right: 8.w),
+                                                    padding: EdgeInsets.only(right: 8.w),
                                                     child: Stack(
                                                       children: [
                                                         Container(
                                                           width: 120.w,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12),
-                                                            image:
-                                                                DecorationImage(
-                                                              image: FileImage(
-                                                                  pickedImages[
-                                                                      index]),
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(12),
+                                                            image: DecorationImage(
+                                                              image: FileImage(pickedImages[index]),
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),
@@ -210,30 +190,19 @@ class _ChatScreenState extends State<ChatScreen> {
                                                         Positioned(
                                                           top: 8.h,
                                                           right: 8.w,
-                                                          child:
-                                                              GestureDetector(
-                                                            onTap: () {
-                                                              pickedImages
-                                                                  .removeAt(
-                                                                      index);
-                                                            },
+                                                          child: GestureDetector(
+                                                            onTap: () {pickedImages.removeAt(index);},
                                                             child: Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .white,
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                border:
-                                                                    Border.all(
-                                                                  color: AppColors
-                                                                      .primaryColor,
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.white,
+                                                                shape: BoxShape.circle,
+                                                                border: Border.all(
+                                                                  color: AppColors.primaryColor,
                                                                 ),
                                                               ),
                                                               child: Icon(
                                                                 Icons.close,
-                                                                color: AppColors
-                                                                    .primaryColor,
+                                                                color: AppColors.primaryColor,
                                                                 size: 18.w,
                                                               ),
                                                             ),
@@ -257,7 +226,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     ? pickedImages.first
                                                     : null,
                                                 '${Get.parameters['receiverId']}',
-                                                '${Get.parameters['id']}');
+                                                '${Get.parameters['id']}',
+                                                currentUserId
+                                            );
                                             pickedImages.clear();
                                           },
                                           child: Container(
@@ -291,6 +262,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   AppBar buildAppBar() {
     return AppBar(
+      forceMaterialTransparency: true,
       title: CustomText(
         text: '${Get.parameters["userName"]}',
         fontsize: 18.h,
@@ -587,7 +559,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                                GestureDetector(
                                    onTap: (){
-                                     downloadImage(imageUrl: "${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}");
+                                     downloadImage(imageUrl: "${ApiConstants.imageBaseUrl}${chatModel.file?.publicFileUrl}");
                                    },
                                    child: const Icon(Icons.arrow_circle_down_sharp, color: AppColors.primaryColor)),
 
@@ -599,7 +571,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           CustomNetworkImage(
                               borderRadius: BorderRadius.circular(8.r),
                               imageUrl:
-                              '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}',
+                              '${ApiConstants.imageBaseUrl}${chatModel.file?.publicFileUrl}',
                               height: 400.h,
                               width: double.infinity)
                         ],
@@ -618,7 +590,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: CustomNetworkImage(
                       borderRadius: BorderRadius.circular(12.r),
                       imageUrl:
-                          '${ApiConstants.imageBaseUrl}/${chatModel.file?.publicFileUrl}',
+                          '${ApiConstants.imageBaseUrl}${chatModel.file?.publicFileUrl}',
                       height: 200.h,
                       width: 200.w),
                 ),
@@ -716,6 +688,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
+                        Get.back();
                         // _pickImageFromGallery();
                         pickImages();
                       },
@@ -735,6 +708,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
+                        Get.back();
                         _pickImageFromCamera();
                       },
                       child: SizedBox(

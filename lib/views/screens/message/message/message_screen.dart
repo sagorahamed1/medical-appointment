@@ -70,50 +70,58 @@ class _MessageScreenState extends State<MessageScreen> {
                     : chatListController.chatUsers.isEmpty
                         ? CustomText(text: "No user found!")
                         : ListView.builder(
-                            itemCount: chatListController.chatUsers.length,
-                            itemBuilder: (context, index) {
-                              var users = chatListController.chatUsers[index];
-                              var participants = chatListController.chatUsers[index].participants;
+                  itemCount: chatListController.chatUsers.length,
+                  itemBuilder: (context, index) {
+                    var users = chatListController.chatUsers[index];
+                    var participants = users.participants;
 
-                              String? receiverId;
-                              String? userName;
+                    String? receiverId;
+                    String userName = "Unknown User";
+                    String imageUrl = "";
 
-                              /// Ensure there are participants
-                              if (participants != null && participants.isNotEmpty) {
-                                /// Loop through the participants to find the one that is not the current user
-                                for (var participant in participants) {
-                                  /// Check if the participant's ID is not equal to the current user's ID
-                                  if (participant.id != currentUserId) {
-                                    receiverId = participant.id;
-                                    userName = "${participant.firstName} ${participant.lastName}";
-                                    break;  // Once found, we can stop the loop
-                                  }
-                                }
-                              }
+                    /// Ensure there are participants
+                    if (participants != null && participants.isNotEmpty) {
+                      /// Loop through the participants to find the one that is not the current user
+                      for (var participant in participants) {
+                        if (participant.id != currentUserId) {
+                          receiverId = participant.id;
+                          userName = "${participant.firstName ?? ''} ${participant.lastName ?? ''}".trim();
+                          imageUrl = participant.image?.publicFileUrl ?? '';
+                          break; // Stop the loop once found
+                        }
+                      }
+                    }
 
-                              print("==========recever id ============ $receiverId");
+                    print("==========Receiver ID=========== $receiverId");
+                    print("==========User Name============ $userName");
+                    print("==========Image URL============ $imageUrl");
 
-                              return Padding(
-                                padding: EdgeInsets.only(bottom: 16.h),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed(AppRoutes.chatScreen, parameters: {
-                                        'id' : '${users.id}',
-                                        'receiverId' : '$receiverId',
-                                        'userName' : '$userName'
-                                      });
-                                    },
-                                    child: Container(
-                                      color: Colors.transparent,
-                                      child: _messageCard(
-                                          '${users.participants?[0].image?.publicFileUrl}',
-                                          "$userName (${users.appointmentId?.patientDetailsId?.fullName})",
-                                           users.lastMessage?.content?.message ?? '',
-                                          "${users.lastMessage?.createdAt ?? DateTime.now()}"),
-                                    )),
-                              );
-                            },
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.chatScreen, parameters: {
+                            'id': '${users.id}',
+                            'receiverId': '$receiverId',
+                            'userName': '$userName'
+                          });
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: _messageCard(
+                            imageUrl.isNotEmpty
+                                ? imageUrl
+                                : 'https://via.placeholder.com/150', // Default image URL
+                            "$userName (${users.appointmentId?.patientDetailsId?.fullName ?? ''})",
+                            users.lastMessage?.content?.message ?? 'No messages yet',
+                            "${users.lastMessage?.createdAt ?? DateTime.now()}",
                           ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
               ),
             )
           ],

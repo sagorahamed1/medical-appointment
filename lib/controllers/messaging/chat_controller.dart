@@ -111,27 +111,35 @@ class ChatController extends GetxController {
     SocketServices.emit('send-message', body);
   }
 
-  sendMessageWithImage(File? image, String receiverId, String chatId)async{
+  sendMessageWithImage(File? image, String receiverId, String chatId, String senderId)async{
     String token = await PrefsHelper.getString(AppConstants.bearerToken);
     List<MultipartBody> multipartBody = image == null ? [] : [MultipartBody("image", image)];
     var body = {
       'messageType' : 'image',
       'message' : 'image',
       'receiverId' : '$receiverId',
+      "senderId": senderId,
       'chatId' : '$chatId',
     };
 
-    var headers = {
-      'Authorization': 'Bearer $token'
-    };
+    var headers = {'Authorization': 'Bearer $token'};
     var response = await ApiClient.postMultipartData(
         ApiConstants.senMessageWithFileEndPoint, body,
         multipartBody: multipartBody, headers: headers);
 
     if(response.statusCode == 200 || response.statusCode == 201){
-      SocketServices.emitWithAck('send-message', body);
-      getChatList();
+      // SocketServices.emitWithAck('send-message', body);
+      // getChatList();
+
+      // final responseBody = response.body;
+      // print("response type : ${responseBody.runtimeType}");
+      // ChatModel chatModel = ChatModel.fromJson(responseBody["data"]["attributes"]);
+      // print("=============================================$chatModel");
+      // chatMessages.insert(0, chatModel);
+
+
       chatMessages;
+      chatMessages.refresh();
       update();
       print("=================message send successful");
     }

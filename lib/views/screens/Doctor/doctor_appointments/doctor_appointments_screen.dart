@@ -1,7 +1,9 @@
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
+import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
+import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_loader.dart';
 import 'package:doctor_appointment/views/widgets/custom_two_button.dart';
@@ -57,6 +59,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
   void dispose() {
     _scrollController.dispose();
     _tabController?.dispose();
+    _homeController.appointmentsList.clear();
     super.dispose();
   }
 
@@ -126,18 +129,16 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                               _homeController.appointmentsList.length + 1,
                           itemBuilder: (context, index) {
                             if (index < _homeController.appointmentsList.length) {
-                              var appointment =
-                                  _homeController.appointmentsList[index];
+                              var appointment = _homeController.appointmentsList[index];
+                              print("*******************************************${appointment.patientId?.image?.publicFileUrl}");
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 16.h),
                                 child: AppointmentsCard(
-                                  image: AppImages.getStarted1,
-                                  name:
-                                      "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                                  image: "${appointment.patientId?.image?.publicFileUrl}",
+                                  name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
                                   appointmentsType: "${appointment.status}",
                                   date: appointment.createdAt,
-                                  time: TimeFormatHelper.timeFormat(
-                                      appointment.createdAt!),
+                                  time: TimeFormatHelper.timeFormat(appointment.createdAt!),
                                   btnText: 'See Details',
                                   btnOnTap: () {
                                     Get.toNamed(
@@ -174,16 +175,13 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                           itemCount:
                               _homeController.appointmentsList.length + 1,
                           itemBuilder: (context, index) {
-                            if (index <
-                                _homeController.appointmentsList.length) {
-                              var appointment =
-                                  _homeController.appointmentsList[index];
+                            if (index < _homeController.appointmentsList.length) {
+                              var appointment = _homeController.appointmentsList[index];
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 16.h),
                                 child: AppointmentsCard(
-                                  image: AppImages.getStarted1,
-                                  name:
-                                      "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                                  image: "${appointment.patientId?.image?.publicFileUrl}",
+                                  name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
                                   leftBtnName: 'See Details',
                                   rightBtnName: 'Message',
                                   appointmentsType: "${appointment.status}",
@@ -228,19 +226,15 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                       ? Image.asset(AppImages.noDataImage)
                       : ListView.builder(
                           controller: _scrollController,
-                          itemCount:
-                              _homeController.appointmentsList.length + 1,
+                          itemCount: _homeController.appointmentsList.length + 1,
                           itemBuilder: (context, index) {
-                            if (index <
-                                _homeController.appointmentsList.length) {
-                              var appointment =
-                                  _homeController.appointmentsList[index];
+                            if (index < _homeController.appointmentsList.length) {
+                              var appointment = _homeController.appointmentsList[index];
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 16.h),
                                 child: AppointmentsCard(
-                                  image: AppImages.getStarted1,
-                                  name:
-                                      "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
+                                  image: "${appointment.patientId?.image?.publicFileUrl}",
+                                  name: "${appointment.patientId?.firstName} ${appointment.patientId?.lastName}",
                                   appointmentsType: "${appointment.status}",
                                   date: appointment.createdAt,
                                   time: TimeFormatHelper.timeFormat(
@@ -311,12 +305,15 @@ class AppointmentsCard extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-                    child: Image.asset(
-                      "$image",
-                      height: 120,
-                      width: 110.w,
-                      fit: BoxFit.cover,
-                    )),
+                    child: CustomNetworkImage(imageUrl: "${ApiConstants.imageBaseUrl}/${image}", height: 120.h, width: 110.w)
+
+                    // Image.asset(
+                    //   "$image",
+                    //   height: 120,
+                    //   width: 110.w,
+                    //   fit: BoxFit.cover,
+                    // )
+                ),
                 SizedBox(
                   width: 213.w,
                   child: Padding(

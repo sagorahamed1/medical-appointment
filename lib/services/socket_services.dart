@@ -31,17 +31,41 @@ class SocketServices {
     }
   }
 
+  // static Future<dynamic> emitWithAck(String event, dynamic body) async {
+  //   Completer<dynamic> completer = Completer<dynamic>();
+  //   socket.emitWithAck(event, body, ack: (data) {
+  //     if (data != null) {
+  //       completer.complete(data);
+  //     } else {
+  //       completer.complete(1);
+  //     }
+  //   });
+  //   return completer.future;
+  // }
+
   static Future<dynamic> emitWithAck(String event, dynamic body) async {
     Completer<dynamic> completer = Completer<dynamic>();
+
+    // Debug: Log the event and body being emitted
+    print("emitWithAck: Emitting event '$event' with body: $body");
+
     socket.emitWithAck(event, body, ack: (data) {
+      // Debug: Log the acknowledgment received
+      print("emitWithAck: Acknowledgment received for event '$event': $data");
+
       if (data != null) {
         completer.complete(data);
       } else {
-        completer.complete(1);
+        completer.complete(1); // Default fallback if `data` is null
       }
     });
+
+    // Debug: Awaiting acknowledgment
+    print("emitWithAck: Waiting for acknowledgment for event '$event'");
+
     return completer.future;
   }
+
 
 
   static emit(String event, dynamic body) {
