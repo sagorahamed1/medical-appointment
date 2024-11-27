@@ -99,6 +99,7 @@ class _ContinueDoctorDetailsScreenState
 
                 SizedBox(height: 16.h),
                 CustomTextFieldWithoutBorder(
+                  readOnly: true,
                     contenpaddingHorizontal: 20,
                     contenpaddingVertical: 0,
                     hintText: "Specialist",
@@ -120,6 +121,7 @@ class _ContinueDoctorDetailsScreenState
 
                 SizedBox(height: 16.h),
                 CustomTextFieldWithoutBorder(
+                  readOnly: true,
                     contenpaddingHorizontal: 20,
                     contenpaddingVertical: 0,
                     hintText: "2 Years Experience",

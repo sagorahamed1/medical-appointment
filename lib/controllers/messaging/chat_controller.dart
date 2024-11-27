@@ -129,18 +129,17 @@ class ChatController extends GetxController {
 
     if(response.statusCode == 200 || response.statusCode == 201){
       // SocketServices.emitWithAck('send-message', body);
+      // chatMessages.clear();
       // getChatList();
 
       // final responseBody = response.body;
-      // print("response type : ${responseBody.runtimeType}");
       // ChatModel chatModel = ChatModel.fromJson(responseBody["data"]["attributes"]);
       // print("=============================================$chatModel");
       // chatMessages.insert(0, chatModel);
-
-
-      chatMessages;
-      chatMessages.refresh();
+      chatMessages.value;
       update();
+
+
       print("=================message send successful");
     }
   }

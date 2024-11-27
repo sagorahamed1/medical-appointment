@@ -139,13 +139,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                     onTap: () {
                                       setState(() {
                                         selectedIndex = index;
-                                        categoryName = _homeController
-                                                .cetegoryLists[selectedIndex]
-                                                .name ??
-                                            '';
+                                        categoryName = _homeController.cetegoryLists[selectedIndex].name ?? '';
                                         _homeController.doctorLists.clear();
-                                        print(
-                                            '---------------------------------->?');
+                                        print('---------------------------------->?');
                                         _homeController.getDoctorByCetegory(
                                             cetegory: categoryName, date: null);
                                       });

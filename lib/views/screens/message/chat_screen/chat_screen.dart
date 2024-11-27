@@ -535,9 +535,7 @@ class _ChatScreenState extends State<ChatScreen> {
         chatModel.content?.messageType == 'image'
             ? GestureDetector(
           onTap: (){
-
             print("===================================================================== dialog");
-
             showDialog(
                 context: context,
                 builder: (context) {

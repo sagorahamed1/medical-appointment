@@ -266,6 +266,7 @@ class TwoBottonBottomSheet extends StatelessWidget {
             AppConstants.roleMock = '';
             // await PrefsHelper.remove(AppConstants.token);
             await PrefsHelper.remove(AppConstants.userId);
+            await PrefsHelper.remove(AppConstants.userName);
             await PrefsHelper.remove(AppConstants.role);
             await PrefsHelper.remove(AppConstants.roleMock);
             await PrefsHelper.remove(AppConstants.bearerToken);

@@ -51,10 +51,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCorbhMkaCRitoR3on_i_wZiamxgz0W-uU',
-    appId: '1:897776702572:android:3de1eb32a6485d4de1b449',
+    appId: '1:897776702572:android:efe59b99c835ca7ee1b449',
     messagingSenderId: '897776702572',
     projectId: 'medroof-urgent-care',
-    storageBucket: 'medroof-urgent-care.appspot.com',
+    storageBucket: 'medroof-urgent-care.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,7 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:897776702572:ios:48007d27ee8ad162e1b449',
     messagingSenderId: '897776702572',
     projectId: 'medroof-urgent-care',
-    storageBucket: 'medroof-urgent-care.appspot.com',
+    storageBucket: 'medroof-urgent-care.firebasestorage.app',
     iosBundleId: 'com.example.doctorAppointment',
   );
 }

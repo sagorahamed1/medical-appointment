@@ -19,8 +19,8 @@ import '../../../widgets/custom_text.dart';
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
- final TextEditingController emailCtrl = TextEditingController(text: kDebugMode ? 'sagoramammed50@gmail.com' : '',);
- final TextEditingController passwordCtrl = TextEditingController(text: kDebugMode ? '1qazxsw2' : '');
+ final TextEditingController emailCtrl = TextEditingController();
+ final TextEditingController passwordCtrl = TextEditingController();
   final AuthController _authController = Get.find<AuthController>();
 
  final RxBool isObscure = true.obs;

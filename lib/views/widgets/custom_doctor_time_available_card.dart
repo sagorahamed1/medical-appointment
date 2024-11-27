@@ -26,14 +26,14 @@ class CustomDoctorTimeAvailableCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              width: 167.w,
-              child: Column(
-                children: [
-                  ///===================Start Time============>
-                  GestureDetector(
-                    onTap: onTapStart,
-                    child: Row(
+            GestureDetector(
+              onTap: onTapStart,
+              child: SizedBox(
+                width: 167.w,
+                child: Column(
+                  children: [
+                    ///===================Start Time============>
+                    Row(
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 7.w, right: 10.w),
@@ -44,21 +44,21 @@ class CustomDoctorTimeAvailableCard extends StatelessWidget {
                             text: '$startTime', color: AppColors.primaryColor),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.h),
-                    child: const Divider(),
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: const Divider(),
+                    )
+                  ],
+                ),
               ),
             ),
-            SizedBox(
-              width: 167.w,
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: onTapEnd,
-                    child: Row(
+            GestureDetector(
+              onTap: onTapEnd,
+              child: SizedBox(
+                width: 167.w,
+                child: Column(
+                  children: [
+                    Row(
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 7.w, right: 10.w),
@@ -69,12 +69,12 @@ class CustomDoctorTimeAvailableCard extends StatelessWidget {
                             text: '$endTime', color: AppColors.primaryColor),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.h),
-                    child: const Divider(),
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: const Divider(),
+                    )
+                  ],
+                ),
               ),
             )
           ],
