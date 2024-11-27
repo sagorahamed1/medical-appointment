@@ -68,6 +68,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     return Scaffold(
       body:  firebaseData2?.email == null ? const SizedBox() :
       CallInvitation(
+        image: image.toString(),
         id: "${firebaseData2?.email}",
         name: '$userName',
         child: SafeArea(

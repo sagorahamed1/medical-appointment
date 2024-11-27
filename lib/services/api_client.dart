@@ -218,8 +218,7 @@ class ApiClient extends GetxService {
       bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
 
       var mainHeaders = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Bearer $bearerToken'
+        'Authorization': 'Bearer $bearerToken',
       };
 
       debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
@@ -231,6 +230,7 @@ class ApiClient extends GetxService {
         request.files.add(await http.MultipartFile.fromPath(
           element.key,
           element.file.path,
+          contentType: MediaType('image', 'png'), // Specify file type explicitly
         ));
       }
       request.fields.addAll(body);
@@ -238,9 +238,11 @@ class ApiClient extends GetxService {
       await http.Response.fromStream(await request.send());
       return handleResponse(_response, uri);
     } catch (e) {
+      debugPrint('Error: $e');
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
+
 
 //==========================================> Put Data <======================================
   Future<Response> putData(String uri, dynamic body,

@@ -75,6 +75,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       body: firebaseData2?.email == null ? SizedBox() :  CallInvitation(
         id: "${firebaseData2?.email}",
         name: '${userName}',
+        image: image.toString(),
         child: SafeArea(
           child: Padding(
             padding:

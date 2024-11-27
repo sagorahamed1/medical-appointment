@@ -157,11 +157,11 @@ class AuthController extends GetxController {
 
   fillProfileOrUpDate(File? image) async {
     fillProfileLoading(true);
-    List<MultipartBody> multipartBody =
-        image == null ? [] : [MultipartBody("image", image)];
+    List<MultipartBody> multipartBody = image == null ? [] : [MultipartBody("image", image)];
     var userId = await PrefsHelper.getString(AppConstants.userId);
 
     var headers = {'Content-Type': 'application/json'};
+    print("===============================================file type : $image");
 
     var body = {
       "gender": genderCtrl.text,
@@ -170,6 +170,7 @@ class AuthController extends GetxController {
       "address": addressCtrl.text,
       "userId": userId,
     };
+
     var response = await ApiClient.postMultipartData(
         ApiConstants.fillUpProfileEndPoint, body,
         multipartBody: multipartBody, headers: headers);
@@ -186,6 +187,9 @@ class AuthController extends GetxController {
         ToastMessageHelper.showToastMessage('Account Create Successful');
       }
       fillProfileLoading(false);
+    }else{
+      fillProfileLoading(false);
+      ToastMessageHelper.showToastMessage(response.body["message"]);
     }
   }
 

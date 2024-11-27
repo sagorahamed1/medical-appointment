@@ -769,6 +769,8 @@ class _ChatScreenState extends State<ChatScreen> {
       clickableBackgroundColor: AppColors.primaryColor,
       resourceID: 'zegouikit_call',
       isVideoCall: isVideo,
+
+
     );
   }
 

@@ -103,7 +103,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             onTap: () {
                               showImagePickerOption(context);
                             },
-                            child: SvgPicture.asset(AppIcons.galaryIcon)),
+                            child: Container(
+                                decoration:  BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.black, width: 0.50)
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(Icons.camera_alt),
+                                ))),
                       )
                     ],
                   ),
@@ -136,7 +145,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                  CustomButton(
                    loading: _profileControler.updateProfileLoading.value,
                     onpress: () {
-                      FileSizeChecker.checkFileSize(selectedIMage);
                       _profileControler.profileUpdate(
                           image: selectedIMage,
                           firstName: firstNameCtrl.text,

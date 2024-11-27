@@ -105,7 +105,16 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                               onTap: () {
                                 showImagePickerOption(context);
                               },
-                              child: SvgPicture.asset(AppIcons.galaryIcon)),
+                              child: Container(
+                                  decoration:  BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.black, width: 0.50)
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Icon(Icons.camera_alt),
+                                  ))),
                         )
                       ],
                     ),
@@ -145,6 +154,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
 
                 ///=====================Date of birth ======================>
                 CustomTextFieldWithoutBorder(
+                  readOnly: true,
                   onTap: (){
                     selectDate(context);
                   },
@@ -222,7 +232,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CustomText(text: "insurance",left: 20.w),
+                            CustomText(text: "insurance (Optional)",left: 20.w),
                             Padding(
                               padding:  EdgeInsets.only(right: 20.w),
                               child: SvgPicture.asset(AppIcons.attachFile),
@@ -236,7 +246,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                 // const Spacer(),
                 Obx(()=>
                    CustomButton(
-                      loading: _authController.fillProfileLoading.value,
+                       loading: _authController.fillProfileLoading.value,
                       onpress: () {
                        if(_formKey.currentState!.validate()){
                          _authController.fillProfileOrUpDate(selectedIMage);

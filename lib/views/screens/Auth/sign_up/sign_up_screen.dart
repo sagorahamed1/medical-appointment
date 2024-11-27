@@ -1,4 +1,5 @@
 import 'package:doctor_appointment/controllers/auth_controller.dart';
+import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
@@ -207,6 +208,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           passwordCtrl.text.trim(),
                         );
                       } else {
+                        ToastMessageHelper.showToastMessage("Please accept privacy policy!");
                         setState(() {
                           _authController.isCheckboxError = true;
                         });

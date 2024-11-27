@@ -133,7 +133,7 @@ class SignInScreen extends StatelessWidget {
                     Get.toNamed(AppRoutes.signUpScreen);
                   },
                   child: CustomText(
-                      text: AppString.signUp, color: AppColors.primaryColor),
+                      text: " ${AppString.signUp}", color: AppColors.primaryColor),
                 ),
               ],
             ),
