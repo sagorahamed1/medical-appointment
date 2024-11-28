@@ -23,8 +23,16 @@ class _UserEmergencyDoctorsScreenState extends State<UserEmergencyDoctorsScreen>
 
   @override
   void initState() {
-    _homeController.getEmergencyDoctor();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _homeController.getEmergencyDoctor();
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _homeController.emergencyDoctors.clear();
+    super.dispose();
   }
 
 
@@ -62,9 +70,9 @@ class _UserEmergencyDoctorsScreenState extends State<UserEmergencyDoctorsScreen>
                 ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount:_homeController.emergencyDoctors.value.length,
+                    itemCount:_homeController.emergencyDoctors.length,
                     itemBuilder: (context, index) {
-                      var emergencyDoctors = _homeController.emergencyDoctors.value[index];
+                      var emergencyDoctors = _homeController.emergencyDoctors[index];
                       return Padding(
                         padding: EdgeInsets.only(bottom: 16.h),
                         child:  AvailableDoctorsCard(

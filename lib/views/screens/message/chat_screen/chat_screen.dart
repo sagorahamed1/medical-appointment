@@ -15,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import '../../../../controllers/messaging/chat_controller.dart';
 import '../../../../helpers/prefs_helper.dart';
 import '../../../../helpers/toast_message_helper.dart';
@@ -758,7 +759,7 @@ class _ChatScreenState extends State<ChatScreen> {
       invitees: [
         ZegoUIKitUser(
           id: email,
-          name: name,
+          name: name
         )
       ],
       buttonSize: const Size(30, 30),
@@ -769,10 +770,9 @@ class _ChatScreenState extends State<ChatScreen> {
       isVideoCall: isVideo,
 
 
+
     );
   }
-
-
 
   Future<void> downloadImage({required String imageUrl}) async {
     try{
@@ -802,3 +802,4 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 }
+

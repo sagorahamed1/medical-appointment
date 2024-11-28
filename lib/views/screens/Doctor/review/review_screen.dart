@@ -43,7 +43,10 @@ class ReviewScreen extends StatelessWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  const progressRatingIndicator(),
+                   progressRatingIndicator(
+                    totalReviews: "${giveReviewController.reviews.length}",
+                     avargeReviews: "${giveReviewController.avargeReviews?.value ?? 0}",
+                  ),
                   SizedBox(height: 24.h),
 
                   Obx(()=>

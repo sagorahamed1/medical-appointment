@@ -62,7 +62,7 @@ class UserDoctorDetailsScreen extends StatelessWidget {
                     image: doctorInfo.doctorId?.image?.publicFileUrl,
                     doctorName: '${doctorInfo.doctorId?.firstName} ${doctorInfo.doctorId?.lastName}',
                     location: doctorInfo.clinicAddress,
-                    specialist: doctorInfo.doctorId?.email,
+                    specialist: doctorInfo.specialist,
                   ),
 
                   SizedBox(height: 16.h),

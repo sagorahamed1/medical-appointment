@@ -38,6 +38,7 @@ class GiveReviewController extends GetxController{
   //
   RxList <GetReviewModel> reviews =<GetReviewModel> [].obs;
   RxBool getReviewLoading = false.obs;
+  RxString avargeReviews = ''.obs;
   getReviews()async{
     // if (page.value == 1) {
     //   emergencyDoctorLoading(true);
@@ -47,6 +48,7 @@ class GiveReviewController extends GetxController{
     if(response.statusCode == 200){
       var responseData = response.body;
       reviews.value = List<GetReviewModel>.from(responseData['data']['attributes']['reviews'].map((x)=> GetReviewModel.fromJson(x)));
+      avargeReviews.value = response.body['data']['attributes']['avgRating'];
       print("get succussful");
       getReviewLoading(false);
     }else if(response.statusCode == 404){

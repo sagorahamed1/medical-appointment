@@ -8,8 +8,10 @@ import '../../../../../utils/app_colors.dart';
 import '../../../../widgets/custom_text.dart';
 
 class progressRatingIndicator extends StatelessWidget {
+  final String? totalReviews;
+  final String? avargeReviews;
   const progressRatingIndicator({
-    super.key,
+    super.key, this.totalReviews, this.avargeReviews,
   });
 
   @override
@@ -45,7 +47,7 @@ class progressRatingIndicator extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
 
-                    CustomText(text: "4.0",fontWeight: FontWeight.w500,fontsize: 30.h,bottom: 8.h),
+                    CustomText(text: "${avargeReviews?.toString() ?? 0}",fontWeight: FontWeight.w500,fontsize: 30.h,bottom: 8.h),
 
 
                     RatingBar.builder(
@@ -63,7 +65,7 @@ class progressRatingIndicator extends StatelessWidget {
                     ),
 
 
-                    CustomText(text: "52 Reviews",fontWeight: FontWeight.w500,top: 8.h),
+                    CustomText(text: "$totalReviews Reviews",fontWeight: FontWeight.w500,top: 8.h),
                   ],
                 ),
               ),
