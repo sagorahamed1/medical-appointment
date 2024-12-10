@@ -40,7 +40,7 @@ class DoctorHomeControllerDoctorPart extends GetxController {
     }
 
     var response = await ApiClient.getData(
-        "${ApiConstants.doctorAppointmentHomeScreenApiEndPoint(currentStatus)}&limit=3&page=${page.value}");
+        "${ApiConstants.doctorAppointmentHomeScreenApiEndPoint(currentStatus)}&limit=15&page=${page.value}");
 
     if (response.statusCode == 200) {
       if (response.body != null) {

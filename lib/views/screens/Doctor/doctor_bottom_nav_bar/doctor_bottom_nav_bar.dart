@@ -69,7 +69,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           ///---------------home---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              AppIcons.homeicon,
+            _selectedIndex==0? AppIcons.homeicon:AppIcons.home_outline,
               color: Colors.white,
             ),
             label: 'Home',
@@ -78,7 +78,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           ///---------------Appointments---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              AppIcons.appointments,
+            _selectedIndex==1?AppIcons.appointments:  AppIcons.appointments_outline,
               color: Colors.white,
             ),
             label: 'Appointments',
@@ -87,7 +87,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           ///---------------Message---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              AppIcons.messageIcon,
+           _selectedIndex==2?AppIcons.message: AppIcons.message_outline,
               color: Colors.white,
             ),
             label: 'Message',
@@ -96,7 +96,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           ///---------------Profile---------------->
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              AppIcons.profileIcon,
+           _selectedIndex==3?AppIcons.profile:AppIcons.profile_outline,
               color: Colors.white,
             ),
             label: 'Profile',

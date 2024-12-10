@@ -14,9 +14,13 @@ class AppIcons {
   static const String categoryGeneral = "$path/category_general.svg";
   static const String star = "$path/star.svg";
   static const String homeicon = "$path/homeicon.svg";
-  static const String appointments = "$path/appointments.svg";
-  static const String messageIcon = "$path/messageIcon.svg";
-  static const String profileIcon = "$path/profileIcon.svg";
+  static const String home_outline="$path/home.svg";
+  static const String appointments="$path/appointment.svg";
+  static const String message="$path/chat.svg";
+  static const String profile="$path/user.svg";
+  static const String appointments_outline = "$path/appointments.svg";
+  static const String message_outline = "$path/messageIcon.svg";
+  static const String profile_outline = "$path/profileIcon.svg";
   static const String notificationbell = "$path/notificationbell.svg";
   static const String crossIcon = "$path/cross_icon.svg";
   static const String experienceIcon = "$path/experience.svg";

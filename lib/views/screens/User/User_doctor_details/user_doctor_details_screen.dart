@@ -75,7 +75,7 @@ class UserDoctorDetailsScreen extends StatelessWidget {
                           '${doctorInfo.experience}', "Years experience", AppIcons.experienceIcon),
                       _ratingExperience('${doctorInfo.doctorId?.rating}', "Rating", AppIcons.star),
                       _ratingExperience(
-                          '${doctorInfo.doctorId?.reviewCount}', "Reviews", AppIcons.messageIcon),
+                          '${doctorInfo.doctorId?.reviewCount}', "Reviews", AppIcons.message_outline),
                     ],
                   ),
 

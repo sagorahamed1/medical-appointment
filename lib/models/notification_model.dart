@@ -71,7 +71,7 @@ class RecipientId {
   final bool? isInsurance;
   final Role? role;
   final dynamic oneTimeCode;
-  final int? earningAmount;
+  final double? earningAmount;
   final int? v;
   final Address? address;
   final Gender? gender;
@@ -122,7 +122,7 @@ class RecipientId {
     isInsurance: json["isInsurance"],
     role: roleValues.map[json["role"]],
     oneTimeCode: json["oneTimeCode"],
-    earningAmount: json["earningAmount"],
+    earningAmount: json["earningAmount"].toDouble(),
     v: json["__v"],
     address: addressValues.map[json["address"]],
     gender: genderValues.map[json["gender"]],
