@@ -27,6 +27,9 @@ class _UserAvailablleDoctorsScreenState extends State<UserAvailablleDoctorsScree
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _homeController.getDoctorByCetegory(cetegory: '${Get.parameters['category']}', date: null);
+    });
     _addScrollListener();
   }
 
@@ -42,7 +45,7 @@ class _UserAvailablleDoctorsScreenState extends State<UserAvailablleDoctorsScree
 
   @override
   Widget build(BuildContext context) {
-    _homeController.getDoctorByCetegory(cetegory: '${Get.parameters['category']}', date: null);
+    // _homeController.getDoctorByCetegory(cetegory: '${Get.parameters['category']}', date: null);
     print("==> Category Name ${Get.parameters['category']}");
 
     return Scaffold(

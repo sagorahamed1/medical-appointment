@@ -72,10 +72,11 @@ class _UserCategoryScreenState extends State<UserCategoryScreen> {
                                           setState(() {
                                             selectedIndex = index;
                                           });
-                                            categoryName = _homeController.cetegoryLists[selectedIndex].name;
+                                            categoryName = _homeController.cetegoryLists[index].name;
+                                            print("===================================== Cetegory Name : ${category.name}");
 
                                             Get.toNamed(AppRoutes.useravailablleDoctorsScreen, parameters: {
-                                              'category' : categoryName
+                                              'category' : "${category.name}"
                                             });
 
                                         },

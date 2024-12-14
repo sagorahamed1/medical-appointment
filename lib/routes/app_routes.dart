@@ -42,6 +42,7 @@ import '../views/screens/notifications/notifications_screen.dart';
 import '../views/screens/onboarding/onboarding_screen.dart';
 import '../views/screens/profile/edit_profile/edit_profile_screen.dart';
 import '../views/screens/profile/personal_information/personal_information_screen.dart';
+import '../views/screens/profile/profile/profile_screen.dart';
 import '../views/screens/role/role_screen.dart';
 import '../views/screens/setting/All_Privacy_Policy/all_privacy_policy_screen.dart';
 import '../views/screens/setting/change_password/change_password_screen.dart';
@@ -99,6 +100,7 @@ class AppRoutes {
   static const String failedPayment = "/FailedPayment.dart";
   static const String successPayment = "/SuccessPayment.dart";
   static const String cancelPayment = "/CancelPayment.dart";
+  static const String profileScreen = "/ProfileScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -149,5 +151,6 @@ class AppRoutes {
         GetPage(name: failedPayment, page: () => FailedPayment()),
         GetPage(name: successPayment, page: () => SuccessPayment()),
         GetPage(name: cancelPayment, page: () => CancelPayment()),
+        GetPage(name: profileScreen, page: () => ProfileScreen()),
   ];
 }

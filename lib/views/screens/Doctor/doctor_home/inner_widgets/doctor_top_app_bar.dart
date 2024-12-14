@@ -26,36 +26,48 @@ class DoctorTopAppBar extends StatelessWidget {
           radius: 20.r,
           backgroundImage: const AssetImage(AppImages.bgProfile),
         )
-              : CircleAvatar(
-          radius: 20.r,
-          backgroundImage: NetworkImage(
-              "${ApiConstants.imageBaseUrl}/$image"),
-        ),
+              : GestureDetector(
+          onTap: (){
+            Get.toNamed(AppRoutes.profileScreen, parameters: {"screenTypeHome" : "home"});
+          },
+                child: CircleAvatar(
+                          radius: 20.r,
+                          backgroundImage: NetworkImage(
+                "${ApiConstants.imageBaseUrl}/$image"),
+                        ),
+              ),
         SizedBox(
           width: 12.w,
         ),
 
         ///---------------------------hello (profile name)----------------------->
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                text: "Good Morning 👋",
-                color: AppColors.textColor5C5C5C,
-              ),
-              CustomText(
-                text: "$name",
-                fontsize: 16.h,
-                fontWeight: FontWeight.w600,
-                top: 4.h,
-              )
-            ],
+        GestureDetector(
+          onTap: (){
+            Get.toNamed(AppRoutes.profileScreen, parameters: {"screenTypeHome" : "home"});
+          },
+          child: Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: "Welcome 👋",
+                  color: AppColors.textColor5C5C5C,
+                ),
+                CustomText(
+                  text: "$name",
+                  fontsize: 16.h,
+                  fontWeight: FontWeight.w600,
+                  top: 4.h,
+                )
+              ],
+            ),
           ),
         ),
-        SizedBox(
-          width: 10.w,
-        ),
+        // SizedBox(
+        //   width: 10.w,
+        // ),
+
+        const Spacer(),
 
         GestureDetector(
           onTap: () {

@@ -41,6 +41,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   void initState() {
+    _homeController.getDoctorByCetegory(cetegory: "General", date: null);
     fetchFirebaseData2();
     super.initState();
   }
@@ -59,6 +60,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         firebaseData2 = data;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _homeController.doctorLists.clear();
+    super.dispose();
   }
 
   @override
@@ -105,7 +112,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           contenpaddingHorizontal: 20.w,
                           contenpaddingVertical: 0,
                           controller: _homeController.searchCtrl,
-                          hintText: AppString.search,
+                          hintText: "Search by doctor name or specialist",
                           prefixIcon: GestureDetector(
                             onTap: () {
                               Get.toNamed(AppRoutes.userSearchScreen);
@@ -129,11 +136,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               scrollDirection: Axis.horizontal,
                               itemCount: _homeController.cetegoryLists.length,
                               itemBuilder: (context, index) {
-                                if (_homeController
-                                        .cetegoryLists[index].isDeleted ==
-                                    false) {
-                                  var category =
-                                      _homeController.cetegoryLists[index];
+                                if (_homeController.cetegoryLists[index].isDeleted == false) {
+                                  var category = _homeController.cetegoryLists[index];
                                   bool isSelected = selectedIndex == index;
                                   return CategoryCard(
                                     onTap: () {
@@ -142,8 +146,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                         categoryName = _homeController.cetegoryLists[selectedIndex].name ?? '';
                                         _homeController.doctorLists.clear();
                                         print('---------------------------------->?');
-                                        _homeController.getDoctorByCetegory(
-                                            cetegory: categoryName, date: null);
+                                        _homeController.getDoctorByCetegory(cetegory: categoryName, date: null);
                                       });
                                     },
                                     categorIcon: category.image?.publicFileUrl,

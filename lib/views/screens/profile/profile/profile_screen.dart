@@ -64,6 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Obx(()=>
                      TopProfileCard(
+                       isBackButton: "${Get.parameters["screenTypeHome"]}" ==  "home" ? true : false,
                       appBarText: AppString.profile,
                       name: _profileControler.userName?.value.toString(),
                       height: 341,
