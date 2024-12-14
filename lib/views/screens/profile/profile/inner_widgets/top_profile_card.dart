@@ -46,6 +46,7 @@ class TopProfileCard extends StatelessWidget {
               color: Colors.white,
             ) :
 
+
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
