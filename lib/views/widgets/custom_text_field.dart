@@ -44,7 +44,7 @@ class CustomTextField extends StatefulWidget {
     this.labelText,
     this.onTap,
     this.helperText,
-    this.autovalidateMode,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
     this.onChanged,
   });
 
@@ -86,7 +86,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscureText: widget.isObscureText!,
-      autovalidateMode: widget.autovalidateMode,
+      autovalidateMode:  widget.autovalidateMode,
       obscuringCharacter: widget.obscureCharacter!,
       validator: widget.validator,
       cursorColor: AppColors.primaryColor,

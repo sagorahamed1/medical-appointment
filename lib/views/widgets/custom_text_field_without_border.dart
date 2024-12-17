@@ -40,7 +40,7 @@ class CustomTextFieldWithoutBorder extends StatelessWidget {
     this.labelText,
     this.onTap,
     this.helperText,
-    this.autovalidateMode,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
     this.onChanged,
   });
 
