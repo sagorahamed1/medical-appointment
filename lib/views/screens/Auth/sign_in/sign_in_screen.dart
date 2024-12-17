@@ -21,7 +21,7 @@ class SignInScreen extends StatelessWidget {
 
  final TextEditingController emailCtrl = TextEditingController();
  final TextEditingController passwordCtrl = TextEditingController();
-  final AuthController _authController = Get.find<AuthController>();
+  final AuthController _authController = Get.put(AuthController());
 
  final RxBool isObscure = true.obs;
 
@@ -115,6 +115,7 @@ class SignInScreen extends StatelessWidget {
                CustomButton(
                    loading: _authController.logInLoading.value,
                   onpress: () async {
+
                     _authController.handleLogIn(
                       emailCtrl.text, passwordCtrl.text
                     );

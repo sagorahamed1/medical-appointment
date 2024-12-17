@@ -70,7 +70,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
             _selectedIndex==0? AppIcons.homeicon:AppIcons.home_outline,
-              color: Colors.white,
+              color: _selectedIndex== 0 ? Colors.white : Colors.white60,
             ),
             label: 'Home',
           ),
@@ -79,7 +79,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
             _selectedIndex==1?AppIcons.appointments:  AppIcons.appointments_outline,
-              color: Colors.white,
+              color: _selectedIndex== 1 ? Colors.white : Colors.white60,
             ),
             label: 'Appointments',
           ),
@@ -88,7 +88,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
            _selectedIndex==2?AppIcons.message: AppIcons.message_outline,
-              color: Colors.white,
+              color: _selectedIndex== 2 ? Colors.white : Colors.white60,
             ),
             label: 'Message',
           ),
@@ -97,7 +97,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
            _selectedIndex==3?AppIcons.profile:AppIcons.profile_outline,
-              color: Colors.white,
+              color: _selectedIndex== 3 ? Colors.white : Colors.white60,
             ),
             label: 'Profile',
           ),
@@ -109,7 +109,7 @@ class _BottomNavigationBarExampleState extends State<DoctorBottomNavBar> {
         backgroundColor: AppColors.primaryColor,
         selectedFontSize: 14.h,
         selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white60,
       ),
     );
   }

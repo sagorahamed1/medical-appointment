@@ -78,7 +78,6 @@ class TopProfileCard extends StatelessWidget {
 
 
             SizedBox(height: 36.h),
-
             ///=====================image=====================>
             Container(
               clipBehavior: Clip.antiAlias,

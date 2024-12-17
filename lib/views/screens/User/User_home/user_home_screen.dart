@@ -112,7 +112,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           contenpaddingHorizontal: 20.w,
                           contenpaddingVertical: 0,
                           controller: _homeController.searchCtrl,
-                          hintText: "Search by doctor name or specialist",
+                          hintText: "Search by doctor name",
                           prefixIcon: GestureDetector(
                             onTap: () {
                               Get.toNamed(AppRoutes.userSearchScreen);
