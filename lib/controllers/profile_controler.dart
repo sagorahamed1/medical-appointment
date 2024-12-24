@@ -1,17 +1,12 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/models/profile_model.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-
 import '../helpers/toast_message_helper.dart';
 import '../services/api_client.dart';
 import '../services/api_constants.dart';
 import '../utils/app_constant.dart';
-import '../views/screens/profile/profile/profile_screen.dart';
+
 
 class ProfileControler extends GetxController{
 

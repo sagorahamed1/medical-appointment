@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.doctorAppointment</string>
+	<string>com.ucspa.medroof</string>
 	<key>PROJECT_ID</key>
 	<string>medroof-urgent-care</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:897776702572:ios:48007d27ee8ad162e1b449</string>
+	<string>1:897776702572:ios:4f89f9b8fdf5c557e1b449</string>
 </dict>
 </plist>

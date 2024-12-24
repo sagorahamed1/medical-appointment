@@ -1,4 +1,4 @@
-package com.medroof.ucspa
+package com.ucspa.medroof
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

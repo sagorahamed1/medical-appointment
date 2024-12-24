@@ -301,7 +301,7 @@ class _ChatScreenState extends State<ChatScreen> {
             // Display the special first message if applicable
             if (isFirstMessage) {
               return firstMessage(
-                '${message.senderId?.image?.publicFileUrl}',
+                '${message.receiverId?.image?.publicFileUrl}',
                 isCurrentUser
                     ? "${message.receiverId?.firstName} ${message.receiverId?.lastName}"
                     : "${message.senderId?.firstName} ${message.senderId?.lastName}",
