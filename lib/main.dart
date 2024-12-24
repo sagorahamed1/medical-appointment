@@ -58,6 +58,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
+      minTextAdapt: true,
+      splitScreenMode: true,
       designSize: const Size(393, 852),
       builder: (context, child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,

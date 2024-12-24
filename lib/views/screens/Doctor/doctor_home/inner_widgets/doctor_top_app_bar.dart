@@ -45,22 +45,20 @@ class DoctorTopAppBar extends StatelessWidget {
           onTap: (){
             Get.toNamed(AppRoutes.profileScreen, parameters: {"screenTypeHome" : "home"});
           },
-          child: Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  text: "Welcome 👋",
-                  color: AppColors.textColor5C5C5C,
-                ),
-                CustomText(
-                  text: "$name",
-                  fontsize: 16.h,
-                  fontWeight: FontWeight.w600,
-                  top: 4.h,
-                )
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: "Welcome 👋",
+                color: AppColors.textColor5C5C5C,
+              ),
+              CustomText(
+                text: "$name",
+                fontsize: 16.h,
+                fontWeight: FontWeight.w600,
+                top: 4.h,
+              )
+            ],
           ),
         ),
         // SizedBox(

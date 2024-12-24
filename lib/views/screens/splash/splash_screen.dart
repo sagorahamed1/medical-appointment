@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../../../controllers/profile_controler.dart';
 import '../../../services/firebase_services.dart';
 import '../../../utils/app_images.dart';
+import '../../widgets/call_invitation.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -56,6 +57,20 @@ class _SplashScreenState extends State<SplashScreen> {
     }else{
       Get.offAllNamed(AppRoutes.onboardingScreen);
     }
+
+
+
+      var image = await PrefsHelper.getString(AppConstants.image);
+      var name = await PrefsHelper.getString(AppConstants.userName);
+      var mail = await PrefsHelper.getString(AppConstants.email);
+
+      initializeCallInvitation(
+          name: "$name",
+          id: "$mail",
+          image: image.toString()
+      );
+
+
     });
   }
 

@@ -44,7 +44,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   }
 
   AuthService authService = AuthService();
-  FirebaseUserModel? firebaseData2;
+  // FirebaseUserModel? firebaseData2;
   fetchFirebaseData2() async {
     var userId = await PrefsHelper.getString(AppConstants.userId);
     var data = await authService.getUserDataById(userId);
@@ -54,7 +54,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       setState(() {
         userName = name;
         image = demoImage;
-        firebaseData2 = data;
       });
     }
   }
@@ -72,11 +71,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     // _profileControler.getProfile();
     // _homeController.getAppointment(status: 'upcomming');
     return Scaffold(
-      body: firebaseData2?.email == null ? SizedBox() :  CallInvitation(
-        id: "${firebaseData2?.email}",
-        name: '${userName}',
-        image: image.toString(),
-        child: SafeArea(
+      body: SafeArea(
           child: Padding(
             padding:
             EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault.w),
@@ -147,7 +142,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             ),
           ),
         ),
-      ),
+
     );
   }
 

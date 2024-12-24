@@ -10,6 +10,7 @@ import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../routes/app_routes.dart';
+import '../views/widgets/call_invitation.dart';
 
 class AuthController extends GetxController {
   bool isChecked = false;
@@ -86,6 +87,7 @@ class AuthController extends GetxController {
     };
     var response = await ApiClient.postData(ApiConstants.signInEndPoint, jsonEncode(body),
         headers: headers);
+    var userName = await PrefsHelper.getString(AppConstants.userName);
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data'];
       await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
@@ -112,6 +114,18 @@ class AuthController extends GetxController {
         ToastMessageHelper.showToastMessage('Your are logged in!');
       }
       logInLoading(false);
+
+
+
+      var image = data["attributes"]["image"];
+      initializeCallInvitation(
+        name: "$userName",
+        id: "$email",
+        image: image.toString()
+      );
+
+
+
     }else if(response.statusCode == 1){
       logInLoading(false);
       ToastMessageHelper.showToastMessage("Some thing want wrong try again!");
