@@ -36,6 +36,7 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
   void initState() {
     super.initState();
     _addScrollListener();
+    appointmentsController.onInit();
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -58,7 +59,6 @@ class _UserAppointmentsScreenState extends State<UserAppointmentsScreen>
 
   @override
   Widget build(BuildContext context) {
-    appointmentsController.onInit();
     return Scaffold(
       appBar: AppBar(
         leading: const SizedBox(),

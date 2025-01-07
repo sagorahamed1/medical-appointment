@@ -38,15 +38,13 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera for video communication.</string>
+	<string>We need access to your camera to enable video communication and allow you to capture or upload a profile photo.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to your microphone for voice communication.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need permission to save photos to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library to select photos.</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>Your data will be used to improve user experience.</string>
+	<string>We need access to your photo library to allow you to upload a profile photo.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

@@ -42,6 +42,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
   void initState() {
     super.initState();
     _addScrollListener();
+    _homeController.onInit();
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -65,7 +66,6 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
 
   @override
   Widget build(BuildContext context) {
-    _homeController.onInit();
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
