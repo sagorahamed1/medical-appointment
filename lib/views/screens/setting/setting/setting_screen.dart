@@ -13,7 +13,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../controllers/doctor/emergency_toggle_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_strings.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/custom_list_tile.dart';
 import '../../../widgets/custom_text.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/custom_text_field_without_border.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -25,8 +29,15 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
 
   final EmergencyToggleController _emergencyToggleController = Get.put(EmergencyToggleController());
+  TextEditingController passWordCtrl = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool _toggleValue = false;
+  final RxBool isObscure = true.obs;
+
+  toggleIsObscure() {
+    isObscure.value = !isObscure.value;
+  }
 
   @override
   void initState() {
@@ -53,6 +64,7 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: CustomText(
           text: AppString.settings,
@@ -104,6 +116,131 @@ class _SettingScreenState extends State<SettingScreen> {
               Get.toNamed(AppRoutes.allPrivacyPolicyScreen,
                   parameters: {"screenType": AppString.aboutUs});
             }),
+
+
+
+
+
+
+
+            SizedBox(height: 16.h),
+            ///================about us================>
+            CustomListTile(
+              title: "Delete Account",
+              onTap: () {
+
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 24.w, vertical: 26.h),
+                          content: Form(
+                            key: formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CustomText(
+                                  text: "Do you want to delete your account?",
+                                  fontsize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  maxline: 2,
+                                  bottom: 12.h,
+                                ),
+
+                                CustomText(
+                                  text: "All your changes will be deleted and you will no longer be able to access them.",
+                                  fontsize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  maxline: 3,
+                                  bottom: 20.h,
+                                ),
+
+                                Obx(
+                                      () => CustomTextFieldWithoutBorder(
+                                    maxLines: 1,
+                                    contenpaddingHorizontal: 20.w,
+                                    contenpaddingVertical: 0,
+                                    controller: passWordCtrl,
+                                    hintText: AppString.password,
+                                    isObscureText: isObscure.value,
+                                    prefixIcon: Padding(
+                                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                                        child: SvgPicture.asset(
+                                          AppIcons.lock,
+                                          color: AppColors.gray767676,
+                                        )),
+                                    sufixicons: Obx(
+                                          () => Padding(
+                                          padding: EdgeInsets.only(left: 20.w, right: 12.w),
+                                          child: GestureDetector(
+                                              onTap: () {
+                                                toggleIsObscure();
+                                              },
+                                              child: SvgPicture.asset(
+                                                isObscure.value
+                                                    ? AppIcons.obsecureHide
+                                                    : AppIcons.obsecure,
+                                                color: passWordCtrl.text.isNotEmpty
+                                                    ? AppColors.primaryColor
+                                                    : AppColors.gray767676,
+                                              ))),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value == value.isEmpty) {
+                                        return 'Please enter your password';
+                                      } else if (value.length < 8 ||
+                                          !AppConstants.validatePassword(value)) {
+                                        return "Password: 8 characters min, letters & digits \nrequired";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: 24.h),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                        width: 120.w,
+                                        height: 40.h,
+                                        child: CustomButton(
+                                          title: 'Cancel',
+                                          textStyle: const TextStyle(color: Colors.black),
+                                          onpress: () {
+                                            passWordCtrl.clear();
+                                            Get.back();
+                                          },
+                                          color: Colors.white38,
+                                        )),
+                                    SizedBox(
+                                        width: 120.w,
+                                        height: 40.h,
+                                        child: CustomButton(
+                                            color: AppColors.primaryColor,
+                                            title: 'Delete',
+                                            onpress: () async {
+                                              if(formKey.currentState!.validate()){
+                                                // profileController.accountDelete(password: passWordCtrl.text.toString());
+                                              }
+                                            })),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          elevation: 12.0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                              side: BorderSide(
+                                  width: 1.w, color: AppColors.primaryColor)));
+                    });
+              },
+            )
+
+
+
           ],
         ),
       ),
