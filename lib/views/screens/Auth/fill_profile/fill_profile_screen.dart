@@ -352,8 +352,8 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(3000),
     );
 
     if (pickedDate != null && pickedDate != selectedDate) {

@@ -90,7 +90,7 @@ class AvailableDoctorsCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          specialist == null ?const SizedBox() :  _rowText("Specialist :", "$specialist"),
+                          specialist == null ?const SizedBox() :  _rowText("Specialty :", "$specialist"),
                           experience == null ?const SizedBox() :    _rowText("Experience :", "$experience"),
                           totalConsultaion == null ?const SizedBox() :    _rowText("Total Consultaion :", "$totalConsultaion"),
                           onlineConsultation == null ?const SizedBox() :   _rowText("Online Consultation :", "$onlineConsultation"),

@@ -1,4 +1,3 @@
-import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
@@ -8,15 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../controllers/doctor/emergency_toggle_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_list_tile.dart';
 import '../../../widgets/custom_text.dart';
-import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/custom_text_field_without_border.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -119,10 +115,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
 
 
-
-
-
-
             SizedBox(height: 16.h),
             ///================about us================>
             CustomListTile(
@@ -222,7 +214,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                             title: 'Delete',
                                             onpress: () async {
                                               if(formKey.currentState!.validate()){
-                                                // profileController.accountDelete(password: passWordCtrl.text.toString());
+                                                _emergencyToggleController.accountDelete(password: passWordCtrl.text.toString());
                                               }
                                             })),
                                   ],

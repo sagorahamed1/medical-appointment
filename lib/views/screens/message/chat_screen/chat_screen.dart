@@ -253,7 +253,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         : buildMessageInput()
                   ],
                 ),
-              )
+              ),
+
+              SizedBox(height: 10.h)
             ],
           ),
         ),

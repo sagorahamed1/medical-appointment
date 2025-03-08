@@ -120,7 +120,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ),
 
                         ///=======================Categories and See All Text=============================>
-                        _SeeAll(AppString.categories, AppString.seeAll, () {
+                        _SeeAll("Specialty", AppString.seeAll, () {
                           Get.toNamed(AppRoutes.userCategoryScreen);
                         }),
 

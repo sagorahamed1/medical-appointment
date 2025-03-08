@@ -45,10 +45,10 @@ class AppString {
   static const String   search  = "Search";
   static const String   categories  = "Categories";
   static const String   seeAll  = "See all";
-  static const String   availableDoctors  = "Available Doctors";
+  static const String   availableDoctors  = "Available Providers";
   static const String   seeDetails  = "See Details";
   static const String   bookAppointment  = "Book Appointment";
-  static const String   emergencyDoctors  = "Emergency Doctors";
+  static const String   emergencyDoctors  = "Emergency Providers";
   static const String   message  = "Message";
   static const String   videoCall  = "Video Call";
   static const String   notifications  = "Notifications";
