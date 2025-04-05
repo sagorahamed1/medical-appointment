@@ -90,8 +90,8 @@ initializeCallInvitation({
   if (id.isNotEmpty) {
     // ZegoUIKitPrebuiltCallInvitationService Initialization
     ZegoUIKitPrebuiltCallInvitationService().init(
-      appID: 809641208,
-      appSign: "cac42693150c7bc55464094a5c76a180d4f4448a7bfb0febf33faa22a43e41e8",
+      appID: 1259129381,
+      appSign: "c3e52188b93fd378a76c4c5a0f2f0e619ac3e58e570d90a9b96ba5f16d93d6b8",
       userID: id,
       userName: name,
       plugins: [ZegoUIKitSignalingPlugin()],
@@ -108,21 +108,22 @@ initializeCallInvitation({
         config.topMenuBar.isVisible = true;
         config.topMenuBar.buttons.insert(0, ZegoCallMenuBarButtonName.minimizingButton);
 
-        config.avatarBuilder = (BuildContext context, Size size,
-            ZegoUIKitUser? user, Map extraInfo) {
-          return user != null
-              ? Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: NetworkImage(
-                  '${ApiConstants.imageBaseUrl}/${image}',
-                ),
-              ),
-            ),
-          )
-              : const SizedBox();
-        };
+        // config.avatarBuilder = (BuildContext context, Size size,
+        //     ZegoUIKitUser? user, Map extraInfo) {
+        //   return user != null
+        //       ? Container(
+        //     decoration: BoxDecoration(
+        //       shape: BoxShape.circle,
+        //       image: DecorationImage(
+        //         image: NetworkImage(
+        //           '${ApiConstants.imageBaseUrl}/${image}',
+        //         ),
+        //       ),
+        //     ),
+        //   )
+        //       : const SizedBox();
+        // };
+
         return config;
       },
     );

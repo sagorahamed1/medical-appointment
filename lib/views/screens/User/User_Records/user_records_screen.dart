@@ -50,14 +50,25 @@ class UserRecordsScreen extends StatelessWidget {
                 color: AppColors.textColor5C5C5C),
 
             ///========================Doctor Prescription==========================>
-            CustomText(
-                text: AppString.doctorsPrescription,
-                fontsize: 16.h,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primaryColor,
-                bottom: 12.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                    text: "Prescribed Medications",
+                    fontsize: 16.h,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor,
+                    bottom: 12.h),
+
+                // IconButton(onPressed: (){
+                //   Get.toNamed(AppRoutes.addRecordsScreen);
+                // }, icon: Icon(Icons.add)),
+              ],
+            ),
 
             SizedBox(height: 20.h),
+
+
 
             Obx(()=>
                Expanded(

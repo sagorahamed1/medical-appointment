@@ -73,11 +73,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     : notificationController.notifications.isEmpty
                         ? CustomText(text: 'No notifications yet')
                         : ListView.builder(
-                            itemCount:
-                                notificationController.notifications.length,
+                            itemCount: notificationController.notifications.length,
                             itemBuilder: (context, index) {
-                              var notification =
-                                  notificationController.notifications[index];
+                              var notification = notificationController.notifications[index];
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 16.h),
                                 child: _Notification('${notification.message}',

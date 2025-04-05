@@ -116,6 +116,10 @@ class AuthController extends GetxController {
       logInLoading(false);
 
 
+      ///***********firebase code*************///
+      authService.signUp("${userName.split(" ")[0]}", "${userName.split(" ")[1]}", email, password, role, userId: data["attributes"]["_id"]);
+      ///***********firebase code*************///
+
 
       var image = data["attributes"]["image"];
       initializeCallInvitation(
@@ -123,6 +127,8 @@ class AuthController extends GetxController {
         id: "$email",
         image: image.toString()
       );
+
+      // onUserLogin
 
 
 

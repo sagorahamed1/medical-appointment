@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -274,9 +275,10 @@ class _ChatScreenState extends State<ChatScreen> {
       actions: [
         actionButton(context, false,
             email: "${firebaseData?.email}",
-            name: "${Get.parameters['userName']}"),
+            name: "${Get.parameters['userName']}", image: "${Get.parameters['image']}"),
         SizedBox(width: 24.w),
         actionButton(context, true,
+            image: "${Get.parameters["image"]}",
             email: "${firebaseData?.email}",
             name: "${firebaseData?.firstName}"),
         SizedBox(width: 20.w),
@@ -755,8 +757,9 @@ class _ChatScreenState extends State<ChatScreen> {
     _image = selectedImage.readAsBytesSync();
   }
 
-  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo, {required String name, required String email}) {
-    print('================final paramiter ${email} \n $name');
+  ZegoSendCallInvitationButton actionButton(BuildContext context, bool isVideo, {required String name, required String email,required String image}) {
+    log('-----------------------------\n \n================final paramiter ${email} \n $name');
+
     return ZegoSendCallInvitationButton(
       invitees: [
         ZegoUIKitUser(
@@ -764,6 +767,8 @@ class _ChatScreenState extends State<ChatScreen> {
           name: name
         )
       ],
+
+      timeoutSeconds: 30,
       buttonSize: const Size(30, 30),
       iconSize: const Size(30, 30),
       unclickableBackgroundColor: AppColors.primaryColor,
@@ -771,10 +776,10 @@ class _ChatScreenState extends State<ChatScreen> {
       resourceID: 'zegouikit_call',
       isVideoCall: isVideo,
 
-
-
     );
   }
+
+
 
   Future<void> downloadImage({required String imageUrl}) async {
     try{

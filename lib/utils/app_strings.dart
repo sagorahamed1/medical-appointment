@@ -52,7 +52,7 @@ class AppString {
   static const String   message  = "Message";
   static const String   videoCall  = "Video Call";
   static const String   notifications  = "Notifications";
-  static const String   doctorDetails  = "Doctor Details";
+  static const String   doctorDetails  = "Provider Details";
   static const String   yearsExperience  = "Years experience";
   static const String   rating  = "Rating";
   static const String   reviews  = "Reviews";

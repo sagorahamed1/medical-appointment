@@ -103,7 +103,8 @@ class _MessageScreenState extends State<MessageScreen> {
                           Get.toNamed(AppRoutes.chatScreen, parameters: {
                             'id': '${users.id}',
                             'receiverId': '$receiverId',
-                            'userName': '$userName'
+                            'userName': '$userName',
+                            "image" : imageUrl.toString()
                           });
                         },
                         child: Container(
