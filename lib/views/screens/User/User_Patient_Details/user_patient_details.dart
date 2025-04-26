@@ -1,7 +1,9 @@
 import 'package:doctor_appointment/controllers/payment_controller.dart';
 import 'package:doctor_appointment/controllers/user/user_patient_details_controller.dart';
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
@@ -16,22 +18,40 @@ import '../../../../models/doctor/emergeny_doctor_model.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
 
-class UserPatientDetailsScreen extends StatelessWidget {
+class UserPatientDetailsScreen extends StatefulWidget {
   UserPatientDetailsScreen({super.key});
 
+  @override
+  State<UserPatientDetailsScreen> createState() => _UserPatientDetailsScreenState();
+}
+
+class _UserPatientDetailsScreenState extends State<UserPatientDetailsScreen> {
   final UserPatientDetailsController _patientDetailsController = Get.put(UserPatientDetailsController());
+
   TextEditingController fullNameCtrl = TextEditingController();
   TextEditingController ageCtrl = TextEditingController();
   TextEditingController problemCtrl = TextEditingController();
   TextEditingController genderCtrl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   PaymentController paymentController = PaymentController();
 
   ///data is doctor info==>
   var data = Get.arguments;
-
   var dropDownList = ["Male", "Female"];
+
+
+  var insurance = '';
+
+  @override
+  void initState() {
+    getLocalData();
+    super.initState();
+  }
+
+  getLocalData()async{
+    insurance = await PrefsHelper.getString(AppConstants.insurance);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,6 +176,21 @@ class UserPatientDetailsScreen extends StatelessWidget {
                           10,
                           TextInputType.text,
                           'Please write your problems'),
+
+
+                      SizedBox(height: 24.h),
+
+
+                      CustomButton(onpress: (){
+
+                        if(insurance == null || insurance == ""){
+
+                        }else{
+
+                        }
+
+                      }, title: "Pay By Insurance", color: insurance == null || insurance == ""? Colors.grey : AppColors.primaryColor),
+
                       SizedBox(height: 20.h),
                       CustomButton(
                           loading: _patientDetailsController.patientDetailsLoading.value,
@@ -236,7 +271,7 @@ class UserPatientDetailsScreen extends StatelessWidget {
 
 
                           },
-                          title: AppString.continues),
+                          title: "Pay By Card"),
                       SizedBox(height: 20.h),
                     ],
                   ),

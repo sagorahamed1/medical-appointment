@@ -60,9 +60,15 @@ class UserRecordsScreen extends StatelessWidget {
                     color: AppColors.primaryColor,
                     bottom: 12.h),
 
-                // IconButton(onPressed: (){
-                //   Get.toNamed(AppRoutes.addRecordsScreen);
-                // }, icon: Icon(Icons.add)),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.primaryColor),
+                    borderRadius: BorderRadius.circular(16.r)
+                  ),
+                  child: IconButton(onPressed: (){
+                    Get.toNamed(AppRoutes.addRecordsScreen);
+                  }, icon: const Icon(Icons.add)),
+                ),
               ],
             ),
 

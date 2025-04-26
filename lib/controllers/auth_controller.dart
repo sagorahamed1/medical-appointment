@@ -97,6 +97,8 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       await PrefsHelper.setString(AppConstants.pas, password);
+      await PrefsHelper.setString(AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
+      await PrefsHelper.setString(AppConstants.insurance, data["attributes"]["insurance"]["publicFileURL"]);
       var role = data['attributes']['role'];
       var isAdmin = data['attributes']['isAdmin'];
 

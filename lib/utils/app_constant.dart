@@ -10,6 +10,7 @@ class AppConstants{
  static const String email = "email";
  static const String userName = "userName";
  static const String image = "image";
+ static const String insurance = "insurance";
  static const String isPrescription = "isPrescription";
  static String roleMock = '';
  static String isEmargency = 'isEmargency';

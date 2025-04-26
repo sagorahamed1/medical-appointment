@@ -3,6 +3,7 @@ import 'package:doctor_appointment/controllers/profile_controler.dart';
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
+import 'package:doctor_appointment/services/socket_services.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
@@ -273,6 +274,11 @@ class TwoBottonBottomSheet extends StatelessWidget {
             await PrefsHelper.remove(AppConstants.bearerToken);
             await PrefsHelper.remove(AppConstants.mockRole);
             await PrefsHelper.remove(AppConstants.isLogged);
+            await PrefsHelper.remove(AppConstants.insurance);
+
+            SocketServices.socket.dispose();
+            SocketServices.socket.disconnect();
+
             Get.offAllNamed(AppRoutes.roleScreen);
           },
           child: Container(

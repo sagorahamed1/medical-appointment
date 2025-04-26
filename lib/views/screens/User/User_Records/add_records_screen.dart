@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -75,16 +76,62 @@ class AddRecordsScreen extends StatelessWidget {
                   color: Colors.black,
                   fontsize: 18.h,
                   bottom: 20.h),
-              CustomTextFieldWithoutBorder(
-                  contenpaddingHorizontal: 20,
-                  contenpaddingVertical: 0,
-                  hintText: 'Upload files',
-                  controller: addPrescriptionCtrl,
-                  sufixicons: Padding(
-                    padding:  EdgeInsets.all(18.r),
-                    child: SvgPicture.asset(AppIcons.attachFile, color: AppColors.primaryColor, height: 15.h, width: 15.w),
+              // CustomTextFieldWithoutBorder(
+              //     contenpaddingHorizontal: 20,
+              //     contenpaddingVertical: 0,
+              //     hintText: 'Upload files',
+              //     controller: addPrescriptionCtrl,
+              //     sufixicons: Padding(
+              //       padding:  EdgeInsets.all(18.r),
+              //       child: SvgPicture.asset(AppIcons.attachFile, color: AppColors.primaryColor, height: 15.h, width: 15.w),
+              //     ),
+              // ),
+
+
+
+              // Inside your widget:
+              GestureDetector(
+                onTap: () async {
+                  FilePickerResult? result = await FilePicker.platform.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: ['pdf'],
+                  );
+
+                  if (result != null) {
+                    PlatformFile file = result.files.first;
+                    addPrescriptionCtrl.text = file.name; // or file.path if needed
+                    // you can also save the file.path somewhere if you need the file later
+                  }
+                },
+                child: AbsorbPointer(
+                  child: CustomTextFieldWithoutBorder(
+                    contenpaddingHorizontal: 20,
+                    contenpaddingVertical: 0,
+                    hintText: 'Upload files',
+                    controller: addPrescriptionCtrl,
+                    sufixicons: Padding(
+                      padding: EdgeInsets.all(18.r),
+                      child: SvgPicture.asset(
+                        AppIcons.attachFile,
+                        color: AppColors.primaryColor,
+                        height: 15.h,
+                        width: 15.w,
+                      ),
+                    ),
                   ),
+                ),
               ),
+
+
+              SizedBox(height: 30.h),
+
+
+              CustomButton(onpress: () {
+
+              }, title: "Add Record"),
+
+
+
 
               SizedBox(height: 30.h),
 
