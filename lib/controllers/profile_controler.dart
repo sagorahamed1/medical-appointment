@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/models/profile_model.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import '../helpers/toast_message_helper.dart';
 import '../services/api_client.dart';
 import '../services/api_constants.dart';
 import '../utils/app_constant.dart';
+import 'package:http/http.dart' as http;
 
 
 class ProfileControler extends GetxController{
@@ -100,5 +103,45 @@ class ProfileControler extends GetxController{
       updateProfileLoading(false);
     }
   }
+
+
+  RxString localFilePath = 'https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf'.obs;
+
+  Future<void> loadPdf(String url) async {
+    final directory = await getTemporaryDirectory();
+    final filePath = "${directory.path}/temp.pdf";
+    final response = await http.get(Uri.parse(url));
+    final file = File(filePath);
+    await file.writeAsBytes(response.bodyBytes);
+
+      localFilePath.value = filePath;
+
+      update();
+  }
+
+
+  Future<void> getLocalData() async {
+    localFilePath.value = await PrefsHelper.getString(AppConstants.insurance);
+    update();
+  }
+
+
+  Future<void> pickAndUploadPdf() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+
+
+
+
+      getLocalData();
+    }
+  }
+
+
 
 }

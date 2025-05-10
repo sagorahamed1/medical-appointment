@@ -142,6 +142,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             })
                                 : const SizedBox(),
 
+
+
+
+                            ///=========================Insurance Upload =========================>
+                            profileData.role == "user"
+                                ? ListTileWidget(
+                                "Insurance",
+                                AppIcons.insurance,
+                                AppColors.primaryColor, () {
+                               Get.toNamed(AppRoutes.insuranceScreen);
+                            })
+                                : const SizedBox(),
+
+
+
+
                             ///=========================Medical Records=========================>
                             profileData.role == "user"
                                 ? ListTileWidget(

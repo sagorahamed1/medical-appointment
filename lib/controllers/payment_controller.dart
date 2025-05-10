@@ -46,10 +46,10 @@ class PaymentController {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
             billingDetails: const BillingDetails(
-                name: 'Raenir',
-                email: 'edelevatedaily@gmail.com'),
+                name: 'Vanture',
+                email: 'info@medroofurgentcare.com'),
             googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
-            merchantDisplayName: 'Raenir',
+            merchantDisplayName: 'Vanture',
             paymentIntentClientSecret: clientSecret,
             style: ThemeMode.dark,
           ),

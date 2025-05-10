@@ -49,6 +49,7 @@ class AppIcons {
   static const String chock = "$path/chock.svg";
   static const String walletIcon = "$path/walletIcon.svg";
   static const String hand = "$path/hand.svg";
+  static const String insurance = "$path/insurace2.svg";
 
 }
 

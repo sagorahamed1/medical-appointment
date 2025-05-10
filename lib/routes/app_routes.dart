@@ -1,5 +1,6 @@
 
 
+import 'package:doctor_appointment/views/screens/profile/insurace/insurace_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
 import '../helpers/binding/dependancy_injaction.dart';
@@ -101,6 +102,7 @@ class AppRoutes {
   static const String successPayment = "/SuccessPayment.dart";
   static const String cancelPayment = "/CancelPayment.dart";
   static const String profileScreen = "/ProfileScreen.dart";
+  static const String insuranceScreen = "/InsuranceScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -152,5 +154,6 @@ class AppRoutes {
         GetPage(name: successPayment, page: () => SuccessPayment()),
         GetPage(name: cancelPayment, page: () => CancelPayment()),
         GetPage(name: profileScreen, page: () => ProfileScreen()),
+        GetPage(name: insuranceScreen, page: () => InsuranceScreen()),
   ];
 }

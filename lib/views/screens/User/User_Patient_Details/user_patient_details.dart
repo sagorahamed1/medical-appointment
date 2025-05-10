@@ -189,7 +189,7 @@ class _UserPatientDetailsScreenState extends State<UserPatientDetailsScreen> {
 
                         }
 
-                      }, title: "Pay By Insurance", color: insurance == null || insurance == ""? Colors.grey : AppColors.primaryColor),
+                      }, title: "Pay Via Insurance", color: insurance == null || insurance == ""? Colors.grey : AppColors.primaryColor),
 
                       SizedBox(height: 20.h),
                       CustomButton(
@@ -271,7 +271,7 @@ class _UserPatientDetailsScreenState extends State<UserPatientDetailsScreen> {
 
 
                           },
-                          title: "Pay By Card"),
+                          title: "Pay Via Card"),
                       SizedBox(height: 20.h),
                     ],
                   ),

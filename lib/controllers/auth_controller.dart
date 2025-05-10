@@ -98,7 +98,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       await PrefsHelper.setString(AppConstants.pas, password);
       await PrefsHelper.setString(AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
-      await PrefsHelper.setString(AppConstants.insurance, data["attributes"]["insurance"]["publicFileURL"]);
+
       var role = data['attributes']['role'];
       var isAdmin = data['attributes']['isAdmin'];
 
@@ -129,6 +129,9 @@ class AuthController extends GetxController {
         id: "$email",
         image: image.toString()
       );
+
+
+      await PrefsHelper.setString(AppConstants.insurance, data["attributes"]["insurance"]["publicFileURL"]);
 
       // onUserLogin
 
@@ -321,7 +324,7 @@ class AuthController extends GetxController {
     var response = await ApiClient.postData(ApiConstants.continueDoctorPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-       Get.toNamed(AppRoutes.signInScreen);
+       Get.offAllNamed(AppRoutes.signInScreen);
       ToastMessageHelper.showToastMessage('Your account create successful! \n please Sign In');
       print("======>>> successful");
        continueDoctorDetailLoading(false);

@@ -68,7 +68,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 () => chatListController.getChatUserLoading.value
                     ? const CustomLoader()
                     : chatListController.chatUsers.isEmpty
-                        ? CustomText(text: "No user found!")
+                        ? Center(child: CustomText(text: "No user found!"))
                         : ListView.builder(
                   itemCount: chatListController.chatUsers.length,
                   itemBuilder: (context, index) {

@@ -50,12 +50,12 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
     var data = await authService.getUserDataById(userId);
     var name = await PrefsHelper.getString(AppConstants.userName);
     var demoImage = await PrefsHelper.getString(AppConstants.image);
-    if (data != null) {
-      setState(() {
+
+
         userName = name;
         image = demoImage;
-      });
-    }
+        setState(() {  });
+
   }
 
   @override

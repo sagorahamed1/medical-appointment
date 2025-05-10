@@ -8,10 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
-import '../../../../controllers/profile_controler.dart';
 import '../../../../controllers/user/home_controller.dart';
-import '../../../../controllers/user/search_doctor_controller.dart';
 import '../../../../helpers/prefs_helper.dart';
 import '../../../../models/firebase_user_model.dart';
 import '../../../../services/firebase_services.dart';
@@ -21,7 +18,6 @@ import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_images.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/available_doctors_card.dart';
-import '../../../widgets/call_invitation.dart';
 import '../../../widgets/custom_text.dart';
 
 class UserHomeScreen extends StatefulWidget {
@@ -57,11 +53,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     // userName = name;
     // image = demoImage;
 
-    if (data != null) {
-      setState(() {
         firebaseData2 = data;
-      });
-    }
+    setState(() { });
+
   }
 
   @override

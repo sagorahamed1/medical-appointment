@@ -52,9 +52,11 @@ class _UserCategoryScreenState extends State<UserCategoryScreen> {
                 return _homeController.cetegoryLoading.value
                     ? const CustomLoader()
                     : _homeController.cetegoryLists.isEmpty
-                        ? CustomText(
-                            text: "No data found",
-                          )
+                        ? Center(
+                          child: CustomText(
+                              text: "No data found",
+                            ),
+                        )
                         : ListView.builder(
                             itemCount: (_homeController.cetegoryLists.length / 4).ceil(),
                             itemBuilder: (context, index) {
