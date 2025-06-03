@@ -13,6 +13,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../controllers/doctor/doctor_home_controller.dart';
+import '../../../../controllers/doctor/doctor_see_details_controller.dart';
 import '../../../../controllers/messaging/chat_list_controller.dart';
 import '../../../../helpers/network_connection.dart';
 import '../../../../utils/app_icons.dart';
@@ -29,13 +30,13 @@ class DoctorAppointmentsScreen extends StatefulWidget {
 }
 
 class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
-    with SingleTickerProviderStateMixin {
-  TabController? _tabController;
+    with SingleTickerProviderStateMixin {TabController? _tabController;
 
   final DoctorHomeControllerDoctorPart _homeController =
       Get.put(DoctorHomeControllerDoctorPart());
   final NetworkController networkController = Get.put(NetworkController());
   final ChatListController chatController = Get.put(ChatListController());
+
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -190,8 +191,7 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                                       appointment.createdAt!),
                                   leftBtnOnTap: () {
                                     Get.toNamed(
-                                        AppRoutes
-                                            .dcotorAppointmentsDetailsScreen,
+                                        AppRoutes.dcotorAppointmentsDetailsScreen,
                                         parameters: {
                                           'id': "${appointment.id}"
                                         });
@@ -239,6 +239,21 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                                   date: appointment.createdAt,
                                   time: TimeFormatHelper.timeFormat(
                                       appointment.createdAt!),
+                                  rightBtnOnTap: () {
+
+                                    Get.toNamed(
+                                        AppRoutes.dcotorAppointmentsDetailsScreen,
+                                        parameters: {
+                                          'id': "${appointment.id}"
+                                        });
+                                  },
+                                  leftBtnOnTap: () {
+                                    Get.toNamed(
+                                        AppRoutes.dcotorAppointmentsDetailsScreen,
+                                        parameters: {
+                                          'id': "${appointment.id}"
+                                        });
+                                  },
                                   leftBtnName: 'See Details',
                                   rightBtnName: 'Send Prescription',
                                 ),

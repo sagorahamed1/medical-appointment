@@ -16,12 +16,12 @@ import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_icons.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
+import '../../profile/profile/profile_screen.dart';
 
 class DcotorAppointmentsDetailsScreen extends StatelessWidget {
   DcotorAppointmentsDetailsScreen({super.key});
 
-  DoctorSeeDetailsController seeDetailsController =
-      Get.put(DoctorSeeDetailsController());
+  DoctorSeeDetailsController seeDetailsController = Get.put(DoctorSeeDetailsController());
   final CompleteAppointmentController _completeAppointmentController =
       Get.put(CompleteAppointmentController());
 
@@ -125,59 +125,97 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                             )
                           : const SizedBox(),
 
-
-
-
-
                       ///===============Send Prescription=================>
                       Get.parameters['type'] == 'upcomming'
                           ? const SizedBox()
                           : GestureDetector(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.previousSoapNoteScreen);
-                        },
-                            child: Container(
-                                                    width: double.infinity,
-                                                    decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.primaryColor),
-                            borderRadius: BorderRadius.circular(12.r),
-                                                    ),
-                                                    child: CustomText(text: "SOAP Notes", color: AppColors.primaryColor, top: 14.h,bottom: 14.h, fontWeight: FontWeight.w800),
-                                                  ),
-                          ),
+                              onTap: () {
+                                Get.toNamed(AppRoutes.previousSoapNoteScreen);
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: AppColors.primaryColor),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                child: CustomText(
+                                    text: "SOAP Notes",
+                                    color: AppColors.primaryColor,
+                                    top: 14.h,
+                                    bottom: 14.h,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                            ),
+
+                      SizedBox(height: 16.h),
+
+                      // ///===============Completed Button=================>
+                      // data.prescription?.publicFileUrl != null ||
+                      //         data.prescription?.publicFileUrl == ''
+                      //     ?
+                      CustomButton(
+                              onpress: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return SizedBox(
+                                        height: 320.h,
+                                        width: double.infinity,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            CustomText(
+                                                text: "SOAP Note",
+                                                fontWeight: FontWeight.w600,
+                                                fontsize: 20.h,
+                                                color: AppColors.primaryColor,
+                                                top: 35.h,
+                                                bottom: 48.h),
+                                            CustomText(
+                                              maxline: 2,
+                                                left: 12.w,
+                                                right: 12.w,
+                                                text:
+                                                "You have completed the appointment, do you want to add new SOAP note?",
+                                                fontsize: 18.h,
+                                                color: Colors.black,
+                                                bottom: 24.h),
+                                            const TwoBottonBottomSheetAppointmentDetails(),
+                                            SizedBox(height: 48.h)
+                                          ],
+                                        ),
+                                      );
+                                    });
 
 
 
+                                // _completeAppointmentController.completeAppointment('${data.id}');
+                              },
+                              title: 'Completed'),
+                          // : const SizedBox(),
 
 
-                      ///===============Completed Button=================>
-                      data.prescription?.publicFileUrl != null || data.prescription?.publicFileUrl == ''
-                          ? CustomButton(onpress: () {
-                        _completeAppointmentController.completeAppointment('${data.id}');
-                      }, title: 'Completed')
-                          : const SizedBox(),
 
 
                       SizedBox(height: 16.h),
 
-                      // ///===============Send Prescription=================>
-                      // Get.parameters['type'] == 'upcomming'
-                      //     ? const SizedBox()
-                      //     : CustomButton(
-                      //         onpress: () {
-                      //           Get.parameters['screenType'] == AppString.upcoming
-                      //               ? () {}
-                      //               : Get.toNamed(
-                      //                   AppRoutes.prescriptionFormScreen,
-                      //                   arguments: data);
-                      //         },
-                      //         title: Get.parameters['screenType'] ==
-                      //                 AppString.upcoming
-                      //             ? AppString.continues
-                      //             : 'Send Prescription'),
-
-
-
+                      ///===============Send Prescription=================>
+                      Get.parameters['type'] == 'upcomming'
+                          ? const SizedBox()
+                          : CustomButton(
+                              onpress: () {
+                                Get.parameters['screenType'] == AppString.upcoming
+                                    ? () {}
+                                    : Get.toNamed(
+                                        AppRoutes.prescriptionFormScreen,
+                                        arguments: data);
+                              },
+                              title: Get.parameters['screenType'] ==
+                                      AppString.upcoming
+                                  ? AppString.continues
+                                  : 'Send Prescription'),
 
                       SizedBox(height: 30.h)
                     ],
@@ -210,6 +248,64 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                       textAlign: TextAlign.start))),
         ],
       ),
+    );
+  }
+}
+
+
+
+
+class TwoBottonBottomSheetAppointmentDetails extends StatelessWidget {
+  const TwoBottonBottomSheetAppointmentDetails({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Container(
+            width: 166.w,
+            decoration: BoxDecoration(
+                border: Border.all(color: AppColors.primaryColor),
+                borderRadius: BorderRadius.circular(100)),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 18.h),
+                child: CustomText(
+                    text: "Cancel",
+                    fontsize: 16.h,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor),
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () async{
+            Get.toNamed(AppRoutes.addSoapNoteScreen);
+          },
+          child: Container(
+            width: 166.w,
+            decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(100)),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 18.h),
+                child: CustomText(
+                    text: "Yes, I do",
+                    fontsize: 16.h,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

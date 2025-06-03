@@ -1,29 +1,37 @@
-import 'package:doctor_appointment/utils/app_colors.dart';
+import 'package:doctor_appointment/views/widgets/custom_button.dart';
+import 'package:doctor_appointment/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../utils/app_colors.dart';
 import '../../../widgets/custom_text.dart';
 
-class PreviousSoapNoteDetailsScreen extends StatelessWidget {
-  const PreviousSoapNoteDetailsScreen({super.key});
+class AddSoapNoteScreen extends StatelessWidget {
+   AddSoapNoteScreen({super.key});
+
+  TextEditingController subjectiveCtrl = TextEditingController();
+  TextEditingController objectiveCtrl = TextEditingController();
+  TextEditingController assessmentCtrl = TextEditingController();
+  TextEditingController planCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      ///-----------------------------------app bar section-------------------------->
+
+
       appBar: AppBar(
         title: CustomText(
-          text: "Previous SOAP NOTE",
+          text: "SOAP NOTE",
           fontsize: 18.h,
           fontWeight: FontWeight.w600,
         ),
       ),
 
 
+
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 20.h, vertical: 12.h),
+        padding:  EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
 
@@ -35,10 +43,10 @@ class PreviousSoapNoteDetailsScreen extends StatelessWidget {
                 SizedBox(
                   width: 120.w,
                   child: CustomText(
-                    textAlign: TextAlign.start,
-                    text: "Patient Name",
-                    fontsize: 16.h,
-                    color: AppColors.textColor5C5C5C
+                      textAlign: TextAlign.start,
+                      text: "Patient Name",
+                      fontsize: 16.h,
+                      color: AppColors.textColor5C5C5C
                   ),
                 ),
 
@@ -77,62 +85,60 @@ class PreviousSoapNoteDetailsScreen extends StatelessWidget {
 
             subjectiveCard(
               title: "Subjective",
-              description: "Lorem ipsum dolor sit amet consectetur. Eget nullam feugiat integer dui nunc imperdiet tortor sed eros."
+              controller: subjectiveCtrl
             ),
 
 
             subjectiveCard(
                 title: "Objective",
-                description: "Lorem ipsum dolor sit amet consectetur. Eget nullam feugiat integer dui nunc imperdiet tortor sed eros."
+                controller: objectiveCtrl
             ),
-
-
 
 
             subjectiveCard(
-                title: "Assesment",
-                description: "Lorem ipsum dolor sit amet consectetur. Eget nullam feugiat integer dui nunc imperdiet tortor sed eros."
+                title: "Assessment",
+                controller: assessmentCtrl
             ),
-
-
-
-
 
 
             subjectiveCard(
                 title: "Plan",
-                description: "Lorem ipsum dolor sit amet consectetur. Eget nullam feugiat integer dui nunc imperdiet tortor sed eros."
+                controller: planCtrl
             ),
+
+
+            SizedBox(height: 50.h),
+
+
+            CustomButton(onpress: (){}, title: "Save")
+
 
 
           ],
         ),
       ),
+
     );
   }
 
 
-  subjectiveCard({required String title, description}){
+
+  subjectiveCard({required String title,required TextEditingController controller}){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(text: "$title",fontWeight: FontWeight.w600, fontsize: 18.h, bottom: 12.h, top: 12.h),
 
-        Container(
-          decoration: BoxDecoration(
-              color: Color(0xffE8EBF0),
-              borderRadius: BorderRadius.circular(12.r)
-          ),
-          child: Padding(
-            padding:  EdgeInsets.all(8.r),
-            child: CustomText(
-              textAlign: TextAlign.start,
-              maxline: 8,
-              text: "$description",),
-          ),
+
+        CustomTextField(
+            contenpaddingHorizontal: 20,
+            contenpaddingVertical: 12,
+            controller: controller,
+          hintText: "Enter Text",
         )
 
       ],
     );
   }
+
 }
