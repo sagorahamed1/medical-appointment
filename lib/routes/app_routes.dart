@@ -17,6 +17,8 @@ import '../views/screens/Doctor/doctor_bottom_nav_bar/doctor_bottom_nav_bar.dart
 import '../views/screens/Doctor/doctor_details/doctor_details_screen.dart';
 import '../views/screens/Doctor/doctor_edit_details_prfile/doctor_edit_details_profile_screen.dart';
 import '../views/screens/Doctor/prescription_from/prescription_from_screen.dart';
+import '../views/screens/Doctor/previous_soap_note/previous_soap_note_details_screen.dart';
+import '../views/screens/Doctor/previous_soap_note/previous_soap_note_screen.dart';
 import '../views/screens/Doctor/review/review_screen.dart';
 import '../views/screens/Doctor/see_all_appointments/see_all_appintment_screen.dart';
 import '../views/screens/Doctor/wallet/wallet_screen.dart';
@@ -103,6 +105,8 @@ class AppRoutes {
   static const String cancelPayment = "/CancelPayment.dart";
   static const String profileScreen = "/ProfileScreen.dart";
   static const String insuranceScreen = "/InsuranceScreen.dart";
+  static const String previousSoapNoteScreen = "/PreviousSoapNoteScreen.dart";
+  static const String previousSoapNoteDetailsScreen = "/PreviousSoapNoteDetailsScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -155,5 +159,7 @@ class AppRoutes {
         GetPage(name: cancelPayment, page: () => CancelPayment()),
         GetPage(name: profileScreen, page: () => ProfileScreen()),
         GetPage(name: insuranceScreen, page: () => InsuranceScreen()),
+        GetPage(name: previousSoapNoteScreen, page: () => PreviousSoapNoteScreen()),
+        GetPage(name: previousSoapNoteDetailsScreen, page: () => PreviousSoapNoteDetailsScreen()),
   ];
 }

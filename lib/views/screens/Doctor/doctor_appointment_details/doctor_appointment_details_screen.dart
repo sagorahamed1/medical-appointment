@@ -125,6 +125,31 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                             )
                           : const SizedBox(),
 
+
+
+
+
+                      ///===============Send Prescription=================>
+                      Get.parameters['type'] == 'upcomming'
+                          ? const SizedBox()
+                          : GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.previousSoapNoteScreen);
+                        },
+                            child: Container(
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.primaryColor),
+                            borderRadius: BorderRadius.circular(12.r),
+                                                    ),
+                                                    child: CustomText(text: "SOAP Notes", color: AppColors.primaryColor, top: 14.h,bottom: 14.h, fontWeight: FontWeight.w800),
+                                                  ),
+                          ),
+
+
+
+
+
                       ///===============Completed Button=================>
                       data.prescription?.publicFileUrl != null || data.prescription?.publicFileUrl == ''
                           ? CustomButton(onpress: () {
@@ -135,21 +160,24 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
 
                       SizedBox(height: 16.h),
 
-                      ///===============Send Prescription=================>
-                      Get.parameters['type'] == 'upcomming'
-                          ? const SizedBox()
-                          : CustomButton(
-                              onpress: () {
-                                Get.parameters['screenType'] == AppString.upcoming
-                                    ? () {}
-                                    : Get.toNamed(
-                                        AppRoutes.prescriptionFormScreen,
-                                        arguments: data);
-                              },
-                              title: Get.parameters['screenType'] ==
-                                      AppString.upcoming
-                                  ? AppString.continues
-                                  : 'Send Prescription'),
+                      // ///===============Send Prescription=================>
+                      // Get.parameters['type'] == 'upcomming'
+                      //     ? const SizedBox()
+                      //     : CustomButton(
+                      //         onpress: () {
+                      //           Get.parameters['screenType'] == AppString.upcoming
+                      //               ? () {}
+                      //               : Get.toNamed(
+                      //                   AppRoutes.prescriptionFormScreen,
+                      //                   arguments: data);
+                      //         },
+                      //         title: Get.parameters['screenType'] ==
+                      //                 AppString.upcoming
+                      //             ? AppString.continues
+                      //             : 'Send Prescription'),
+
+
+
 
                       SizedBox(height: 30.h)
                     ],

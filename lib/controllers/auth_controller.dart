@@ -97,7 +97,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       await PrefsHelper.setString(AppConstants.pas, password);
-      await PrefsHelper.setString(AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
+
 
       var role = data['attributes']['role'];
       var isAdmin = data['attributes']['isAdmin'];
@@ -135,7 +135,7 @@ class AuthController extends GetxController {
 
       // onUserLogin
 
-
+      await PrefsHelper.setString(AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
 
     }else if(response.statusCode == 1){
       logInLoading(false);
