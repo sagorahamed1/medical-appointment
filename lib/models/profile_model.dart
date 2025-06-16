@@ -1,13 +1,12 @@
 
 
 class ProfileModel {
-  final String? rating;
-  final int? reviewCount;
   final String? id;
   final String? firstName;
   final String? lastName;
   final String? email;
-  final String? rate;
+  final String? rating;
+  final int? reviewCount;
   final bool? privacyPolicyAccepted;
   final bool? isAdmin;
   final bool? isProfileCompleted;
@@ -16,10 +15,12 @@ class ProfileModel {
   final bool? isDeleted;
   final bool? isBlocked;
   final Image? image;
-  final dynamic insurance;
+  final Image? insurance;
   final bool? isInsurance;
   final String? role;
   final dynamic oneTimeCode;
+  final int? earningAmount;
+  final List<dynamic>? medicalRecord;
   final int? v;
   final String? address;
   final String? gender;
@@ -27,13 +28,12 @@ class ProfileModel {
   final String? dateOfBirth;
 
   ProfileModel({
-    this.rating,
-    this.reviewCount,
     this.id,
     this.firstName,
     this.lastName,
     this.email,
-    this.rate,
+    this.rating,
+    this.reviewCount,
     this.privacyPolicyAccepted,
     this.isAdmin,
     this.isProfileCompleted,
@@ -46,6 +46,8 @@ class ProfileModel {
     this.isInsurance,
     this.role,
     this.oneTimeCode,
+    this.earningAmount,
+    this.medicalRecord,
     this.v,
     this.address,
     this.gender,
@@ -54,13 +56,12 @@ class ProfileModel {
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-    rating: json["rating"],
-    reviewCount: json["reviewCount"],
     id: json["_id"],
     firstName: json["firstName"],
     lastName: json["lastName"],
     email: json["email"],
-    rate: json["rate"],
+    rating: json["rating"],
+    reviewCount: json["reviewCount"],
     privacyPolicyAccepted: json["privacyPolicyAccepted"],
     isAdmin: json["isAdmin"],
     isProfileCompleted: json["isProfileCompleted"],
@@ -69,10 +70,12 @@ class ProfileModel {
     isDeleted: json["isDeleted"],
     isBlocked: json["isBlocked"],
     image: json["image"] == null ? null : Image.fromJson(json["image"]),
-    insurance: json["insurance"],
+    insurance: json["insurance"] == null ? null : Image.fromJson(json["insurance"]),
     isInsurance: json["isInsurance"],
     role: json["role"],
     oneTimeCode: json["oneTimeCode"],
+    earningAmount: json["earningAmount"],
+    medicalRecord: json["medicalRecord"] == null ? [] : List<dynamic>.from(json["medicalRecord"]!.map((x) => x)),
     v: json["__v"],
     address: json["address"],
     gender: json["gender"],
@@ -81,13 +84,12 @@ class ProfileModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "rating": rating,
-    "reviewCount": reviewCount,
     "_id": id,
     "firstName": firstName,
     "lastName": lastName,
     "email": email,
-    "rate": rate,
+    "rating": rating,
+    "reviewCount": reviewCount,
     "privacyPolicyAccepted": privacyPolicyAccepted,
     "isAdmin": isAdmin,
     "isProfileCompleted": isProfileCompleted,
@@ -96,10 +98,12 @@ class ProfileModel {
     "isDeleted": isDeleted,
     "isBlocked": isBlocked,
     "image": image?.toJson(),
-    "insurance": insurance,
+    "insurance": insurance?.toJson(),
     "isInsurance": isInsurance,
     "role": role,
     "oneTimeCode": oneTimeCode,
+    "earningAmount": earningAmount,
+    "medicalRecord": medicalRecord == null ? [] : List<dynamic>.from(medicalRecord!.map((x) => x)),
     "__v": v,
     "address": address,
     "gender": gender,

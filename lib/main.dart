@@ -23,6 +23,12 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  DeviceUtils.lockDevicePortrait();
+
+  DependencyInjection di = DependencyInjection();
+  di.dependencies();
+
   Stripe.publishableKey = Constants.publishAbleKey;
   try {
     await AuthService.setUpFirebase();
@@ -30,10 +36,7 @@ void main() async {
     await ZegoUIKit().initLog();
     ZegoUIKitPrebuiltCallInvitationService().useSystemCallingUI([ZegoUIKitSignalingPlugin()]);
 
-    DeviceUtils.lockDevicePortrait();
 
-    DependencyInjection di = DependencyInjection();
-    di.dependencies();
 
     runApp(MyApp(navigatorKey: navigatorKey));
   } catch (e) {

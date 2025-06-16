@@ -38,15 +38,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
   File? insuranceImageFile;
   Uint8List? insuranceImageUint;
 
-  Future<void> _pickImage() async {
-    final pickedImage = await ImagePickerInsurence.pickImageFromGallery();
-    if (pickedImage != null) {
-      setState(() {
-        insuranceImageUint = pickedImage;
-        insuranceImageFile = File.fromRawPath(pickedImage);
-      });
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -246,10 +238,10 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                 // const Spacer(),
                 Obx(()=>
                    CustomButton(
-                       loading: _authController.fillProfileLoading.value,
+                       // loading: _authController.fillProfileLoading.value,
                       onpress: () {
                        if(_formKey.currentState!.validate()){
-                         _authController.fillProfileOrUpDate(selectedIMage);
+                         _authController.fillProfileOrUpDate(selectedIMage, insuranceImageFile);
                        }
                       },
                       title: AppString.continues),
@@ -323,10 +315,27 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
         });
   }
 
+  Future<void> _pickImage() async {
+    // final pickedImage = await ImagePickerInsurence.pickImageFromGallery();
+    // if (pickedImage != null) {
+    //   setState(() {
+    //     insuranceImageUint = pickedImage;
+    //     insuranceImageFile = File.fromRawPath(pickedImage);
+    //   });
+    // }
+
+    final returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
+    setState(() {
+      insuranceImageFile = File(returnImage.path);
+      insuranceImageUint = File(returnImage.path).readAsBytesSync();
+    });
+    // Get.back();
+  }
+
   //==================================> Gallery <===============================
   Future _pickImageFromGallery() async {
-    final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
     setState(() {
       selectedIMage = File(returnImage.path);

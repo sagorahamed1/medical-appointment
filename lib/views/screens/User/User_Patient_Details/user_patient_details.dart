@@ -2,6 +2,7 @@ import 'package:doctor_appointment/controllers/payment_controller.dart';
 import 'package:doctor_appointment/controllers/user/user_patient_details_controller.dart';
 import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
+import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 
+import '../../../../controllers/profile_controler.dart';
 import '../../../../models/doctor/emergeny_doctor_model.dart';
 import '../../../../utils/app_strings.dart';
 import '../../../widgets/custom_text.dart';
@@ -22,11 +24,14 @@ class UserPatientDetailsScreen extends StatefulWidget {
   UserPatientDetailsScreen({super.key});
 
   @override
-  State<UserPatientDetailsScreen> createState() => _UserPatientDetailsScreenState();
+  State<UserPatientDetailsScreen> createState() =>
+      _UserPatientDetailsScreenState();
 }
 
 class _UserPatientDetailsScreenState extends State<UserPatientDetailsScreen> {
-  final UserPatientDetailsController _patientDetailsController = Get.put(UserPatientDetailsController());
+  final UserPatientDetailsController _patientDetailsController =
+      Get.put(UserPatientDetailsController());
+  final ProfileControler profileController = Get.put(ProfileControler());
 
   TextEditingController fullNameCtrl = TextEditingController();
   TextEditingController ageCtrl = TextEditingController();
@@ -39,26 +44,26 @@ class _UserPatientDetailsScreenState extends State<UserPatientDetailsScreen> {
   var data = Get.arguments;
   var dropDownList = ["Male", "Female"];
 
-
   var insurance = '';
 
   @override
   void initState() {
+    profileController.getProfile();
     getLocalData();
     super.initState();
   }
 
-  getLocalData()async{
+  getLocalData() async {
     insurance = await PrefsHelper.getString(AppConstants.insurance);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    print("data time : ${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}");
+    print(
+        "data time : ${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}");
     RxBool isDropDown = false.obs;
     return Scaffold(
-
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
         title: CustomText(
@@ -74,215 +79,247 @@ class _UserPatientDetailsScreenState extends State<UserPatientDetailsScreen> {
               horizontal: Dimensions.paddingSizeDefault.w,
               vertical: Dimensions.paddingSizeDefault.h),
           child: Obx(
-                () =>
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+            () => Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ///===================Write Full Name TextField================>?
+                  _textAndTextField(
+                      AppString.fullName,
+                      "Type your full name",
+                      "",
+                      fullNameCtrl,
+                      1,
+                      TextInputType.text,
+                      'Please enter your full name'),
+                  CustomText(
+                      text: AppString.selecteGender,
+                      fontsize: 18.h,
+                      fontWeight: FontWeight.w600,
+                      bottom: 20.h),
 
-                      ///===================Write Full Name TextField================>?
-                      _textAndTextField(
-                          AppString.fullName,
-                          "Type your full name",
-                          "",
-                          fullNameCtrl,
-                          1,
-                          TextInputType.text,
-                          'Please enter your full name'),
-                      CustomText(
-                          text: AppString.selecteGender,
-                          fontsize: 18.h,
-                          fontWeight: FontWeight.w600,
-                          bottom: 20.h),
-
-                      CustomTextFieldWithoutBorder(
-                        onTap: () {
-                          if (isDropDown.value == true) {
-                            isDropDown(false);
-                          }
-                          isDropDown(true);
-                        },
-                        readOnly: true,
-                        contenpaddingHorizontal: 20,
-                        contenpaddingVertical: 0,
-                        controller: genderCtrl,
-                        hintText: 'Select gender',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please select your gender";
-                          }
-                          return null;
-                        },
-                        sufixicons: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 18.w, vertical: 18.h),
-                          child: SvgPicture.asset(
-                            AppIcons.arrowDown,
-                            color: AppColors.primaryColor,
-                            height: 20.h,
-                            width: 20.w,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                  CustomTextFieldWithoutBorder(
+                    onTap: () {
+                      if (isDropDown.value == true) {
+                        isDropDown(false);
+                      }
+                      isDropDown(true);
+                    },
+                    readOnly: true,
+                    contenpaddingHorizontal: 20,
+                    contenpaddingVertical: 0,
+                    controller: genderCtrl,
+                    hintText: 'Select gender',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please select your gender";
+                      }
+                      return null;
+                    },
+                    sufixicons: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 18.w, vertical: 18.h),
+                      child: SvgPicture.asset(
+                        AppIcons.arrowDown,
+                        color: AppColors.primaryColor,
+                        height: 20.h,
+                        width: 20.w,
+                        fit: BoxFit.cover,
                       ),
+                    ),
+                  ),
 
-                      SizedBox(height: 5.h),
-                      isDropDown.value
-                          ? Container(
-                        decoration: BoxDecoration(
-                            color: AppColors.fillColorE8EBF0,
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(8.r))),
-                        height: 142.h,
-                        child: ListView.builder(
-                          itemCount: dropDownList.length,
-                          itemBuilder: (context, index) {
-                            var dropDownItems = dropDownList[index];
-                            return ListTile(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 20.w),
-                              title: CustomText(
-                                  text: dropDownItems,
-                                  textAlign: TextAlign.start),
-                              onTap: () {
-                                isDropDown(false);
-                                genderCtrl.text = dropDownItems;
-                              },
-                            );
-                          },
-                        ),
-                      )
-                          : const SizedBox(),
+                  SizedBox(height: 5.h),
+                  isDropDown.value
+                      ? Container(
+                          decoration: BoxDecoration(
+                              color: AppColors.fillColorE8EBF0,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.r))),
+                          height: 142.h,
+                          child: ListView.builder(
+                            itemCount: dropDownList.length,
+                            itemBuilder: (context, index) {
+                              var dropDownItems = dropDownList[index];
+                              return ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 20.w),
+                                title: CustomText(
+                                    text: dropDownItems,
+                                    textAlign: TextAlign.start),
+                                onTap: () {
+                                  isDropDown(false);
+                                  genderCtrl.text = dropDownItems;
+                                },
+                              );
+                            },
+                          ),
+                        )
+                      : const SizedBox(),
 
-                      SizedBox(height: 16.h),
+                  SizedBox(height: 16.h),
 
-                      ///===================Write you Age TextField================>
-                      _textAndTextField(
-                          AppString.yourAge,
-                          "Write your Age",
-                          "",
-                          ageCtrl,
-                          1,
-                          TextInputType.number,
-                          'Please enter your age'),
+                  ///===================Write you Age TextField================>
+                  _textAndTextField(
+                      AppString.yourAge,
+                      "Write your Age",
+                      "",
+                      ageCtrl,
+                      1,
+                      TextInputType.number,
+                      'Please enter your age'),
 
-                      ///===================Write Problem TextField================>?
-                      _textAndTextField(
-                          AppString.writeYourProblem,
-                          AppString.writeYourProblem,
-                          "",
-                          problemCtrl,
-                          10,
-                          TextInputType.text,
-                          'Please write your problems'),
+                  ///===================Write Problem TextField================>?
+                  _textAndTextField(
+                      AppString.writeYourProblem,
+                      AppString.writeYourProblem,
+                      "",
+                      problemCtrl,
+                      10,
+                      TextInputType.text,
+                      'Please write your problems'),
 
+                  SizedBox(height: 24.h),
 
-                      SizedBox(height: 24.h),
+                  Obx(
+                    () => CustomButton(
+                        onpress: () {
+                          if (profileController.profileInfo.value.isInsurance ?? false) {
+                            final UserPatientDetailsController _patientDetailsController = Get.put(UserPatientDetailsController());
 
-
-                      CustomButton(onpress: (){
-
-                        if(insurance == null || insurance == ""){
-
-                        }else{
-
-                        }
-
-                      }, title: "Pay Via Insurance", color: insurance == null || insurance == ""? Colors.grey : AppColors.primaryColor),
-
-                      SizedBox(height: 20.h),
-                      CustomButton(
-                          loading: _patientDetailsController.patientDetailsLoading.value,
-                          onpress: () {
-                            print("=============================emergency doctor : ${data.doctorId?.id}");
-                            print("=====================Doctor Type ${Get.parameters['isEmergency']}");
-
-                            try{
-                              if (_formKey.currentState!.validate()) {
-                                if (Get.parameters['isEmergency'] ==  "false") {
-                                  print("===============This is available doctor booking");
-
-
-                                  Map<String, dynamic> paymentData = {
-                                    'fullName': fullNameCtrl.text,
-                                    'age': ageCtrl.text,
-                                    'gender': genderCtrl.text,
-                                    'description': problemCtrl.text,
-                                    'doctorId': "${Get.parameters['id']}",
-                                    'price': "${Get.parameters['price']}",
-                                    'packName': "${Get.parameters['packageName']}",
-                                    'timeSlot': "${Get.parameters['timeSlot']}",
-                                    'date': '${Get.parameters['date']}'
-                                  };
-
-
-                                  paymentController.makePayment(amount: "${Get.parameters['price']}", data: paymentData);
-
-                                  // _patientDetailsController.patienDetailsAdd(
-                                  //     fullName: fullNameCtrl.text,
-                                  //     age: ageCtrl.text,
-                                  //     gender: genderCtrl.text,
-                                  //     description: problemCtrl.text,
-                                  //     doctorId: "${Get.parameters['id']}",
-                                  //     price: "${Get.parameters['price']}",
-                                  //     packName: "${Get.parameters['packageName']}",
-                                  //     timeSlot: "${Get.parameters['timeSlot']}",
-                                  //     date: '${Get.parameters['date']}'
-                                  // );
-
-                                } else if(Get.parameters['isEmergency'] ==  "true"){
-                                  print("===============This is Emergency doctor booking");
-
-                                  // _patientDetailsController.patienDetailsAdd(
-                                  //     fullName: fullNameCtrl.text,
-                                  //     age: ageCtrl.text,
-                                  //     gender: genderCtrl.text,
-                                  //     description: problemCtrl.text,
-                                  //     doctorId: "${data.doctorId?.id}",
-                                  //     price: "${data.emergencyPrice}",
-                                  //     packName: "Emergency Price",
-                                  //     timeSlot: "${TimeFormatHelper.timeFormat(DateTime.now())}",
-                                  //     date: '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}'
-                                  //     );
-
-                                  Map<String, dynamic> paymentData2 = {
-                                    'fullName': fullNameCtrl.text,
-                                    'age': ageCtrl.text,
-                                    'gender': genderCtrl.text,
-                                    'description': problemCtrl.text,
-                                    'doctorId': "${data.doctorId?.id}",
-                                    'price': "${data.emergencyPrice}",
-                                    'packName': "Emergency Price",
-                                    'timeSlot': "${TimeFormatHelper.timeFormat(DateTime.now())}",
-                                    'date': '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}'
-                                  };
-
-
-                                  paymentController.makePayment(amount: "${data.emergencyPrice}", data: paymentData2);
-
-                                }
-                              }
-
-                            }catch(e,s){
-                              print("==========e :| $e");
-                              print("==========s :| $s");
+                            if (_formKey.currentState!.validate()) {
+                              _patientDetailsController.patienDetailsAdd(
+                                  fullName: "${fullNameCtrl.text}",
+                                  age: "${ageCtrl.text}",
+                                  gender: "${genderCtrl.text}",
+                                  description: "${problemCtrl.text}",
+                                  doctorId: "${Get.parameters['id']}",
+                                  price: "0",
+                                  packName:
+                                  Get.parameters['isEmergency'] == "false"
+                                      ? "${Get.parameters['packageName']}"
+                                      : "Emergency Price",
+                                  timeSlot: Get.parameters['isEmergency'] ==
+                                      "false"
+                                      ? "${Get.parameters['timeSlot']}"
+                                      : "${TimeFormatHelper.timeFormat(DateTime.now())}",
+                                  date: Get.parameters['isEmergency'] == "false"
+                                      ? '${Get.parameters['date']}'
+                                      : '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}',
+                                  paymentType: "insurance");
                             }
 
 
-                          },
-                          title: "Pay Via Card"),
-                      SizedBox(height: 20.h),
-                    ],
+                          } else {
+                            ToastMessageHelper.showToastMessage("You are unable to pay via insurance!\n\n If you do not provide you insurance please upload you insurance to get doctor");
+                            print("==================================${profileController.profileInfo.value.isInsurance}");
+                          }
+                        },
+                        title: "Pay Via Insurance",
+                        color:
+                            profileController.profileInfo.value.isInsurance ??
+                                    false
+                                ? AppColors.primaryColor
+                                : Colors.grey),
                   ),
-                ),
+
+                  SizedBox(height: 20.h),
+                  CustomButton(
+                      // loading: _patientDetailsController.patientDetailsLoading.value,
+                      onpress: () {
+                        print(
+                            "=============================emergency doctor : ${data.doctorId?.id}");
+                        print(
+                            "=====================Doctor Type ${Get.parameters['isEmergency']}");
+
+                        try {
+                          if (_formKey.currentState!.validate()) {
+                            if (Get.parameters['isEmergency'] == "false") {
+                              print(
+                                  "===============This is available doctor booking");
+
+                              Map<String, dynamic> paymentData = {
+                                'fullName': fullNameCtrl.text,
+                                'age': ageCtrl.text,
+                                'gender': genderCtrl.text,
+                                'description': problemCtrl.text,
+                                'doctorId': "${Get.parameters['id']}",
+                                'price': "${Get.parameters['price']}",
+                                'packName': "${Get.parameters['packageName']}",
+                                'timeSlot': "${Get.parameters['timeSlot']}",
+                                'date': '${Get.parameters['date']}'
+                              };
+
+                              paymentController.makePayment(
+                                  amount: "${Get.parameters['price']}",
+                                  data: paymentData);
+
+                              // _patientDetailsController.patienDetailsAdd(
+                              //     fullName: fullNameCtrl.text,
+                              //     age: ageCtrl.text,
+                              //     gender: genderCtrl.text,
+                              //     description: problemCtrl.text,
+                              //     doctorId: "${Get.parameters['id']}",
+                              //     price: "${Get.parameters['price']}",
+                              //     packName: "${Get.parameters['packageName']}",
+                              //     timeSlot: "${Get.parameters['timeSlot']}",
+                              //     date: '${Get.parameters['date']}'
+                              // );
+                            } else if (Get.parameters['isEmergency'] ==
+                                "true") {
+                              print(
+                                  "===============This is Emergency doctor booking");
+
+                              // _patientDetailsController.patienDetailsAdd(
+                              //     fullName: fullNameCtrl.text,
+                              //     age: ageCtrl.text,
+                              //     gender: genderCtrl.text,
+                              //     description: problemCtrl.text,
+                              //     doctorId: "${data.doctorId?.id}",
+                              //     price: "${data.emergencyPrice}",
+                              //     packName: "Emergency Price",
+                              //     timeSlot: "${TimeFormatHelper.timeFormat(DateTime.now())}",
+                              //     date: '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}'
+                              //     );
+
+                              Map<String, dynamic> paymentData2 = {
+                                'fullName': fullNameCtrl.text,
+                                'age': ageCtrl.text,
+                                'gender': genderCtrl.text,
+                                'description': problemCtrl.text,
+                                'doctorId': "${data.doctorId?.id}",
+                                'price': "${data.emergencyPrice}",
+                                'packName': "Emergency Price",
+                                'timeSlot':
+                                    "${TimeFormatHelper.timeFormat(DateTime.now())}",
+                                'date':
+                                    '${TimeFormatHelper.justDateWithUnderscoll(DateTime.now())}'
+                              };
+
+                              paymentController.makePayment(
+                                  amount: "${data.emergencyPrice}",
+                                  data: paymentData2);
+                            }
+                          }
+                        } catch (e, s) {
+                          print("==========e :| $e");
+                          print("==========s :| $s");
+                        }
+                      },
+                      title: "Pay Via Card"),
+                  SizedBox(height: 20.h),
+                ],
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _textAndTextField(String title,
+  Widget _textAndTextField(
+      String title,
       hinText,
       icon,
       TextEditingController controller,
@@ -313,16 +350,16 @@ class _UserPatientDetailsScreenState extends State<UserPatientDetailsScreen> {
           sufixicons: icon == ""
               ? const SizedBox()
               : Padding(
-            padding:
-            EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
-            child: SvgPicture.asset(
-              AppIcons.arrowDown,
-              color: AppColors.primaryColor,
-              height: 20.h,
-              width: 20.w,
-              fit: BoxFit.cover,
-            ),
-          ),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+                  child: SvgPicture.asset(
+                    AppIcons.arrowDown,
+                    color: AppColors.primaryColor,
+                    height: 20.h,
+                    width: 20.w,
+                    fit: BoxFit.cover,
+                  ),
+                ),
         ),
         SizedBox(height: 16.h)
       ],

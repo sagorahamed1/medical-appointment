@@ -12,6 +12,7 @@ class CustomTextField extends StatefulWidget {
   final Color? fillColor;
   // final Widget? prefixIcon;
   final String? labelText;
+  final int? maxLines;
   final String? prefixIcon;
   final Widget? sufixicons;
   final String? hintText;
@@ -45,7 +46,7 @@ class CustomTextField extends StatefulWidget {
     this.onTap,
     this.helperText,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
-    this.onChanged,
+    this.onChanged, this.maxLines,
   });
 
   @override
@@ -89,6 +90,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       autovalidateMode:  widget.autovalidateMode,
       obscuringCharacter: widget.obscureCharacter!,
       validator: widget.validator,
+      maxLines: widget.maxLines ?? 1,
       cursorColor: AppColors.primaryColor,
       style:  TextStyle(color: _hasFocusOrText() ? AppColors.primaryColor : Colors.black),
       decoration: InputDecoration(

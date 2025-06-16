@@ -22,12 +22,12 @@ class PaymentController {
     try {
       final paymentIntent = await Stripe.instance.retrievePaymentIntent(piId);
       if (kDebugMode) {
-        print("Payment Intent: $paymentIntent");
+        debugPrint("Payment Intent: $paymentIntent");
       }
       return paymentIntent;
     } catch (e) {
       if (kDebugMode) {
-        print('Error fetching payment intent: $e');
+        debugPrint('Error fetching payment intent: $e');
       }
       throw e;
     }
@@ -40,7 +40,7 @@ class PaymentController {
         String clientSecret = paymentIntentData!['client_secret'];
 
         if (kDebugMode) {
-          print("Client Secret: $clientSecret");
+          debugPrint("Client Secret: $clientSecret");
         }
 
         await Stripe.instance.initPaymentSheet(
@@ -59,7 +59,7 @@ class PaymentController {
       }
     } catch (e, s) {
       if (kDebugMode) {
-        print('Exception: $e\nStack trace: $s');
+        debugPrint('Exception: $e\nStack trace: $s');
       }
     }
   }
@@ -81,14 +81,14 @@ class PaymentController {
       );
 
       if (kDebugMode) {
-        print("Payment Intent Response: ${response.body}");
+        debugPrint("Payment Intent Response: ${response.body}");
       }
 
       return jsonDecode(response.body);
     } catch (e, s) {
       if (kDebugMode) {
-        print("Error creating payment intent: $e");
-        print("Error creating payment intent: $s");
+        debugPrint("Error creating payment intent: $e");
+        debugPrint("Error creating payment intent: $s");
       }
       return null;
     }
@@ -104,13 +104,13 @@ class PaymentController {
       await Stripe.instance.presentPaymentSheet();
       retrieveTxnId(paymentIntent: paymentIntentData!['id'], paymentData: data); ///subscription id
       if (kDebugMode) {
-        print('Payment intent: $paymentIntentData');
+        debugPrint('Payment intent: $paymentIntentData');
       }
       ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(content: Text("Paid successfully")));
       paymentIntentData = null;
     } catch (e) {
       if (kDebugMode) {
-        print("Error displaying payment sheet: $e");
+        debugPrint("Error displaying payment sheet: $e");
       }
     }
   }
@@ -128,12 +128,12 @@ class PaymentController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);
         if (kDebugMode) {
-          print("Transaction Id: ${data['data'][0]['balance_transaction']}");
+          debugPrint("Transaction Id: ${data['data'][0]['balance_transaction']}");
         }
         var transactionId = data['data'][0]['balance_transaction'];
 
         final UserPatientDetailsController _patientDetailsController = Get.put(UserPatientDetailsController());
-        print("${paymentData["age"]}");
+        debugPrint("${paymentData["age"]}");
 
         _patientDetailsController.patienDetailsAdd(
             fullName: "${paymentData["fullName"]}",
@@ -144,12 +144,13 @@ class PaymentController {
             price: "${paymentData["price"]}",
             packName: "${paymentData["packName"]}",
             timeSlot: "${paymentData["timeSlot"]}",
-            date: "${paymentData["date"]}"
+            date: "${paymentData["date"]}",
+           paymentType: "stripe"
         );
 
 
       }else{
-        print("******************************************************************************************************");
+        debugPrint("******************************************************************************************************");
       }
     } catch (e) {
       Get.toNamed(AppRoutes.failedPayment);

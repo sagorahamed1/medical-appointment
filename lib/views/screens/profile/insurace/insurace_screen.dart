@@ -1,19 +1,17 @@
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:doctor_appointment/controllers/profile_controler.dart';
-import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
-import 'package:doctor_appointment/utils/app_constant.dart';
+import 'package:doctor_appointment/views/widgets/cachanetwork_image.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class InsuranceScreen extends StatefulWidget {
   const InsuranceScreen({super.key});
@@ -30,7 +28,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await profileControler.getLocalData();
-      await profileControler.loadPdf(profileControler.localFilePath.value);
+      // await profileControler.loadPdf(profileControler.localFilePath.value);
     });
   }
 
@@ -49,91 +47,143 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
         padding: EdgeInsets.all(20.r),
         child: SingleChildScrollView(
           child: Obx(() =>
-             Column(
-              children: [
-                SizedBox(height: 5.h),
+              Column(
+                children: [
+                  SizedBox(height: 5.h),
 
-                GestureDetector(
-                  onTap: profileControler.pickAndUploadPdf,
-                  child: DottedBorder(
-                    color: Colors.grey.shade400,
-                    strokeWidth: 1,
-                    borderType: BorderType.RRect,
-                    radius: Radius.circular(12.r),
-                    dashPattern: [6, 4],
-                    // Dotted pattern: 6 units line, 4 units space
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(16.r),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        color: Colors.grey.shade100,
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  color: AppColors.primaryColor, width: 3.r),
+
+
+                  CustomText(
+                      text: profileControler.profileInfo.value.insurance != null ? "Current Insurance" : "", top: 20.h, bottom: 20.h),
+
+
+                  profileControler.profileInfo.value.insurance != null ?
+
+                  Obx(() =>
+                      CustomNetworkImage(
+                          imageUrl: "${ApiConstants.imageBaseUrl}/${profileControler
+                              .profileInfo.value.insurance?.publicFileUrl}",
+                          height: 300.h,
+                          width: double.infinity),
+                  ) :
+
+
+                      insuranceImageUint != null ?
+                  Image.memory(
+                    insuranceImageUint!,
+                    height: 300.h,
+                    width: double.infinity,
+                    fit: BoxFit.fitWidth,
+                  ) :
+                  GestureDetector(
+                    onTap: pickAndUploadPdf,
+                    child: DottedBorder(
+                      color: Colors.grey.shade400,
+                      strokeWidth: 1,
+                      borderType: BorderType.RRect,
+                      radius: Radius.circular(12.r),
+                      dashPattern: [6, 4],
+                      // Dotted pattern: 6 units line, 4 units space
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(16.r),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          color: Colors.grey.shade100,
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: AppColors.primaryColor, width: 3.r),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(5.r),
+                                child: Icon(Icons.add,
+                                    color: AppColors.primaryColor, size: 32.r),
+                              ),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.all(5.r),
-                              child: Icon(Icons.add,
-                                  color: AppColors.primaryColor, size: 32.r),
+                            CustomText(
+                              text: "Drop your insurance here",
+                              top: 15.h,
+                              bottom: 15.h,
+                              fontWeight: FontWeight.w800,
+                              fontsize: 16.r,
                             ),
-                          ),
-                          CustomText(
-                            text: "Drop your insurance here",
-                            top: 15.h,
-                            bottom: 15.h,
-                            fontWeight: FontWeight.w800,
-                            fontsize: 16.r,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CustomText(
-                                  text: "Browse file",
-                                  fontsize: 12.h,
-                                  color: Colors.blueAccent),
-                              CustomText(text: " from your device", fontsize: 12.h),
-                            ],
-                          )
-                        ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomText(
+                                    text: "Browse file",
+                                    fontsize: 12.h,
+                                    color: Colors.blueAccent),
+                                CustomText(
+                                    text: " from your device", fontsize: 12.h),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
 
 
 
-                SizedBox(
-                  height: 450.h,
-                  child: Obx(() =>
-                     PDFView(
-                      filePath: profileControler.localFilePath.value,
-                      enableSwipe: true,
-                      swipeHorizontal: false,
-                      autoSpacing: true,
-                      pageFling: true,
+
+                  SizedBox(height: 200.h),
+
+                  // SizedBox(
+                  //   height: 450.h,
+                  //   child: Obx(() =>
+                  //       PDFView(
+                  //         filePath: profileControler.localFilePath.value,
+                  //         enableSwipe: true,
+                  //         swipeHorizontal: false,
+                  //         autoSpacing: true,
+                  //         pageFling: true,
+                  //       ),
+                  //   ),
+                  // ),
+
+                  profileControler.profileInfo.value.insurance != null ? SizedBox() :
+                  Obx(() =>
+                     CustomButton(
+                       loading: profileControler.insuranceUploadLoading.value,
+                      onpress: () {
+                        profileControler.profileUpdateInsurance(insurance: insuranceImageFile);
+                      },
+                      title: "Upload Insurance PDF",
                     ),
                   ),
-                ),
-
-
-                CustomButton(
-                  onpress: () {},
-                  title: profileControler.localFilePath.value != null
-                      ? "Update Insurance PDF"
-                      : "Upload Insurance PDF",
-                ),
-                SizedBox(height: 50.h),
-              ],
-            ),
+                  SizedBox(height: 50.h),
+                ],
+              ),
           ),
         ),
       ),
     );
   }
+
+
+  File? insuranceImageFile;
+  Uint8List? insuranceImageUint;
+
+  Future<void> pickAndUploadPdf() async {
+
+
+    final returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
+
+      insuranceImageFile = File(returnImage.path);
+      insuranceImageUint = File(returnImage.path).readAsBytesSync();
+      setState(() {
+
+      });
+
+    profileControler.getLocalData();
+
+  }
+
 }

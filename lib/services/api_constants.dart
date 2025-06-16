@@ -1,10 +1,10 @@
 class ApiConstants{
-  static const String baseUrl = "https://api.medroofurgentcare.com/api/v1";
-  static const String imageBaseUrl = "https://api.medroofurgentcare.com";
+  // static const String baseUrl = "https://api.medroofurgentcare.com/api/v1";
+  // static const String imageBaseUrl = "https://api.medroofurgentcare.com";
 
   //
-  // static const String baseUrl = "http://192.168.10.234:4000/api/v1";
-  // static const String imageBaseUrl = "http://192.168.10.234:4000";
+  static const String baseUrl = "https://appoinment-ahad-hossain-aiman.sarv.live/api/v1";
+  static const String imageBaseUrl = "https://appoinment-ahad-hossain-aiman.sarv.live";
 
 
 

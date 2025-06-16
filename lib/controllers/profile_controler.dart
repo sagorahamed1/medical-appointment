@@ -10,18 +10,15 @@ import '../services/api_constants.dart';
 import '../utils/app_constant.dart';
 import 'package:http/http.dart' as http;
 
-
-class ProfileControler extends GetxController{
-
+class ProfileControler extends GetxController {
   RxString? userName = "".obs;
   RxString? image = ''.obs;
 
-
   fetchData() async {
     refresh();
-     userName?.value = await PrefsHelper.getString(AppConstants.userName);
-     image?.value = await PrefsHelper.getString(AppConstants.image);
-     update();
+    userName?.value = await PrefsHelper.getString(AppConstants.userName);
+    image?.value = await PrefsHelper.getString(AppConstants.image);
+    update();
   }
 
   @override
@@ -32,54 +29,56 @@ class ProfileControler extends GetxController{
 
   final rxRequestStatus = Status.loading.obs;
   RxBool profileLoading = false.obs;
+
   void setRxRequestStatus(Status value) => rxRequestStatus.value = value;
   Rx<ProfileModel> profileInfo = ProfileModel().obs;
-  getProfile()async{
+
+  getProfile() async {
     profileLoading(true);
     var response = await ApiClient.getData(ApiConstants.getProfileEndPoint);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       var responseData = response.body;
-      profileInfo.value = ProfileModel.fromJson(responseData['data']['attributes']);
-      await PrefsHelper.setString(AppConstants.userName, "${responseData['data']['attributes']['firstName']} ${responseData['data']['attributes']['lastName']}");
-      await PrefsHelper.setString(AppConstants.image, "${responseData['data']['attributes']['image']["publicFileURL"]}");
-
+      profileInfo.value =
+          ProfileModel.fromJson(responseData['data']['attributes']);
+      await PrefsHelper.setString(AppConstants.userName,
+          "${responseData['data']['attributes']['firstName']} ${responseData['data']['attributes']['lastName']}");
+      await PrefsHelper.setString(AppConstants.image,
+          "${responseData['data']['attributes']['image']["publicFileURL"]}");
 
       print("get succussful");
       profileLoading(false);
       setRxRequestStatus(Status.completed);
-    }else if(response.statusCode == 404){
+    } else if (response.statusCode == 404) {
       profileLoading(false);
       setRxRequestStatus(Status.completed);
-    }else{
+    } else {
       if (response.statusText == ApiClient.noInternetMessage) {
         setRxRequestStatus(Status.internetError);
-      }else{
+      } else {
         setRxRequestStatus(Status.error);
       }
     }
   }
 
-
-
-
-
   ///===============profile update================<>
   RxBool updateProfileLoading = false.obs;
-  profileUpdate({
-    File? image,
-    String? firstName, lastName, dateOfBirth, phone, address
-  }) async {
 
+  profileUpdate(
+      {File? image,
+      String? firstName,
+      lastName,
+      dateOfBirth,
+      phone,
+      address}) async {
     print("****************************image path : ${image}");
     updateProfileLoading(true);
     String token = await PrefsHelper.getString(AppConstants.bearerToken);
-    List<MultipartBody> multipartBody = image == null ? [] : [MultipartBody("image", image)];
+    List<MultipartBody> multipartBody =
+        image == null ? [] : [MultipartBody("image", image)];
 
-    var headers = {
-      'Authorization': 'Bearer $token'
-    };
+    var headers = {'Authorization': 'Bearer $token'};
 
-   var body = {
+    var body = {
       "firstName": '$firstName',
       "lastName": '$lastName',
       "dateOfBirth": '$dateOfBirth',
@@ -94,16 +93,16 @@ class ProfileControler extends GetxController{
     if (response.statusCode == 200 || response.statusCode == 201) {
       Get.back();
       Get.back();
-      await PrefsHelper.setString(AppConstants.image, response.body["data"]["attributes"]["image"]["publicFileURL"]);
+      await PrefsHelper.setString(AppConstants.image,
+          response.body["data"]["attributes"]["image"]["publicFileURL"]);
       fetchData();
       update();
       ToastMessageHelper.showToastMessage('${response.body["message"]}');
       updateProfileLoading(false);
-    }else {
+    } else {
       updateProfileLoading(false);
     }
   }
-
 
   RxString localFilePath = 'https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf'.obs;
 
@@ -114,34 +113,32 @@ class ProfileControler extends GetxController{
     final file = File(filePath);
     await file.writeAsBytes(response.bodyBytes);
 
-      localFilePath.value = filePath;
+    localFilePath.value = filePath;
 
-      update();
+    update();
   }
-
 
   Future<void> getLocalData() async {
     localFilePath.value = await PrefsHelper.getString(AppConstants.insurance);
     update();
   }
 
+  ///===============profile update================<>
 
-  Future<void> pickAndUploadPdf() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
+  RxBool insuranceUploadLoading = false.obs;
+  profileUpdateInsurance({File? insurance}) async {
+    insuranceUploadLoading(true);
+    List<MultipartBody> multipartBody =
+        image == null ? [] : [MultipartBody("insurance", insurance!)];
 
-    if (result != null) {
-      File file = File(result.files.single.path!);
+    var response = await ApiClient.putMultipartData(
+        ApiConstants.profileUpdate, {},
+        multipartBody: multipartBody);
 
-
-
-
-      getLocalData();
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      insuranceUploadLoading(false);
+      print("=======> ${response.body}");
     }
+    insuranceUploadLoading(false);
   }
-
-
-
 }

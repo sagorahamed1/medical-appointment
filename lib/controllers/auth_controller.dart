@@ -51,27 +51,28 @@ class AuthController extends GetxController {
       headers: headers,
     );
 
-
     if (response.statusCode == 200 || response.statusCode == 201) {
       var id = response.body['data']['attributes']['userId'];
       PrefsHelper.setString(AppConstants.userId, id);
 
       ///***********firebase code*************///
       AuthService authService = AuthService();
-      authService.signUp(firstName, lastName, email, password, role, userId: id);
+      authService.signUp(firstName, lastName, email, password, role,
+          userId: id);
+
       ///***********firebase code*************///
 
-
       print('====> id $id');
-      Get.toNamed(AppRoutes.veryfyEmailScreen, parameters: {'screenType': 'signUp', 'email': email});
-      ToastMessageHelper.showToastMessage('Signup successful! Check your email for the OTP.');
+      Get.toNamed(AppRoutes.veryfyEmailScreen,
+          parameters: {'screenType': 'signUp', 'email': email});
+      ToastMessageHelper.showToastMessage(
+          'Signup successful! Check your email for the OTP.');
       signUpLoading(false);
-    }else{
+    } else {
       signUpLoading(false);
       ToastMessageHelper.showToastMessage(response.body["message"].toString());
     }
   }
-
 
   ///===============Log in================<>
   RxBool logInLoading = false.obs;
@@ -85,27 +86,31 @@ class AuthController extends GetxController {
       "email": email,
       "password": password,
     };
-    var response = await ApiClient.postData(ApiConstants.signInEndPoint, jsonEncode(body),
+    var response = await ApiClient.postData(
+        ApiConstants.signInEndPoint, jsonEncode(body),
         headers: headers);
     var userName = await PrefsHelper.getString(AppConstants.userName);
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data'];
-      await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
+      await PrefsHelper.setString(
+          AppConstants.role, data['attributes']['role']);
       // await PrefsHelper.setString(AppConstants.token, data['token']);
       await PrefsHelper.setString(AppConstants.bearerToken, data['token']);
       await PrefsHelper.setString(AppConstants.email, email);
-      await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
+      await PrefsHelper.setString(
+          AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       await PrefsHelper.setString(AppConstants.pas, password);
-
 
       var role = data['attributes']['role'];
       var isAdmin = data['attributes']['isAdmin'];
 
       print("==============> ${data['attributes']['_id']}");
+
       ///***********firebase code*************///
       AuthService authService = AuthService();
       authService.login(email, password, data['attributes']['_id']);
+
       ///***********firebase code*************///
       if (!isAdmin) {
         if (role == "user") {
@@ -117,39 +122,37 @@ class AuthController extends GetxController {
       }
       logInLoading(false);
 
+      ///***********firebase code*************///
+      authService.signUp("${userName.split(" ")[0]}",
+          "${userName.split(" ")[1]}", email, password, role,
+          userId: data["attributes"]["_id"]);
 
       ///***********firebase code*************///
-      authService.signUp("${userName.split(" ")[0]}", "${userName.split(" ")[1]}", email, password, role, userId: data["attributes"]["_id"]);
-      ///***********firebase code*************///
-
 
       var image = data["attributes"]["image"];
       initializeCallInvitation(
-        name: "$userName",
-        id: "$email",
-        image: image.toString()
-      );
+          name: "$userName", id: "$email", image: image.toString());
 
-
-      await PrefsHelper.setString(AppConstants.insurance, data["attributes"]["insurance"]["publicFileURL"]);
+      await PrefsHelper.setString(AppConstants.insurance,
+          data["attributes"]["insurance"]["publicFileURL"]);
 
       // onUserLogin
 
-      await PrefsHelper.setString(AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
-
-    }else if(response.statusCode == 1){
+      await PrefsHelper.setString(
+          AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
+    } else if (response.statusCode == 1) {
       logInLoading(false);
       ToastMessageHelper.showToastMessage("Some thing want wrong try again!");
-    }else{
+    } else {
       logInLoading(false);
       print("*****************************${response.body['message']}");
-      if(response.body['message'] == "you are not veryfied"){
-        Get.toNamed(AppRoutes.veryfyEmailScreen, parameters: {'screenType': 'signUp', 'email': email});
+      if (response.body['message'] == "you are not veryfied") {
+        Get.toNamed(AppRoutes.veryfyEmailScreen,
+            parameters: {'screenType': 'signUp', 'email': email});
       }
       ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }
-
 
   ///===============Verify Email================<>
   RxBool verfyLoading = false.obs;
@@ -168,10 +171,11 @@ class AuthController extends GetxController {
             parameters: {'email': "${Get.parameters['email']}"});
       } else if (type == 'signUp') {
         Get.toNamed(AppRoutes.fillProfileScreen);
-        ToastMessageHelper.showToastMessage('OTP verified successfully! Your account is now active.');
+        ToastMessageHelper.showToastMessage(
+            'OTP verified successfully! Your account is now active.');
       }
       verfyLoading(false);
-    }else{
+    } else {
       verfyLoading(false);
       ToastMessageHelper.showToastMessage(response.body["message"].toString());
     }
@@ -180,20 +184,34 @@ class AuthController extends GetxController {
   ///===============Fill profile or update profile================<>
   RxBool fillProfileLoading = false.obs;
 
-  fillProfileOrUpDate(File? image) async {
+  fillProfileOrUpDate(File? image, File? insuranceFont) async {
     fillProfileLoading(true);
-    List<MultipartBody> multipartBody = image == null ? [] : [MultipartBody("image", image)];
+
+    List<MultipartBody> multipartBody = [];
+
+
+    multipartBody.add(MultipartBody("image", image!));
+
+    if(insuranceFont != null){
+      multipartBody.add(MultipartBody("insurance", insuranceFont));
+    }
+
+
+    // List<MultipartBody> multipartBody = image == null ? [] : [
+    //   MultipartBody("image", image),
+    //        MultipartBody("insurance", insuranceFont)
+    //       ];
     var userId = await PrefsHelper.getString(AppConstants.userId);
 
     var headers = {'Content-Type': 'application/json'};
     print("===============================================file type : $image");
 
     var body = {
-      "gender": genderCtrl.text,
-      "dataOfBirth": dateOfBirthCtrl.text,
-      "phone": mobileNumberCtrl.text,
-      "address": addressCtrl.text,
-      "userId": userId,
+      "gender": "${genderCtrl.text}",
+      "dataOfBirth": "${dateOfBirthCtrl.text}",
+      "phone": "${mobileNumberCtrl.text}",
+      "address": "${addressCtrl.text}",
+      "userId": "$userId",
     };
 
     var response = await ApiClient.postMultipartData(
@@ -206,18 +224,22 @@ class AuthController extends GetxController {
 
       if (role == "doctor") {
         Get.toNamed(AppRoutes.continueDoctorDetailsScreen);
-        ToastMessageHelper.showToastMessage('Account Create Successful \n Please give your information');
+        ToastMessageHelper.showToastMessage(
+            'Account Create Successful \n Please give your information');
       } else if (role == 'user') {
         Get.toNamed(AppRoutes.signInScreen);
         ToastMessageHelper.showToastMessage('Account Create Successful');
       }
       fillProfileLoading(false);
-    }else{
+    } else {
       fillProfileLoading(false);
       ToastMessageHelper.showToastMessage(response.body["message"]);
     }
+    genderCtrl.clear();
+    dateOfBirthCtrl.clear();
+    mobileNumberCtrl.clear();
+    addressCtrl.clear();
   }
-
 
   ///===============Forgot Password================<>
   RxBool forgotLoading = false.obs;
@@ -276,6 +298,7 @@ class AuthController extends GetxController {
   }
 
   RxBool continueDoctorDetailLoading = false.obs;
+
   ///===============Resend================<>
   continueDoctorDetails(
       {String? specialist,
@@ -313,7 +336,11 @@ class AuthController extends GetxController {
       "schedule": [
         {"day": "Monday", "startTime": mondayStart, "endTime": mondayEnd},
         {"day": "Tuesday", "startTime": tuesdayStart, "endTime": tuesdayEnd},
-        {"day": "Wednesday", "startTime": wednesdayStart, "endTime": wednesdayEnd},
+        {
+          "day": "Wednesday",
+          "startTime": wednesdayStart,
+          "endTime": wednesdayEnd
+        },
         {"day": "Thursday", "startTime": thursdayStart, "endTime": thursdayEnd},
         {"day": "Friday", "startTime": fridayStart, "endTime": fridayEnd},
         {"day": "Saturday", "startTime": saturdayStart, "endTime": saturdayEnd},
@@ -321,28 +348,26 @@ class AuthController extends GetxController {
       ]
     };
 
-    var response = await ApiClient.postData(ApiConstants.continueDoctorPoint, jsonEncode(body));
+    var response = await ApiClient.postData(
+        ApiConstants.continueDoctorPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-       Get.offAllNamed(AppRoutes.signInScreen);
-      ToastMessageHelper.showToastMessage('Your account create successful! \n please Sign In');
+      Get.offAllNamed(AppRoutes.signInScreen);
+      ToastMessageHelper.showToastMessage(
+          'Your account create successful! \n please Sign In');
       print("======>>> successful");
-       continueDoctorDetailLoading(false);
-    }else{
+      continueDoctorDetailLoading(false);
+    } else {
       continueDoctorDetailLoading(false);
     }
   }
-
 
   ///===============Change Password================<>
   RxBool changePasswordLoading = false.obs;
 
   changePassword(String oldPassword, newPassword) async {
     changePasswordLoading(true);
-    var body = {
-      "oldPassword": "$oldPassword",
-      "newPassword": "$newPassword"
-    };
+    var body = {"oldPassword": "$oldPassword", "newPassword": "$newPassword"};
 
     var response = await ApiClient.testPostData(
         ApiConstants.changePasswordPoint, jsonEncode(body));
@@ -351,11 +376,8 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage('Password Changed Successful');
       print("======>>> successful");
       changePasswordLoading(false);
-    }else{
+    } else {
       ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }
-
-
-
 }

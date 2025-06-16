@@ -16,7 +16,7 @@ class UserPatientDetailsController extends GetxController{
 
 
   RxBool patientDetailsLoading = false.obs;
-  patienDetailsAdd({String? fullName, gender,age, description, doctorId, price, packName, timeSlot, date})async{
+  patienDetailsAdd({String? fullName, gender,age, description, doctorId, price, packName, timeSlot, date, required String paymentType})async{
     patientDetailsLoading(true);
     var body = {
       "fullName": "$fullName",
@@ -39,14 +39,15 @@ class UserPatientDetailsController extends GetxController{
         date: date,
         packageName: packName,
         timeSlot: timeSlot,
-        patientDetailsId: patientDetailsId
+        patientDetailsId: patientDetailsId,
+        paymentType: paymentType
       );
       print("---------------------------successful");
     }
   }
 
 
-  payment({String? price, packageName, date, timeSlot, doctorId, patientDetailsId })async{
+  payment({String? price, packageName, date, timeSlot, doctorId, patientDetailsId, paymentType })async{
     var newData = TimeFormatHelper.justDateWithUnderscoll(DateTime.parse(date));
     print('=========date $newData');
     patientDetailsLoading(true);
@@ -60,7 +61,8 @@ class UserPatientDetailsController extends GetxController{
         "packagePrice":"$price"
       },
       "amount":"$price",
-      "stripeToken": "tok_visa_cartesBancaires"
+      "stripeToken": paymentType == "stripe" ? "tok_visa_cartesBancaires" : "n/a",
+      "paymentType" : "$paymentType"
     };
 
 
@@ -71,8 +73,9 @@ class UserPatientDetailsController extends GetxController{
       Get.toNamed(AppRoutes.successPayment);
       ToastMessageHelper.showToastMessage('Doctor book successful');
     }else{
-      ToastMessageHelper.showToastMessage(response.body['message']);
       patientDetailsLoading(false);
+      ToastMessageHelper.showToastMessage(response.body['message']);
+
     }
   }
 }
