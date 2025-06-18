@@ -22,8 +22,6 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
   DcotorAppointmentsDetailsScreen({super.key});
 
   DoctorSeeDetailsController seeDetailsController = Get.put(DoctorSeeDetailsController());
-  final CompleteAppointmentController _completeAppointmentController =
-      Get.put(CompleteAppointmentController());
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +125,11 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
 
                       ///===============Send Prescription=================>
                       Get.parameters['type'] == 'upcomming'
-                          ? const SizedBox()
-                          : GestureDetector(
+                          ?  GestureDetector(
                               onTap: () {
-                                Get.toNamed(AppRoutes.previousSoapNoteScreen);
+                                Get.toNamed(AppRoutes.previousSoapNoteScreen, arguments: {
+                                  "patientId" : '${Get.parameters['id']}'
+                                });
                               },
                               child: Container(
                                 width: double.infinity,
@@ -146,7 +145,7 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                                     bottom: 14.h,
                                     fontWeight: FontWeight.w800),
                               ),
-                            ),
+                            ) : const SizedBox(),
 
                       SizedBox(height: 16.h),
 
@@ -182,7 +181,7 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                                                 fontsize: 18.h,
                                                 color: Colors.black,
                                                 bottom: 24.h),
-                                            const TwoBottonBottomSheetAppointmentDetails(),
+                                             TwoBottonBottomSheetAppointmentDetails(patientId: '${Get.parameters['id']}'),
                                             SizedBox(height: 48.h)
                                           ],
                                         ),
@@ -256,7 +255,8 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
 
 
 class TwoBottonBottomSheetAppointmentDetails extends StatelessWidget {
-  const TwoBottonBottomSheetAppointmentDetails({super.key});
+  final String patientId;
+  const TwoBottonBottomSheetAppointmentDetails({super.key, required this.patientId});
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +286,9 @@ class TwoBottonBottomSheetAppointmentDetails extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () async{
-            Get.toNamed(AppRoutes.addSoapNoteScreen);
+            Get.toNamed(AppRoutes.addSoapNoteScreen, arguments: {
+               "patientId" : "$patientId"
+            });
           },
           child: Container(
             width: 166.w,

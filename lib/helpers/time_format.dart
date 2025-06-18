@@ -26,6 +26,14 @@ class TimeFormatHelper {
     return formattedTime;
   }
 
+
+
+  static String timeWithAMPMLocalTime(DateTime time) {
+    DateTime localTime = time.toLocal(); // Converts from UTC to device local time
+    String formattedTime = DateFormat('h:mm a').format(localTime);
+    return formattedTime;
+  }
+
   // static Future<void> isFutureDate(String input) async {
   //   try {
   //     DateTime date = DateTime.parse(input);

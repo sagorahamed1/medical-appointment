@@ -1,7 +1,10 @@
+import 'package:doctor_appointment/models/doctor/soap_notes_model.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../../helpers/time_format.dart';
 import '../../../widgets/custom_text.dart';
 
 class PreviousSoapNoteDetailsScreen extends StatelessWidget {
@@ -9,6 +12,9 @@ class PreviousSoapNoteDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    SoapNoteModel soap = Get.arguments;
+
     return Scaffold(
       ///-----------------------------------app bar section-------------------------->
       appBar: AppBar(
@@ -44,7 +50,7 @@ class PreviousSoapNoteDetailsScreen extends StatelessWidget {
 
 
                 CustomText(
-                    text: ":  Sagor Ahammed",
+                    text: ":  ${soap.userId?.firstName} ${soap.userId?.lastName}",
                     fontsize: 16.h,
                     color: AppColors.textColor5C5C5C
                 )
@@ -67,7 +73,7 @@ class PreviousSoapNoteDetailsScreen extends StatelessWidget {
 
 
                 CustomText(
-                    text: ":  14-05-2025",
+                    text: ":  ${TimeFormatHelper.formatDate(soap.createdAt ?? DateTime.now())}",
                     fontsize: 16.h,
                     color: AppColors.textColor5C5C5C
                 )
@@ -77,13 +83,13 @@ class PreviousSoapNoteDetailsScreen extends StatelessWidget {
 
             subjectiveCard(
               title: "Subjective",
-              description: "Lorem ipsum dolor sit amet consectetur. Eget nullam feugiat integer dui nunc imperdiet tortor sed eros."
+              description: "${soap.subjective}"
             ),
 
 
             subjectiveCard(
                 title: "Objective",
-                description: "Lorem ipsum dolor sit amet consectetur. Eget nullam feugiat integer dui nunc imperdiet tortor sed eros."
+                description: "${soap.objective}"
             ),
 
 
@@ -91,7 +97,7 @@ class PreviousSoapNoteDetailsScreen extends StatelessWidget {
 
             subjectiveCard(
                 title: "Assesment",
-                description: "Lorem ipsum dolor sit amet consectetur. Eget nullam feugiat integer dui nunc imperdiet tortor sed eros."
+                description: "${soap.assessment}"
             ),
 
 
@@ -101,7 +107,7 @@ class PreviousSoapNoteDetailsScreen extends StatelessWidget {
 
             subjectiveCard(
                 title: "Plan",
-                description: "Lorem ipsum dolor sit amet consectetur. Eget nullam feugiat integer dui nunc imperdiet tortor sed eros."
+                description: "${soap.plan}"
             ),
 
 

@@ -84,7 +84,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                    children: [
                       DoctorTopAppBar(
                        image: "$image",
-                        name: '${userName}',
+                        name: userName == null ? "" : '${userName}',
                      ),
                      SizedBox(height: 20.h),
                      Row(

@@ -61,7 +61,7 @@ class CustomSelectPackageCard extends StatelessWidget {
               ),
 
               SizedBox(
-                width: 170.w,
+                width: 190.w,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,7 +69,7 @@ class CustomSelectPackageCard extends StatelessWidget {
                     CustomText(
                         text: "$title",
                         fontWeight: FontWeight.w600,
-                        fontsize: 16.h),
+                        fontsize: 15.h),
                     SizedBox(height: 8.h),
 
                     ///===============================description========================:>

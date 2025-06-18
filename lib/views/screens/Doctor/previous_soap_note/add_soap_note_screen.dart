@@ -2,7 +2,9 @@ import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../../controllers/doctor/soap_note_controller.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../widgets/custom_text.dart';
 
@@ -13,6 +15,8 @@ class AddSoapNoteScreen extends StatelessWidget {
   TextEditingController objectiveCtrl = TextEditingController();
   TextEditingController assessmentCtrl = TextEditingController();
   TextEditingController planCtrl = TextEditingController();
+
+   SoapNoteController soapNoteController = Get.put(SoapNoteController());
 
   @override
   Widget build(BuildContext context) {
@@ -111,10 +115,26 @@ class AddSoapNoteScreen extends StatelessWidget {
               SizedBox(height: 50.h),
           
           
-              CustomButton(onpress: (){}, title: "Save")
+              Obx(() =>
+                 CustomButton(
+                     loading: soapNoteController.soapNoteAddLoading.value,
+                     onpress: (){
+
+                  soapNoteController.soapNoteAdd(
+                    patientId: "${Get.arguments["patientId"]}",
+                    assessment: "${assessmentCtrl.text}",
+                    objective: "${objectiveCtrl.text}",
+                    subjective: "${subjectiveCtrl.text}",
+                    plan: "${planCtrl.text}"
+                  );
+
+
+                }, title: "Save"),
+              ),
           
           
-          
+
+              SizedBox(height: 30.h)
             ],
           ),
         ),

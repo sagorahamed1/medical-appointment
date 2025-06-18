@@ -83,7 +83,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     children: [
                       TopAppBar(
                         image: "$image",
-                        name: userName.toString(),
+                        name: userName == null ? "" : userName.toString(),
                       ),
 
                       CustomText(
@@ -235,7 +235,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       horizontal: Dimensions.paddingSizeDefault.w),
                   child:
                       _SeeAll(AppString.emergencyDoctors, AppString.seeAll, () {
-                    Get.toNamed(AppRoutes.useremergencyDoctorsScreen);
+                    Get.toNamed(AppRoutes.useremergencyDoctorsScreen)?.then((_){
+                      _homeController.getDoctorByCetegory(cetegory: "General", date: null);
+                    });
                   }),
                 ),
 

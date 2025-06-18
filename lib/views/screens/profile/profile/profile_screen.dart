@@ -96,8 +96,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                             ListTileWidget(AppString.personalInformation,
                                 AppIcons.person, AppColors.primaryColor, () {
-                                  Get.toNamed(
-                                      AppRoutes.personalInformationScreen);
+                                  Get.toNamed(AppRoutes.personalInformationScreen)?.then((_){
+                                    _profileControler.fetchData();
+                                    _profileControler.getProfile();
+                                  });
                                 }),
 
                             ///=========================Doctor Details=========================>
@@ -106,8 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 AppString.doctorDetails,
                                 AppIcons.medicalRecord,
                                 AppColors.primaryColor, () {
-                              Get.toNamed(
-                                  AppRoutes.doctorDetailsProfileScreen);
+                              Get.toNamed(AppRoutes.doctorDetailsProfileScreen);
                             })
                                 : const SizedBox(),
 

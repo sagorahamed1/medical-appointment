@@ -188,12 +188,14 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                                   appointmentsType: "${appointment.status}",
                                   date: appointment.createdAt,
                                   time: TimeFormatHelper.timeFormat(
-                                      appointment.createdAt!),
+                                      appointment.createdAt ?? DateTime.now()),
                                   leftBtnOnTap: () {
                                     Get.toNamed(
                                         AppRoutes.dcotorAppointmentsDetailsScreen,
                                         parameters: {
-                                          'id': "${appointment.id}"
+                                          'id': "${appointment.id}",
+                                          "type" : "upcomming"
+
                                         });
                                   },
 
@@ -251,7 +253,8 @@ class _UserAppointmentsScreenState extends State<DoctorAppointmentsScreen>
                                     Get.toNamed(
                                         AppRoutes.dcotorAppointmentsDetailsScreen,
                                         parameters: {
-                                          'id': "${appointment.id}"
+                                          'id': "${appointment.id}",
+                                          "type" : "completed"
                                         });
                                   },
                                   leftBtnName: 'See Details',

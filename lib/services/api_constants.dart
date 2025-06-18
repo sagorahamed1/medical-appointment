@@ -1,10 +1,12 @@
 class ApiConstants{
   // static const String baseUrl = "https://api.medroofurgentcare.com/api/v1";
   // static const String imageBaseUrl = "https://api.medroofurgentcare.com";
+  // static const String SocketUrl = "https://api.medroofurgentcare.com";
 
   //
   static const String baseUrl = "https://appoinment-ahad-hossain-aiman.sarv.live/api/v1";
   static const String imageBaseUrl = "https://appoinment-ahad-hossain-aiman.sarv.live";
+  static const String socketUrl = "https://appoinment-ahad-hossain-aiman.sarv.live";
 
 
 
@@ -48,6 +50,8 @@ class ApiConstants{
   static const String withdrawRequestEndPoint = "/doctor/withdrawal-request";
   static const String emergencyToggleEndPoint = "/doctor/emergency";
   static const String completeAppointmentEndPoint = "/doctor/complete-appointment";
+  static const String soapNote = "/doctor/soap-note";
+  static const String getSoapNote = "/doctor/get-soap-note";
 
 
   ///Chats

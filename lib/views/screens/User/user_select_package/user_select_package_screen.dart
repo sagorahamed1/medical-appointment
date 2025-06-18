@@ -57,7 +57,7 @@ class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
                   return Padding(
                     padding: EdgeInsets.only(bottom: 24.h),
                     child: CustomSelectPackageCard(
-                      title: "${package.packageName}",
+                      title: addSpaceBeforeCapital("${package.packageName}"), // "${package.packageName}",
                       description: index == 0 ? 'Video call & messages with doctor' : "Virtual visit in doctors clinic",
                       price: '${package.packagePrice}',
                       icon: index == 0 ? AppIcons.videoCallIcons : AppIcons.personGroup,
@@ -94,5 +94,14 @@ class _UserSelectPackageScreenState extends State<UserSelectPackageScreen> {
         ),
       ),
     );
+  }
+
+  String addSpaceBeforeCapital(String input) {
+    String spaced = input.replaceAllMapped(
+      RegExp(r'([a-z])([A-Z])'),
+          (Match m) => '${m.group(1)} ${m.group(2)}',
+    );
+
+    return spaced[0].toUpperCase() + spaced.substring(1);
   }
 }
