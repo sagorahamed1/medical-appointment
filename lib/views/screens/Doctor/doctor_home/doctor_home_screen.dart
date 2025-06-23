@@ -34,6 +34,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
 
    String? userName;
    String? image;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -44,17 +45,14 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   }
 
   AuthService authService = AuthService();
-  // FirebaseUserModel? firebaseData2;
   fetchFirebaseData2() async {
-    var userId = await PrefsHelper.getString(AppConstants.userId);
-    var data = await authService.getUserDataById(userId);
     var name = await PrefsHelper.getString(AppConstants.userName);
     var demoImage = await PrefsHelper.getString(AppConstants.image);
-
-
         userName = name;
         image = demoImage;
-        setState(() {  });
+        setState(() {
+          isLoading = false;
+        });
 
   }
 
@@ -82,6 +80,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                  _homeController.status.value;
                 return Column(
                    children: [
+
+                     isLoading ? const CustomLoader(bgColor: Colors.white) :
                       DoctorTopAppBar(
                        image: "$image",
                         name: userName == null ? "" : '${userName}',

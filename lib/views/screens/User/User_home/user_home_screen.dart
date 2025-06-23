@@ -30,30 +30,31 @@ class UserHomeScreen extends StatefulWidget {
 class _UserHomeScreenState extends State<UserHomeScreen> {
   final HomeController _homeController = Get.put(HomeController());
 
+
+  AuthService authService = AuthService();
   int selectedIndex = 0;
   String categoryName = '';
   String? userName;
   String? image;
+  bool isLoading = true;
 
   @override
   void initState() {
-    _homeController.getDoctorByCetegory(cetegory: "General", date: null);
-    fetchFirebaseData2();
+    print("-----------------------------L Call Here  $image & $userName");
+    _homeController.getDoctorByCetegory(cetegory: "General", date: "");
+    getLocalData();
     super.initState();
   }
 
-  AuthService authService = AuthService();
-  FirebaseUserModel? firebaseData2;
 
-  fetchFirebaseData2() async {
-    var userId = await PrefsHelper.getString(AppConstants.userId);
-    var data = await authService.getUserDataById(userId);
+  getLocalData()async{
     userName = await PrefsHelper.getString(AppConstants.userName);
     image = await PrefsHelper.getString(AppConstants.image);
-    firebaseData2 = data;
-
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
+
 
   @override
   void dispose() {
@@ -81,9 +82,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+                      isLoading ? const CustomLoader(bgColor: Colors.white) :
+
                       TopAppBar(
                         image: "$image",
-                        name: userName == null ? "" : userName.toString(),
+                        name: isLoading ? "" : userName == null ? "" : userName.toString(),
                       ),
 
                       CustomText(
@@ -132,15 +136,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                   onTap: () {
                                     setState(() {
                                       selectedIndex = index;
-                                      categoryName = _homeController
-                                              .cetegoryLists[selectedIndex]
-                                              .name ??
+                                      categoryName = _homeController.cetegoryLists[selectedIndex].name ??
                                           '';
                                       _homeController.doctorLists.clear();
-                                      print(
-                                          '---------------------------------->?');
-                                      _homeController.getDoctorByCetegory(
-                                          cetegory: categoryName, date: null);
+                                      print('---------------------------------->?');
+                                      _homeController.getDoctorByCetegory(cetegory: categoryName, date: null);
                                     });
                                   },
                                   categorIcon: category.image?.publicFileUrl,

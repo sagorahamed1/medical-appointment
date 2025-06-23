@@ -12,7 +12,7 @@ class SocketServices {
 
   static final SocketServices _socketApi = SocketServices._internal();
   static IO.Socket socket = IO.io('${ApiConstants.socketUrl}',
-      IO.OptionBuilder().setTransports(['websocket']).build());
+      IO.OptionBuilder().setTransports(['websocket']).enableForceNew().build());
 
   static void init() {
     if (!socket.connected) {
@@ -66,8 +66,6 @@ class SocketServices {
 
     return completer.future;
   }
-
-
 
   static emit(String event, dynamic body) {
     if (body != null) {

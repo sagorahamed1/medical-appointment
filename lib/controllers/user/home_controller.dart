@@ -82,7 +82,7 @@ class HomeController extends GetxController{
   RxBool doctorLoading = false.obs;
   getDoctorByCetegory({String cetegory = '', date})async{
     doctorLoading(true);
-    var response = await ApiClient.getData('${ApiConstants.getDoctor(cetegory)}&date=$date?page=${pageForDoctors.value}');
+    var response = await ApiClient.getData('${ApiConstants.getDoctor(cetegory)}&date=${date ?? ""}?page=${pageForDoctors.value}');
     if(response.statusCode == 200){
       var responseData = response.body;
 

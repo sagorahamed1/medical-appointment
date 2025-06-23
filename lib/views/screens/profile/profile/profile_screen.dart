@@ -175,6 +175,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Get.toNamed(AppRoutes.settingScreen, parameters: {
                                     'role' : '${profileData.role}',
                                     'emergency' : '${profileData.isEmergency}'
+                                  })?.then((_){
+                                    _profileControler.fetchData();
+                                    _profileControler.getProfile();
                                   });
                                 }),
                             ListTileWidget(
@@ -293,8 +296,10 @@ class TwoBottonBottomSheet extends StatelessWidget {
             await PrefsHelper.remove(AppConstants.isLogged);
             await PrefsHelper.remove(AppConstants.insurance);
 
-            SocketServices.socket.dispose();
+
+            SocketServices.socket.clearListeners();
             SocketServices.socket.disconnect();
+            SocketServices.socket.destroy();
 
             Get.offAllNamed(AppRoutes.roleScreen);
           },

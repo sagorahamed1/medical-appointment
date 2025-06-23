@@ -69,8 +69,6 @@ class ChatController extends GetxController {
   }
 
 
-
-
   offSocket(String chatId) {
     SocketServices.socket.off("lastMessage::$chatId");
     debugPrint("Socket off New message");

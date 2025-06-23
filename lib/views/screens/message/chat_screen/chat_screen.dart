@@ -791,8 +791,14 @@ class _ChatScreenState extends State<ChatScreen> {
     final XFile? returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
     File selectedImage = File(returnImage.path);
-    pickedImages.add(selectedImage);
-    _image = selectedImage.readAsBytesSync();
+
+    if (returnImage.path.toLowerCase().endsWith('.svg')) {
+      ToastMessageHelper.showToastMessage("SVG files are not supported.");
+    }else{
+      pickedImages.add(selectedImage);
+      _image = selectedImage.readAsBytesSync();
+    }
+
   }
 
 //==================================> Camera <===============================

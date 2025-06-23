@@ -30,6 +30,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List genderList = ['male', 'female'];
+  List dropDownList = ['male', 'female'];
 
   // File? image;
   DateTime selectedDate = DateTime.now();
@@ -37,6 +38,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
   File? selectedIMage;
   File? insuranceImageFile;
   Uint8List? insuranceImageUint;
+  RxBool isDropDown = false.obs;
 
 
 
@@ -45,6 +47,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: CustomText(
           text: AppString.fillPourProfile,
           fontsize: 18.h,
@@ -57,198 +60,249 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    height: 105.h,
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.primaryColor, width: 0.5),
+            child: Obx(() =>
+               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      height: 105.h,
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppColors.primaryColor, width: 0.5),
+                            ),
+                            child: _image != null
+                                ? CircleAvatar(
+                                    radius: 60.r, backgroundImage: MemoryImage(_image!))
+                                : Container(
+                                    clipBehavior: Clip.antiAlias,
+                                    height: 100.h,
+                                    width: 100.w,
+                                    decoration:
+                                        const BoxDecoration(shape: BoxShape.circle),
+                                    child:
+                                        // profileData?.image?.publicFileUrl == null || profileData?.image?.publicFileUrl == '' ?
+                                        // CachedNetworkImage(
+                                        //   imageUrl:  "${ApiConstant.imageBaseUrl}/${profileData?.image
+                                        //       ?.publicFileUrl}",fit: BoxFit.cover,)
+                                        //     :
+                                        Image.asset(
+                                      AppImages.fillProfile,
+                                      fit: BoxFit.cover,
+                                    )),
                           ),
-                          child: _image != null
-                              ? CircleAvatar(
-                                  radius: 60.r, backgroundImage: MemoryImage(_image!))
-                              : Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  height: 100.h,
-                                  width: 100.w,
-                                  decoration:
-                                      const BoxDecoration(shape: BoxShape.circle),
-                                  child:
-                                      // profileData?.image?.publicFileUrl == null || profileData?.image?.publicFileUrl == '' ?
-                                      // CachedNetworkImage(
-                                      //   imageUrl:  "${ApiConstant.imageBaseUrl}/${profileData?.image
-                                      //       ?.publicFileUrl}",fit: BoxFit.cover,)
-                                      //     :
-                                      Image.asset(
-                                    AppImages.fillProfile,
-                                    fit: BoxFit.cover,
-                                  )),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GestureDetector(
-                              onTap: () {
-                                showImagePickerOption(context);
-                              },
-                              child: Container(
-                                  decoration:  BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                      border: Border.all(color: Colors.black, width: 0.50)
-                                  ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.camera_alt),
-                                  ))),
-                        )
-                      ],
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                                onTap: () {
+                                  showImagePickerOption(context);
+                                },
+                                child: Container(
+                                    decoration:  BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.black, width: 0.50)
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Icon(Icons.camera_alt),
+                                    ))),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
 
-                Align(
-                  alignment: Alignment.center,
-                  child: CustomText(
-                      text: AppString.uploadProfilePicture,
-                      color: AppColors.textColor193664,
-                      top: 8.h,
-                      bottom: 24.h),
-                ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: CustomText(
+                        text: AppString.uploadProfilePicture,
+                        color: AppColors.textColor193664,
+                        top: 8.h,
+                        bottom: 24.h),
+                  ),
 
-                ///=====================Gender ======================>
-                CustomTextFieldWithoutBorder(
+                  ///=====================Gender ======================>
+                  CustomTextFieldWithoutBorder(
+                    onTap: () {
+                      if (isDropDown.value == true) {
+                        isDropDown(false);
+                      }
+                      isDropDown(true);
+                    },
+                      readOnly: true,
+                      contenpaddingHorizontal: 20.w,
+                      contenpaddingVertical: 0.h,
+                      controller: _authController.genderCtrl,
+                      hintText: AppString.gender,
+                      validator: (value){
+                        if (value == null || value.isEmpty) {
+                          return "Please select your gender";
+                        }
+                        return null;
+                      },
+                    sufixicons: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 18.w, vertical: 18.h),
+                      child: SvgPicture.asset(
+                        AppIcons.arrowDown,
+                        color: AppColors.primaryColor,
+                        height: 20.h,
+                        width: 20.w,
+                        fit: BoxFit.cover,
+                      ),
+                    ),),
+
+
+
+
+
+                  SizedBox(height: 5.h),
+
+                  isDropDown.value
+                      ? Container(
+                    decoration: BoxDecoration(
+                        color: AppColors.fillColorE8EBF0,
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(8.r))),
+                    height: 142.h,
+                    child: ListView.builder(
+                      itemCount: dropDownList.length,
+                      itemBuilder: (context, index) {
+                        var dropDownItems = dropDownList[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 20.w),
+                          title: CustomText(
+                              text: dropDownItems,
+                              textAlign: TextAlign.start),
+                          onTap: () {
+                            isDropDown(false);
+                            _authController.genderCtrl.text = dropDownItems;
+                          },
+                        );
+                      },
+                    ),
+                  )
+                      : const SizedBox(),
+
+
+
+
+
+
+                  SizedBox(height: 16.h),
+
+                  ///=====================Date of birth ======================>
+                  CustomTextFieldWithoutBorder(
                     readOnly: true,
+                    onTap: (){
+                      selectDate(context);
+                    },
                     contenpaddingHorizontal: 20.w,
                     contenpaddingVertical: 0.h,
-                    controller: _authController.genderCtrl,
-                    hintText: AppString.gender,
+                    controller: _authController.dateOfBirthCtrl,
+                    hintText: AppString.dateOfBirth,
                     validator: (value){
                       if (value == null || value.isEmpty) {
-                        return "Please select your gender";
+                        return "Please select date of birth";
                       }
                       return null;
                     },
-                    sufixicons: PopUpMenu(
-                      items: genderList,
-                      selectedItem: "male",
-                      onTap: (int index) {
-                        _authController.genderCtrl.text = genderList[index];
-                      },
-                    )),
-                SizedBox(height: 16.h),
-
-                ///=====================Date of birth ======================>
-                CustomTextFieldWithoutBorder(
-                  readOnly: true,
-                  onTap: (){
-                    selectDate(context);
-                  },
-                  contenpaddingHorizontal: 20.w,
-                  contenpaddingVertical: 0.h,
-                  controller: _authController.dateOfBirthCtrl,
-                  hintText: AppString.dateOfBirth,
-                  validator: (value){
-                    if (value == null || value.isEmpty) {
-                      return "Please select date of birth";
-                    }
-                    return null;
-                  },
-                  sufixicons: Padding(
-                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                      child: SvgPicture.asset(
-                        AppIcons.calendar,
-                        color: AppColors.gray767676,
-                      )),
-                ),
-
-                SizedBox(height: 16.h),
-
-
-                ///=====================mobile number ======================>
-                CustomTextFieldWithoutBorder(
-                  keyboardType: TextInputType.number,
-                  contenpaddingHorizontal: 20.w,
-                  contenpaddingVertical: 0.h,
-                  hintText: AppString.mobileNumber,
-                  controller: _authController.mobileNumberCtrl,
-                  validator: (value){
-                    if (value == null || value.isEmpty) {
-                      return "Enter your mobile number";
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: 16.h),
-
-                ///=====================Address======================>
-                CustomTextFieldWithoutBorder(
-                  maxLines: 3,
-                  contenpaddingHorizontal: 20.w,
-                  contenpaddingVertical: 15.h,
-                  hintText: AppString.address,
-                  controller: _authController.addressCtrl,
-                  validator: (value){
-                    if (value == null || value.isEmpty) {
-                      return "Enter your address";
-                    }
-                    return null;
-                  },
-                ),
-
-                SizedBox(height: 16.h),
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: Container(
-                    height: 60.h,
-                    width: 353.w,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: AppColors.fillColorE8EBF0,
-                      borderRadius: BorderRadius.circular(8)),
-                    child: insuranceImageUint != null
-                        ? Image.memory(
-                      insuranceImageUint!,
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
-                    )
-                        :  Align(
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(text: "insurance (Optional)",left: 20.w),
-                            Padding(
-                              padding:  EdgeInsets.only(right: 20.w),
-                              child: SvgPicture.asset(AppIcons.attachFile),
-                            ),
-                          ],
+                    sufixicons: Padding(
+                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                        child: SvgPicture.asset(
+                          AppIcons.calendar,
+                          color: AppColors.gray767676,
                         )),
                   ),
-                ),
 
-                SizedBox(height: 48.h),
-                // const Spacer(),
-                Obx(()=>
-                   CustomButton(
-                       // loading: _authController.fillProfileLoading.value,
-                      onpress: () {
-                       if(_formKey.currentState!.validate()){
-                         _authController.fillProfileOrUpDate(selectedIMage, insuranceImageFile);
-                       }
-                      },
-                      title: AppString.continues),
-                ),
+                  SizedBox(height: 16.h),
 
-                SizedBox(height: 200.h),
-              ],
+
+                  ///=====================mobile number ======================>
+                  CustomTextFieldWithoutBorder(
+                    keyboardType: TextInputType.number,
+                    contenpaddingHorizontal: 20.w,
+                    contenpaddingVertical: 0.h,
+                    hintText: AppString.mobileNumber,
+                    controller: _authController.mobileNumberCtrl,
+                    validator: (value){
+                      if (value == null || value.isEmpty) {
+                        return "Enter your mobile number";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  SizedBox(height: 16.h),
+
+                  ///=====================Address======================>
+                  CustomTextFieldWithoutBorder(
+                    maxLines: 3,
+                    contenpaddingHorizontal: 20.w,
+                    contenpaddingVertical: 15.h,
+                    hintText: AppString.address,
+                    controller: _authController.addressCtrl,
+                    validator: (value){
+                      if (value == null || value.isEmpty) {
+                        return "Enter your address";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  SizedBox(height: 16.h),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      height: 60.h,
+                      width: 353.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.fillColorE8EBF0,
+                        borderRadius: BorderRadius.circular(8)),
+                      child: insuranceImageUint != null
+                          ? Image.memory(
+                        insuranceImageUint!,
+                        width: double.infinity,
+                        fit: BoxFit.fitWidth,
+                      )
+                          :  Align(
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(text: "insurance (Optional)",left: 20.w),
+                              Padding(
+                                padding:  EdgeInsets.only(right: 20.w),
+                                child: SvgPicture.asset(AppIcons.attachFile),
+                              ),
+                            ],
+                          )),
+                    ),
+                  ),
+
+                  SizedBox(height: 48.h),
+                  // const Spacer(),
+                  Obx(()=>
+                     CustomButton(
+                         loading: _authController.fillProfileLoading.value,
+                        onpress: () {
+                         if(_formKey.currentState!.validate()){
+                           _authController.fillProfileOrUpDate(selectedIMage, insuranceImageFile);
+                         }
+                        },
+                        title: AppString.continues),
+                  ),
+
+                  SizedBox(height: 200.h),
+                ],
+              ),
             ),
           ),
         ),

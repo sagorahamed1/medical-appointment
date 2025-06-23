@@ -6,9 +6,11 @@ import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/services/api_client.dart';
 import 'package:doctor_appointment/services/api_constants.dart';
 import 'package:doctor_appointment/services/firebase_services.dart';
+import 'package:doctor_appointment/services/socket_services.dart';
 import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../routes/app_routes.dart';
 import '../views/widgets/call_invitation.dart';
 
@@ -89,16 +91,17 @@ class AuthController extends GetxController {
     var response = await ApiClient.postData(
         ApiConstants.signInEndPoint, jsonEncode(body),
         headers: headers);
-    var userName = await PrefsHelper.getString(AppConstants.userName);
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data'];
-      await PrefsHelper.setString(
-          AppConstants.role, data['attributes']['role']);
+      var firstName = "${data['attributes']['firstName']}";
+      var lastName = "${data['attributes']['lastName']}";
+      await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
       // await PrefsHelper.setString(AppConstants.token, data['token']);
       await PrefsHelper.setString(AppConstants.bearerToken, data['token']);
       await PrefsHelper.setString(AppConstants.email, email);
-      await PrefsHelper.setString(
-          AppConstants.userId, data['attributes']['_id']);
+      await PrefsHelper.setString(AppConstants.userName, "$firstName $lastName");
+      await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       await PrefsHelper.setString(AppConstants.pas, password);
 
@@ -111,7 +114,11 @@ class AuthController extends GetxController {
       AuthService authService = AuthService();
       authService.login(email, password, data['attributes']['_id']);
 
+      logInLoading(false);
+      await PrefsHelper.setString(AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
+
       ///***********firebase code*************///
+      // await requestAllAppPermissions();
       if (!isAdmin) {
         if (role == "user") {
           Get.offAllNamed(AppRoutes.userBottomNavBar);
@@ -120,26 +127,24 @@ class AuthController extends GetxController {
         }
         ToastMessageHelper.showToastMessage('Your are logged in!');
       }
-      logInLoading(false);
+
 
       ///***********firebase code*************///
-      authService.signUp("${userName.split(" ")[0]}",
-          "${userName.split(" ")[1]}", email, password, role,
+      authService.signUp("$firstName",
+          "$lastName", email, password, role,
           userId: data["attributes"]["_id"]);
 
       ///***********firebase code*************///
 
+
       var image = data["attributes"]["image"];
-      initializeCallInvitation(
-          name: "$userName", id: "$email", image: image.toString());
+      initializeCallInvitation(name: "$firstName $lastName", id: "$email", image: image.toString());
 
-      await PrefsHelper.setString(AppConstants.insurance,
-          data["attributes"]["insurance"]["publicFileURL"]);
+      print("================================Calling invitation done with name : $firstName $lastName email: $email");
 
-      // onUserLogin
 
-      await PrefsHelper.setString(
-          AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
+      await PrefsHelper.setString(AppConstants.insurance, data["attributes"]["insurance"]["publicFileURL"]);
+
     } else if (response.statusCode == 1) {
       logInLoading(false);
       ToastMessageHelper.showToastMessage("Some thing want wrong try again!");
@@ -153,6 +158,40 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }
+
+
+  // Future<void> requestAllAppPermissions() async {
+  //   Map<Permission, PermissionStatus> statuses = await [
+  //     Permission.camera,
+  //     Permission.microphone,
+  //     Permission.notification,
+  //     // Permission.systemAlertWindow, // For display over other apps
+  //   ].request();
+  //
+  //   // Optional logs for debugging
+  //   if (statuses[Permission.camera]?.isDenied ?? true) {
+  //     print("Camera permission denied");
+  //   }
+  //   if (statuses[Permission.microphone]?.isDenied ?? true) {
+  //     print("Microphone permission denied");
+  //   }
+  //   if (statuses[Permission.notification]?.isDenied ?? true) {
+  //     print("Notification permission denied");
+  //   }
+  //   if (statuses[Permission.systemAlertWindow]?.isDenied ?? true) {
+  //     print("Overlay (draw over apps) permission denied");
+  //   }
+  //
+  //   // Optionally, ask user to manually grant if denied permanently
+  //   if (statuses.values.any((status) => status.isPermanentlyDenied)) {
+  //     // await openAppSettings();
+  //   }
+  // }
+  //
+
+
+
+
 
   ///===============Verify Email================<>
   RxBool verfyLoading = false.obs;
