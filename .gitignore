@@ -33,7 +33,7 @@ migrate_working_dir/
 .pub/
 /build/
 lib/utils/constants.dart
-
+constants.dart
 # Symbolication related
 app.*.symbols
 
