@@ -16,6 +16,7 @@ import '../views/widgets/call_invitation.dart';
 
 class AuthController extends GetxController {
   bool isChecked = false;
+  bool isCheckedSignature = false;
   bool isCheckboxError = false;
   RxBool isObscure = true.obs;
   RxBool isObscureConfirmPassword = true.obs;
@@ -65,10 +66,19 @@ class AuthController extends GetxController {
       ///***********firebase code*************///
 
       print('====> id $id');
-      Get.toNamed(AppRoutes.veryfyEmailScreen,
-          parameters: {'screenType': 'signUp', 'email': email});
-      ToastMessageHelper.showToastMessage(
-          'Signup successful! Check your email for the OTP.');
+
+      if(role == "user"){
+        Get.toNamed(AppRoutes.signatureViewScreen, arguments: {
+          "name" : "$firstName $lastName",
+          "email" : email,
+        });
+      }else{
+        Get.toNamed(AppRoutes.veryfyEmailScreen, parameters: {'screenType': 'signUp', 'email': email});
+      }
+
+
+      //
+      ToastMessageHelper.showToastMessage('Signup successful! Check your email for the OTP.');
       signUpLoading(false);
     } else {
       signUpLoading(false);
@@ -112,6 +122,10 @@ class AuthController extends GetxController {
 
       ///***********firebase code*************///
       AuthService authService = AuthService();
+
+      authService.signUp(firstName, lastName, email, password, role, userId: data['attributes']['_id']);
+
+
       authService.login(email, password, data['attributes']['_id']);
 
       logInLoading(false);

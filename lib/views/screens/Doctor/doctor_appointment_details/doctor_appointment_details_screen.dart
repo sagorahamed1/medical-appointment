@@ -1,4 +1,5 @@
 import 'package:doctor_appointment/controllers/doctor/doctor_see_details_controller.dart';
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/helpers/time_format.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
@@ -22,6 +23,7 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
   DcotorAppointmentsDetailsScreen({super.key});
 
   DoctorSeeDetailsController seeDetailsController = Get.put(DoctorSeeDetailsController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +183,7 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
                                                 fontsize: 18.h,
                                                 color: Colors.black,
                                                 bottom: 24.h),
-                                             TwoBottonBottomSheetAppointmentDetails(patientId: '${Get.parameters['id']}'),
+                                             TwoBottonBottomSheetAppointmentDetails(patientId: '${Get.parameters['id']}', appointmentId: data.id.toString()),
                                             SizedBox(height: 48.h)
                                           ],
                                         ),
@@ -254,9 +256,20 @@ class DcotorAppointmentsDetailsScreen extends StatelessWidget {
 
 
 
-class TwoBottonBottomSheetAppointmentDetails extends StatelessWidget {
+class TwoBottonBottomSheetAppointmentDetails extends StatefulWidget {
   final String patientId;
-  const TwoBottonBottomSheetAppointmentDetails({super.key, required this.patientId});
+  final String appointmentId;
+   TwoBottonBottomSheetAppointmentDetails({super.key, required this.patientId, required this.appointmentId});
+
+  @override
+  State<TwoBottonBottomSheetAppointmentDetails> createState() => _TwoBottonBottomSheetAppointmentDetailsState();
+}
+
+class _TwoBottonBottomSheetAppointmentDetailsState extends State<TwoBottonBottomSheetAppointmentDetails> {
+
+
+  DoctorSeeDetailsController seeDetailsController = Get.put(DoctorSeeDetailsController());
+  CompleteAppointmentController _completeAppointmentController = Get.put(CompleteAppointmentController());
 
   @override
   Widget build(BuildContext context) {
@@ -266,6 +279,7 @@ class TwoBottonBottomSheetAppointmentDetails extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Get.back();
+            _completeAppointmentController.completeAppointment('${widget.appointmentId}');
           },
           child: Container(
             width: 166.w,
@@ -286,8 +300,19 @@ class TwoBottonBottomSheetAppointmentDetails extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () async{
+            Get.back();
+
+
+
+            if(widget.patientId != "null" || widget.patientId == ""){
+              PrefsHelper.setString("patientIdDemo", widget.patientId);
+
+            }
+
+            var dummyPId = await PrefsHelper.getString("patientIdDemo");
+
             Get.toNamed(AppRoutes.addSoapNoteScreen, arguments: {
-               "patientId" : "$patientId"
+               "patientId" : "${dummyPId}"
             });
           },
           child: Container(

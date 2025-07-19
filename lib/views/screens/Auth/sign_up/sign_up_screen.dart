@@ -193,6 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 _checkbox(),
 
+
                 SizedBox(height: 104.h),
 
                 Obx(()=>
@@ -320,4 +321,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ],
     );
   }
+
+
 }
+
+

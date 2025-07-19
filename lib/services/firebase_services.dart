@@ -79,7 +79,7 @@ class AuthService {
       if (doc.exists) {
         return FirebaseUserModel.fromJson(doc.data() as Map<String, dynamic>);
       } else {
-        print('No such document!');
+        print('-----------------------------------No such document with $userId');
         return null;
       }
     } catch (e) {

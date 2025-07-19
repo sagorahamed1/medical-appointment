@@ -10,6 +10,7 @@ import '../views/screens/Auth/forgot_password/forgot_password_screen.dart';
 import '../views/screens/Auth/set_password/set_password_screen.dart';
 import '../views/screens/Auth/sign_in/sign_in_screen.dart';
 import '../views/screens/Auth/sign_up/sign_up_screen.dart';
+import '../views/screens/Auth/signature_screen.dart';
 import '../views/screens/Auth/veryfy_email/veryfy_email_screen.dart';
 import '../views/screens/Doctor/doctor_appointment_details/doctor_appointment_details_screen.dart';
 import '../views/screens/Doctor/doctor_appointment_request/doctor_appointment_request_screen.dart';
@@ -109,6 +110,7 @@ class AppRoutes {
   static const String previousSoapNoteScreen = "/PreviousSoapNoteScreen.dart";
   static const String previousSoapNoteDetailsScreen = "/PreviousSoapNoteDetailsScreen.dart";
   static const String addSoapNoteScreen = "/AddSoapNoteScreen.dart";
+  static const String signatureViewScreen = "/SignatureViewScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -164,5 +166,6 @@ class AppRoutes {
         GetPage(name: previousSoapNoteScreen, page: () => PreviousSoapNoteScreen()),
         GetPage(name: previousSoapNoteDetailsScreen, page: () => PreviousSoapNoteDetailsScreen()),
         GetPage(name: addSoapNoteScreen, page: () => AddSoapNoteScreen()),
+        GetPage(name: signatureViewScreen, page: () => SignatureViewScreen()),
   ];
 }

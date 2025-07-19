@@ -94,8 +94,7 @@ class _ChatScreenState extends State<ChatScreen> {
   FirebaseUserModel? firebaseData;
 
   fetchFirebaseData() async {
-    var userId =
-        '${Get.parameters['receiverId']}'; // Replace with your actual userId fetching logic
+    var userId = '${Get.parameters['receiverId']}'; // Replace with your actual userId fetching logic
     var data = await authService.getUserDataById(userId);
     if (data != null) {
       setState(() {
@@ -113,7 +112,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('firebase data ========> ${firebaseData?.email}');
+    print('firebase data ========> ====================== ${Get.parameters['receiverId']}');
+    print("====================check mail================${firebaseData?.email}");
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: buildAppBar(),
@@ -275,7 +275,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       actions: [
         actionButton(context, false,
-            email: "${firebaseData?.email}",
+            email:"${firebaseData?.email}",
             name: "${Get.parameters['userName']}", image: "${Get.parameters['image']}"),
         SizedBox(width: 24.w),
         actionButton(context, true,
