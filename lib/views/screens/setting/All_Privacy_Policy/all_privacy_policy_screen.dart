@@ -36,7 +36,6 @@ class _AllPrivacyPolicyScreenState extends State<AllPrivacyPolicyScreen> {
         : data['screenType'] == AppString.aboutUs ?  policyAllController.getPrivacy( url: "/settings/about-us") : "";
 
 
-    policyAllController.getPrivacy( url: "/settings/privacy-policy");
     return Scaffold(
       appBar: AppBar(
         title: CustomText(

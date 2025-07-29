@@ -1,14 +1,12 @@
 class ApiConstants{
+
   static const String baseUrl = "https://api.medroofurgentcare.com/api/v1";
   static const String imageBaseUrl = "https://api.medroofurgentcare.com";
   static const String socketUrl = "https://api.medroofurgentcare.com";
 
-
   // static const String baseUrl = "https://appoinment-ahad-hossain-aiman.sarv.live/api/v1";
   // static const String imageBaseUrl = "https://appoinment-ahad-hossain-aiman.sarv.live";
   // static const String socketUrl = "https://appoinment-ahad-hossain-aiman.sarv.live";
-
-
 
   static const String signUpEndPoint = "/user/sign-up";
   static const String verifyOtpEndPoint = "/user/verify-code";
@@ -24,16 +22,16 @@ class ApiConstants{
   static const String patientDetailsAdd = "/user/patient-details-for-doctor";
   static const String giveReviewEndPoint = "/user/post-review";
   static const String accountDelete = "/user/delete-user";
+  static const String doctorGetReview = "/doctor/get-doctor-review";
+  static const String category = "/category/get-category";
+  static const String notificationEndPoint = "/notification";
+  static const String userRecordsEndPoint = "/user/get-user-prescription";
 
   static  String getDoctor(String cetegory) => "/doctor/get-doctors?specialist=$cetegory";
   static  String getSearchDoctor(String searchText) => "/doctor/get-doctors?search=$searchText";
   static  String getAppointments(String status) => "/appointments/user-get-appointments?status=$status";
   static  String doctorDetailsHomeScreen(String id) => "/doctor/get-single-doctor?id=$id";
   static const String emergencyDoctors = "/user/get-emergency-doctor";
-  static const String doctorGetReview = "/doctor/get-doctor-review";
-  static const String category = "/category/get-category";
-  static const String notificationEndPoint = "/notification";
-  static const String userRecordsEndPoint = "/user/get-user-prescription";
   static String seeDetailsUserPart(String id) => '/appointments/user-get-single-appointment/$id';
 
 

@@ -44,7 +44,7 @@ class UserAppointmentsController extends GetxController{
       appointmentLoading(true);
     }
 
-    var response = await ApiClient.getData("${ApiConstants.getAppointments(currentStatus)}&limit=3&page=${page.value}");
+    var response = await ApiClient.getData("${ApiConstants.getAppointments(currentStatus)}&limit=10&page=${page.value}");
 
     if(response.statusCode == 200){
 

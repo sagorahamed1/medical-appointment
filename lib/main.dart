@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
+import 'controllers/profile_controler.dart';
 import 'helpers/binding/dependancy_injaction.dart';
 import 'helpers/device_utils.dart';
 import 'helpers/prefs_helper.dart';
@@ -28,6 +29,8 @@ void main() async {
 
   DependencyInjection di = DependencyInjection();
   di.dependencies();
+
+  Get.put(ProfileControler());
 
   Stripe.publishableKey = Constants.publishAbleKey;
   try {

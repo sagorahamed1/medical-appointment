@@ -18,7 +18,8 @@ import '../../../widgets/custom_text.dart';
 class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({super.key});
 
-  final AuthController _authController = Get.find<AuthController>();
+  // final AuthController _authController = Get.find<AuthController>();
+  final AuthController _authController = Get.put(AuthController());
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

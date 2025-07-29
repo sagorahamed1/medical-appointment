@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:doctor_appointment/helpers/time_format.dart';
+import 'package:doctor_appointment/helpers/toast_message_helper.dart';
 import 'package:doctor_appointment/utils/app_icons.dart';
 import 'package:doctor_appointment/utils/app_images.dart';
 import 'package:doctor_appointment/views/widgets/custom_text_field_without_border.dart';
@@ -291,10 +292,15 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                   // const Spacer(),
                   Obx(()=>
                      CustomButton(
-                         loading: _authController.fillProfileLoading.value,
+                          loading: _authController.fillProfileLoading.value,
                         onpress: () {
                          if(_formKey.currentState!.validate()){
-                           _authController.fillProfileOrUpDate(selectedIMage, insuranceImageFile);
+                           if(_image == null){
+                             ToastMessageHelper.showToastMessage("Please enter your profile picture");
+                           }else{
+                             _authController.fillProfileOrUpDate(selectedIMage!, insuranceImageFile);
+                           }
+
                          }
                         },
                         title: AppString.continues),

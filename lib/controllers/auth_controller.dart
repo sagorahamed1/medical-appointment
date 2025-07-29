@@ -237,13 +237,13 @@ class AuthController extends GetxController {
   ///===============Fill profile or update profile================<>
   RxBool fillProfileLoading = false.obs;
 
-  fillProfileOrUpDate(File? image, File? insuranceFont) async {
+  fillProfileOrUpDate(File image, File? insuranceFont) async {
     fillProfileLoading(true);
 
     List<MultipartBody> multipartBody = [];
 
 
-    multipartBody.add(MultipartBody("image", image!));
+    multipartBody.add(MultipartBody("image", image));
 
     if(insuranceFont != null){
       multipartBody.add(MultipartBody("insurance", insuranceFont));
@@ -311,6 +311,9 @@ class AuthController extends GetxController {
       // ToastMessageHelper.showToastMessage('');
       print("======>>> successful");
       forgotLoading(false);
+    }else{
+      forgotLoading(false);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
     }
   }
 
@@ -329,6 +332,9 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage('Password Changed');
       print("======>>> successful");
       setPasswordLoading(false);
+    }else{
+      setPasswordLoading(false);
+      ToastMessageHelper.showToastMessage('${response.body["message"]}');
     }
   }
 
@@ -346,6 +352,8 @@ class AuthController extends GetxController {
       // Get.offAllNamed(AppRoutes.signInScreen);
       // ToastMessageHelper.showToastMessage('You have got an one time code to your email');
       print("======>>> successful");
+      resendLoading(false);
+    }else{
       resendLoading(false);
     }
   }
@@ -430,6 +438,7 @@ class AuthController extends GetxController {
       print("======>>> successful");
       changePasswordLoading(false);
     } else {
+      changePasswordLoading(false);
       ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }

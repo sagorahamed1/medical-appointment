@@ -8,7 +8,9 @@ import '../../../routes/app_routes.dart';
 import '../../widgets/custom_text.dart';
 
 class SignatureViewScreen extends StatelessWidget {
-  const SignatureViewScreen({super.key});
+   SignatureViewScreen({super.key});
+
+  String name = Get.arguments["name"];
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class SignatureViewScreen extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                              "${Get.arguments["name"]}",
+                              "${name}",
                               style: TextStyle(fontSize: 14.sp),
                             ),
 

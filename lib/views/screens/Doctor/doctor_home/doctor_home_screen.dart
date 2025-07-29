@@ -58,7 +58,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
 
   @override
   void dispose() {
-    _homeController. appointmentsList.clear();
+    // _homeController.appointmentsList.clear();
+    _homeController.appointmentsList.value = [];
     super.dispose();
   }
 
