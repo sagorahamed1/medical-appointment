@@ -157,7 +157,7 @@ class AuthController extends GetxController {
       print("================================Calling invitation done with name : $firstName $lastName email: $email");
 
 
-      await PrefsHelper.setString(AppConstants.insurance, data["attributes"]["insurance"]["publicFileURL"]);
+      SocketServices.init();
 
     } else if (response.statusCode == 1) {
       logInLoading(false);

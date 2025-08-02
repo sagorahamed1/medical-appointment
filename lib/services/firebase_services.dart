@@ -88,4 +88,13 @@ class AuthService {
     }
   }
 
+
+
+  ///-------------------update employee informaintion-------------------->
+  Future updateUserInfo(String id, Map <String,dynamic> userInfo) async{
+    return await FirebaseFirestore.instance.collection("users").doc(id).update(userInfo);
+  }
+
+
+
 }

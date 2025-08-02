@@ -17,18 +17,18 @@ class SocketServices {
   static void init() {
     if (!socket.connected) {
       socket.onConnect((_) {
-        print('========> socket connected: ${socket.connected}');
+        print('==================================> socket connected: ${socket.connected}');
       });
 
       socket.onConnectError((err) {
-        print('========> socket connect error: $err');
+        print('==================================> socket connect error: $err');
       });
 
       socket.onDisconnect((_) {
-        print('========> socket disconnected');
+        print('===================================> socket disconnected');
       });
     } else {
-      print("=======> socket already connected");
+      print("==================================> socket already connected");
     }
   }
 

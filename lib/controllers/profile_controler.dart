@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import '../helpers/toast_message_helper.dart';
 import '../services/api_client.dart';
 import '../services/api_constants.dart';
+import '../services/firebase_services.dart';
 import '../utils/app_constant.dart';
 import 'package:http/http.dart' as http;
 
@@ -93,12 +94,19 @@ class ProfileControler extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       Get.back();
       Get.back();
-      await PrefsHelper.setString(AppConstants.image,
-          response.body["data"]["attributes"]["image"]["publicFileURL"]);
-      fetchData();
+      await PrefsHelper.setString(AppConstants.image, response.body["data"]["attributes"]["image"]["publicFileURL"]);
+
+      AuthService authService = AuthService();
+
+
+      // fetchData();
       update();
       ToastMessageHelper.showToastMessage('${response.body["message"]}');
       updateProfileLoading(false);
+      authService.updateUserInfo(response.body["data"]["attributes"]["_id"], {
+        "firstName": '$firstName',
+        "lastName": '$lastName',
+      });
     } else {
       updateProfileLoading(false);
     }

@@ -14,6 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:zego_uikit/zego_uikit.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 import '../../../widgets/genaral_error_screen.dart';
 import '../../../widgets/no_internet_screen.dart';
@@ -152,7 +155,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 "Insurance",
                                 AppIcons.insurance,
                                 AppColors.primaryColor, () {
-                               Get.toNamed(AppRoutes.insuranceScreen);
+                               Get.toNamed(AppRoutes.insuranceScreen)?.then((_){
+                                 _profileControler.fetchData();
+                                 _profileControler.getProfile();
+                               });
                             })
                                 : const SizedBox(),
 
@@ -299,7 +305,10 @@ class TwoBottonBottomSheet extends StatelessWidget {
 
             SocketServices.socket.clearListeners();
             SocketServices.socket.disconnect();
-            SocketServices.socket.destroy();
+
+            ZegoUIKit().logout();
+            ZegoUIKitPrebuiltCallInvitationService().uninit();
+
 
             Get.offAllNamed(AppRoutes.roleScreen);
           },
