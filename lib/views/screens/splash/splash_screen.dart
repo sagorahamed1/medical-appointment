@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 import '../../../controllers/profile_controler.dart';
 import '../../../services/firebase_services.dart';
+import '../../../services/socket_services.dart';
 import '../../../utils/app_images.dart';
 import '../../widgets/call_invitation.dart';
 
@@ -69,6 +70,12 @@ class _SplashScreenState extends State<SplashScreen> {
           id: "$mail",
           image: image.toString()
       );
+
+
+
+
+      SocketServices.init(token: token.toString());
+
 
 
     });

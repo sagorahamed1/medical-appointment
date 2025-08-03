@@ -157,7 +157,7 @@ class AuthController extends GetxController {
       print("================================Calling invitation done with name : $firstName $lastName email: $email");
 
 
-      SocketServices.init();
+      SocketServices.init(token: data['token'].toString());
 
     } else if (response.statusCode == 1) {
       logInLoading(false);

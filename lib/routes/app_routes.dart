@@ -52,6 +52,7 @@ import '../views/screens/role/role_screen.dart';
 import '../views/screens/setting/All_Privacy_Policy/all_privacy_policy_screen.dart';
 import '../views/screens/setting/change_password/change_password_screen.dart';
 import '../views/screens/setting/setting/setting_screen.dart';
+import '../views/screens/setting/support_screen.dart';
 import '../views/screens/splash/splash_screen.dart';
 import '../views/widgets/cencel_payment.dart';
 import '../views/widgets/fail_payment.dart';
@@ -111,6 +112,7 @@ class AppRoutes {
   static const String previousSoapNoteDetailsScreen = "/PreviousSoapNoteDetailsScreen.dart";
   static const String addSoapNoteScreen = "/AddSoapNoteScreen.dart";
   static const String signatureViewScreen = "/SignatureViewScreen.dart";
+  static const String supportScreen = "/SupportScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -167,5 +169,6 @@ class AppRoutes {
         GetPage(name: previousSoapNoteDetailsScreen, page: () => PreviousSoapNoteDetailsScreen()),
         GetPage(name: addSoapNoteScreen, page: () => AddSoapNoteScreen()),
         GetPage(name: signatureViewScreen, page: () => SignatureViewScreen()),
+        GetPage(name: supportScreen, page: () => SupportScreen()),
   ];
 }

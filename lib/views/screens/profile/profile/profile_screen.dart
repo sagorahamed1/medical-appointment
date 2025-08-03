@@ -303,8 +303,8 @@ class TwoBottonBottomSheet extends StatelessWidget {
             await PrefsHelper.remove(AppConstants.insurance);
 
 
-            SocketServices.socket.clearListeners();
-            SocketServices.socket.disconnect();
+            SocketServices.socket?.clearListeners();
+            SocketServices.socket?.disconnect();
 
             ZegoUIKit().logout();
             ZegoUIKitPrebuiltCallInvitationService().uninit();

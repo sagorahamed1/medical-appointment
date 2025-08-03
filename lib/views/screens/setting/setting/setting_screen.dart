@@ -100,6 +100,15 @@ class _SettingScreenState extends State<SettingScreen> {
             _ListTile(AppString.changePassword, AppIcons.rightArrow, () {
               Get.toNamed(AppRoutes.changePasswordScreen);
             }),
+
+
+
+            _ListTile("Help Section", AppIcons.rightArrow, () {
+              Get.toNamed(AppRoutes.supportScreen);
+            }),
+
+
+
             _ListTile(AppString.termsOfServices, AppIcons.rightArrow, () {
               Get.toNamed(AppRoutes.allPrivacyPolicyScreen,
                   parameters: {"screenType": AppString.termsOfServices});

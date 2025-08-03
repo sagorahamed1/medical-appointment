@@ -89,7 +89,7 @@ class SignatureViewScreen extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                              "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                              "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}",
                               style: TextStyle(fontSize: 14.sp),
                             ),
 

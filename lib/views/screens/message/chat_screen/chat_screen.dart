@@ -411,7 +411,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void sendMessage() {
     if (messageController.text.isEmpty) {
-      ToastMessageHelper.showToastMessage("type some think");
+      ToastMessageHelper.showToastMessage("type something");
     } else {
       chatController.sendMessage(
         messageController.text,

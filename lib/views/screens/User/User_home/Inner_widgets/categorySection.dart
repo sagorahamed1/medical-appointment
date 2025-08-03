@@ -70,7 +70,7 @@ class CategoryCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(10.r),
+            padding: EdgeInsets.all(5.r),
             child: Container(
               decoration: BoxDecoration(
                   shape: BoxShape.circle,

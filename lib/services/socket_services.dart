@@ -9,22 +9,31 @@ class SocketServices {
   }
 
   SocketServices._internal();
+ static IO.Socket? socket;
 
   static final SocketServices _socketApi = SocketServices._internal();
-  static IO.Socket socket = IO.io('${ApiConstants.socketUrl}',
-      IO.OptionBuilder().setTransports(['websocket']).enableForceNew().build());
+  // static IO.Socket socket = IO.io('${ApiConstants.socketUrl}',
+  //     IO.OptionBuilder().setTransports(['websocket']).enableForceNew().build());
 
-  static void init() {
-    if (!socket.connected) {
-      socket.onConnect((_) {
-        print('==================================> socket connected: ${socket.connected}');
+  static void init({String token = ""}) {
+
+    if(token != ""){
+      socket = IO.io('${ApiConstants.socketUrl}?token=$token',
+          IO.OptionBuilder().setTransports(['websocket']).enableForceNew().build());
+    }
+
+
+
+    if (!socket!.connected) {
+      socket?.onConnect((_) {
+        print('==================================> socket connected: ${socket?.connected}');
       });
 
-      socket.onConnectError((err) {
+      socket?.onConnectError((err) {
         print('==================================> socket connect error: $err');
       });
 
-      socket.onDisconnect((_) {
+      socket?.onDisconnect((_) {
         print('===================================> socket disconnected');
       });
     } else {
@@ -32,17 +41,6 @@ class SocketServices {
     }
   }
 
-  // static Future<dynamic> emitWithAck(String event, dynamic body) async {
-  //   Completer<dynamic> completer = Completer<dynamic>();
-  //   socket.emitWithAck(event, body, ack: (data) {
-  //     if (data != null) {
-  //       completer.complete(data);
-  //     } else {
-  //       completer.complete(1);
-  //     }
-  //   });
-  //   return completer.future;
-  // }
 
   static Future<dynamic> emitWithAck(String event, dynamic body) async {
     Completer<dynamic> completer = Completer<dynamic>();
@@ -50,7 +48,7 @@ class SocketServices {
     // Debug: Log the event and body being emitted
     print("emitWithAck: Emitting event '$event' with body: $body");
 
-    socket.emitWithAck(event, body, ack: (data) {
+    socket?.emitWithAck(event, body, ack: (data) {
       // Debug: Log the acknowledgment received
       print("emitWithAck: Acknowledgment received for event '$event': $data");
 
@@ -69,7 +67,7 @@ class SocketServices {
 
   static emit(String event, dynamic body) {
     if (body != null) {
-      socket.emit(event, body);
+      socket?.emit(event, body);
       print('===========> Emit $event and \n $body');
     }
   }

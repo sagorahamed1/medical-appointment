@@ -48,7 +48,7 @@ class ChatController extends GetxController {
 
   void listenMessage(String chatId) async {
     try {
-      SocketServices.socket.on("lastMessage::$chatId", (data) {
+      SocketServices.socket?.on("lastMessage::$chatId", (data) {
         print("=========> Response Message: $data -------------------------");
         if (data != null) {
           ChatModel demoData = ChatModel.fromJson(data);
@@ -70,7 +70,7 @@ class ChatController extends GetxController {
 
 
   offSocket(String chatId) {
-    SocketServices.socket.off("lastMessage::$chatId");
+    SocketServices.socket?.off("lastMessage::$chatId");
     debugPrint("Socket off New message");
   }
 

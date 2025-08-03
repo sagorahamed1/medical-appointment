@@ -19,7 +19,7 @@ class ProfileModel {
   final bool? isInsurance;
   final String? role;
   final dynamic oneTimeCode;
-  final int? earningAmount;
+  final num? earningAmount;
   final List<dynamic>? medicalRecord;
   final int? v;
   final String? address;

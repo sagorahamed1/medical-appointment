@@ -30,8 +30,6 @@ void main() async {
   DependencyInjection di = DependencyInjection();
   di.dependencies();
 
-  SocketServices.init();
-
   Get.put(ProfileControler());
 
   Stripe.publishableKey = Constants.publishAbleKey;

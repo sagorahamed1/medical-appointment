@@ -327,7 +327,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   Widget _SeeAll(String leftText, seeAllText, VoidCallback ontap) {
     return Column(
       children: [
-        SizedBox(height: 20.h),
+        SizedBox(height: 12.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
