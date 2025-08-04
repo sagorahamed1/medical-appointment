@@ -104,7 +104,7 @@ class DoctorId {
   final bool? isInsurance;
   final String? role;
   final dynamic oneTimeCode;
-  final int? earningAmount;
+  final num? earningAmount;
   final int? v;
   final String? address;
   final String? gender;

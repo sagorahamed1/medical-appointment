@@ -129,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ///=========================Earning=========================>
                             profileData.role == "doctor"
                                 ? ListTileWidget(
-                                AppString.earnings,
+                                "Clinical Logs",
                                 AppIcons.earning,
                                 AppColors.primaryColor, () {
                               Get.toNamed(AppRoutes.walletScreen);

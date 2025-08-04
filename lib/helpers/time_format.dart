@@ -4,25 +4,25 @@ import 'package:intl/intl.dart';
 
 class TimeFormatHelper {
   static String formatDate(DateTime date) {
-    return DateFormat('dd MMM, yyyy').format(date);
+    return DateFormat('dd MMM, yyyy').format(date.toLocal());
   }
 
   static String justDateWithUnderscoll(DateTime date) {
-    return DateFormat('yyyy-MM-dd').format(date);
+    return DateFormat('yyyy-MM-dd').format(date.toLocal());
   }
 
   static String dateMountFormat(DateTime date) {
-    return DateFormat('dd\n MMM ').format(date);
+    return DateFormat('dd\n MMM ').format(date.toLocal());
   }
 
   static String timeFormat(DateTime date) {
-    return DateFormat('hh:mm a').format(date);
+    return DateFormat('hh:mm a').format(date.toLocal());
   }
 
 
   static timeWithAMPM(String time){
     DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
-    String formattedTime = DateFormat('h:mm a').format(parsedTime);
+    String formattedTime = DateFormat('h:mm a').format(parsedTime.toLocal());
     return formattedTime;
   }
 
