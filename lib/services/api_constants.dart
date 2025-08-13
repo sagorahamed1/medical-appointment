@@ -33,6 +33,7 @@ class ApiConstants{
   static const String category = "/category/get-category";
   static const String notificationEndPoint = "/notification";
   static const String userRecordsEndPoint = "/user/get-user-prescription";
+  static const String insuranceUpload = "/user/insurance-update";
 
   static  String getDoctor(String cetegory) => "/doctor/get-doctors?specialist=$cetegory";
   static  String getSearchDoctor(String searchText) => "/doctor/get-doctors?search=$searchText";

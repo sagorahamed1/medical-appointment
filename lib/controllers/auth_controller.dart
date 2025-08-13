@@ -67,18 +67,19 @@ class AuthController extends GetxController {
 
       print('====> id $id');
 
-      if(role == "user"){
+      if (role == "user") {
         Get.toNamed(AppRoutes.signatureViewScreen, arguments: {
-          "name" : "$firstName $lastName",
-          "email" : email,
+          "name": "$firstName $lastName",
+          "email": email,
         });
-      }else{
-        Get.toNamed(AppRoutes.veryfyEmailScreen, parameters: {'screenType': 'signUp', 'email': email});
+      } else {
+        Get.toNamed(AppRoutes.veryfyEmailScreen,
+            parameters: {'screenType': 'signUp', 'email': email});
       }
 
-
       //
-      ToastMessageHelper.showToastMessage('Signup successful! Check your email for the OTP.');
+      ToastMessageHelper.showToastMessage(
+          'Signup successful! Check your email for the OTP.');
       signUpLoading(false);
     } else {
       signUpLoading(false);
@@ -106,12 +107,15 @@ class AuthController extends GetxController {
       var data = response.body['data'];
       var firstName = "${data['attributes']['firstName']}";
       var lastName = "${data['attributes']['lastName']}";
-      await PrefsHelper.setString(AppConstants.role, data['attributes']['role']);
+      await PrefsHelper.setString(
+          AppConstants.role, data['attributes']['role']);
       // await PrefsHelper.setString(AppConstants.token, data['token']);
       await PrefsHelper.setString(AppConstants.bearerToken, data['token']);
       await PrefsHelper.setString(AppConstants.email, email);
-      await PrefsHelper.setString(AppConstants.userName, "$firstName $lastName");
-      await PrefsHelper.setString(AppConstants.userId, data['attributes']['_id']);
+      await PrefsHelper.setString(
+          AppConstants.userName, "$firstName $lastName");
+      await PrefsHelper.setString(
+          AppConstants.userId, data['attributes']['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
       await PrefsHelper.setString(AppConstants.pas, password);
 
@@ -123,13 +127,14 @@ class AuthController extends GetxController {
       ///***********firebase code*************///
       AuthService authService = AuthService();
 
-      authService.signUp(firstName, lastName, email, password, role, userId: data['attributes']['_id']);
-
+      authService.signUp(firstName, lastName, email, password, role,
+          userId: data['attributes']['_id']);
 
       authService.login(email, password, data['attributes']['_id']);
 
       logInLoading(false);
-      await PrefsHelper.setString(AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
+      await PrefsHelper.setString(
+          AppConstants.image, data["attributes"]["image"]["publicFileURL"]);
 
       ///***********firebase code*************///
       // await requestAllAppPermissions();
@@ -142,23 +147,20 @@ class AuthController extends GetxController {
         ToastMessageHelper.showToastMessage('Your are logged in!');
       }
 
-
       ///***********firebase code*************///
-      authService.signUp("$firstName",
-          "$lastName", email, password, role,
+      authService.signUp("$firstName", "$lastName", email, password, role,
           userId: data["attributes"]["_id"]);
 
       ///***********firebase code*************///
 
-
       var image = data["attributes"]["image"];
-      initializeCallInvitation(name: "$firstName $lastName", id: "$email", image: image.toString());
+      initializeCallInvitation(
+          name: "$firstName $lastName", id: "$email", image: image.toString());
 
-      print("================================Calling invitation done with name : $firstName $lastName email: $email");
-
+      print(
+          "================================Calling invitation done with name : $firstName $lastName email: $email");
 
       SocketServices.init(token: data['token'].toString());
-
     } else if (response.statusCode == 1) {
       logInLoading(false);
       ToastMessageHelper.showToastMessage("Some thing want wrong try again!");
@@ -172,7 +174,6 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }
-
 
   // Future<void> requestAllAppPermissions() async {
   //   Map<Permission, PermissionStatus> statuses = await [
@@ -202,10 +203,6 @@ class AuthController extends GetxController {
   //   }
   // }
   //
-
-
-
-
 
   ///===============Verify Email================<>
   RxBool verfyLoading = false.obs;
@@ -242,13 +239,11 @@ class AuthController extends GetxController {
 
     List<MultipartBody> multipartBody = [];
 
-
     multipartBody.add(MultipartBody("image", image));
 
-    if(insuranceFont != null){
+    if (insuranceFont != null) {
       multipartBody.add(MultipartBody("insurance", insuranceFont));
     }
-
 
     // List<MultipartBody> multipartBody = image == null ? [] : [
     //   MultipartBody("image", image),
@@ -280,7 +275,8 @@ class AuthController extends GetxController {
         ToastMessageHelper.showToastMessage(
             'Account Create Successful \n Please give your information');
       } else if (role == 'user') {
-        Get.toNamed(AppRoutes.signInScreen);
+
+        Get.toNamed(AppRoutes.insuranceInfoScreen);
         ToastMessageHelper.showToastMessage('Account Create Successful');
       }
       fillProfileLoading(false);
@@ -311,7 +307,7 @@ class AuthController extends GetxController {
       // ToastMessageHelper.showToastMessage('');
       print("======>>> successful");
       forgotLoading(false);
-    }else{
+    } else {
       forgotLoading(false);
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
     }
@@ -332,7 +328,7 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage('Password Changed');
       print("======>>> successful");
       setPasswordLoading(false);
-    }else{
+    } else {
       setPasswordLoading(false);
       ToastMessageHelper.showToastMessage('${response.body["message"]}');
     }
@@ -353,7 +349,7 @@ class AuthController extends GetxController {
       // ToastMessageHelper.showToastMessage('You have got an one time code to your email');
       print("======>>> successful");
       resendLoading(false);
-    }else{
+    } else {
       resendLoading(false);
     }
   }
@@ -442,4 +438,103 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }
+
+  ///===============Insurance information upload================<>
+  RxBool insuranceInfoLoading = false.obs;
+
+  insuranceUpload({required String payerCode, payerName, nip, pin, dateOfBirth, startDate, endDate}) async {
+    insuranceInfoLoading(true);
+
+
+
+    var body = {
+      "insuranceInformation": {
+        "payerCode": "$payerCode",
+        "payerName": "$payerName",
+        "provider": {
+          "firstName": "Jane",
+          "lastName": "Smith",
+          "npi": "$nip",
+          "pin": "$pin"
+        },
+        "subscriber": {
+          "firstName": "John",
+          "dob": "$dateOfBirth",
+          "lastName": "Doe"
+        }
+      }
+    };
+
+    var response = await ApiClient.postData(
+        ApiConstants.insuranceUpload, jsonEncode(body));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+
+      var headers = {
+        'Authorization': 'Bearer qN9w9EZC6sxzELSPddReurquqvBw0K3lcGPKOvad42WNUp8G_bkoccvr9QPqqoUm7imafisCV2VEKvaQ-gv49W1pmtiK3JAUUavlRkTC5uU1zJCMfDOcexBe-s_A-GKrzRGC92qBgDnoaX65aTWZbnE3BXYttAuo7nYU6aZzbbbXIdlhlIo8JxcD4CHLb1iy7-zzUEfwMXy3ZRIF6NRVAPhrzQUtfuHtJAry8IV9xMG4drBUsiqmUPunq27YHRwM3S4tSFdvLrcmSxauVFrdAEg5kni-bfdCAWXCeCkzOBY',
+        'Client-API-Id': 'b6c31cf8-89e6-49ca-b443-374b91a1ba94',
+        "Content-Type" : "application/json"
+      };
+
+
+      var body = {
+        "payerCode": "$payerCode",
+        "payerName": "$payerName",
+        "provider": {
+          "firstName": "Sagor",
+          "lastName": " test name",
+          "npi": "$nip",
+          "pin": "$pin"
+        },
+        "subscriber": {
+          "firstName": "fname",
+          "dob": "$dateOfBirth",
+          "lastName": "lname"
+        },
+        "isSubscriberPatient": "True",
+        "doS_StartDate": "$startDate",
+        "doS_EndDate": "$endDate"
+      };
+
+
+      var response = await ApiClient.postData("https://api.pverify.com/api/EligibilitySummary", body, headers: headers);
+      if(response.statusCode == 200 || response.statusCode == 201){
+        Get.toNamed(AppRoutes.signInScreen);
+        ToastMessageHelper.showToastMessage("Your insurance information upload successful");
+      }
+
+
+  //     {
+  //       "payerCode": "00192",
+  //   "payerName": "UHC",
+  //   "provider": {
+  //   "firstName": "sagor",
+  //   "lastName": " test name",
+  //   "npi": "1234567890",
+  //   "pin": "00000"
+  // },
+  //   "subscriber": {
+  //   "firstName": "fname",
+  //   "dob": "01/01/2020",
+  //   "lastName": "lname"
+  // },
+  //   "isSubscriberPatient": "True",
+  //   "doS_StartDate": "02/02/2021",
+  //   "doS_EndDate": "02/02/2021"
+  // }
+
+
+
+      insuranceInfoLoading(false);
+    } else {
+      insuranceInfoLoading(false);
+      ToastMessageHelper.showToastMessage(response.body["message"].toString());
+    }
+  }
+
+
+
 }
+
+
+

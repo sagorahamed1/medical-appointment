@@ -7,6 +7,7 @@ import '../helpers/binding/dependancy_injaction.dart';
 import '../views/screens/Auth/ContinueDoctorDetails/continue_doctor_details_screen.dart';
 import '../views/screens/Auth/fill_profile/fill_profile_screen.dart';
 import '../views/screens/Auth/forgot_password/forgot_password_screen.dart';
+import '../views/screens/Auth/insurance_info/insurance_info_screen.dart';
 import '../views/screens/Auth/set_password/set_password_screen.dart';
 import '../views/screens/Auth/sign_in/sign_in_screen.dart';
 import '../views/screens/Auth/sign_up/sign_up_screen.dart';
@@ -113,6 +114,7 @@ class AppRoutes {
   static const String addSoapNoteScreen = "/AddSoapNoteScreen.dart";
   static const String signatureViewScreen = "/SignatureViewScreen.dart";
   static const String supportScreen = "/SupportScreen.dart";
+  static const String insuranceInfoScreen = "/InsuranceInfoScreen.dart";
 
 
   static List<GetPage> get routes => [
@@ -170,5 +172,6 @@ class AppRoutes {
         GetPage(name: addSoapNoteScreen, page: () => AddSoapNoteScreen()),
         GetPage(name: signatureViewScreen, page: () => SignatureViewScreen()),
         GetPage(name: supportScreen, page: () => SupportScreen()),
+        GetPage(name: insuranceInfoScreen, page: () => InsuranceInfoScreen()),
   ];
 }
