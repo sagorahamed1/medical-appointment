@@ -155,10 +155,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 "Insurance",
                                 AppIcons.insurance,
                                 AppColors.primaryColor, () {
-                               Get.toNamed(AppRoutes.insuranceScreen)?.then((_){
-                                 _profileControler.fetchData();
-                                 _profileControler.getProfile();
-                               });
+
+                                  Get.toNamed(AppRoutes.insuranceInfoScreen, arguments: {
+                                    "type" : "profile"
+                                  });
+
+                               // Get.toNamed(AppRoutes.insuranceScreen)?.then((_){
+                               //   _profileControler.fetchData();
+                               //   _profileControler.getProfile();
+                               // });
                             })
                                 : const SizedBox(),
 
@@ -301,6 +306,15 @@ class TwoBottonBottomSheet extends StatelessWidget {
             await PrefsHelper.remove(AppConstants.mockRole);
             await PrefsHelper.remove(AppConstants.isLogged);
             await PrefsHelper.remove(AppConstants.insurance);
+            await PrefsHelper.remove(AppConstants.firstName);
+            await PrefsHelper.remove(AppConstants.lastName);
+            await PrefsHelper.remove(AppConstants.payerCode);
+            await PrefsHelper.remove(AppConstants.payerName);
+            await PrefsHelper.remove(AppConstants.npi);
+            await PrefsHelper.remove(AppConstants.pin);
+            await PrefsHelper.remove(AppConstants.dateOfBirth);
+            await PrefsHelper.remove(AppConstants.startDate);
+            await PrefsHelper.remove(AppConstants.endDate);
 
 
             SocketServices.socket?.clearListeners();

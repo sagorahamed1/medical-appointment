@@ -229,91 +229,91 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
 
-                ///=======================Emergency Doctors and See All Text=============================>
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Dimensions.paddingSizeDefault.w),
-                  child:
-                      _SeeAll(AppString.emergencyDoctors, AppString.seeAll, () {
-                    Get.toNamed(AppRoutes.useremergencyDoctorsScreen)?.then((_){
-                      _homeController.getDoctorByCetegory(cetegory: "General", date: null);
-                    });
-                  }),
-                ),
-
-                Obx(
-                  () => SizedBox(
-                    height: 185.h,
-                    child: _homeController.emergencyDoctorLoading.value
-                        ? const Center(child: CustomLoader())
-                        : _homeController.emergencyDoctors.isEmpty
-                            ? Center(
-                                child: SizedBox(
-                                    height: 180.h,
-                                    width: 200.w,
-                                    child: Image.asset(AppImages.noDataImage)),
-                              )
-                            : ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    _homeController.emergencyDoctors.length,
-                                itemBuilder: (context, index) {
-                                  var emergencyDoctors =
-                                      _homeController.emergencyDoctors[index];
-                                  print(
-                                      '=====emergency doctors : $emergencyDoctors');
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        left: index == 0 ? 19.w : 8.w,
-                                        right: index ==
-                                                _homeController.emergencyDoctors
-                                                        .length -
-                                                    1
-                                            ? 20.w
-                                            : 0.w),
-                                    child: AvailableDoctorsCard(
-                                      image:
-                                          '${emergencyDoctors.doctorId?.image?.publicFileUrl}',
-                                      rating:
-                                          "${emergencyDoctors.doctorId?.rating}",
-                                      doctorName:
-                                          "${emergencyDoctors.doctorId?.firstName} ${emergencyDoctors.doctorId?.lastName}",
-                                      specialist:
-                                          "${emergencyDoctors.specialist}",
-                                      onlineConsultation:
-                                          '${emergencyDoctors.onlineConsultationPrice}',
-                                      totalConsultaion:
-                                          '${emergencyDoctors.totalConsultation}',
-                                      imageHeight: 100,
-                                      leftBtnText: AppString.seeDetails,
-                                      rightBtnText: AppString.bookAppointment,
-                                      leftBtnOntap: () {
-                                        Get.toNamed(
-                                            AppRoutes.userDoctorDetailsScreen,
-                                            parameters: {
-                                              'id':
-                                                  '${emergencyDoctors.doctorId?.id}',
-                                              'emergencyDoctor':
-                                                  'emergencyDoctor',
-                                            },
-                                            arguments: emergencyDoctors);
-                                      },
-                                      rightBtnOnTap: () {
-                                        Get.toNamed(
-                                            AppRoutes.userPatientDetailsScreen,
-                                            arguments: emergencyDoctors,
-                                            parameters: {
-                                              'id':
-                                                  '${emergencyDoctors.doctorId?.id}',
-                                              'isEmergency': 'true'
-                                            });
-                                      },
-                                    ),
-                                  );
-                                },
-                              ),
-                  ),
-                ),
+                // ///=======================Emergency Doctors and See All Text=============================>
+                // Padding(
+                //   padding: EdgeInsets.symmetric(
+                //       horizontal: Dimensions.paddingSizeDefault.w),
+                //   child:
+                //       _SeeAll(AppString.emergencyDoctors, AppString.seeAll, () {
+                //     Get.toNamed(AppRoutes.useremergencyDoctorsScreen)?.then((_){
+                //       _homeController.getDoctorByCetegory(cetegory: "General", date: null);
+                //     });
+                //   }),
+                // ),
+                //
+                // Obx(
+                //   () => SizedBox(
+                //     height: 185.h,
+                //     child: _homeController.emergencyDoctorLoading.value
+                //         ? const Center(child: CustomLoader())
+                //         : _homeController.emergencyDoctors.isEmpty
+                //             ? Center(
+                //                 child: SizedBox(
+                //                     height: 180.h,
+                //                     width: 200.w,
+                //                     child: Image.asset(AppImages.noDataImage)),
+                //               )
+                //             : ListView.builder(
+                //                 scrollDirection: Axis.horizontal,
+                //                 itemCount:
+                //                     _homeController.emergencyDoctors.length,
+                //                 itemBuilder: (context, index) {
+                //                   var emergencyDoctors =
+                //                       _homeController.emergencyDoctors[index];
+                //                   print(
+                //                       '=====emergency doctors : $emergencyDoctors');
+                //                   return Padding(
+                //                     padding: EdgeInsets.only(
+                //                         left: index == 0 ? 19.w : 8.w,
+                //                         right: index ==
+                //                                 _homeController.emergencyDoctors
+                //                                         .length -
+                //                                     1
+                //                             ? 20.w
+                //                             : 0.w),
+                //                     child: AvailableDoctorsCard(
+                //                       image:
+                //                           '${emergencyDoctors.doctorId?.image?.publicFileUrl}',
+                //                       rating:
+                //                           "${emergencyDoctors.doctorId?.rating}",
+                //                       doctorName:
+                //                           "${emergencyDoctors.doctorId?.firstName} ${emergencyDoctors.doctorId?.lastName}",
+                //                       specialist:
+                //                           "${emergencyDoctors.specialist}",
+                //                       onlineConsultation:
+                //                           '${emergencyDoctors.onlineConsultationPrice}',
+                //                       totalConsultaion:
+                //                           '${emergencyDoctors.totalConsultation}',
+                //                       imageHeight: 100,
+                //                       leftBtnText: AppString.seeDetails,
+                //                       rightBtnText: AppString.bookAppointment,
+                //                       leftBtnOntap: () {
+                //                         Get.toNamed(
+                //                             AppRoutes.userDoctorDetailsScreen,
+                //                             parameters: {
+                //                               'id':
+                //                                   '${emergencyDoctors.doctorId?.id}',
+                //                               'emergencyDoctor':
+                //                                   'emergencyDoctor',
+                //                             },
+                //                             arguments: emergencyDoctors);
+                //                       },
+                //                       rightBtnOnTap: () {
+                //                         Get.toNamed(
+                //                             AppRoutes.userPatientDetailsScreen,
+                //                             arguments: emergencyDoctors,
+                //                             parameters: {
+                //                               'id':
+                //                                   '${emergencyDoctors.doctorId?.id}',
+                //                               'isEmergency': 'true'
+                //                             });
+                //                       },
+                //                     ),
+                //                   );
+                //                 },
+                //               ),
+                //   ),
+                // ),
 
                 SizedBox(height: 10.h)
               ],

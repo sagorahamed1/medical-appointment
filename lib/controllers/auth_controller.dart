@@ -81,6 +81,8 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage(
           'Signup successful! Check your email for the OTP.');
       signUpLoading(false);
+      PrefsHelper.setString(AppConstants.firstName, firstName);
+      PrefsHelper.setString(AppConstants.lastName, lastName);
     } else {
       signUpLoading(false);
       ToastMessageHelper.showToastMessage(response.body["message"].toString());
@@ -161,6 +163,17 @@ class AuthController extends GetxController {
           "================================Calling invitation done with name : $firstName $lastName email: $email");
 
       SocketServices.init(token: data['token'].toString());
+
+      PrefsHelper.setString(AppConstants.payerName, data["attributes"]["insuranceInformation"]["payerName"]);
+      PrefsHelper.setString(AppConstants.payerCode, data["attributes"]["insuranceInformation"]["payerCode"]);
+      PrefsHelper.setString(AppConstants.npi, data["attributes"]["insuranceInformation"]["provider"]["npi"]);
+      PrefsHelper.setString(AppConstants.pin, data["attributes"]["insuranceInformation"]["provider"]["pin"]);
+      PrefsHelper.setString(AppConstants.startDate, data["attributes"]["insuranceInformation"]["doS_StartDate"]);
+      PrefsHelper.setString(AppConstants.endDate, data["attributes"]["insuranceInformation"]["doS_EndDate"]);
+      PrefsHelper.setString(AppConstants.dateOfBirth, data["attributes"]["insuranceInformation"]["subscriber"]["dob"]);
+      PrefsHelper.setString(AppConstants.firstName, data["attributes"]["insuranceInformation"]["provider"]["firstName"]);
+      PrefsHelper.setString(AppConstants.lastName, data["attributes"]["insuranceInformation"]["provider"]["lastName"]);
+
     } else if (response.statusCode == 1) {
       logInLoading(false);
       ToastMessageHelper.showToastMessage("Some thing want wrong try again!");
@@ -275,8 +288,9 @@ class AuthController extends GetxController {
         ToastMessageHelper.showToastMessage(
             'Account Create Successful \n Please give your information');
       } else if (role == 'user') {
-
-        Get.toNamed(AppRoutes.insuranceInfoScreen);
+        Get.toNamed(AppRoutes.insuranceInfoScreen , arguments: {
+          "type" : "sign up"
+        });
         ToastMessageHelper.showToastMessage('Account Create Successful');
       }
       fillProfileLoading(false);
@@ -442,88 +456,97 @@ class AuthController extends GetxController {
   ///===============Insurance information upload================<>
   RxBool insuranceInfoLoading = false.obs;
 
-  insuranceUpload({required String payerCode, payerName, nip, pin, dateOfBirth, startDate, endDate}) async {
+  insuranceUpload(
+      {required String payerCode,
+      payerName,
+      nip,
+      pin,
+      dateOfBirth,
+      startDate,
+      endDate, String? type}) async {
     insuranceInfoLoading(true);
 
-
+    var insuranceToken = await getInsuranceToken();
+    String userId = await PrefsHelper.getString(AppConstants.userId);
+    String firstName = "Sagor"; //await PrefsHelper.getString(AppConstants.firstName);
+    String lastName = "Ahamed"; // await PrefsHelper.getString(AppConstants.lastName);
 
     var body = {
+      "userId": "$userId",
       "insuranceInformation": {
         "payerCode": "$payerCode",
         "payerName": "$payerName",
         "provider": {
-          "firstName": "Jane",
-          "lastName": "Smith",
+          "firstName": "$firstName",
+          "lastName": "$lastName",
           "npi": "$nip",
           "pin": "$pin"
         },
         "subscriber": {
-          "firstName": "John",
+          "firstName": "$firstName",
           "dob": "$dateOfBirth",
-          "lastName": "Doe"
-        }
+          "lastName": "$lastName"
+        },
+        "isSubscriberPatient":true,
+        "doS_StartDate": "$startDate",
+        "doS_EndDate":"$endDate"
       }
     };
 
-    var response = await ApiClient.postData(
-        ApiConstants.insuranceUpload, jsonEncode(body));
+    var response = await ApiClient.patch(
+        ApiConstants.insuranceUpload, jsonEncode(body),
+        headers: {"Content-Type": "application/json"});
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-
-      var headers = {
-        'Authorization': 'Bearer qN9w9EZC6sxzELSPddReurquqvBw0K3lcGPKOvad42WNUp8G_bkoccvr9QPqqoUm7imafisCV2VEKvaQ-gv49W1pmtiK3JAUUavlRkTC5uU1zJCMfDOcexBe-s_A-GKrzRGC92qBgDnoaX65aTWZbnE3BXYttAuo7nYU6aZzbbbXIdlhlIo8JxcD4CHLb1iy7-zzUEfwMXy3ZRIF6NRVAPhrzQUtfuHtJAry8IV9xMG4drBUsiqmUPunq27YHRwM3S4tSFdvLrcmSxauVFrdAEg5kni-bfdCAWXCeCkzOBY',
+      var headersEligibility = {
+        'Authorization': 'Bearer $insuranceToken',
         'Client-API-Id': 'b6c31cf8-89e6-49ca-b443-374b91a1ba94',
-        "Content-Type" : "application/json"
+        "Content-Type": "application/json"
+      // "Content-Type": "application/x-www-form-urlencoded"
       };
 
-
       var body = {
-        "payerCode": "$payerCode",
+        "PayerCode": "$payerCode",
         "payerName": "$payerName",
         "provider": {
-          "firstName": "Sagor",
-          "lastName": " test name",
+          "firstName": "$firstName",
+          "lastName": "$lastName",
           "npi": "$nip",
           "pin": "$pin"
         },
         "subscriber": {
-          "firstName": "fname",
+          "firstName": "$firstName",
           "dob": "$dateOfBirth",
-          "lastName": "lname"
+          "lastName": "$lastName"
         },
-        "isSubscriberPatient": "True",
+        "isSubscriberPatient": true,
         "doS_StartDate": "$startDate",
         "doS_EndDate": "$endDate"
       };
 
+      var response = await ApiClient.dummyPost(
+          "https://api.pverify.com/api/EligibilitySummary", jsonEncode(body),
+          headers: headersEligibility);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        if(type == "profile"){
+          Get.back();
+        }else{
+          Get.toNamed(AppRoutes.signInScreen);
+        }
 
-      var response = await ApiClient.postData("https://api.pverify.com/api/EligibilitySummary", body, headers: headers);
-      if(response.statusCode == 200 || response.statusCode == 201){
-        Get.toNamed(AppRoutes.signInScreen);
-        ToastMessageHelper.showToastMessage("Your insurance information upload successful");
+        ToastMessageHelper.showToastMessage(
+            "Your insurance information upload successful");
+        PrefsHelper.setString(AppConstants.payerName, payerName);
+        PrefsHelper.setString(AppConstants.payerCode, payerCode);
+        PrefsHelper.setString(AppConstants.npi, nip);
+        PrefsHelper.setString(AppConstants.pin, pin);
+        PrefsHelper.setString(AppConstants.pin, pin);
+        PrefsHelper.setString(AppConstants.dateOfBirth, dateOfBirth);
+        PrefsHelper.setString(AppConstants.startDate, startDate);
+        PrefsHelper.setString(AppConstants.endDate, endDate);
+      }else{
+        ToastMessageHelper.showToastMessage(response.body["message"]);
       }
-
-
-  //     {
-  //       "payerCode": "00192",
-  //   "payerName": "UHC",
-  //   "provider": {
-  //   "firstName": "sagor",
-  //   "lastName": " test name",
-  //   "npi": "1234567890",
-  //   "pin": "00000"
-  // },
-  //   "subscriber": {
-  //   "firstName": "fname",
-  //   "dob": "01/01/2020",
-  //   "lastName": "lname"
-  // },
-  //   "isSubscriberPatient": "True",
-  //   "doS_StartDate": "02/02/2021",
-  //   "doS_EndDate": "02/02/2021"
-  // }
-
-
 
       insuranceInfoLoading(false);
     } else {
@@ -532,9 +555,25 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<String?> getInsuranceToken() async {
+    var body = {
+      'grant_type': 'client_credentials',
+      'client_id': 'b6c31cf8-89e6-49ca-b443-374b91a1ba94',
+      "client_secret": "xbOjjn5NgSwWCS98bztdoaBpIihA"
+    };
+    var header = {"Content-Type": "application/x-www-form-urlencoded"};
 
+    var response = await ApiClient.dummyPost(
+        "https://api.pverify.com/Token", body,
+        headers: header);
 
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return response.body["access_token"];
+    } else {
+      return null;
+    }
+  }
 }
 
 
-
+// dolal17519@ahvin.com

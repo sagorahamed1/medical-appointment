@@ -527,6 +527,7 @@ class ApiClient extends GetxService {
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
+
 }
 
 class MultipartBody {

@@ -9,6 +9,15 @@ class AppConstants{
  static const String bearerToken = "bearerToken";
  static const String email = "email";
  static const String userName = "userName";
+ static const String firstName = "firstName";
+ static const String lastName = "lastName";
+ static const String payerCode = "payerCode";
+ static const String payerName = "payerName";
+ static const String npi = "npi";
+ static const String pin = "pin";
+ static const String dateOfBirth = "dateOfBirth";
+ static const String startDate = "startDate";
+ static const String endDate = "endDate";
  static const String image = "image";
  static const String insurance = "insurance";
  static const String isPrescription = "isPrescription";

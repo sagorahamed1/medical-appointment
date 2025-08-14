@@ -1,6 +1,8 @@
 import 'package:doctor_appointment/controllers/auth_controller.dart';
+import 'package:doctor_appointment/helpers/prefs_helper.dart';
 import 'package:doctor_appointment/routes/app_routes.dart';
 import 'package:doctor_appointment/utils/app_colors.dart';
+import 'package:doctor_appointment/utils/app_constant.dart';
 import 'package:doctor_appointment/utils/app_dimentions.dart';
 import 'package:doctor_appointment/views/widgets/custom_button.dart';
 import 'package:doctor_appointment/views/widgets/custom_text.dart';
@@ -30,6 +32,28 @@ class _InsuranceInfoScreenState extends State<InsuranceInfoScreen> {
   TextEditingController dosEndDateCtrl = TextEditingController();
 
   final AuthController _authController = Get.find<AuthController>();
+
+  String type = "";
+
+  @override
+  void initState() {
+    getDateFromPriviusScreen();
+    super.initState();
+  }
+
+  getDateFromPriviusScreen()async{
+    type = Get.arguments["type"];
+    payerNameCtrl.text = await PrefsHelper.getString(AppConstants.payerName);
+    payerCodeCtrl.text = await PrefsHelper.getString(AppConstants.payerCode);
+    npiCtrl.text = await PrefsHelper.getString(AppConstants.npi);
+    pinCtrl.text = await PrefsHelper.getString(AppConstants.pin);
+    dateOfBirthCtrl.text = await PrefsHelper.getString(AppConstants.dateOfBirth);
+    dosStartDateCtrl.text = await PrefsHelper.getString(AppConstants.startDate);
+    dosEndDateCtrl.text = await PrefsHelper.getString(AppConstants.endDate);
+    setState(() {
+
+    });
+  }
 
 
   @override
@@ -252,7 +276,7 @@ class _InsuranceInfoScreenState extends State<InsuranceInfoScreen> {
 
 
                 SizedBox(height: 16.h),
-                Row(
+               type == "profile" ? SizedBox() : Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CustomText(
@@ -279,7 +303,8 @@ class _InsuranceInfoScreenState extends State<InsuranceInfoScreen> {
                     pin: pinCtrl.text,
                     nip: npiCtrl.text,
                     endDate: dosEndDateCtrl.text,
-                    startDate: dosStartDateCtrl.text
+                    startDate: dosStartDateCtrl.text,
+                    type: type == "profile" ? "profile" : "sign up"
                   );
 
                 }, title: "Submit"),
